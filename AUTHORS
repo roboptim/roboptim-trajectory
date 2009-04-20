@@ -3,6 +3,9 @@ This package was written by and with the assistance of
 * Florent Lamiraux              florent@laas.fr
 - Interface design.
 
+* Sylvain Miossec               sylvain.miossec@bourges.univ-orleans.fr
+- Cubic splines implementation.
+
 * Thomas Moulard                thomas.moulard@gmail.com
 - Package creation.
 

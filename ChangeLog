@@ -1,5 +1,16 @@
 2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add cubic spline implementation from Sylvain Miossec.
+	* AUTHORS: Add Sylvain Miossec.
+	* include/Makefile.am: Distribute and install new headers.
+	* include/roboptim-trajectory/basis-function.hh: New.
+	* include/roboptim-trajectory/bspline.hh: New.
+	* src/Makefile.am: Compile new source files.
+	* src/basis-function.cc: New.
+	* src/bspline.cc: New.
+
+2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix documentation upload script.
 	* doc/sf-upload.sh.in: Here.
 
