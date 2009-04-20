@@ -1,5 +1,10 @@
 2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix documentation upload script.
+	* doc/sf-upload.sh.in: Here.
+
+2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add a dependency against roboptim-core.
 	* COPYING: New.
 	* Makefile.am: Remove packages for now.
