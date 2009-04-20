@@ -17,6 +17,8 @@
 
 #include "common.hh"
 
+#include <roboptim-trajectory/fwd.hh>
+
 using namespace roboptim;
 
 int run_test ()

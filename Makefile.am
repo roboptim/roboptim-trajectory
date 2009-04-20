@@ -3,14 +3,13 @@ ACLOCAL_AMFLAGS = -I build-aux
 
 SUBDIRS = 		\
 	doc		\
-	packages	\
 	include		\
 	src		\
 	tests
 
 
 # Provide bootstrap with the generated package.
-EXTRA_DIST = bootstrap build-aux/bootstrap $(PACKAGE_TARNAME).m4
+EXTRA_DIST = bootstrap build-aux/bootstrap
 
 
 # Nothing to do in this directory.

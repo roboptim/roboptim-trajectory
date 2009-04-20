@@ -1,0 +1,53 @@
+2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add a dependency against roboptim-core.
+	* COPYING: New.
+	* Makefile.am: Remove packages for now.
+	* build-aux/acx_pthread.m4: New.
+	* build-aux/roboptim-core.m4: New.
+	* configure.ac: Fix package short name, search for roboptim-core.
+	* src/Makefile.am: Link against roboptim-core.
+	* tests/simple.cc: Include fwd.hh to check that headers are accessible
+        in tests.
+	* tests/simple.stdout: New.
+
+2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	* .gitignore,
+	* AUTHORS,
+	* ChangeLog,
+	* Makefile.am,
+	* NEWS,
+	* README,
+	* bootstrap,
+	* build-aux/autotest.at,
+	* build-aux/autotest.mk,
+	* build-aux/boost.m4,
+	* build-aux/bootstrap,
+	* build-aux/deb.mk,
+	* build-aux/ebuild.mk,
+	* build-aux/init.mk,
+	* build-aux/move-if-change,
+	* build-aux/pkg-config.pc.in,
+	* build-aux/rpm.mk,
+	* build-aux/warning.m4,
+	* configure.ac,
+	* doc/Doxyfile.in,
+	* doc/Makefile.am,
+	* doc/doxygen.css,
+	* doc/footer.html,
+	* doc/header.html,
+	* doc/package.css,
+	* doc/sf-upload.sh.in,
+	* doc/tabs.css,
+	* include/Makefile.am,
+	* include/roboptim-trajectory/fwd.hh,
+	* src/Makefile.am,
+	* src/doc.hh,
+	* tests/Makefile.am,
+	* tests/atlocal.in,
+	* tests/common.hh,
+	* tests/package.m4.in,
+	* tests/simple.cc,
+	* tests/testsuite.at: Initial commit.
+
