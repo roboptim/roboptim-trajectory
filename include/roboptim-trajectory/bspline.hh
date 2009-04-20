@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Sylvain Miossec, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //

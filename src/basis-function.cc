@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Sylvain Miossec, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -154,7 +154,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::def_parameters(boost::numeric::ublas::matrix<double> *P_in, double T_in)
+  void BasisFunction::def_parameters(ublas::matrix<double> *P_in, double T_in)
   {
     if (defined_lc && free_fun_lc) {
       std::cout << "error in BasisFunction, def_parameters without definition of funi and funf has been called while it should" << std::endl;
@@ -196,9 +196,9 @@ namespace roboptim
   }
 
 
-  void BasisFunction::def_parameters(boost::numeric::ublas::matrix<double> *P_in,
-                                     const boost::numeric::ublas::vector<double> &fun0,
-                                     const boost::numeric::ublas::vector<double> &funf, double T_in)
+  void BasisFunction::def_parameters(ublas::matrix<double> *P_in,
+                                     const ublas::vector<double> &fun0,
+                                     const ublas::vector<double> &funf, double T_in)
   {
     if (!(defined_lc && free_fun_lc)) {
       std::cout << "error in BasisFunction, def_parameters with definition of fun0 and funf has been called while it should not" << std::endl;
@@ -229,8 +229,8 @@ namespace roboptim
 
 
   void BasisFunction::define_fixed_lc(
-                                      const boost::numeric::ublas::vector<double> &fun0,
-                                      const boost::numeric::ublas::vector<double> &funf)
+                                      const ublas::vector<double> &fun0,
+                                      const ublas::vector<double> &funf)
   {
     if (!(defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, define_fixed_lc has been called while it should not" << std::endl;
@@ -247,8 +247,8 @@ namespace roboptim
   }
 
 
-  void BasisFunction::get_fixed_lc(boost::numeric::ublas::vector<double> &fun0,
-                                   boost::numeric::ublas::vector<double> &funf) const
+  void BasisFunction::get_fixed_lc(ublas::vector<double> &fun0,
+                                   ublas::vector<double> &funf) const
   {
     fun0 = fun0_fixed;
     funf = funf_fixed;
@@ -305,7 +305,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::save_parameters(const char* file_name, boost::numeric::ublas::matrix<double> *P_in, double T_in)
+  void BasisFunction::save_parameters(const char* file_name, ublas::matrix<double> *P_in, double T_in)
   {
     if (defined_lc) {
       std::cout << "error in BasisFunction, bad function save_parameters has been called" << std::endl;
@@ -327,9 +327,9 @@ namespace roboptim
 
   void BasisFunction::save_parameters(
                                       const char* file_name,
-                                      boost::numeric::ublas::matrix<double> *P_in,
-                                      const boost::numeric::ublas::vector<double> &fun0_in,
-                                      const boost::numeric::ublas::vector<double> &funf_in, double T_in)
+                                      ublas::matrix<double> *P_in,
+                                      const ublas::vector<double> &fun0_in,
+                                      const ublas::vector<double> &funf_in, double T_in)
   {
     if (!defined_lc) {
       std::cout << "error in BasisFunction, bad function save_parameters has been called" << std::endl;
@@ -386,7 +386,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::load_parameters(const char* file_name, boost::numeric::ublas::matrix<double> *P_out, double &T_out)
+  void BasisFunction::load_parameters(const char* file_name, ublas::matrix<double> *P_out, double &T_out)
   {
     std::cout << "error in BasisFunction::load_parameters, this overloaded function is not implemented" << std::endl;
 
@@ -410,9 +410,9 @@ namespace roboptim
 
   void BasisFunction::load_parameters(
                                       const char* file_name,
-                                      boost::numeric::ublas::matrix<double> *P_out,
-                                      boost::numeric::ublas::vector<double> &fun0_out,
-                                      boost::numeric::ublas::vector<double> &funf_out, double &T_out)
+                                      ublas::matrix<double> *P_out,
+                                      ublas::vector<double> &fun0_out,
+                                      ublas::vector<double> &funf_out, double &T_out)
   {
     if (!defined_lc) {
       std::cout << "error in BasisFunction, bad function load_parameters has been called" << std::endl;
@@ -490,9 +490,9 @@ namespace roboptim
 
   void BasisFunction::load_parameters_and_sizes(
                                                 const char* file_name,
-                                                boost::numeric::ublas::matrix<double> *P_out,
-                                                boost::numeric::ublas::vector<double> &fun0_out,
-                                                boost::numeric::ublas::vector<double> &funf_out, double &T_out)
+                                                ublas::matrix<double> *P_out,
+                                                ublas::vector<double> &fun0_out,
+                                                ublas::vector<double> &funf_out, double &T_out)
   {
 
     std::ifstream file(file_name);
@@ -566,9 +566,9 @@ namespace roboptim
 
   void BasisFunction::load_parameters_and_sizes(const char* file_name)
   {
-    boost::numeric::ublas::matrix<double> P_local;
-    boost::numeric::ublas::vector<double> fun0_local;
-    boost::numeric::ublas::vector<double> funf_local;
+    ublas::matrix<double> P_local;
+    ublas::vector<double> fun0_local;
+    ublas::vector<double> funf_local;
     double T_local;
 
     load_parameters_and_sizes(file_name, &P_local, fun0_local, funf_local, T_local);
@@ -576,7 +576,7 @@ namespace roboptim
 
 
   void BasisFunction::define_parameters_scale(double P_scale_in, double T_scale_in, double funif_scale_in,
-                                              const boost::numeric::ublas::vector<double> & funs_scale_in)
+                                              const ublas::vector<double> & funs_scale_in)
   {
     if (funs_scale_in.size() != nb_fun) {
       std::cout << "error in BasisFunction::define_parameters_scale, funs_scale_in does not have nb_fun elements" << std::endl;
@@ -592,7 +592,7 @@ namespace roboptim
 
 
   void BasisFunction::get_parameters_scale(double &P_scale_out, double &T_scale_out, double &funif_scale_out,
-                                           boost::numeric::ublas::vector<double> &funs_scale_out)
+                                           ublas::vector<double> &funs_scale_out)
   {
     if (funs_scale_out.size() != nb_fun) {
       std::cout << "error in BasisFunction::get_parameters_scale, funs_scale_in does not have nb_fun elements" << std::endl;
@@ -607,7 +607,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::get_parameters_scale(boost::numeric::ublas::vector<double> &x_scale_out)
+  void BasisFunction::get_parameters_scale(ublas::vector<double> &x_scale_out)
   {
 
     std::cout << "warning in BasisFunction, function get_parameters_scale never debugged" << std::endl;
@@ -655,8 +655,8 @@ namespace roboptim
 
 
   void BasisFunction::get_scale_for_auto_scale(int &nb_x_scale_out,
-                                               boost::numeric::ublas::vector<int> &nb_p_x_scale_p_out,
-                                               boost::numeric::ublas::matrix<int> &p_x_scale_p_out)
+                                               ublas::vector<int> &nb_p_x_scale_p_out,
+                                               ublas::matrix<int> &p_x_scale_p_out)
   {
     //scaling parameters ordering : funif_scale, P_scale (if free_fun_lc) and T_scale
 
@@ -715,7 +715,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::set_scale_from_auto_scale(boost::numeric::ublas::vector<double> &p_x_scale)
+  void BasisFunction::set_scale_from_auto_scale(ublas::vector<double> &p_x_scale)
   {
     //scaling parameters ordering : funif_scale, P_scale (if free_fun_lc) and T_scale
 
@@ -737,7 +737,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::convert_parameters_P2x(const boost::numeric::ublas::matrix<double> *P_in, const double T_in, double* x_out)
+  void BasisFunction::convert_parameters_P2x(const ublas::matrix<double> *P_in, const double T_in, double* x_out)
   {
     if ((defined_lc && free_fun_lc)) {
       std::cout << "error in BasisFunction, bad function convert_parameters_P2x has been called" << std::endl;
@@ -777,9 +777,9 @@ namespace roboptim
   }
 
 
-  void BasisFunction::convert_parameters_P2x(const boost::numeric::ublas::matrix<double> *P_in,
-                                             const boost::numeric::ublas::vector<double> &fun0_in,
-                                             const boost::numeric::ublas::vector<double> &funf_in,
+  void BasisFunction::convert_parameters_P2x(const ublas::matrix<double> *P_in,
+                                             const ublas::vector<double> &fun0_in,
+                                             const ublas::vector<double> &funf_in,
                                              const double T_in, double* x_out)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
@@ -819,7 +819,7 @@ namespace roboptim
 
 
   void BasisFunction::convert_parameters_P2x(
-                                             const boost::numeric::ublas::matrix<bool> *P_in,
+                                             const ublas::matrix<bool> *P_in,
                                              const bool T_in,
                                              bool* x_out)
   {
@@ -861,9 +861,9 @@ namespace roboptim
   }
 
 
-  void BasisFunction::convert_parameters_P2x(const boost::numeric::ublas::matrix<bool> *P_in,
-                                             const boost::numeric::ublas::vector<bool> &fun0_in,
-                                             const boost::numeric::ublas::vector<bool> &funf_in, const bool T_in, bool* x_out)
+  void BasisFunction::convert_parameters_P2x(const ublas::matrix<bool> *P_in,
+                                             const ublas::vector<bool> &fun0_in,
+                                             const ublas::vector<bool> &funf_in, const bool T_in, bool* x_out)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, bad function convert_parameters_P2x has been called" << std::endl;
@@ -901,7 +901,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::convert_parameters_x2P(const double* x_in, boost::numeric::ublas::matrix<double> *P_out, double &T_out)
+  void BasisFunction::convert_parameters_x2P(const double* x_in, ublas::matrix<double> *P_out, double &T_out)
   {
     if ((defined_lc && free_fun_lc)) {
       std::cout << "error in BasisFunction, bad function convert_parameters_x2P has been called" << std::endl;
@@ -944,9 +944,9 @@ namespace roboptim
 
 
   void BasisFunction::convert_parameters_x2P(const double* x_in,
-                                             boost::numeric::ublas::matrix<double> *P_out,
-                                             boost::numeric::ublas::vector<double> &fun0_out,
-                                             boost::numeric::ublas::vector<double> &funf_out, double &T_out)
+                                             ublas::matrix<double> *P_out,
+                                             ublas::vector<double> &fun0_out,
+                                             ublas::vector<double> &funf_out, double &T_out)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, bad function convert_parameters_x2P has been called" << std::endl;
@@ -986,7 +986,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::change_P_parameter_in_x(boost::numeric::ublas::vector<double> &x_in_out, int i, int j, double P_ij_in)
+  void BasisFunction::change_P_parameter_in_x(ublas::vector<double> &x_in_out, int i, int j, double P_ij_in)
   {
     if (i > nb_fun-1) {
       std::cout << "error in BasisFunction, i is more than nb_fun" << std::endl;
@@ -1006,7 +1006,7 @@ namespace roboptim
 
   }
 
-  void BasisFunction::change_fun0_parameter_in_x(boost::numeric::ublas::vector<double> &x_in_out, int i, double fun0_i_in)
+  void BasisFunction::change_fun0_parameter_in_x(ublas::vector<double> &x_in_out, int i, double fun0_i_in)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, change_qi_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1016,7 +1016,7 @@ namespace roboptim
 
   }
 
-  void BasisFunction::change_funf_parameter_in_x(boost::numeric::ublas::vector<double> &x_in_out, int i, double funf_i_in)
+  void BasisFunction::change_funf_parameter_in_x(ublas::vector<double> &x_in_out, int i, double funf_i_in)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, change_qf_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1025,7 +1025,7 @@ namespace roboptim
     x_in_out[(nb_P-6+1)*nb_fun+i] = funf_i_in*(funif_scale*funs_scale(i));
   }
 
-  void BasisFunction::change_T_parameter_in_x(boost::numeric::ublas::vector<double> &x_in_out, double T_in)
+  void BasisFunction::change_T_parameter_in_x(ublas::vector<double> &x_in_out, double T_in)
   {
     if (grad_of_time) {
       x_in_out[nb_grad_uncomp-1] = T_in*T_scale;
@@ -1035,7 +1035,7 @@ namespace roboptim
 
   }
 
-  void BasisFunction::change_P_parameter_in_x(boost::numeric::ublas::vector<bool> &x_in_out, int i, int j, bool P_ij_in)
+  void BasisFunction::change_P_parameter_in_x(ublas::vector<bool> &x_in_out, int i, int j, bool P_ij_in)
   {
     if (i > nb_fun-1) {
       std::cout << "error in BasisFunction, i is more than nb_fun" << std::endl;
@@ -1055,7 +1055,7 @@ namespace roboptim
 
   }
 
-  void BasisFunction::change_fun0_parameter_in_x(boost::numeric::ublas::vector<bool> &x_in_out, int i, bool fun0_i_in)
+  void BasisFunction::change_fun0_parameter_in_x(ublas::vector<bool> &x_in_out, int i, bool fun0_i_in)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, change_qi_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1065,7 +1065,7 @@ namespace roboptim
 
   }
 
-  void BasisFunction::change_funf_parameter_in_x(boost::numeric::ublas::vector<bool> &x_in_out, int i, bool funf_i_in)
+  void BasisFunction::change_funf_parameter_in_x(ublas::vector<bool> &x_in_out, int i, bool funf_i_in)
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, change_qf_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1074,7 +1074,7 @@ namespace roboptim
     x_in_out[(nb_P-6+1)*nb_fun+i] = funf_i_in;
   }
 
-  void BasisFunction::change_T_parameter_in_x(boost::numeric::ublas::vector<bool> &x_in_out, bool T_in)
+  void BasisFunction::change_T_parameter_in_x(ublas::vector<bool> &x_in_out, bool T_in)
   {
     if (grad_of_time) {
       x_in_out[nb_grad_uncomp-1] = T_in;
@@ -1085,7 +1085,7 @@ namespace roboptim
   }
 
 
-  double BasisFunction::get_P_parameter_in_x(const boost::numeric::ublas::vector<double> &x_in, int i, int j) const
+  double BasisFunction::get_P_parameter_in_x(const ublas::vector<double> &x_in, int i, int j) const
   {
     if (i > nb_fun-1) {
       std::cout << "error in BasisFunction, i is more than nb_fun" << std::endl;
@@ -1105,7 +1105,7 @@ namespace roboptim
 
   }
 
-  double BasisFunction::get_fun0_parameter_in_x(const boost::numeric::ublas::vector<double> &x_in, int i) const
+  double BasisFunction::get_fun0_parameter_in_x(const ublas::vector<double> &x_in, int i) const
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, get_qi_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1115,7 +1115,7 @@ namespace roboptim
 
   }
 
-  double BasisFunction::get_funf_parameter_in_x(const boost::numeric::ublas::vector<double> &x_in, int i) const
+  double BasisFunction::get_funf_parameter_in_x(const ublas::vector<double> &x_in, int i) const
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, get_qf_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1125,7 +1125,7 @@ namespace roboptim
 
   }
 
-  double BasisFunction::get_T_parameter_in_x(const boost::numeric::ublas::vector<double> &x_in) const
+  double BasisFunction::get_T_parameter_in_x(const ublas::vector<double> &x_in) const
   {
     if (grad_of_time) {
       return x_in[nb_grad_uncomp-1]/T_scale;
@@ -1137,7 +1137,7 @@ namespace roboptim
   }
 
 
-  bool BasisFunction::get_P_parameter_in_x(const boost::numeric::ublas::vector<bool> &x_in, int i, int j) const
+  bool BasisFunction::get_P_parameter_in_x(const ublas::vector<bool> &x_in, int i, int j) const
   {
     if (i > nb_fun-1) {
       std::cout << "error in BasisFunction, i is more than nb_fun" << std::endl;
@@ -1157,7 +1157,7 @@ namespace roboptim
 
   }
 
-  bool BasisFunction::get_fun0_parameter_in_x(const boost::numeric::ublas::vector<bool> &x_in, int i) const
+  bool BasisFunction::get_fun0_parameter_in_x(const ublas::vector<bool> &x_in, int i) const
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, get_qi_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1167,7 +1167,7 @@ namespace roboptim
 
   }
 
-  bool BasisFunction::get_funf_parameter_in_x(const boost::numeric::ublas::vector<bool> &x_in, int i) const
+  bool BasisFunction::get_funf_parameter_in_x(const ublas::vector<bool> &x_in, int i) const
   {
     if (!defined_lc || (defined_lc && !free_fun_lc)) {
       std::cout << "error in BasisFunction, get_qf_parameter_in_x has been called while qi not defined or not free" << std::endl;
@@ -1177,7 +1177,7 @@ namespace roboptim
 
   }
 
-  bool BasisFunction::get_T_parameter_in_x(const boost::numeric::ublas::vector<bool> &x_in) const
+  bool BasisFunction::get_T_parameter_in_x(const ublas::vector<bool> &x_in) const
   {
     if (grad_of_time) {
       return x_in[nb_grad_uncomp-1];
@@ -1189,7 +1189,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::unscale_parameters(boost::numeric::ublas::matrix<double> *P, double &T)
+  void BasisFunction::unscale_parameters(ublas::matrix<double> *P, double &T)
   {
     if (defined_lc && free_fun_lc) {
       std::cout << "error in robot_motion::unscale_parameters, the other unscale_parameters function should be used" << std::endl;
@@ -1215,9 +1215,9 @@ namespace roboptim
   }
 
 
-  void BasisFunction::unscale_parameters(boost::numeric::ublas::matrix<double> *P,
-                                         boost::numeric::ublas::vector<double> &fun0,
-                                         boost::numeric::ublas::vector<double> &funf, double &T)
+  void BasisFunction::unscale_parameters(ublas::matrix<double> *P,
+                                         ublas::vector<double> &fun0,
+                                         ublas::vector<double> &funf, double &T)
   {
     if ((defined_lc && !free_fun_lc) || !defined_lc) {
       std::cout << "error in robot_motion::unscale_parameters, the other unscale_parameters function should be used" << std::endl;
@@ -1239,7 +1239,7 @@ namespace roboptim
   }
 
 
-  void BasisFunction::scale_parameters(boost::numeric::ublas::matrix<double> *P, double &T)
+  void BasisFunction::scale_parameters(ublas::matrix<double> *P, double &T)
   {
     if (defined_lc && free_fun_lc) {
       std::cout << "error in robot_motion::scale_parameters, the other scale_parameters function should be used" << std::endl;
@@ -1264,9 +1264,9 @@ namespace roboptim
   }
 
 
-  void BasisFunction::scale_parameters(boost::numeric::ublas::matrix<double> *P,
-                                       boost::numeric::ublas::vector<double> &fun0,
-                                       boost::numeric::ublas::vector<double> &funf, double &T)
+  void BasisFunction::scale_parameters(ublas::matrix<double> *P,
+                                       ublas::vector<double> &fun0,
+                                       ublas::vector<double> &funf, double &T)
   {
     if ((defined_lc && !free_fun_lc) || !defined_lc) {
       std::cout << "error in robot_motion::scale_parameters, the other scale_parameters function should be used" << std::endl;
@@ -1566,7 +1566,7 @@ namespace roboptim
     return nb_grad_uncomp;
   }
 
-  void BasisFunction::get_rank_grad_fun2comp(boost::numeric::ublas::matrix<int> &rank_grad_fun2comp_in)
+  void BasisFunction::get_rank_grad_fun2comp(ublas::matrix<int> &rank_grad_fun2comp_in)
   {
     if (nb_fun!=rank_grad_fun2comp_in.size1()) {
       std::cout << "error in BasisFunction::get_rank_grad_fun2comp, rank_grad_fun2comp_in does not have nb_fun rows" << std::endl;
@@ -1586,10 +1586,10 @@ namespace roboptim
   }
 
 
-  void BasisFunction::joint2grad_dep(boost::numeric::ublas::vector<int> &nb_fun_dep_in,
-                                     boost::numeric::ublas::matrix<int> &fun_dep_in,
-                                     boost::numeric::ublas::vector<int> &nb_grad_dep_out,
-                                     boost::numeric::ublas::matrix<int> &grad_dep_out)
+  void BasisFunction::joint2grad_dep(ublas::vector<int> &nb_fun_dep_in,
+                                     ublas::matrix<int> &fun_dep_in,
+                                     ublas::vector<int> &nb_grad_dep_out,
+                                     ublas::matrix<int> &grad_dep_out)
   {
     int nb_rows = (int)nb_fun_dep_in.size();
 
@@ -1629,7 +1629,7 @@ namespace roboptim
     return grad_of_time;
   }
 
-  void BasisFunction::calc_N(boost::numeric::ublas::vector<double> *all_t, int nb_t) //compute the vector N
+  void BasisFunction::calc_N(ublas::vector<double> *all_t, int nb_t) //compute the vector N
   {
     int i=0, j=0;
 
@@ -1676,9 +1676,9 @@ namespace roboptim
     return j-1;
   }
 
-  void BasisFunction::comp_dt(boost::numeric::ublas::vector<double> &t,
-                              boost::numeric::ublas::matrix<double> &data,
-                              boost::numeric::ublas::matrix<double> &data_dt, int nb_t)
+  void BasisFunction::comp_dt(ublas::vector<double> &t,
+                              ublas::matrix<double> &data,
+                              ublas::matrix<double> &data_dt, int nb_t)
   {
     if (nb_t> (int) data.size2()) {
       std::cout << "error in robot_motion::comp_dt, data has less columns than nb_t" << std::endl;
@@ -1691,7 +1691,7 @@ namespace roboptim
     }
 
     int i,j;
-    boost::numeric::ublas::matrix<double> data_dt_cd(data.size1(),nb_t); //data_dt obtained by central difference
+    ublas::matrix<double> data_dt_cd(data.size1(),nb_t); //data_dt obtained by central difference
     double err_abs, err_rel, err;
     double max_err;
     int i_max_err, j_max_err;

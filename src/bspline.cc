@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Sylvain Miossec, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -96,7 +96,7 @@ namespace roboptim
   }
 
 
-  void BSpline::calc_fun(boost::numeric::ublas::vector<double> *all_t, boost::numeric::ublas::matrix<double> *fun, int nb_t)
+  void BSpline::calc_fun(ublas::vector<double> *all_t, ublas::matrix<double> *fun, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -210,7 +210,7 @@ namespace roboptim
   }
 
 
-  void BSpline::calc_fun(double t, boost::numeric::ublas::vector<double> *fun)
+  void BSpline::calc_fun(double t, ublas::vector<double> *fun)
   {
 
     if (nb_fun!=(*fun).size()) {
@@ -315,9 +315,9 @@ namespace roboptim
   }
 
 
-  void BSpline::calc_fun_grad(boost::numeric::ublas::vector<double> *all_t,
-                              boost::numeric::ublas::matrix<double> *fun,
-                              boost::numeric::ublas::matrix< boost::numeric::ublas::vector<double> > *fun_grad, int nb_t)
+  void BSpline::calc_fun_grad(ublas::vector<double> *all_t,
+                              ublas::matrix<double> *fun,
+                              ublas::matrix< ublas::vector<double> > *fun_grad, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -632,7 +632,7 @@ namespace roboptim
   }
 
 
-  void BSpline::calc_dfun(boost::numeric::ublas::vector<double> *all_t, boost::numeric::ublas::matrix<double> *dfun, int nb_t)
+  void BSpline::calc_dfun(ublas::vector<double> *all_t, ublas::matrix<double> *dfun, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -733,7 +733,7 @@ namespace roboptim
       }
   }
 
-  void BSpline::calc_dfun(double t, boost::numeric::ublas::vector<double> *dfun)
+  void BSpline::calc_dfun(double t, ublas::vector<double> *dfun)
   {
 
     if (nb_fun!=(*dfun).size()) {
@@ -827,9 +827,9 @@ namespace roboptim
 
   }
 
-  void BSpline::calc_dfun_grad(boost::numeric::ublas::vector<double> *all_t,
-                               boost::numeric::ublas::matrix<double> *dfun,
-                               boost::numeric::ublas::matrix< boost::numeric::ublas::vector<double> > *dfun_grad, int nb_t)
+  void BSpline::calc_dfun_grad(ublas::vector<double> *all_t,
+                               ublas::matrix<double> *dfun,
+                               ublas::matrix< ublas::vector<double> > *dfun_grad, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -1133,7 +1133,7 @@ namespace roboptim
     return - t + 1.;
   }
 
-  void BSpline::calc_ddfun(boost::numeric::ublas::vector<double> *all_t, boost::numeric::ublas::matrix<double> *ddfun, int nb_t)
+  void BSpline::calc_ddfun(ublas::vector<double> *all_t, ublas::matrix<double> *ddfun, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -1225,7 +1225,7 @@ namespace roboptim
       }
   }
 
-  void BSpline::calc_ddfun(double t, boost::numeric::ublas::vector<double> *ddfun)
+  void BSpline::calc_ddfun(double t, ublas::vector<double> *ddfun)
   {
 
     if (nb_fun!=(*ddfun).size()) {
@@ -1310,9 +1310,9 @@ namespace roboptim
 
   }
 
-  void BSpline::calc_ddfun_grad(boost::numeric::ublas::vector<double> *all_t,
-                                boost::numeric::ublas::matrix<double> *ddfun,
-                                boost::numeric::ublas::matrix< boost::numeric::ublas::vector<double> > *ddfun_grad, int nb_t)
+  void BSpline::calc_ddfun_grad(ublas::vector<double> *all_t,
+                                ublas::matrix<double> *ddfun,
+                                ublas::matrix< ublas::vector<double> > *ddfun_grad, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -1559,10 +1559,10 @@ namespace roboptim
 
 
   // give the position of the nonzero elements
-  void BSpline::get_rank_nz_uncomp(boost::numeric::ublas::vector<int> &time_points_in,
-                                   boost::numeric::ublas::vector<int> &funorcomp_type_in,
-                                   boost::numeric::ublas::vector<int> &nb_nz_per_row_out,
-                                   boost::numeric::ublas::matrix<int> &rank_grad_nz_out, int nb_t)
+  void BSpline::get_rank_nz_uncomp(ublas::vector<int> &time_points_in,
+                                   ublas::vector<int> &funorcomp_type_in,
+                                   ublas::vector<int> &nb_nz_per_row_out,
+                                   ublas::matrix<int> &rank_grad_nz_out, int nb_t)
   {
     if (time_points_in.size()!=rank_grad_nz_out.size1()) {
       std::cout << "error in basis_function::get_rank_grad_u2uncomp, rank_grad_u2uncomp_in does not have as much rows as time_points_in" << std::endl;
@@ -1576,7 +1576,7 @@ namespace roboptim
 
     int i,kk;
 
-    boost::numeric::ublas::vector<int> intervalles(time_points_in.size());
+    ublas::vector<int> intervalles(time_points_in.size());
     for (i=0; i<(int) (time_points_in.size()); i++) {
       if (time_points_in(i)==0) {
         intervalles(i) = 0;
@@ -2001,9 +2001,9 @@ namespace roboptim
   //convert the gradient with respect to all splines coefficients to the considered parameters
   // and put all non zero values to the left
   // and perform the scaling
-  void BSpline::grad_comp2sparse(boost::numeric::ublas::vector<int> &time_points_in,
-                                 boost::numeric::ublas::vector<int> &funorcomp_type_in,
-                                 boost::numeric::ublas::matrix<double> &data_grad, int nb_t)
+  void BSpline::grad_comp2sparse(ublas::vector<int> &time_points_in,
+                                 ublas::vector<int> &funorcomp_type_in,
+                                 ublas::matrix<double> &data_grad, int nb_t)
   {
     if (time_points_in.size()!=data_grad.size1()) {
       std::cout << "error in BSpline::grad_comp2sparse, data_grad does not have as much rows as there is time_points_in" << std::endl;
@@ -2014,7 +2014,7 @@ namespace roboptim
 
     int i,kk;
 
-    boost::numeric::ublas::vector<int> intervalles(time_points_in.size());
+    ublas::vector<int> intervalles(time_points_in.size());
     for (i=0; i<(int) time_points_in.size(); i++) {
       if (time_points_in(i)==0) {
         intervalles(i) = 0;
@@ -2363,9 +2363,9 @@ namespace roboptim
   }
 
 
-  void BSpline::uncompress_grad(boost::numeric::ublas::vector<double> *all_t,
-                                boost::numeric::ublas::matrix< boost::numeric::ublas::vector<double> > *data_grad_comp,
-                                boost::numeric::ublas::matrix< boost::numeric::ublas::vector<double> > *data_grad_uncomp, int nb_t)
+  void BSpline::uncompress_grad(ublas::vector<double> *all_t,
+                                ublas::matrix< ublas::vector<double> > *data_grad_comp,
+                                ublas::matrix< ublas::vector<double> > *data_grad_uncomp, int nb_t)
   {
     using namespace boost::numeric::ublas;
 
@@ -3178,10 +3178,10 @@ namespace roboptim
   }
 
 
-  void BSpline::uncompress_grad_int(boost::numeric::ublas::vector<double> *all_t,
-                                    boost::numeric::ublas::vector<double> *data,
-                                    boost::numeric::ublas::matrix<double> *data_grad_comp,
-                                    boost::numeric::ublas::vector<double> *data_grad_uncomp, int nb_t, double Tfinal)
+  void BSpline::uncompress_grad_int(ublas::vector<double> *all_t,
+                                    ublas::vector<double> *data,
+                                    ublas::matrix<double> *data_grad_comp,
+                                    ublas::vector<double> *data_grad_uncomp, int nb_t, double Tfinal)
   {
     using namespace boost::numeric::ublas;
 
@@ -3642,7 +3642,7 @@ namespace roboptim
   }
 
 
-  void BSpline::solve_P_0(const boost::numeric::ublas::vector<double> &fun0)
+  void BSpline::solve_P_0(const ublas::vector<double> &fun0)
   {
     calc_P_fun_0();
 
@@ -3654,7 +3654,7 @@ namespace roboptim
 
   }
 
-  void BSpline::solve_P_f(const boost::numeric::ublas::vector<double> &funf)
+  void BSpline::solve_P_f(const ublas::vector<double> &funf)
   {
     calc_P_fun_f();
 
