@@ -24,6 +24,7 @@
 
 namespace roboptim
 {
+  class Trajectory;
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FWD_HH

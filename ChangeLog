@@ -1,3 +1,20 @@
+2009-04-22  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add Trajectory class and updated spline implementation.
+	* include/Makefile.am: Add new headers.
+	* include/roboptim-trajectory/basis-function.hh: Remove.
+	* include/roboptim-trajectory/bspline.hh: Remove.
+	* include/roboptim-trajectory/fwd.hh: Predeclare trajectory.
+	* include/roboptim-trajectory/trajectory.hh: New.
+	* src/Makefile.am: Compile spline implementation.
+	* src/basis-function.cc: Remove.
+	* src/bspline.cc: Remove.
+	* src/spline/basis_function.cpp: New.
+	* src/spline/basis_function.h: New.
+	* src/spline/bspline.cpp: New.
+	* src/spline/bspline.h: New.
+	* src/trajectory.cc: New.
+
 2009-04-20  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Clean code.
