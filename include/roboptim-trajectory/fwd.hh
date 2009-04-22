@@ -24,7 +24,10 @@
 
 namespace roboptim
 {
+  template <unsigned dorder>
   class Trajectory;
+
+  class Spline;
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FWD_HH

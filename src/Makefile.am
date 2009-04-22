@@ -7,7 +7,7 @@ lib_LTLIBRARIES = libroboptim-trajectory.la
 
 libroboptim_trajectory_la_SOURCES = 	\
 	doc.hh				\
-	trajectory.cc
+	spline.cc
 
 libroboptim_trajectory_la_SOURCES += 	\
 	spline/basis_function.cpp	\

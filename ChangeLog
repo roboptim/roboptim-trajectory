@@ -1,5 +1,17 @@
 2009-04-22  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add Spline class, fix Trajectory class.
+	* include/Makefile.am: Include new headers.
+	* include/roboptim-trajectory/fwd.hh: Fix Trajectory pre-declaration.
+	* include/roboptim-trajectory/spline.hh: New.
+	* include/roboptim-trajectory/trajectory.hh: Add a derivability order
+	as a template parameter.
+	* include/roboptim-trajectory/trajectory.hxx: Rename from src/trajectory.cc.
+	* src/Makefile.am: Remove trajectory.cc from source files, add spline.cc.
+	* src/spline.cc: New.
+
+2009-04-22  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add Trajectory class and updated spline implementation.
 	* include/Makefile.am: Add new headers.
 	* include/roboptim-trajectory/basis-function.hh: Remove.

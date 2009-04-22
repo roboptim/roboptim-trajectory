@@ -19,49 +19,47 @@
  * \brief Class Trajectory implementation.
  */
 
-#include "roboptim-trajectory/trajectory.hh"
+#ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX
+# define ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX
 
 namespace roboptim
 {
-  Trajectory::Trajectory (size_type derivo, size_type m) throw ()
-    : TwiceDerivableFunction (1, m),
-      derivabilityOrder_ (derivo),
-      parameters_ (),
+  template <unsigned dorder>
+  Trajectory<dorder>::Trajectory (size_type m, const vector_t& p) throw ()
+    : parent_t (m),
+      parameters_ (p),
       singularPoints_ ()
   {
   }
 
 
-  Trajectory::~Trajectory () throw ()
+  template <unsigned dorder>
+  Trajectory<dorder>::~Trajectory () throw ()
   {
   }
 
 
-  Trajectory::vector_t&
-  Trajectory::parameters () throw ()
+  template <unsigned dorder>
+  typename Trajectory<dorder>::vector_t&
+  Trajectory<dorder>::parameters () throw ()
   {
     return parameters_;
   }
 
 
-  const Trajectory::vector_t&
-  Trajectory::parameters () const throw ()
+  template <unsigned dorder>
+  const typename Trajectory<dorder>::vector_t&
+  Trajectory<dorder>::parameters () const throw ()
   {
     return parameters_;
   }
 
 
-  Trajectory::size_type
-  Trajectory::derivabilityOrder () const throw ()
+  template <unsigned dorder>
+  typename Trajectory<dorder>::vector_t
+  Trajectory<dorder>::state (double t, size_type order) const throw ()
   {
-    return derivabilityOrder_;
-  }
-
-
-  Trajectory::vector_t
-  Trajectory::state (double t, size_type order) const throw ()
-  {
-    size_type dimension = m;
+    size_type dimension = this->m;
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)
@@ -73,10 +71,13 @@ namespace roboptim
     return result;
   }
 
-  Trajectory::jacobian_t
-  Trajectory::variationStateWrtParam (double t, size_type order) const throw ()
+
+  template <unsigned dorder>
+  typename Trajectory<dorder>::jacobian_t
+  Trajectory<dorder>::variationStateWrtParam (double t, size_type order)
+    const throw ()
   {
-    size_type dimension = m;
+    size_type dimension = this->m;
     size_type parameterSize = parameters ().size ();
     jacobian_t result ((dimension + 1) * order, parameterSize);
 
@@ -90,10 +91,14 @@ namespace roboptim
     return result;
   }
 
-  Trajectory::size_type
-  Trajectory::singularPoints () const throw ()
+
+  template <unsigned dorder>
+  typename Trajectory<dorder>::size_type
+  Trajectory<dorder>::singularPoints () const throw ()
   {
     return singularPoints_;
   }
 
 } // end of namespace roboptim.
+
+#endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX

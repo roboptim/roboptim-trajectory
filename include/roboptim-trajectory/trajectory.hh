@@ -21,14 +21,11 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
-# include <roboptim-core/twice-derivable-function.hh>
-
 # include <roboptim-trajectory/fwd.hh>
+# include <roboptim-core/n-times-derivable-function.hh>
 
 namespace roboptim
 {
-  namespace ublas = boost::numeric::ublas;
-
   /**
      \brief Abstract trajectory
      A trajectory is a piecewise smooth mapping \f$\Gamma\f$ from
@@ -46,33 +43,26 @@ namespace roboptim
      </li>
      </ul>
   */
-  class Trajectory : public TwiceDerivableFunction
+  template <unsigned DerivabilityOrder>
+  class Trajectory : public NTimesDerivableFunction<DerivabilityOrder>
   {
   public:
-    Trajectory (size_type, size_type) throw ();
+    typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
+    
+    typedef typename parent_t::value_type value_type;
+    typedef typename parent_t::size_type size_type;
+    typedef typename parent_t::vector_t vector_t;
+    typedef typename parent_t::jacobian_t jacobian_t;
+
+
+    Trajectory (size_type, const vector_t&) throw ();
     virtual ~Trajectory () throw ();
 
-    /// \name Accessing parameters, and derivatives.
+    /// \name Accessing parameters, and state.
     /// \{
     vector_t& parameters () throw ();
     const vector_t& parameters () const throw ();
 
-    // FIXME: should be in core.
-    /// \brief Order of derivability of trajectory.
-    /// \return the order of derivability of the trajectory over
-    /// \f$[t_{min},t_{max}]\f$.
-    size_type derivabilityOrder () const throw ();
-
-    // FIXME: should be in core.
-    /// \brief Get derivative along the trajectory.
-    /// \param t value \f$t\f$ in the definition interval.
-    /// \param order order \f$r\f$ of the derivative.
-    /// \return Derivative of the trajectory at given parameter
-    /// value: \f[\frac{d^r\Gamma_{\textbf{p}}}{dt^r}(t)\f].
-    virtual vector_t derivative (double t, size_type order = 1) const
-      throw () = 0;
-
-    // FIXME: should be in core.
     /// \brief Get state along trajectory
     ///
     /// \param t value \f$t\f$ in the definition interval.
@@ -153,12 +143,10 @@ namespace roboptim
     /// \}
 
   private:
-    size_type derivabilityOrder_;
     vector_t parameters_;
     size_type singularPoints_;
   };
-}
+} // end of namespace roboptim.
 
+# include <roboptim-trajectory/trajectory.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
-
-//  LocalWords:  concatened
