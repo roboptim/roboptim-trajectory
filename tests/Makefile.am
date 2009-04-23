@@ -18,6 +18,11 @@ check_PROGRAMS = simple
 simple_SOURCES = simple.cc $(COMMON_SOURCES)
 simple_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# spline
+check_PROGRAMS += spline
+spline_SOURCES = spline.cc $(COMMON_SOURCES)
+spline_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
 
 .PHONY: generate-reference
 
@@ -41,4 +46,5 @@ generate-reference:
 
 # Distribute reference files.
 EXTRA_DIST +=					\
-	simple.stdout
+	simple.stdout				\
+	spline.stdout

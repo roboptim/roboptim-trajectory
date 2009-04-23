@@ -35,6 +35,8 @@ namespace roboptim
     Spline (size_type, const vector_t&) throw ();
     virtual ~Spline () throw ();
 
+    virtual vector_t operator () (double) const throw ();
+
     virtual vector_t derivative (double x, size_type order) const throw ();
 
     virtual jacobian_t variationConfigWrtParam (double t) const throw ();

@@ -48,7 +48,7 @@ namespace roboptim
   {
   public:
     typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
-    
+
     typedef typename parent_t::value_type value_type;
     typedef typename parent_t::size_type size_type;
     typedef typename parent_t::vector_t vector_t;
@@ -100,16 +100,18 @@ namespace roboptim
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
       const throw () = 0;
 
-    /// \brief Get the variation of the state with respect to parameter vector
-    ///
-    /// \param t value \f$t\f$ in the definition interval.
-    /// \param order order \f$r\f$ of the derivative.
-    /// \return Jacobian:
-    /// \f[\left(\begin{array}{c}\frac{\partial}{\partial \lambda}
-    /// \Gamma_{\textbf{p}}(t)\                   \
-    /// \vdots \                                                          \
-    /// \frac{\partial}{\partial \lambda}\frac{d\Gamma_{\textbf{p}}^r}{dt^r}(t)
-    ///\end{array}\right)\f]
+    /**
+       \brief Get the variation of the state with respect to parameter vector
+
+       \param t value \f$t\f$ in the definition interval.
+       \param order order \f$r\f$ of the derivative.
+       \return Jacobian:
+       \f[\left(\begin{array}{c}\frac{\partial}{\partial \lambda}
+       \Gamma_{\textbf{p}}(t) \						\
+       \vdots \								\
+       \frac{\partial}{\partial \lambda}\frac{d\Gamma_{\textbf{p}}^r}{dt^r}(t)
+       \end{array}\right)\f]
+    */
     jacobian_t variationStateWrtParam (double t, size_type order) const throw ();
 
     /// \}

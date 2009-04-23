@@ -1,3 +1,14 @@
+2009-04-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add missing operator() method in Spline class.
+	* include/roboptim-trajectory/spline.hh: Add missing operator ().
+	* include/roboptim-trajectory/trajectory.hh: Fix Doxygen comment.
+	* src/spline.cc: Add dummy implementation of operator ().
+	* tests/Makefile.am: Add spline test.
+	* tests/spline.cc: New.
+	* tests/spline.stdout: New.
+	* tests/testsuite.at: Check spline class in test suite.
+
 2009-04-22  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Add Spline class, fix Trajectory class.

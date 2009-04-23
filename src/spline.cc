@@ -35,6 +35,14 @@ namespace roboptim
   }
 
   Spline::vector_t
+  Spline::operator () (double) const throw ()
+  {
+    vector_t res (42);
+    res.clear ();
+    return res;
+  }
+
+  Spline::vector_t
   Spline::derivative (double x, size_type order) const throw ()
   {
     vector_t res (42);

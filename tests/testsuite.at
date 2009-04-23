@@ -29,5 +29,6 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.])
 
 AT_BANNER([Shared tests])
 CHECK_STDOUT([simple], [Check basic features.])
+CHECK_STDOUT([spline], [Check Spline class.])
 
 # End of testsuite.at
