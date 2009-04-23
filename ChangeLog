@@ -1,5 +1,12 @@
 2009-04-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Imtegrate BSpline.
+	* include/roboptim-trajectory/spline.hh: Fix constructor.
+	* src/spline.cc: Integrate spline class.
+	* tests/spline.cc: Fix constructor call.
+
+2009-04-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement Split class constructor.
 	* include/roboptim-trajectory/spline.hh: Add new parameters.
 	* include/roboptim-trajectory/trajectory.hh: Make attributes protected.
