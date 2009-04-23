@@ -1,5 +1,13 @@
 2009-04-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Implement Split class constructor.
+	* include/roboptim-trajectory/spline.hh: Add new parameters.
+	* include/roboptim-trajectory/trajectory.hh: Make attributes protected.
+	* src/spline.cc: Fix constructor.
+	* tests/spline.cc: Fix tests.
+
+2009-04-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add missing operator() method in Spline class.
 	* include/roboptim-trajectory/spline.hh: Add missing operator ().
 	* include/roboptim-trajectory/trajectory.hh: Fix Doxygen comment.

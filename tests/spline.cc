@@ -25,7 +25,7 @@ using namespace roboptim;
 int run_test ()
 {
   Spline::vector_t params (42);
-  Spline spline (12, params);
+  Spline spline (12, params, 1, 2, 3);
   return 0;
 }
 

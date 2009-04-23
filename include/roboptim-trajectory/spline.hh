@@ -32,7 +32,7 @@ namespace roboptim
   class Spline : public Trajectory<4>
   {
   public:
-    Spline (size_type, const vector_t&) throw ();
+    Spline (size_type, const vector_t&, int, int, int) throw ();
     virtual ~Spline () throw ();
 
     virtual vector_t operator () (double) const throw ();

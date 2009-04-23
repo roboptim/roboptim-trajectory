@@ -144,7 +144,7 @@ namespace roboptim
       const = 0;
     /// \}
 
-  private:
+  protected:
     vector_t parameters_;
     size_type singularPoints_;
   };

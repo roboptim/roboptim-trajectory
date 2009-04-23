@@ -25,19 +25,29 @@
 
 namespace roboptim
 {
-  Spline::Spline (size_type m, const vector_t& p) throw ()
-    : Trajectory<4> (m, p)
+  //FIXME: defined_lc_in has to be true (false untested).
+  Spline::Spline (size_type m, const vector_t& p,
+		  int nbFun, int nbP, int nbT) throw ()
+    : Trajectory<4> (m, p),
+      spline_ ()
   {
+    //FIXME: check params here.
+    spline_ = new bspline (nbFun, nbP, nbT, true, true, true);
+
+    boost::numeric::ublas::matrix<double>* ptr = 0;
+    spline_->def_parameters(ptr, 0.);
   }
 
   Spline::~Spline () throw ()
   {
+    delete spline_;
   }
 
   Spline::vector_t
-  Spline::operator () (double) const throw ()
+  Spline::operator () (double t) const throw ()
   {
-    vector_t res (42);
+    vector_t res (m);
+    spline_->calc_fun (t, &res);
     res.clear ();
     return res;
   }
@@ -45,14 +55,14 @@ namespace roboptim
   Spline::vector_t
   Spline::derivative (double x, size_type order) const throw ()
   {
-    vector_t res (42);
+    vector_t res (m);
     return res;
   }
 
   Spline::jacobian_t
   Spline::variationConfigWrtParam (double t) const throw ()
   {
-    jacobian_t jac (42, 42);
+    jacobian_t jac (m, m);
     return jac;
   }
 
@@ -60,7 +70,7 @@ namespace roboptim
   Spline::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
-    jacobian_t jac (42, 42);
+    jacobian_t jac (m, m);
     return jac;
   }
 
@@ -83,4 +93,5 @@ namespace roboptim
     vector_t res (42);
     return res;
   }
+
 } // end of namespace roboptim.
