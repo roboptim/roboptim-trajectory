@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Florent Lamiraux, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -25,11 +25,15 @@
 namespace roboptim
 {
   template <unsigned dorder>
-  Trajectory<dorder>::Trajectory (size_type m, const vector_t& p) throw ()
+  Trajectory<dorder>::Trajectory (bound_t tr, size_type m, const vector_t& p)
+    throw ()
     : parent_t (m),
+      timeRange_ (tr),
       parameters_ (p),
       singularPoints_ ()
   {
+    //FIXME: can a trajectory be a single point?
+    assert (tr.first <= tr.second);
   }
 
 
@@ -52,6 +56,20 @@ namespace roboptim
   Trajectory<dorder>::parameters () const throw ()
   {
     return parameters_;
+  }
+
+  template <unsigned dorder>
+  typename Trajectory<dorder>::bound_t
+  Trajectory<dorder>::timeRange () const throw ()
+  {
+    return timeRange_;
+  }
+
+  template <unsigned dorder>
+  typename Trajectory<dorder>::value_type
+  Trajectory<dorder>::length () const throw ()
+  {
+    return timeRange ().second - timeRange ().first;
   }
 
 
@@ -99,6 +117,13 @@ namespace roboptim
     return singularPoints_;
   }
 
+  template <unsigned dorder>
+  std::ostream&
+  Trajectory<dorder>::print (std::ostream& o) const throw ()
+  {
+    o << "Generic (abstract) trajectory." << std::endl;
+    return o;
+  }
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX

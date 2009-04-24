@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Florent Lamiraux, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -15,25 +15,20 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * \brief Class Spline declaration.
- */
-
-#ifndef ROBOPTIM_TRAJECTORY_SPLINE_HH
-# define ROBOPTIM_TRAJECTORY_SPLINE_HH
+#ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
+# define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # include <roboptim-trajectory/trajectory.hh>
-
-# include <roboptim-trajectory/fwd.hh>
-
-class bspline;
 
 namespace roboptim
 {
-  class Spline : public Trajectory<4>
+  template <unsigned DerivabilityOrder>
+  class FreeTimeTrajectory : public Trajectory<DerivabilityOrder>
   {
   public:
-    Spline (bound_t, size_type, const vector_t&, int) throw ();
-    virtual ~Spline () throw ();
+    /// \brief Constructor with fixed definition interval trajectory
+    /// \param traj Trajectory defining this one by reparameterization
+    FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, double) throw ();
+    virtual ~FreeTimeTrajectory () throw ();
 
     virtual vector_t operator () (double) const throw ();
 
@@ -48,11 +43,19 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
+    /// \brief Get index of time scaling parameter in vector
+    double timeScale () const throw ();
+
     virtual std::ostream& print (std::ostream&) const throw ();
   private:
-    int nbp_;
-    bspline* spline_;
+    double scaleTime (double) const throw ();
+
+    /// \brief Fixed time trajectory
+    const Trajectory<DerivabilityOrder>& trajectory_;
+    /// \brief Store time scaling parameter \f$\textbf{p}_{m+1}\f$.
+    double timeScale_;
   };
 } // end of namespace roboptim.
 
-#endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
+# include <roboptim-trajectory/free-time-trajectory.hxx>
+#endif //! ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH

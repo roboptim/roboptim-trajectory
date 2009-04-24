@@ -20,6 +20,7 @@
  * \brief Class Spline implementation.
  */
 
+#include <roboptim-core/indent.hh>
 #include <roboptim-trajectory/spline.hh>
 
 #include <spline/bspline.h>
@@ -27,8 +28,8 @@
 namespace roboptim
 {
   //FIXME: defined_lc_in has to be true (false untested).
-  Spline::Spline (size_type m, const vector_t& p, int nbP) throw ()
-    : Trajectory<4> (m, p),
+  Spline::Spline (bound_t tr, size_type m, const vector_t& p, int nbP) throw ()
+    : Trajectory<4> (tr, m, p),
       spline_ (),
       nbp_ (nbP)
   {
@@ -37,16 +38,16 @@ namespace roboptim
 
     vector_t pos_init (m);
     vector_t final_pos (m);
-    double duree_mvt; //FIXME
+    double l = length ();
     matrix_t mp (m, nbP - 2);
 
     spline_->convert_parameters_x2P (&parameters_[0],
 				     &mp,
 				     pos_init,
 				     final_pos,
-				     duree_mvt);
+				     l);
 
-    spline_->def_parameters(&mp, pos_init, final_pos, duree_mvt);
+    spline_->def_parameters(&mp, pos_init, final_pos, l);
   }
 
   Spline::~Spline () throw ()
@@ -163,8 +164,7 @@ namespace roboptim
   Spline::value_type
   Spline::singularPointAtRank (size_type rank) const
   {
-    double duree_mvt; //FIXME
-    return rank * duree_mvt / spline_->get_Nint ();
+    return rank * length () / spline_->get_Nint ();
   }
 
   Spline::vector_t
@@ -179,4 +179,11 @@ namespace roboptim
     return derivative (singularPointAtRank (rank), order);
   }
 
+  std::ostream&
+  Spline::print (std::ostream& o) const throw ()
+  {
+    o << "Spline" << incindent << std::endl
+      << "Number of discretization points: " << nbp_ << decindent;
+    return o;
+  }
 } // end of namespace roboptim.

@@ -1,3 +1,18 @@
+2009-04-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Import FreeTimeTrajectory class.
+	* include/Makefile.am: Distribute new headers.
+	* include/roboptim-trajectory/free-time-trajectory.hh:
+	Copy from include/roboptim-trajectory/spline.hh.
+	* include/roboptim-trajectory/free-time-trajectory.hxx: New.
+	* include/roboptim-trajectory/spline.hh: Set time limits in constructor.
+	* include/roboptim-trajectory/trajectory.hh,
+	* include/roboptim-trajectory/trajectory.hxx:
+	Compute time limits/trajectory length.
+	* src/spline.cc: Use time limits in implementation.
+	* tests/spline.cc: Display number of discretization points.
+	* tests/spline.stdout: Update reference file.
+
 2009-04-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Imtegrate BSpline.

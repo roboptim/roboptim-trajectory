@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Florent Lamiraux, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -21,6 +21,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
+# include <utility>
+
 # include <roboptim-trajectory/fwd.hh>
 # include <roboptim-core/n-times-derivable-function.hh>
 
@@ -54,14 +56,20 @@ namespace roboptim
     typedef typename parent_t::vector_t vector_t;
     typedef typename parent_t::jacobian_t jacobian_t;
 
+    typedef std::pair<value_type, value_type> bound_t;
 
-    Trajectory (size_type, const vector_t&) throw ();
+
+    Trajectory (bound_t, size_type, const vector_t&) throw ();
     virtual ~Trajectory () throw ();
 
     /// \name Accessing parameters, and state.
     /// \{
+
     vector_t& parameters () throw ();
     const vector_t& parameters () const throw ();
+
+    bound_t timeRange () const throw ();
+    value_type length () const throw ();
 
     /// \brief Get state along trajectory
     ///
@@ -144,7 +152,9 @@ namespace roboptim
       const = 0;
     /// \}
 
+    virtual std::ostream& print (std::ostream&) const throw ();
   protected:
+    bound_t timeRange_;
     vector_t parameters_;
     size_type singularPoints_;
   };
