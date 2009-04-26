@@ -1,5 +1,10 @@
 2009-04-26  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix permissions on documentation before updating web site.
+	* doc/sf-upload.sh.in: Here.
+
+2009-04-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Import StateCost and TrajectoryCost.
 	* include/Makefile.am: Distribute and install new headers.
 	* include/roboptim-trajectory/state-cost.hh: New.
