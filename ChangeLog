@@ -1,3 +1,12 @@
+2009-04-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Import StateCost and TrajectoryCost.
+	* include/Makefile.am: Distribute and install new headers.
+	* include/roboptim-trajectory/state-cost.hh: New.
+	* include/roboptim-trajectory/state-cost.hxx: New.
+	* include/roboptim-trajectory/trajectory-cost.hh: New.
+	* include/roboptim-trajectory/trajectory-cost.hxx: New.
+
 2009-04-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Import FreeTimeTrajectory class.
