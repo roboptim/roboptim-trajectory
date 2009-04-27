@@ -8,6 +8,6 @@ docdir=@datarootdir@/doc/@PACKAGE_TARNAME@
 Name: @PACKAGE@
 Description:
 Version: @VERSION@
-Requires:
+Requires: @PACKAGE_REQD@
 Libs: -L${libdir} -lroboptim-trajectory
 Cflags: -I${includedir}

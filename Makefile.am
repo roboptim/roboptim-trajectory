@@ -27,6 +27,7 @@ edit = $(SED) -e "s|@prefix\@|$(prefix)|"			\
               -e 's,@datarootdir\@,$(datarootdir),g'		\
               -e 's,@PACKAGE\@,$(PACKAGE),g'			\
               -e 's,@PACKAGE_TARNAME\@,$(PACKAGE_TARNAME),g'	\
+              -e 's,@PACKAGE_REQD\@,$(PACKAGE_REQD),g'	\
               -e 's,@VERSION\@,$(PACKAGE_VERSION),g'
 
 @PACKAGE_TARNAME@.pc: $(srcdir)/build-aux/pkg-config.pc.in

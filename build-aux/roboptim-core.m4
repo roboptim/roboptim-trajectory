@@ -88,15 +88,15 @@ AC_DEFUN([ROBOPTIM_CORE_LIB_ARG_WITH],
   AS_IF([test "x$with_roboptim_core" != xno],
     [
       # Search for roboptim library.
-      LIB_OPTIMIZATION_LIB(, [roboptim_core_fail=yes])
+      ROBOPTIM_CORE_LIB(, [roboptim_core_fail=yes])
 
       # Search for roboptim headers.
-      LIB_OPTIMIZATION_HEADERS(, [roboptim_core_fail=yes])
+      ROBOPTIM_CORE_HEADERS(, [roboptim_core_fail=yes])
 
       # If both tests are OK, add the library and define the CPP symbol.
       AS_IF([test "x$roboptim_core_fail" = xno],
-	[AC_SUBST([LIB_OPTIMIZATION], ["-loptimization"])
-	 AC_DEFINE([HAVE_LIB_OPTIMIZATION], [1],
+	[AC_SUBST([ROBOPTIM_CORE], ["-loptimization"])
+	 AC_DEFINE([HAVE_ROBOPTIM_CORE], [1],
                    [Define if you have roboptim_core])])
 
       # If the support was explicitly required, but detection has failed,
@@ -109,7 +109,7 @@ AC_DEFUN([ROBOPTIM_CORE_LIB_ARG_WITH],
     ])
 
   # Define a boolean indicating whether or not the package has been found.
-  AM_CONDITIONAL([LIB_OPTIMIZATION],
+  AM_CONDITIONAL([ROBOPTIM_CORE],
                  [test "x$with_roboptim_core" != xno && \
 		  test "x$roboptim_core_fail" != xyes])
 ]) # ROBOPTIM_CORE_LIB_ARG_WITH

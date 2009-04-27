@@ -1,3 +1,14 @@
+2009-04-27  Florent Lamiraux  <florent@laas.fr>
+
+	If roboptim-core is not found, trigger pkg-config.
+	* build-aux/roboptim-core.m4: Replace LIB_OPTIMIZATION by ROBOPTIM_CORE.
+	* src/Makefile.am,
+	* configure.ac,
+	* Makefile.am,
+	* build-aux/pkg-config.pc.in: 
+	* If roboptim-core is not found, use pkg-config.
+	* doc/Doxyfile.in: Retrieve roboptim-core doxytag.
+
 2009-04-26  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix permissions on documentation before updating web site.
