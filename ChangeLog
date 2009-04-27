@@ -1,3 +1,10 @@
+2009-04-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Implement SumCost (trajectory cost is the sum of some states' costs).
+	* include/roboptim-trajectory/fwd.hh: Predeclare SumCost.
+	* include/roboptim-trajectory/sum-cost.hh: New.
+	* include/roboptim-trajectory/sum-cost.hxx: New.
+
 2009-04-27  Florent Lamiraux  <florent@laas.fr>
 
 	If roboptim-core is not found, trigger pkg-config.

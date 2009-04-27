@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009 by Florent Lamiraux, Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -15,28 +15,32 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * \brief Forward declarations.
- */
-
-#ifndef ROBOPTIM_TRAJECTORY_FWD_HH
-# define ROBOPTIM_TRAJECTORY_FWD_HH
+#ifndef ROBOPTIM_TRAJECTORY_SUM_COST_HH
+# define ROBOPTIM_TRAJECTORY_SUM_COST_HH
+# include <roboptim-trajectory/fwd.hh>
+# include <roboptim-core/derivable-function.hh>
 
 namespace roboptim
 {
-  template <unsigned dorder>
-  class Trajectory;
-
   template <typename T>
-  class StateCost;
+  class SumCost : TrajectoryCost<T>
+  {
+  public:
+    typedef T trajectory_t;
+    typedef StateCost<T> stateCost_t;
 
-  template <typename T>
-  class SumCost;
+    SumCost (const trajectory_t&, const stateCost_t&) throw ();
+    virtual ~SumCost () throw ();
 
-  template <typename T>
-  class TrajectoryCost;
+    virtual vector_t operator () (const vector_t&) const throw ();
+    virtual gradient_t gradient (const vector_t&, int) const throw ();
 
-  class Spline;
+  protected:
+    const stateCost_t& stateCost_;
+    const vector_t& points_;
+  };
+
 } // end of namespace roboptim.
 
-#endif //! ROBOPTIM_TRAJECTORY_FWD_HH
+# include <roboptim-trajectory/sum-cost.hxx>
+#endif //! ROBOPTIM_TRAJECTORY_SUM_COST_HH
