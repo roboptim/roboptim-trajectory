@@ -1,2 +1,15 @@
+[9](1,2,0,6,4,5,3,4,5)
 Spline
-Number of discretization points: 20
+Number of parameters per spline function: 4
+Values:
+[2](1,2)
+[2](2,5.39583)
+[2](3,4)
+1st derivative:
+[2](0,0)
+[2](2.75,-0.375)
+[2](0,0)
+2nd derivative:
+[2](0,0)
+[2](0,-2.5)
+[2](0,0)

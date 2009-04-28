@@ -20,6 +20,8 @@
  * \brief Class Spline implementation.
  */
 
+#include <boost/numeric/ublas/io.hpp>
+
 #include <roboptim-core/indent.hh>
 #include <roboptim-trajectory/spline.hh>
 
@@ -28,20 +30,28 @@
 namespace roboptim
 {
   //FIXME: defined_lc_in has to be true (false untested).
-  Spline::Spline (bound_t tr, size_type m, const vector_t& p, int nbP) throw ()
+  Spline::Spline (bound_t tr, size_type m, const vector_t& p) throw ()
     : Trajectory<4> (tr, m, p),
       spline_ (),
-      nbp_ (nbP)
+      nbp_ (p.size () / m)
   {
-    //FIXME: check params here.
-    spline_ = new bspline (m, nbP + 4, 1, true, true, true);
+    assert (parameters_.size () >= 2 * m
+	    && parameters_.size () % m == 0);
 
+    //FIXME: check params here.
+    spline_ = new bspline (m, nbp_ + 4, 1, true, true, true);
+
+    // Initialized by convert_parameters.
     vector_t pos_init (m);
     vector_t final_pos (m);
-    double l = length ();
-    matrix_t mp (m, nbP - 2);
+    double l = 0.;
+    matrix_t mp (m, nbp_ - 2);
 
-    spline_->convert_parameters_x2P (&parameters_[0],
+    vector_t splineParams = makeBSplineVector ();
+
+    std::cout << splineParams << std::endl;
+
+    spline_->convert_parameters_x2P (&splineParams[0],
 				     &mp,
 				     pos_init,
 				     final_pos,
@@ -179,11 +189,22 @@ namespace roboptim
     return derivative (singularPointAtRank (rank), order);
   }
 
+  Spline::vector_t
+  Spline::makeBSplineVector ()
+  {
+    vector_t res (parameters_.size () + 1);
+
+    for (size_type i = 0; i < parameters_.size (); ++i)
+      res[i] = parameters_[i];
+    res[parameters_.size ()] = length ();
+    return res;
+  }
+
   std::ostream&
   Spline::print (std::ostream& o) const throw ()
   {
     o << "Spline" << incindent << std::endl
-      << "Number of discretization points: " << nbp_ << decindent;
+      << "Number of parameters per spline function: " << nbp_ << decindent;
     return o;
   }
 } // end of namespace roboptim.
