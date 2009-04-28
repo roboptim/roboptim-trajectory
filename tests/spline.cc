@@ -29,32 +29,42 @@ int run_test ()
   Spline::vector_t params (8);
 
   // Initial position.
-  params[0] = 1.,  params[1] = 2.;
+  params[0] = 0.,  params[1] = 0.;
   // Control point 1.
-  params[2] = 0.,  params[3] = 6.;
+  params[2] = 25.,  params[3] = 50.;
   // Control point 2.
-  params[4] = 4.,  params[5] = 5.;
+  params[4] = 50.,  params[5] = 25.;
   // Final position.
-  params[6] = 3., params[7] = 4.;
+  params[6] = 100., params[7] = 100.;
 
   Spline spline (std::make_pair (0., 5.), 2, params);
 
-  std::cout << spline << std::endl;
+  std::cout << "# Values:" << std::endl;
+  std::cout << "# " << spline (0.) << std::endl;
+  std::cout << "# " << spline (2.5) << std::endl;
+  std::cout << "# " << spline (5.) << std::endl;
 
-  std::cout << "Values:" << std::endl;
-  std::cout << spline (0.) << std::endl;
-  std::cout << spline (2.5) << std::endl;
-  std::cout << spline (5.) << std::endl;
+  std::cout << "# 1st derivative:" << std::endl;
+  std::cout << "# " << spline.derivative (0., 1) << std::endl;
+  std::cout << "# " << spline.derivative (2.5, 1) << std::endl;
+  std::cout << "# " << spline.derivative (5., 1) << std::endl;
 
-  std::cout << "1st derivative:" << std::endl;
-  std::cout << spline.derivative (0., 1) << std::endl;
-  std::cout << spline.derivative (2.5, 1) << std::endl;
-  std::cout << spline.derivative (5., 1) << std::endl;
+  std::cout << "# 2nd derivative:" << std::endl;
+  std::cout << "# " << spline.derivative (0., 2) << std::endl;
+  std::cout << "# " << spline.derivative (2.5, 2) << std::endl;
+  std::cout << "# " << spline.derivative (5., 2) << std::endl;
 
-  std::cout << "2nd derivative:" << std::endl;
-  std::cout << spline.derivative (0., 2) << std::endl;
-  std::cout << spline.derivative (2.5, 2) << std::endl;
-  std::cout << spline.derivative (5., 2) << std::endl;
+  std::cout << "# Start generating GNU plot information...." << std::endl;
+  std::cout << "set term x11 enhanced persist" << std::endl;
+  std::cout << "plot '-' with line" << std::endl;
+
+  const double step = 0.01;
+  for (double t = 0.; t < 5.; t += step)
+    {
+      Spline::vector_t res = spline (t);
+      std::cout << res[0] << " " << res[1] << std::endl;
+    }
+  std::cout << "e\n" << std::endl;
 
   return 0;
 }

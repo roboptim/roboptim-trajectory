@@ -20,8 +20,6 @@
  * \brief Class Spline implementation.
  */
 
-#include <boost/numeric/ublas/io.hpp>
-
 #include <roboptim-core/indent.hh>
 #include <roboptim-trajectory/spline.hh>
 
@@ -48,8 +46,6 @@ namespace roboptim
     matrix_t mp (m, nbp_ - 2);
 
     vector_t splineParams = makeBSplineVector ();
-
-    std::cout << splineParams << std::endl;
 
     spline_->convert_parameters_x2P (&splineParams[0],
 				     &mp,

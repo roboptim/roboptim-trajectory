@@ -1,5 +1,12 @@
 2009-04-28  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Generate gnuplot display when testing Spline class.
+	* src/spline.cc: Remove forgotten debugging display.
+	* tests/spline.cc: Generate gnuplot display.
+	* tests/spline.stdout: Regenerate from reference.
+
+2009-04-28  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix SumCost/StateCost implementation.
 	* include/roboptim-trajectory/state-cost.hh,
 	* include/roboptim-trajectory/state-cost.hxx: Do not
