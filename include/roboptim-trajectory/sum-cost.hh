@@ -29,14 +29,18 @@ namespace roboptim
     typedef T trajectory_t;
     typedef StateCost<T> stateCost_t;
 
-    SumCost (const trajectory_t&, const stateCost_t&) throw ();
+    SumCost (const trajectory_t&, const stateCost_t&, const vector_t&) throw ();
+    //FIXME: implement automatic discretization?
+    //SumCost (DiscreteRange)
+    //Range = min + max + step
+
     virtual ~SumCost () throw ();
 
     virtual vector_t operator () (const vector_t&) const throw ();
     virtual gradient_t gradient (const vector_t&, int) const throw ();
 
   protected:
-    const stateCost_t& stateCost_;
+    stateCost_t stateCost_;
     const vector_t& points_;
   };
 

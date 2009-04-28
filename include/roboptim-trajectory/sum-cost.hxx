@@ -22,7 +22,7 @@ namespace roboptim
 {
   template <typename T>
   SumCost<T>::SumCost (const trajectory_t& traj,
-		       const stateCost& sc,
+		       stateCost sc,
 		       const vector_t& pts) throw ()
     : TrajectoryCost (traj),
       stateCost_ (sc),
@@ -43,11 +43,7 @@ namespace roboptim
 
     typedef vector_t::const_iterator citer_t;
     for (citer_t it = points_.begin (); it != points_.end (); ++it)
-      {
-	vector_t x (n);
-	x[0] = *it;
-	result += stateCost_ (x)[0];
-      }
+      result += stateCost_ (trajectory_ (*it))[0];
 
     vector_t res (m);
     res[0] = result;
@@ -58,21 +54,13 @@ namespace roboptim
   typename SumCost<T>::gradient_t
   SumCost<T>::gradient (const vector_t& x, int) const throw ()
   {
-    gradient_t grad (n, m);
-    double result = 0.;
+    gradient_t result (n, m);
 
     typedef vector_t::const_iterator citer_t;
     for (citer_t it = points_.begin (); it != points_.end (); ++it)
-      {
-	vector_t x (n);
-	x[0] = *it;
-	result += stateCost_.gradient (x)(0, 0);
-      }
-
-    grad (0, 0) = result;
-    return res;
-
-    return grad;
+      result += stateCost_.gradient (trajectory_ (*it)) *
+	trajectory_.variationDerivWrtParam (*it, 1);
+    return result;
   }
 
 } // end of namespace roboptim.

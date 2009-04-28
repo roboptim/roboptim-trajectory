@@ -1,5 +1,17 @@
 2009-04-28  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix SumCost/StateCost implementation.
+	* include/roboptim-trajectory/state-cost.hh,
+	* include/roboptim-trajectory/state-cost.hxx: Do not
+	depend on a trajectory, is a function from R^n -> R.
+	* include/roboptim-trajectory/sum-cost.hh,
+	* include/roboptim-trajectory/sum-cost.hxx: Debug
+	value, gradient implementation.
+	* include/roboptim-trajectory/trajectory-cost.hxx: Make
+	trajectory cost a function R^m -> R.
+
+2009-04-28  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug Spline class.
 	* include/roboptim-trajectory/spline.hh: Remove
 	constructor's last argument.

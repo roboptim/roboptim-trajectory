@@ -21,9 +21,8 @@
 namespace roboptim
 {
   template <typename T>
-  StateCost<T>::StateCost (const trajectory_t& traj) throw ()
-    : DerivableFunction (1, 1),
-      trajectory_ (traj)
+  StateCost<T>::StateCost (size_type m) throw ()
+    : DerivableFunction (m, 1)
   {
   }
 
