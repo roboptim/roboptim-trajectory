@@ -17,17 +17,25 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_SUM_COST_HH
 # define ROBOPTIM_TRAJECTORY_SUM_COST_HH
-# include <roboptim-trajectory/fwd.hh>
 # include <roboptim-core/derivable-function.hh>
+
+# include <roboptim-trajectory/fwd.hh>
+# include <roboptim-trajectory/state-cost.hh>
+# include <roboptim-trajectory/trajectory-cost.hh>
 
 namespace roboptim
 {
   template <typename T>
-  class SumCost : TrajectoryCost<T>
+  class SumCost : public TrajectoryCost<T>
   {
   public:
+    typedef TrajectoryCost<T> parent_t;
     typedef T trajectory_t;
     typedef StateCost<T> stateCost_t;
+
+    // FIXME: remove this.
+    typedef typename parent_t::vector_t vector_t;
+    typedef typename parent_t::gradient_t gradient_t;
 
     SumCost (const trajectory_t&, const stateCost_t&, const vector_t&) throw ();
     //FIXME: implement automatic discretization?
@@ -40,7 +48,7 @@ namespace roboptim
     virtual gradient_t gradient (const vector_t&, int) const throw ();
 
   protected:
-    stateCost_t stateCost_;
+    const stateCost_t& stateCost_;
     const vector_t& points_;
   };
 

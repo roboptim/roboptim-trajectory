@@ -23,7 +23,7 @@
 namespace roboptim
 {
   template <typename T>
-  class TrajectoryCost : DerivableFunction
+  class TrajectoryCost : public DerivableFunction
   {
   public:
     typedef T trajectory_t;

@@ -23,6 +23,11 @@ check_PROGRAMS += spline
 spline_SOURCES = spline.cc $(COMMON_SOURCES)
 spline_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# spline-optimization
+check_PROGRAMS += spline-optimization
+spline_optimization_SOURCES = spline-optimization.cc $(COMMON_SOURCES)
+spline_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
 
 .PHONY: generate-reference
 

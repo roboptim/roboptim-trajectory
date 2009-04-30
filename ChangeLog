@@ -1,3 +1,14 @@
+2009-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add spline optimization test.
+	* include/roboptim-trajectory/state-cost.hh,
+	* include/roboptim-trajectory/sum-cost.hh,
+	* include/roboptim-trajectory/sum-cost.hxx,
+	* include/roboptim-trajectory/trajectory-cost.hh: Fix various mistakes.
+	* tests/Makefile.am: Add new test.
+	* tests/spline-optimization.cc: New.
+	* tests/testsuite.at: Run new test.
+
 2009-04-28  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Generate gnuplot display when testing Spline class.

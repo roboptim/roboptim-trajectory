@@ -42,9 +42,9 @@ namespace roboptim
   {
   public:
     typedef T trajectory_t;
-    StateCost (size_type m);
+    StateCost (size_type m) throw ();
 
-    virtual ~StateCost();
+    virtual ~StateCost() throw ();
   };
 } // end of namespace roboptim.
 
