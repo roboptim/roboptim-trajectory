@@ -39,6 +39,17 @@ namespace roboptim
     //FIXME: check params here.
     spline_ = new bspline (m, nbp_ + 4, 1, true, true, true);
 
+    updateParameters ();
+  }
+
+  Spline::~Spline () throw ()
+  {
+    delete spline_;
+  }
+
+  void
+  Spline::updateParameters () throw ()
+  {
     // Initialized by convert_parameters.
     vector_t pos_init (m);
     vector_t final_pos (m);
@@ -54,11 +65,6 @@ namespace roboptim
 				     l);
 
     spline_->def_parameters(&mp, pos_init, final_pos, l);
-  }
-
-  Spline::~Spline () throw ()
-  {
-    delete spline_;
   }
 
   Spline::vector_t

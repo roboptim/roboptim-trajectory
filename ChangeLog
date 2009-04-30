@@ -1,5 +1,10 @@
 2009-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add missing method.
+	* src/spline.cc: Here.
+
+2009-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add updateParameters to Spline class.
 	* include/roboptim-trajectory/spline.hh,
 	* tests/spline-optimization.cc: Update parameters
