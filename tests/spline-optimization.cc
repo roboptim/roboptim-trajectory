@@ -91,6 +91,7 @@ int run_test ()
   Result& result = boost::get<Result> (res);
 
   spline.parameters () = result.x;
+  spline.updateParameters ();
 
   for (double t = 0.; t < 5.; t += step)
     {

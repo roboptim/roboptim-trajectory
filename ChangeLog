@@ -1,5 +1,12 @@
 2009-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add updateParameters to Spline class.
+	* include/roboptim-trajectory/spline.hh,
+	* tests/spline-optimization.cc: Update parameters
+	in bspline if updateParameters is called.
+
+2009-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add spline optimization test.
 	* include/roboptim-trajectory/state-cost.hh,
 	* include/roboptim-trajectory/sum-cost.hh,
