@@ -19,6 +19,10 @@
 
 #include <roboptim-core/cfsqp.hh>
 
+#include <roboptim-core/visualization/gnuplot.hh>
+#include <roboptim-core/visualization/gnuplot-commands.hh>
+#include <roboptim-core/visualization/gnuplot-function.hh>
+
 #include <roboptim-trajectory/fwd.hh>
 #include <roboptim-trajectory/spline.hh>
 #include <roboptim-trajectory/sum-cost.hh>
@@ -27,6 +31,8 @@
 #include "common.hh"
 
 using namespace roboptim;
+using namespace roboptim::visualization;
+using namespace roboptim::visualization::gnuplot;
 
 struct MyStateCost : public StateCost<Spline>
 {
@@ -64,18 +70,10 @@ int run_test ()
   params[6] = 100., params[7] = 100.;
 
   Spline spline (std::make_pair (0., 5.), 2, params);
+  discreteInterval_t interval (0., 5., 0.01);
 
-  std::cout << "# Start generating GNU plot information...." << std::endl
-	    << "set term x11 enhanced persist" << std::endl
-	    << "plot '-' with line, '-' with line" << std::endl;
-
-  const double step = 0.01;
-  for (double t = 0.; t < 5.; t += step)
-    {
-      Spline::vector_t res = spline (t);
-      std::cout << res[0] << " " << res[1] << std::endl;
-    }
-  std::cout << "e\n" << std::endl;
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+  gnuplot << plot_xy (spline, interval);
 
   // Optimize.
   SumCost<Spline>::vector_t pts (10);
@@ -93,13 +91,7 @@ int run_test ()
   spline.parameters () = result.x;
   spline.updateParameters ();
 
-  for (double t = 0.; t < 5.; t += step)
-    {
-      Spline::vector_t res = spline (t);
-      std::cout << res[0] << " " << res[1] << std::endl;
-    }
-  std::cout << "e\n" << std::endl;
-
+  std::cout << (gnuplot << plot_xy (spline, interval));
   return 0;
 }
 

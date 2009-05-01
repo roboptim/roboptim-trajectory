@@ -1,3 +1,12 @@
+2009-05-01  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Use roboptim-core to plot trajectories.
+	* tests/spline-optimization.cc: Plot trajectory with roboptim-core.
+	* tests/spline-optimization.stdout: New.
+	* tests/spline.cc: Plot trajectory with roboptim-core.
+	* tests/spline.stdout: Regenerate.
+	* tests/testsuite.at: Tag spline-optimization as XFAIL.
+
 2009-04-30  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Add missing method.

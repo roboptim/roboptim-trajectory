@@ -1,0 +1,3 @@
+error in bspline::uncompress_grad, data_grad_uncomp does not have nb_grad_uncomp components of gradient
+nb_grad_uncomp 9
+number of components of gradient of data_grad_uncomp 8

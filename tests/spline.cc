@@ -19,10 +19,16 @@
 
 #include "common.hh"
 
+#include <roboptim-core/visualization/gnuplot.hh>
+#include <roboptim-core/visualization/gnuplot-commands.hh>
+#include <roboptim-core/visualization/gnuplot-function.hh>
+
 #include <roboptim-trajectory/fwd.hh>
 #include <roboptim-trajectory/spline.hh>
 
 using namespace roboptim;
+using namespace roboptim::visualization;
+using namespace roboptim::visualization::gnuplot;
 
 int run_test ()
 {
@@ -39,32 +45,26 @@ int run_test ()
 
   Spline spline (std::make_pair (0., 5.), 2, params);
 
-  std::cout << "# Values:" << std::endl;
-  std::cout << "# " << spline (0.) << std::endl;
-  std::cout << "# " << spline (2.5) << std::endl;
-  std::cout << "# " << spline (5.) << std::endl;
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+  discreteInterval_t interval (0., 5., 0.01);
 
-  std::cout << "# 1st derivative:" << std::endl;
-  std::cout << "# " << spline.derivative (0., 1) << std::endl;
-  std::cout << "# " << spline.derivative (2.5, 1) << std::endl;
-  std::cout << "# " << spline.derivative (5., 1) << std::endl;
+  std::cout
+    << "# Values:" << std::endl
+    << "# " << spline (0.) << std::endl
+    << "# " << spline (2.5) << std::endl
+    << "# " << spline (5.) << std::endl
 
-  std::cout << "# 2nd derivative:" << std::endl;
-  std::cout << "# " << spline.derivative (0., 2) << std::endl;
-  std::cout << "# " << spline.derivative (2.5, 2) << std::endl;
-  std::cout << "# " << spline.derivative (5., 2) << std::endl;
+    << "# 1st derivative:" << std::endl
+    << "# " << spline.derivative (0., 1) << std::endl
+    << "# " << spline.derivative (2.5, 1) << std::endl
+    << "# " << spline.derivative (5., 1) << std::endl
 
-  std::cout << "# Start generating GNU plot information...." << std::endl;
-  std::cout << "set term x11 enhanced persist" << std::endl;
-  std::cout << "plot '-' with line" << std::endl;
+    << "# 2nd derivative:" << std::endl
+    << "# " << spline.derivative (0., 2) << std::endl
+    << "# " << spline.derivative (2.5, 2) << std::endl
+    << "# " << spline.derivative (5., 2) << std::endl
 
-  const double step = 0.01;
-  for (double t = 0.; t < 5.; t += step)
-    {
-      Spline::vector_t res = spline (t);
-      std::cout << res[0] << " " << res[1] << std::endl;
-    }
-  std::cout << "e\n" << std::endl;
+    << (gnuplot << plot_xy (spline, interval));
 
   return 0;
 }
