@@ -15,18 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_SUM_COST_HH
-# define ROBOPTIM_TRAJECTORY_SUM_COST_HH
-# include <roboptim-core/derivable-function.hh>
+#ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
+# define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
+# include <roboptim/core/derivable-function.hh>
 
-# include <roboptim-trajectory/fwd.hh>
-# include <roboptim-trajectory/state-cost.hh>
-# include <roboptim-trajectory/trajectory-cost.hh>
+# include <roboptim/trajectory/fwd.hh>
+# include <roboptim/trajectory/state-cost.hh>
+# include <roboptim/trajectory/trajectory-cost.hh>
 
 namespace roboptim
 {
   template <typename T>
-  class SumCost : public TrajectoryCost<T>
+  class TrajectorySumCost : public TrajectoryCost<T>
   {
   public:
     typedef TrajectoryCost<T> parent_t;
@@ -37,12 +37,12 @@ namespace roboptim
     typedef typename parent_t::vector_t vector_t;
     typedef typename parent_t::gradient_t gradient_t;
 
-    SumCost (const trajectory_t&, const stateCost_t&, const vector_t&) throw ();
+    TrajectorySumCost (const trajectory_t&, const stateCost_t&, const vector_t&) throw ();
     //FIXME: implement automatic discretization?
-    //SumCost (DiscreteRange)
+    //TrajectorySumCost (DiscreteRange)
     //Range = min + max + step
 
-    virtual ~SumCost () throw ();
+    virtual ~TrajectorySumCost () throw ();
 
     virtual vector_t operator () (const vector_t&) const throw ();
     virtual gradient_t gradient (const vector_t&, int) const throw ();
@@ -54,5 +54,5 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-# include <roboptim-trajectory/sum-cost.hxx>
-#endif //! ROBOPTIM_TRAJECTORY_SUM_COST_HH
+# include <roboptim/trajectory/trajectory-sum-cost.hxx>
+#endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH

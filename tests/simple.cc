@@ -17,7 +17,7 @@
 
 #include "common.hh"
 
-#include <roboptim-trajectory/fwd.hh>
+#include <roboptim/trajectory/fwd.hh>
 
 using namespace roboptim;
 

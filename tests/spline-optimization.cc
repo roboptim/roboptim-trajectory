@@ -17,22 +17,27 @@
 
 #include <boost/numeric/ublas/io.hpp>
 
-#include <roboptim-core/cfsqp.hh>
+#include <roboptim/core/solver-factory.hh>
 
-#include <roboptim-core/visualization/gnuplot.hh>
-#include <roboptim-core/visualization/gnuplot-commands.hh>
-#include <roboptim-core/visualization/gnuplot-function.hh>
+#include <roboptim/core/visualization/gnuplot.hh>
+#include <roboptim/core/visualization/gnuplot-commands.hh>
+#include <roboptim/core/visualization/gnuplot-function.hh>
 
-#include <roboptim-trajectory/fwd.hh>
-#include <roboptim-trajectory/spline.hh>
-#include <roboptim-trajectory/sum-cost.hh>
-#include <roboptim-trajectory/state-cost.hh>
+#include <roboptim/trajectory/fwd.hh>
+#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/trajectory-sum-cost.hh>
+#include <roboptim/trajectory/state-cost.hh>
 
 #include "common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
+
+typedef boost::variant<const DerivableFunction*,
+		       const LinearFunction*> constraint_t;
+typedef Solver<DerivableFunction, constraint_t> solver_t;
+
 
 struct MyStateCost : public StateCost<Spline>
 {
@@ -76,16 +81,18 @@ int run_test ()
   gnuplot << plot_xy (spline, interval);
 
   // Optimize.
-  SumCost<Spline>::vector_t pts (10);
+  TrajectorySumCost<Spline>::vector_t pts (10);
   pts.clear ();
 
   MyStateCost statecost (4);
-  SumCost<Spline> cost (spline, statecost, pts);
+  TrajectorySumCost<Spline> cost (spline, statecost, pts);
 
-  CFSQPSolver::problem_t problem (cost);
-  CFSQPSolver solver (problem);
+  solver_t::problem_t problem (cost);
 
-  CFSQPSolver::result_t res = solver.minimum ();
+  SolverFactory<solver_t> factory ("cfsqp", problem);
+  solver_t& solver = factory ();
+
+  solver_t::result_t res = solver.minimum ();
   Result& result = boost::get<Result> (res);
 
   spline.parameters () = result.x;

@@ -1,4 +1,8 @@
                                                                 -*- outline -*-
 
-New in 0.1, (????-??-??):
-* FIXME: Fill NEWS file.
+New in 0.2, 2009-05-03:
+* Abstract classes for costs on states and trajectories.
+* Implementation of the cost on a trajectory as the sum of costs on differents
+  specified points.
+* Import trajectory prototype structures and algorithms (by Florent Lamiraux).
+* Import cubic spline implementation (by Sylvain Miossec).

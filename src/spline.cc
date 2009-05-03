@@ -20,8 +20,8 @@
  * \brief Class Spline implementation.
  */
 
-#include <roboptim-core/indent.hh>
-#include <roboptim-trajectory/spline.hh>
+#include <roboptim/core/indent.hh>
+#include <roboptim/trajectory/spline.hh>
 
 #include <spline/bspline.h>
 

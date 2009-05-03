@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_SUM_COST_HXX
-# define ROBOPTIM_TRAJECTORY_SUM_COST_HXX
+#ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX
+# define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX
 
 namespace roboptim
 {
   template <typename T>
-  SumCost<T>::SumCost (const trajectory_t& traj,
+  TrajectorySumCost<T>::TrajectorySumCost (const trajectory_t& traj,
 		       const stateCost_t& sc,
 		       const vector_t& pts) throw ()
     : parent_t (traj),
@@ -31,13 +31,13 @@ namespace roboptim
   }
 
   template <typename T>
-  SumCost<T>::~SumCost () throw ()
+  TrajectorySumCost<T>::~TrajectorySumCost () throw ()
   {
   }
 
   template <typename T>
-  typename SumCost<T>::vector_t
-  SumCost<T>::operator () (const vector_t& x) const throw ()
+  typename TrajectorySumCost<T>::vector_t
+  TrajectorySumCost<T>::operator () (const vector_t& x) const throw ()
   {
     double result = 0.;
 
@@ -51,8 +51,8 @@ namespace roboptim
   }
 
   template <typename T>
-  typename SumCost<T>::gradient_t
-  SumCost<T>::gradient (const vector_t& x, int) const throw ()
+  typename TrajectorySumCost<T>::gradient_t
+  TrajectorySumCost<T>::gradient (const vector_t& x, int) const throw ()
   {
     gradient_t result (this->n);
     result.clear ();
@@ -66,4 +66,4 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-#endif //! ROBOPTIM_TRAJECTORY_SUM_COST_HXX
+#endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX

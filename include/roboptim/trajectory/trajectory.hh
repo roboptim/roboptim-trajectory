@@ -23,8 +23,8 @@
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # include <utility>
 
-# include <roboptim-trajectory/fwd.hh>
-# include <roboptim-core/n-times-derivable-function.hh>
+# include <roboptim/trajectory/fwd.hh>
+# include <roboptim/core/n-times-derivable-function.hh>
 
 namespace roboptim
 {
@@ -160,5 +160,5 @@ namespace roboptim
   };
 } // end of namespace roboptim.
 
-# include <roboptim-trajectory/trajectory.hxx>
+# include <roboptim/trajectory/trajectory.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HH

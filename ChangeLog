@@ -1,5 +1,43 @@
 2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Update trajectory to match new organization of roboptim-core.
+	* NEWS: Add content for release 0.2.
+	* README: Remove information which are factorized on the
+	homepage.
+	* configure.ac: Use new macro.
+	* include/Makefile.am: Rename headers.
+	* include/roboptim/trajectory/free-time-trajectory.hh:
+	Rename from include/roboptim-trajectory/free-time-trajectory.hh.
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Rename from include/roboptim-trajectory/free-time-trajectory.hxx.
+	* include/roboptim/trajectory/fwd.hh:
+	Rename from include/roboptim-trajectory/fwd.hh.
+	* include/roboptim/trajectory/spline.hh:
+	Rename from include/roboptim-trajectory/spline.hh.
+	* include/roboptim/trajectory/state-cost.hh:
+	Rename from include/roboptim-trajectory/state-cost.hh.
+	* include/roboptim/trajectory/state-cost.hxx:
+	Rename from include/roboptim-trajectory/state-cost.hxx.
+	* include/roboptim/trajectory/trajectory-cost.hh:
+	Rename from include/roboptim-trajectory/trajectory-cost.hh.
+	* include/roboptim/trajectory/trajectory-cost.hxx:
+	Rename from include/roboptim-trajectory/trajectory-cost.hxx.
+	* include/roboptim/trajectory/trajectory-sum-cost.hh:
+	Rename from include/roboptim-trajectory/sum-cost.hh.
+	* include/roboptim/trajectory/trajectory-sum-cost.hxx:
+	Rename from include/roboptim-trajectory/sum-cost.hxx.
+	* include/roboptim/trajectory/trajectory.hh:
+	Rename from include/roboptim-trajectory/trajectory.hh.
+	* include/roboptim/trajectory/trajectory.hxx:
+	Rename from include/roboptim-trajectory/trajectory.hxx.
+	* src/spline.cc,
+	* tests/simple.cc: Fix include path.
+	* tests/spline-optimization.cc: Use new plug-in system.
+	* tests/spline.cc: Fix include path
+	* tests/spline.stdout: Regenerate.
+
+2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Use pkg-config to detect roboptim-core.
 	* build-aux/roboptim-core.m4: Here.
 

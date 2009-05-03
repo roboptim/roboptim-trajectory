@@ -19,12 +19,12 @@
 
 #include "common.hh"
 
-#include <roboptim-core/visualization/gnuplot.hh>
-#include <roboptim-core/visualization/gnuplot-commands.hh>
-#include <roboptim-core/visualization/gnuplot-function.hh>
+#include <roboptim/core/visualization/gnuplot.hh>
+#include <roboptim/core/visualization/gnuplot-commands.hh>
+#include <roboptim/core/visualization/gnuplot-function.hh>
 
-#include <roboptim-trajectory/fwd.hh>
-#include <roboptim-trajectory/spline.hh>
+#include <roboptim/trajectory/fwd.hh>
+#include <roboptim/trajectory/spline.hh>
 
 using namespace roboptim;
 using namespace roboptim::visualization;

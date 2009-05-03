@@ -21,9 +21,9 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_SPLINE_HH
 # define ROBOPTIM_TRAJECTORY_SPLINE_HH
-# include <roboptim-trajectory/trajectory.hh>
+# include <roboptim/trajectory/trajectory.hh>
 
-# include <roboptim-trajectory/fwd.hh>
+# include <roboptim/trajectory/fwd.hh>
 
 class bspline;
 

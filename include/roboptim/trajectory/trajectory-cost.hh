@@ -17,8 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_COST_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_COST_HH
-# include <roboptim-trajectory/fwd.hh>
-# include <roboptim-core/derivable-function.hh>
+# include <roboptim/trajectory/fwd.hh>
+# include <roboptim/core/derivable-function.hh>
 
 namespace roboptim
 {
@@ -36,5 +36,5 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-# include <roboptim-trajectory/trajectory-cost.hxx>
+# include <roboptim/trajectory/trajectory-cost.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_COST_HH

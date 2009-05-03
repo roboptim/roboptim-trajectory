@@ -59,20 +59,7 @@ AC_PROG_LIBTOOL
 # FIXME: check for Boost here.
 
 # Search for RobOptim core.
-ROBOPTIM_CORE_LIB
-ROBOPTIM_CORE_HEADERS(,[roboptim_core_found=no])
-if test x$roboptim_core_found = xno; then
-
-	m4_define([roboptim_core_reqd], [roboptim-core >= 0.1])
-	AC_SUBST([PACKAGE_REQD], ["roboptim_core_reqd"])
-	PKG_CHECK_MODULES([ROBOPTIMCORE], [roboptim_core_reqd])
-
-	ROBOPTIMCORE_DOCDIR=`$PKG_CONFIG roboptim-core --variable=docdir`
-	AC_SUBST([PACKAGE_REQD])
-	AC_SUBST([ROBOPTIMCORE_DOCDIR])
-	AC_SUBST([ROBOPTIMCORE_CFLAGS])
-	AC_SUBST([ROBOPTIMCORE_LIBS])
-fi
+ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.2])
 
 ## ------------ ##
 ## Test-suite.  ##

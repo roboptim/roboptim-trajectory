@@ -17,7 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
-# include <roboptim-trajectory/trajectory.hh>
+# include <roboptim/trajectory/trajectory.hh>
 
 namespace roboptim
 {
@@ -57,5 +57,5 @@ namespace roboptim
   };
 } // end of namespace roboptim.
 
-# include <roboptim-trajectory/free-time-trajectory.hxx>
+# include <roboptim/trajectory/free-time-trajectory.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
