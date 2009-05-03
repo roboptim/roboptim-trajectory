@@ -5,7 +5,7 @@ AC_PREREQ([2.59])
 ## --------------------- ##
 ## Package configuration ##
 ## --------------------- ##
-AC_INIT([RobOptim trajectory library], [0.1],
+AC_INIT([RobOptim trajectory library], [0.2.1],
         [roboptim-user@lists.sourceforge.net], [roboptim-trajectory])
 
 # Auxiliary files.
@@ -60,6 +60,7 @@ AC_PROG_LIBTOOL
 
 # Search for RobOptim core.
 ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.2])
+AC_SUBST([PACKAGE_REQD], [roboptim-core >= 0.2])
 
 ## ------------ ##
 ## Test-suite.  ##

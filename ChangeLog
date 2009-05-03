@@ -1,5 +1,11 @@
 2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Release 0.2.1.
+	* NEWS: Rename 0.2 into 0.2.1.
+	* configure.ac: Change package version.
+
+2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Update trajectory to match new organization of roboptim-core.
 	* NEWS: Add content for release 0.2.
 	* README: Remove information which are factorized on the
