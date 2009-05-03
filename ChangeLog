@@ -1,5 +1,10 @@
 2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix pkg-config require field.
+	* configure.ac: Here.
+
+2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Release 0.2.1.
 	* NEWS: Rename 0.2 into 0.2.1.
 	* configure.ac: Change package version.
