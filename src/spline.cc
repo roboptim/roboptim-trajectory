@@ -64,7 +64,7 @@ namespace roboptim
 				     final_pos,
 				     l);
 
-    spline_->def_parameters(&mp, pos_init, final_pos, l);
+    spline_->def_parameters (&mp, pos_init, final_pos, l);
   }
 
   Spline::vector_t

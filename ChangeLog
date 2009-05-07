@@ -1,3 +1,9 @@
+2009-05-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Check parameters update.
+	* tests/spline.cc: Here.
+	* tests/spline.stdout: Regenerate.
+
 2009-05-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix pkg-config require field.

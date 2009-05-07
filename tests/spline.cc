@@ -66,6 +66,22 @@ int run_test ()
 
     << (gnuplot << plot_xy (spline, interval));
 
+  // Reset parameters and recompute some values.
+  params[2] = 50.,  params[3] = 25.;
+  spline.parameters () = params;
+  spline.updateParameters ();
+
+  std::cout
+    << "# 1st derivative:" << std::endl
+    << "# " << spline.derivative (0., 1) << std::endl
+    << "# " << spline.derivative (2.5, 1) << std::endl
+    << "# " << spline.derivative (5., 1) << std::endl
+
+    << "# 2nd derivative:" << std::endl
+    << "# " << spline.derivative (0., 2) << std::endl
+    << "# " << spline.derivative (2.5, 2) << std::endl
+    << "# " << spline.derivative (5., 2) << std::endl;
+
   return 0;
 }
 
