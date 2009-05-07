@@ -44,19 +44,20 @@ namespace roboptim
 
 
   template <unsigned dorder>
-  typename Trajectory<dorder>::vector_t&
-  Trajectory<dorder>::parameters () throw ()
+  const typename Trajectory<dorder>::vector_t&
+  Trajectory<dorder>::parameters () const throw ()
   {
     return parameters_;
   }
 
 
   template <unsigned dorder>
-  const typename Trajectory<dorder>::vector_t&
-  Trajectory<dorder>::parameters () const throw ()
+  void
+  Trajectory<dorder>::setParameters (const vector_t& p) throw ()
   {
-    return parameters_;
+    parameters_ = p;
   }
+
 
   template <unsigned dorder>
   typename Trajectory<dorder>::bound_t

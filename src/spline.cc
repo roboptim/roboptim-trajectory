@@ -39,7 +39,7 @@ namespace roboptim
     //FIXME: check params here.
     spline_ = new bspline (m, nbp_ + 4, 1, true, true, true);
 
-    updateParameters ();
+    setParameters (p);
   }
 
   Spline::~Spline () throw ()
@@ -48,8 +48,11 @@ namespace roboptim
   }
 
   void
-  Spline::updateParameters () throw ()
+  Spline::setParameters (const vector_t& p) throw ()
   {
+    assert (p.size () == parameters_.size ());
+    parameters_ = p;
+
     // Initialized by convert_parameters.
     vector_t pos_init (m);
     vector_t final_pos (m);
@@ -63,13 +66,13 @@ namespace roboptim
 				     pos_init,
 				     final_pos,
 				     l);
-
     spline_->def_parameters (&mp, pos_init, final_pos, l);
   }
 
   Spline::vector_t
   Spline::operator () (double t) const throw ()
   {
+    assert (timeRange ().first <= t && t <= timeRange ().second);
     vector_t res (m);
     spline_->calc_fun (t, &res);
     return res;
@@ -78,6 +81,7 @@ namespace roboptim
   Spline::vector_t
   Spline::derivative (double t, size_type order) const throw ()
   {
+    assert (timeRange ().first <= t && t <= timeRange ().second);
     vector_t res (m);
     switch (order)
       {
@@ -99,6 +103,7 @@ namespace roboptim
   Spline::jacobian_t
   Spline::variationConfigWrtParam (double t) const throw ()
   {
+    assert (timeRange ().first <= t && t <= timeRange ().second);
     matrix_t fun (m, 1);
 
     //FIXME: change by two points if required.
@@ -113,7 +118,7 @@ namespace roboptim
 
     ublas::matrix<ublas::vector<double> > tmp (m, 1);
     for (size_type i = 0; i < m; ++i)
-      tmp (i, 0).resize (nbp_ * m);
+      tmp (i, 0).resize (parameters_.size ()+1);
 
     spline_->uncompress_grad (&all_t,
 	                      &fun_grad,
@@ -132,6 +137,7 @@ namespace roboptim
   Spline::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
+    assert (timeRange ().first <= t && t <= timeRange ().second);
     matrix_t fun (m, 1);
 
     vector_t all_t (1);

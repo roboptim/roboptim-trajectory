@@ -17,18 +17,35 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX
+# include <boost/tuple/tuple.hpp>
 
 namespace roboptim
 {
   template <typename T>
   TrajectorySumCost<T>::TrajectorySumCost (const trajectory_t& traj,
-		       const stateCost_t& sc,
-		       const vector_t& pts) throw ()
+					   const stateCost_t& sc,
+					   const vector_t& pts) throw ()
     : parent_t (traj),
       stateCost_ (sc),
       points_ (pts)
   {
   }
+
+  template <typename T>
+  TrajectorySumCost<T>::TrajectorySumCost
+  (const trajectory_t& traj,
+   const stateCost_t& sc,
+   const discreteInterval_t& interval) throw ()
+    : parent_t (traj),
+      stateCost_ (sc),
+      points_ ()
+  {
+    using namespace boost;
+    for (double i = get<0> (interval); i <= get<1> (interval);
+	 i += get<2> (interval))
+      points_.push_back (i);
+  }
+
 
   template <typename T>
   TrajectorySumCost<T>::~TrajectorySumCost () throw ()
@@ -41,9 +58,9 @@ namespace roboptim
   {
     double result = 0.;
 
-    typedef typename vector_t::const_iterator citer_t;
+    typedef typename std::vector<double>::const_iterator citer_t;
     for (citer_t it = points_.begin (); it != points_.end (); ++it)
-      result += stateCost_ (trajectory_ (*it))[0];
+      result += stateCost_ (this->trajectory_ (*it))[0];
 
     vector_t res (this->m);
     res[0] = result;
@@ -57,10 +74,15 @@ namespace roboptim
     gradient_t result (this->n);
     result.clear ();
 
-    typedef typename vector_t::const_iterator citer_t;
+    typedef typename std::vector<double>::const_iterator citer_t;
     for (citer_t it = points_.begin (); it != points_.end (); ++it)
-      result += prod (this->trajectory_.variationConfigWrtParam (*it),
-		      stateCost_.gradient (this->trajectory_ (*it), 0));
+      {
+	assert (this->trajectory_.timeRange ().first <= *it
+		&& *it <= this->trajectory_.timeRange ().second);
+
+	result += prod (stateCost_.gradient (this->trajectory_ (*it), 0),
+			this->trajectory_.variationConfigWrtParam (*it));
+      }
     return result;
   }
 

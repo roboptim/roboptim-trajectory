@@ -41,15 +41,15 @@ typedef Solver<DerivableFunction, constraint_t> solver_t;
 
 struct MyStateCost : public StateCost<Spline>
 {
-  MyStateCost (size_type m)
-    : StateCost<Spline> (m)
+  MyStateCost (size_type n)
+    : StateCost<Spline> (n)
   {
   }
 
   virtual vector_t operator () (const vector_t&) const throw ()
   {
-    vector_t res (1);
-    res[0] = 0.;
+    vector_t res (m);
+    res.clear ();
     return res;
   }
 
@@ -77,15 +77,35 @@ int run_test ()
   Spline spline (std::make_pair (0., 5.), 2, params);
   discreteInterval_t interval (0., 5., 0.01);
 
+  std::cout
+    << "# Values:" << std::endl
+    << "# " << spline (0.) << std::endl
+    << "# " << spline (2.5) << std::endl
+    << "# " << spline (5.) << std::endl
+
+    << "# 1st derivative:" << std::endl
+    << "# " << spline.derivative (0., 1) << std::endl
+    << "# " << spline.derivative (2.5, 1) << std::endl
+    << "# " << spline.derivative (5., 1) << std::endl
+
+    << "# 2nd derivative:" << std::endl
+    << "# " << spline.derivative (0., 2) << std::endl
+    << "# " << spline.derivative (2.5, 2) << std::endl
+    << "# " << spline.derivative (5., 2) << std::endl
+
+    << "# variationConfigWrtParam:" << std::endl
+    << "# " << spline.variationConfigWrtParam (0.) << std::endl
+    << "# " << spline.variationConfigWrtParam (2.5) << std::endl
+    << "# " << spline.variationConfigWrtParam (5.) << std::endl;
+
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   gnuplot << plot_xy (spline, interval);
 
   // Optimize.
-  TrajectorySumCost<Spline>::vector_t pts (10);
-  pts.clear ();
+  discreteInterval_t costInterval (0., 5., 0.5);
 
-  MyStateCost statecost (4);
-  TrajectorySumCost<Spline> cost (spline, statecost, pts);
+  MyStateCost statecost (2);
+  TrajectorySumCost<Spline> cost (spline, statecost, costInterval);
 
   solver_t::problem_t problem (cost);
 
@@ -95,8 +115,7 @@ int run_test ()
   solver_t::result_t res = solver.minimum ();
   Result& result = boost::get<Result> (res);
 
-  spline.parameters () = result.x;
-  spline.updateParameters ();
+  spline.setParameters (result.x);
 
   std::cout << (gnuplot << plot_xy (spline, interval));
   return 0;

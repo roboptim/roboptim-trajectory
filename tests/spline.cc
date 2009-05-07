@@ -63,13 +63,11 @@ int run_test ()
     << "# " << spline.derivative (0., 2) << std::endl
     << "# " << spline.derivative (2.5, 2) << std::endl
     << "# " << spline.derivative (5., 2) << std::endl
-
     << (gnuplot << plot_xy (spline, interval));
 
   // Reset parameters and recompute some values.
   params[2] = 50.,  params[3] = 25.;
-  spline.parameters () = params;
-  spline.updateParameters ();
+  spline.setParameters (params);
 
   std::cout
     << "# 1st derivative:" << std::endl

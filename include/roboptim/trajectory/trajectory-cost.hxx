@@ -22,7 +22,7 @@ namespace roboptim
 {
   template <typename T>
   TrajectoryCost<T>::TrajectoryCost (const trajectory_t& traj) throw ()
-    : DerivableFunction (traj.m, 1),
+    : DerivableFunction (traj.parameters ().size (), 1),
       trajectory_ (traj)
   {
   }

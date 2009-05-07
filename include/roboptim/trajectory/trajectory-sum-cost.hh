@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
+# include <vector>
 # include <roboptim/core/derivable-function.hh>
 
 # include <roboptim/trajectory/fwd.hh>
@@ -36,11 +37,12 @@ namespace roboptim
     // FIXME: remove this.
     typedef typename parent_t::vector_t vector_t;
     typedef typename parent_t::gradient_t gradient_t;
+    typedef typename parent_t::discreteInterval_t discreteInterval_t;
 
-    TrajectorySumCost (const trajectory_t&, const stateCost_t&, const vector_t&) throw ();
-    //FIXME: implement automatic discretization?
-    //TrajectorySumCost (DiscreteRange)
-    //Range = min + max + step
+    TrajectorySumCost (const trajectory_t&, const stateCost_t&,
+		       const vector_t&) throw ();
+    TrajectorySumCost (const trajectory_t&, const stateCost_t&,
+		       const discreteInterval_t&) throw ();
 
     virtual ~TrajectorySumCost () throw ();
 
@@ -49,7 +51,7 @@ namespace roboptim
 
   protected:
     const stateCost_t& stateCost_;
-    const vector_t& points_;
+    std::vector<double> points_;
   };
 
 } // end of namespace roboptim.

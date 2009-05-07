@@ -65,8 +65,8 @@ namespace roboptim
     /// \name Accessing parameters, and state.
     /// \{
 
-    vector_t& parameters () throw ();
     const vector_t& parameters () const throw ();
+    virtual void setParameters (const vector_t&) throw ();
 
     bound_t timeRange () const throw ();
     value_type length () const throw ();

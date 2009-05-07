@@ -37,7 +37,7 @@ namespace roboptim
 
     virtual vector_t operator () (double) const throw ();
 
-    void updateParameters () throw ();
+    virtual void setParameters (const vector_t&) throw ();
 
     virtual vector_t derivative (double x, size_type order) const throw ();
 

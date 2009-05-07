@@ -1,5 +1,25 @@
 2009-05-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix Spline and TrajectorySumCost implementation.
+	* include/roboptim/trajectory/spline.hh: Change non-const
+	parameters into setParameters.
+	* include/roboptim/trajectory/trajectory-cost.hxx: Fix
+	function arity.
+	* include/roboptim/trajectory/trajectory-sum-cost.hh: Add
+	automatic discretization of the curve.
+	* include/roboptim/trajectory/trajectory-sum-cost.hxx:
+	Implement automatic discretization and fix gradient computation.
+	* include/roboptim/trajectory/trajectory.hh: Change non-const
+	parameters into setParameters.
+	* include/roboptim/trajectory/trajectory.hxx: Provide a default
+	implementation for setParameter.
+	* src/spline.cc: Implement setParameter.
+	* tests/spline-optimization.cc: Use setParameter.
+	* tests/spline-optimization.stdout: Regenerate.
+	* tests/spline.cc: Use setParameter.
+
+2009-05-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check parameters update.
 	* tests/spline.cc: Here.
 	* tests/spline.stdout: Regenerate.
