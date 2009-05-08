@@ -127,7 +127,7 @@ namespace roboptim
 
     jacobian_t jac (m, nbp_ * m);
     for (size_type i = 0; i < m; ++i)
-      for (size_type j = 0; j < m; ++j)
+      for (size_type j = 0; j < nbp_ * m; ++j)
 	jac (i, j) = tmp (i, 0)[j];
 
     return jac;
@@ -164,7 +164,7 @@ namespace roboptim
 
     ublas::matrix<ublas::vector<double> > tmp (m, 1);
     for (size_type i = 0; i < m; ++i)
-      tmp (i, 0).resize (nbp_ * m);
+      tmp (i, 0).resize (parameters_.size ()+1);
 
     spline_->uncompress_grad (&all_t,
 	                      &fun_grad,
@@ -173,7 +173,7 @@ namespace roboptim
 
     jacobian_t jac (m, nbp_ * m);
     for (size_type i = 0; i < m; ++i)
-      for (size_type j = 0; j < m; ++j)
+      for (size_type j = 0; j < nbp_ * m; ++j)
 	jac (i, j) = tmp (i, 0)[j];
 
     return jac;

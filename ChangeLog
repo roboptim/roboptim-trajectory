@@ -1,3 +1,9 @@
+2009-05-08  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix Spline class.
+	Patch submitted by Sylvain Miossec.
+	* src/spline.cc: Here.
+
 2009-05-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix Spline and TrajectorySumCost implementation.
