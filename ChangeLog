@@ -1,5 +1,11 @@
 2009-05-08  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Replace MKDIR_P by mkdir_p.
+	* Makefile.am,
+	* doc/Makefile.am: Here.
+
+2009-05-08  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix Spline class.
 	Patch submitted by Sylvain Miossec.
 	* src/spline.cc: Here.
