@@ -42,6 +42,21 @@ namespace roboptim
     setParameters (p);
   }
 
+  Spline::Spline (const Spline& spline) throw ()
+    : Trajectory<4> (spline.timeRange (), spline.m, spline.parameters ()),
+      spline_ (),
+      nbp_ (spline.parameters ().size () / m)
+  {
+    assert (parameters_.size () >= 2 * m
+	    && parameters_.size () % m == 0);
+
+    //FIXME: check params here.
+    spline_ = new bspline (m, nbp_ + 4, 1, true, true, true);
+
+    setParameters (spline.parameters ());
+  }
+
+
   Spline::~Spline () throw ()
   {
     delete spline_;

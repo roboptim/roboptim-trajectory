@@ -25,8 +25,7 @@
 
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/spline.hh>
-#include <roboptim/trajectory/trajectory-sum-cost.hh>
-#include <roboptim/trajectory/state-cost.hh>
+#include <roboptim/trajectory/trajectory-cost.hh>
 
 #include "common.hh"
 
@@ -39,26 +38,56 @@ typedef boost::variant<const DerivableFunction*,
 typedef Solver<DerivableFunction, constraint_t> solver_t;
 
 
-struct MyStateCost : public StateCost<Spline>
+struct LengthCost : public TrajectoryCost<Spline>
 {
-  MyStateCost (size_type n)
-    : StateCost<Spline> (n)
+  LengthCost (const Spline& spline, discreteInterval_t interval)
+    : TrajectoryCost<Spline> (spline),
+      interval_ (interval)
   {
   }
 
-  virtual vector_t operator () (const vector_t&) const throw ()
+  virtual vector_t operator () (const vector_t& x) const throw ()
   {
     vector_t res (m);
-    res.clear ();
+
+    trajectory_t traj = trajectory_;
+    traj.setParameters (x);
+
+    using namespace boost;
+    using namespace boost::numeric::ublas;
+
+    for (value_type i = get<0> (interval_); i <= get<1> (interval_);
+	 i += get<2> (interval_))
+      {
+	vector_t t (1);
+	t[0] = i;
+
+	double tmp = norm_1 (traj.gradient (t, 0));
+	res[0] += tmp * tmp;
+      }
     return res;
   }
 
-  virtual gradient_t gradient (const vector_t&, int) const throw ()
+  virtual gradient_t gradient (const vector_t& x, int) const throw ()
   {
     gradient_t grad (n);
-    grad.clear ();
+
+    trajectory_t traj = trajectory_;
+    traj.setParameters (x);
+
+    using namespace boost;
+    using namespace boost::numeric::ublas;
+
+    for (value_type i = get<0> (interval_); i <= get<1> (interval_);
+	 i += get<2> (interval_))
+      {
+	double tmp = norm_1 (trajectory_.variationDerivWrtParam (i, 1));
+	grad[0] += tmp * tmp;
+      }
     return grad;
   }
+
+    discreteInterval_t interval_;
 };
 
 int run_test ()
@@ -99,25 +128,55 @@ int run_test ()
     << "# " << spline.variationConfigWrtParam (5.) << std::endl;
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
-  gnuplot << plot_xy (spline, interval);
+  gnuplot
+    << set ("multiplot")
+    << plot_xy (spline, interval);
 
   // Optimize.
   discreteInterval_t costInterval (0., 5., 0.5);
-
-  MyStateCost statecost (2);
-  TrajectorySumCost<Spline> cost (spline, statecost, costInterval);
+  LengthCost cost (spline, costInterval);
 
   solver_t::problem_t problem (cost);
+  problem.startingPoint () = params;
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
 
   solver_t::result_t res = solver.minimum ();
-  Result& result = boost::get<Result> (res);
 
-  spline.setParameters (result.x);
+  switch (res.which ())
+    {
+    case GenericSolver::SOLVER_VALUE:
+      {
+	Result& result = boost::get<Result> (res);
+	spline.setParameters (result.x);
+	gnuplot << plot_xy (spline, interval);
+	break;
+      }
 
-  std::cout << (gnuplot << plot_xy (spline, interval));
+    case GenericSolver::SOLVER_NO_SOLUTION:
+      {
+	std::cerr << "No solution" << std::endl;
+	return 1;
+      }
+    case GenericSolver::SOLVER_VALUE_WARNINGS:
+      {
+	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
+	spline.setParameters (result.x);
+	std::cerr << result.warnings << std::endl;
+	gnuplot << plot_xy (spline, interval);
+	break;
+      }
+
+    case GenericSolver::SOLVER_ERROR:
+      {
+	SolverError& result = boost::get<SolverError> (res);
+	std::cerr << result << std::endl;
+      return 1;
+      }
+    }
+
+  std::cout << (gnuplot << unset ("multiplot"));
   return 0;
 }
 

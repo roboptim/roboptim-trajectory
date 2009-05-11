@@ -33,6 +33,8 @@ namespace roboptim
   {
   public:
     Spline (bound_t, size_type, const vector_t&) throw ();
+    Spline (const Spline&) throw ();
+
     virtual ~Spline () throw ();
 
     virtual vector_t operator () (double) const throw ();
