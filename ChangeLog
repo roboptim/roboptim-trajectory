@@ -1,5 +1,13 @@
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Check Spline gradient.
+	* tests/Makefile.am: Build new test case.
+	* tests/spline-gradient.cc: New.
+	* tests/spline-gradient.stdout: New.
+	* tests/testsuite.at: Add new case to test suite.
+
+2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Factorize code in Spline class.
 	* src/spline.cc: Here.
 
