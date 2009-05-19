@@ -1,5 +1,10 @@
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Factorize code in Spline class.
+	* src/spline.cc: Here.
+
+2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add start/end constraint while optimizing the spline.
 	* tests/spline-optimization.cc: Here.
 

@@ -118,34 +118,7 @@ namespace roboptim
   Spline::jacobian_t
   Spline::variationConfigWrtParam (double t) const throw ()
   {
-    assert (timeRange ().first <= t && t <= timeRange ().second);
-    matrix_t fun (m, 1);
-
-    //FIXME: change by two points if required.
-    vector_t all_t (1);
-    all_t[0] = t;
-
-    ublas::matrix<ublas::vector<double> > fun_grad (m, 1);
-    for (size_type i = 0; i < m; ++i)
-      fun_grad (i, 0).resize (5);
-
-    spline_->calc_fun_grad(&all_t, &fun, &fun_grad, 1);
-
-    ublas::matrix<ublas::vector<double> > tmp (m, 1);
-    for (size_type i = 0; i < m; ++i)
-      tmp (i, 0).resize (parameters_.size ()+1);
-
-    spline_->uncompress_grad (&all_t,
-	                      &fun_grad,
-			      &tmp,
-			      1);
-
-    jacobian_t jac (m, nbp_ * m);
-    for (size_type i = 0; i < m; ++i)
-      for (size_type j = 0; j < nbp_ * m; ++j)
-	jac (i, j) = tmp (i, 0)[j];
-
-    return jac;
+    return variationDerivWrtParam (t, 0.);
   }
 
   Spline::jacobian_t
@@ -165,13 +138,13 @@ namespace roboptim
     switch (order)
       {
       case 0:
-	spline_->calc_fun_grad(&all_t, &fun, &fun_grad, 1);
+	spline_->calc_fun_grad (&all_t, &fun, &fun_grad, 1);
       case 1:
-	spline_->calc_dfun_grad(&all_t, &fun, &fun_grad, 1);
+	spline_->calc_dfun_grad (&all_t, &fun, &fun_grad, 1);
 	break;
 
       case 2:
-	spline_->calc_ddfun_grad(&all_t, &fun, &fun_grad, 1);
+	spline_->calc_ddfun_grad (&all_t, &fun, &fun_grad, 1);
 	break;
       default:
 	assert (0);
