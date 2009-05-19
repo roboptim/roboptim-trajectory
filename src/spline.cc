@@ -102,10 +102,10 @@ namespace roboptim
       {
       case 0:
 	return operator () (t);
+	break;
       case 1:
 	spline_->calc_dfun (t, &res);
 	break;
-
       case 2:
 	spline_->calc_ddfun(t, &res);
 	break;
@@ -139,6 +139,7 @@ namespace roboptim
       {
       case 0:
 	spline_->calc_fun_grad (&all_t, &fun, &fun_grad, 1);
+	break;
       case 1:
 	spline_->calc_dfun_grad (&all_t, &fun, &fun_grad, 1);
 	break;
@@ -200,7 +201,9 @@ namespace roboptim
   Spline::print (std::ostream& o) const throw ()
   {
     o << "Spline" << incindent << std::endl
-      << "Number of parameters per spline function: " << nbp_ << decindent;
+      << "Number of parameters per spline function: " << nbp_ << std::endl
+      << "Length: " << length ()
+      << decindent;
     return o;
   }
 } // end of namespace roboptim.

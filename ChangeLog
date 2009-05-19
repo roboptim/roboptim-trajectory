@@ -1,5 +1,10 @@
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Remove bugs and improve display in Spline class.
+	* src/spline.cc: Here.
+
+2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check Spline gradient.
 	* tests/Makefile.am: Build new test case.
 	* tests/spline-gradient.cc: New.
