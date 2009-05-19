@@ -1,5 +1,11 @@
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Enhance Spline gradient test case.
+	* tests/spline-gradient.cc: Display Spline for different
+	dummy parameters.
+
+2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Remove bugs and improve display in Spline class.
 	* src/spline.cc: Here.
 
