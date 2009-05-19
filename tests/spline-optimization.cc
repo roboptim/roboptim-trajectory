@@ -90,6 +90,52 @@ struct LengthCost : public TrajectoryCost<Spline>
     discreteInterval_t interval_;
 };
 
+struct FixStartEnd : public DerivableFunction
+{
+  FixStartEnd (const vector_t& parameters)
+    : DerivableFunction (1, 1),
+      parameters_ (parameters)
+  {
+  }
+
+  virtual vector_t operator () (const vector_t& x) const throw ()
+  {
+    vector_t res (m);
+    res (0) = 0.;
+
+    res (0) += (x[0] - parameters_[0]) * (x[0] - parameters_[0]);
+    res (0) += (x[1] - parameters_[1]) * (x[1] - parameters_[1]);
+
+    int n = parameters_.size () - 2;
+    res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
+
+    ++n;
+    res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
+
+    return res;
+  }
+
+  virtual gradient_t gradient (const vector_t& x, int) const throw ()
+  {
+    gradient_t grad (n);
+    grad (0) = 0.;
+
+    grad (0) += (x[0] - parameters_[0]);
+    grad (0) += (x[1] - parameters_[1]);
+
+    int n = parameters_.size () - 2;
+    grad (0) += (x[n] - parameters_[n]);
+
+    ++n;
+    grad (0) += (x[n] - parameters_[n]);
+
+    grad (0) *= 2.;
+    return grad;
+  }
+
+  const vector_t& parameters_;
+};
+
 int run_test ()
 {
   Spline::vector_t params (8);
@@ -139,10 +185,20 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
+  FixStartEnd fse (params);
+  problem.addConstraint (&fse, Function::makeBound (0., 0.));
+
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
 
+  std::cerr << "Cost function (before): " << cost (params) << std::endl;
+  std::cerr << "Parameters (before): " << params << std::endl;
+
   solver_t::result_t res = solver.minimum ();
+
+  std::cerr << "Parameters (after): " << params << std::endl;
+
+  std::cerr << solver << std::endl;
 
   switch (res.which ())
     {
@@ -163,7 +219,7 @@ int run_test ()
       {
 	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
 	spline.setParameters (result.x);
-	std::cerr << result.warnings << std::endl;
+	std::cerr << result << std::endl;
 	gnuplot << plot_xy (spline, interval);
 	break;
       }
