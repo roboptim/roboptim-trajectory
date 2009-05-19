@@ -1,5 +1,11 @@
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Debug Spline optimization test case.
+	* tests/spline-optimization.cc: Here.
+	* tests/spline-optimization.stdout: Regenerate.
+
+2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Enhance Spline gradient test case.
 	* tests/spline-gradient.cc: Display Spline for different
 	dummy parameters.

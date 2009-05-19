@@ -59,10 +59,7 @@ struct LengthCost : public TrajectoryCost<Spline>
     for (value_type i = get<0> (interval_); i <= get<1> (interval_);
 	 i += get<2> (interval_))
       {
-	vector_t t (1);
-	t[0] = i;
-
-	double tmp = norm_1 (traj.gradient (t, 0));
+	double tmp = norm_1 (traj.derivative (i, 1));
 	res[0] += tmp * tmp;
       }
     return res;
@@ -81,7 +78,7 @@ struct LengthCost : public TrajectoryCost<Spline>
     for (value_type i = get<0> (interval_); i <= get<1> (interval_);
 	 i += get<2> (interval_))
       {
-	double tmp = norm_1 (trajectory_.variationDerivWrtParam (i, 1));
+	double tmp = norm_1 (traj.variationDerivWrtParam (i, 2));
 	grad[0] += tmp * tmp;
       }
     return grad;
@@ -120,14 +117,14 @@ struct FixStartEnd : public DerivableFunction
     gradient_t grad (n);
     grad (0) = 0.;
 
-    grad (0) += (x[0] - parameters_[0]);
-    grad (0) += (x[1] - parameters_[1]);
+    grad (0) += (parameters_[0] - x[0]);
+    grad (0) += (parameters_[1] - x[1]);
 
     int n = parameters_.size () - 2;
-    grad (0) += (x[n] - parameters_[n]);
+    grad (0) += (parameters_[n] - x[n]);
 
     ++n;
-    grad (0) += (x[n] - parameters_[n]);
+    grad (0) += (parameters_[n] - x[n]);
 
     grad (0) *= 2.;
     return grad;
@@ -143,9 +140,9 @@ int run_test ()
   // Initial position.
   params[0] = 0.,  params[1] = 0.;
   // Control point 1.
-  params[2] = 25.,  params[3] = 50.;
+  params[2] = 25.,  params[3] = 100.;
   // Control point 2.
-  params[4] = 50.,  params[5] = 25.;
+  params[4] = 75.,  params[5] = 0.;
   // Final position.
   params[6] = 100., params[7] = 100.;
 
@@ -185,8 +182,15 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
-  FixStartEnd fse (params);
-  problem.addConstraint (&fse, Function::makeBound (0., 0.));
+  problem.argBounds ()[0] = Function::makeBound (params[0], params[0]);
+  problem.argBounds ()[1] = Function::makeBound (params[1], params[1]);
+
+  const int n = params.size ();
+  problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n-2]);
+  problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n-1]);
+
+//   FixStartEnd fse (params);
+//   problem.addConstraint (&fse, Function::makeBound (0., 0.));
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
