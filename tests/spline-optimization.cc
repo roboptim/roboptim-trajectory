@@ -59,7 +59,7 @@ struct LengthCost : public TrajectoryCost<Spline>
     for (value_type i = get<0> (interval_); i <= get<1> (interval_);
 	 i += get<2> (interval_))
       {
-	double tmp = norm_1 (traj.derivative (i, 1));
+	double tmp = norm_1 (traj.derivative (i, 2));
 	res[0] += tmp * tmp;
       }
     return res;
@@ -89,11 +89,13 @@ struct LengthCost : public TrajectoryCost<Spline>
 
 struct FixStartEnd : public DerivableFunction
 {
-  FixStartEnd (const vector_t& parameters)
+  FixStartEnd (const vector_t& parameters) throw ()
     : DerivableFunction (1, 1),
       parameters_ (parameters)
   {
   }
+
+  ~FixStartEnd () throw () {}
 
   virtual vector_t operator () (const vector_t& x) const throw ()
   {
@@ -130,7 +132,7 @@ struct FixStartEnd : public DerivableFunction
     return grad;
   }
 
-  const vector_t& parameters_;
+  const vector_t parameters_;
 };
 
 int run_test ()
@@ -186,8 +188,8 @@ int run_test ()
   problem.argBounds ()[1] = Function::makeBound (params[1], params[1]);
 
   const int n = params.size ();
-  problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n-2]);
-  problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n-1]);
+  problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n - 2]);
+  problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n - 1]);
 
 //   FixStartEnd fse (params);
 //   problem.addConstraint (&fse, Function::makeBound (0., 0.));

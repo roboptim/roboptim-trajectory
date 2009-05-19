@@ -1,5 +1,13 @@
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Debug Spline test cases.
+	* tests/spline-gradient.stdout: Regenerate.
+	* tests/spline-optimization.cc: Debug cost function.
+	* tests/spline-optimization.stdout: Regenerate.
+	* tests/testsuite.at: Remove XFAIL on spline-optimization.
+
+2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug Spline optimization test case.
 	* tests/spline-optimization.cc: Here.
 	* tests/spline-optimization.stdout: Regenerate.

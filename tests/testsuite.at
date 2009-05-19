@@ -31,6 +31,6 @@ AT_BANNER([Shared tests])
 CHECK_STDOUT([simple], [Check basic features.])
 CHECK_STDOUT([spline], [Check Spline class.])
 CHECK_STDOUT([spline-gradient], [Check Spline gradient.])
-CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.], [], [true])
+CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.])
 
 # End of testsuite.at
