@@ -57,4 +57,6 @@ generate-reference:
 # Distribute reference files.
 EXTRA_DIST +=					\
 	simple.stdout				\
+	spline-gradient.stdout			\
+	spline-optimization.stdout		\
 	spline.stdout
