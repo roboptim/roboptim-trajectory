@@ -1,3 +1,10 @@
+2009-05-20  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Check parameters size when creating a Spline.
+	* src/spline.cc: Check that the parameters vector size
+	is at least 4, otherwise fail (limitation related to
+	the Spline class implementation).
+
 2009-05-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Debug Spline test cases.

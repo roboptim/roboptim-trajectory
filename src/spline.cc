@@ -33,6 +33,10 @@ namespace roboptim
       spline_ (),
       nbp_ (p.size () / m)
   {
+    // Can not work with a smalle parameters vector.
+    assert (parameters_.size () >= 4);
+
+    //
     assert (parameters_.size () >= 2 * m
 	    && parameters_.size () % m == 0);
 
