@@ -17,6 +17,9 @@
 
 #include <boost/numeric/ublas/io.hpp>
 
+
+#include <roboptim/core/finite-difference-gradient.hh>
+
 #include <roboptim/core/solver-factory.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
@@ -110,25 +113,17 @@ struct FixStartEnd : public DerivableFunction
 
     ++n;
     res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
+    res (0) -= 10;
 
     return res;
   }
 
-  virtual gradient_t gradient (const vector_t& x, int) const throw ()
+  virtual gradient_t gradient (const vector_t& x, int i) const throw ()
   {
     gradient_t grad (n);
-    grad (0) = 0.;
 
-    grad (0) += (parameters_[0] - x[0]);
-    grad (0) += (parameters_[1] - x[1]);
-
-    int n = parameters_.size () - 2;
-    grad (0) += (parameters_[n] - x[n]);
-
-    ++n;
-    grad (0) += (parameters_[n] - x[n]);
-
-    grad (0) *= 2.;
+    for (unsigned j = 0; j < n; ++j)
+      grad[j] = -2 * (parameters_[j] - x[j]);
     return grad;
   }
 
@@ -191,8 +186,30 @@ int run_test ()
   problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n - 2]);
   problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n - 1]);
 
-//   FixStartEnd fse (params);
-//   problem.addConstraint (&fse, Function::makeBound (0., 0.));
+  FixStartEnd fse (params);
+
+  // Check gradient.
+  {
+    Function::vector_t x (params.size ());
+    x.clear ();
+    if (! checkGradient (fse, 0, x))
+      {
+	FiniteDifferenceGradient fdfunction (fse);
+	DerivableFunction::gradient_t grad = fse.gradient (x, 0);
+	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
+
+	std::cerr << fse (x) << std::endl
+		  << grad << std::endl
+		  << fdgrad << std::endl;
+	assert (0 && "Bad gradient");
+      }
+
+    x = params;
+    assert (checkGradient (fse, 0, x));
+  }
+
+
+  //problem.addConstraint (&fse, Function::makeBound (0., 0.));
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
