@@ -1,5 +1,11 @@
 2009-05-22  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Debug tests.
+	* tests/spline-gradient.cc,
+	* tests/spline-optimization.cc: Here.
+
+2009-05-22  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug gradient.
 	* tests/spline-optimization.cc: Here.
 

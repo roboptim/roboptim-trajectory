@@ -61,7 +61,7 @@ struct LengthCost : public TrajectoryCost<Spline>
     for (value_type t = get<0> (interval_); t <= get<1> (interval_);
 	 t += get<2> (interval_))
       {
-	double tmp = norm_2 (traj.derivative (t, 1));
+	double tmp = norm_2 (traj.derivative (t, 2));
 	res[0] += tmp * tmp;
       }
     res[0] /= 2.;
@@ -83,8 +83,10 @@ struct LengthCost : public TrajectoryCost<Spline>
 
     for (value_type t = get<0> (interval_); t <= get<1> (interval_);
 	 t += get<2> (interval_))
-      noalias (grad) += prod (traj (t),
-			      traj.variationDerivWrtParam (t, 1));
+      grad += prod (
+		    traj.derivative (t, 2),
+		    traj.variationDerivWrtParam (t, 2)
+		    );
     return grad;
   }
 
@@ -94,7 +96,7 @@ struct LengthCost : public TrajectoryCost<Spline>
 struct FixStartEnd : public DerivableFunction
 {
   FixStartEnd (const vector_t& parameters) throw ()
-    : DerivableFunction (1, 1),
+    : DerivableFunction (parameters.size (), 1),
       parameters_ (parameters)
   {
   }
@@ -103,6 +105,8 @@ struct FixStartEnd : public DerivableFunction
 
   virtual vector_t operator () (const vector_t& x) const throw ()
   {
+    std::cerr << "C::operator () (" << x << ")" << std::endl;
+
     vector_t res (m);
     res (0) = 0.;
 
@@ -122,9 +126,16 @@ struct FixStartEnd : public DerivableFunction
   virtual gradient_t gradient (const vector_t& x, int i) const throw ()
   {
     gradient_t grad (n);
+    grad.clear ();
 
-    for (unsigned j = 0; j < n; ++j)
-      grad[j] = -2 * (parameters_[j] - x[j]);
+    grad (0) += 2 * (x[0] - parameters_[0]);
+    grad (1) += 2 * (x[1] - parameters_[1]);
+
+    int n = parameters_.size () - 2;
+    grad (n) += 2 * (x[n] - parameters_[n]);
+
+    ++n;
+    grad (n) += 2 * (x[n] - parameters_[n]);
     return grad;
   }
 
@@ -144,29 +155,29 @@ int run_test ()
   // Final position.
   params[6] = 100., params[7] = 100.;
 
-  Spline spline (std::make_pair (0., 5.), 2, params);
-  discreteInterval_t interval (0., 5., 0.01);
+  Spline spline (std::make_pair (0., 4.), 2, params);
+  discreteInterval_t interval (0., 4., 0.01);
 
   std::cout
     << "# Values:" << std::endl
     << "# " << spline (0.) << std::endl
     << "# " << spline (2.5) << std::endl
-    << "# " << spline (5.) << std::endl
+    << "# " << spline (4.) << std::endl
 
     << "# 1st derivative:" << std::endl
     << "# " << spline.derivative (0., 1) << std::endl
     << "# " << spline.derivative (2.5, 1) << std::endl
-    << "# " << spline.derivative (5., 1) << std::endl
+    << "# " << spline.derivative (4., 1) << std::endl
 
     << "# 2nd derivative:" << std::endl
     << "# " << spline.derivative (0., 2) << std::endl
     << "# " << spline.derivative (2.5, 2) << std::endl
-    << "# " << spline.derivative (5., 2) << std::endl
+    << "# " << spline.derivative (4., 2) << std::endl
 
     << "# variationConfigWrtParam:" << std::endl
     << "# " << spline.variationConfigWrtParam (0.) << std::endl
     << "# " << spline.variationConfigWrtParam (2.5) << std::endl
-    << "# " << spline.variationConfigWrtParam (5.) << std::endl;
+    << "# " << spline.variationConfigWrtParam (4.) << std::endl;
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   gnuplot
@@ -175,7 +186,7 @@ int run_test ()
     << plot_xy (spline, interval);
 
   // Optimize.
-  discreteInterval_t costInterval (0., 5., 0.5);
+  discreteInterval_t costInterval (0., 4., 0.5);
   LengthCost cost (spline, costInterval);
 
   // Check cost gradient.
@@ -213,12 +224,12 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
-  problem.argBounds ()[0] = Function::makeBound (params[0], params[0]);
-  problem.argBounds ()[1] = Function::makeBound (params[1], params[1]);
+//   problem.argBounds ()[0] = Function::makeBound (params[0], params[0]);
+//   problem.argBounds ()[1] = Function::makeBound (params[1], params[1]);
 
-  const int n = params.size ();
-  problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n - 2]);
-  problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n - 1]);
+//   const int n = params.size ();
+//   problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n - 2]);
+//   problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n - 1]);
 
   FixStartEnd fse (params);
 
@@ -263,6 +274,7 @@ int run_test ()
       {
 	Result& result = boost::get<Result> (res);
 	spline.setParameters (result.x);
+	params = result.x;
 	gnuplot << plot_xy (spline, interval);
 	break;
       }
@@ -276,6 +288,7 @@ int run_test ()
       {
 	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
 	spline.setParameters (result.x);
+	params = result.x;
 	std::cerr << result << std::endl;
 	gnuplot << plot_xy (spline, interval);
 	break;
@@ -288,6 +301,24 @@ int run_test ()
       return 1;
       }
     }
+
+
+  // Check cost gradient (final).
+  {
+    if (! checkGradient (cost, 0, params))
+      {
+	FiniteDifferenceGradient fdfunction (cost);
+	DerivableFunction::gradient_t grad = cost.gradient (params, 0);
+	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (params, 0);
+
+	std::cerr << "Cost: " << cost (params) << std::endl
+		  << "Grad: " << grad << std::endl
+		  << "FD Grad: " << fdgrad << std::endl
+		  << "Difference: " << grad - fdgrad << std::endl;
+	assert (0 && "Bad gradient");
+      }
+  }
+
 
   std::cout << (gnuplot << unset ("multiplot"));
   return 0;
