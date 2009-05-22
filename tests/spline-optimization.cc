@@ -17,7 +17,6 @@
 
 #include <boost/numeric/ublas/io.hpp>
 
-
 #include <roboptim/core/finite-difference-gradient.hh>
 
 #include <roboptim/core/solver-factory.hh>
@@ -59,18 +58,22 @@ struct LengthCost : public TrajectoryCost<Spline>
     using namespace boost;
     using namespace boost::numeric::ublas;
 
-    for (value_type i = get<0> (interval_); i <= get<1> (interval_);
-	 i += get<2> (interval_))
+    for (value_type t = get<0> (interval_); t <= get<1> (interval_);
+	 t += get<2> (interval_))
       {
-	double tmp = norm_1 (traj.derivative (i, 2));
+	double tmp = norm_2 (traj.derivative (t, 1));
 	res[0] += tmp * tmp;
       }
+    res[0] /= 2.;
     return res;
   }
 
-  virtual gradient_t gradient (const vector_t& x, int) const throw ()
+  virtual gradient_t gradient (const vector_t& x, int i) const throw ()
   {
+    assert (i == 0);
+
     gradient_t grad (n);
+    grad.clear ();
 
     trajectory_t traj = trajectory_;
     traj.setParameters (x);
@@ -78,12 +81,10 @@ struct LengthCost : public TrajectoryCost<Spline>
     using namespace boost;
     using namespace boost::numeric::ublas;
 
-    for (value_type i = get<0> (interval_); i <= get<1> (interval_);
-	 i += get<2> (interval_))
-      {
-	double tmp = norm_1 (traj.variationDerivWrtParam (i, 2));
-	grad[0] += tmp * tmp;
-      }
+    for (value_type t = get<0> (interval_); t <= get<1> (interval_);
+	 t += get<2> (interval_))
+      noalias (grad) += prod (traj (t),
+			      traj.variationDerivWrtParam (t, 1));
     return grad;
   }
 
@@ -113,7 +114,7 @@ struct FixStartEnd : public DerivableFunction
 
     ++n;
     res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
-    res (0) -= 10;
+    res (0) -= 1;
 
     return res;
   }
@@ -169,12 +170,45 @@ int run_test ()
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   gnuplot
-    << set ("multiplot")
+    << set ("multiplot layout 1,2")
+    << set ("grid")
     << plot_xy (spline, interval);
 
   // Optimize.
   discreteInterval_t costInterval (0., 5., 0.5);
   LengthCost cost (spline, costInterval);
+
+  // Check cost gradient.
+  {
+    Function::vector_t x (params.size ());
+    x.clear ();
+    if (! checkGradient (cost, 0, x))
+      {
+	FiniteDifferenceGradient fdfunction (cost);
+	DerivableFunction::gradient_t grad = cost.gradient (x, 0);
+	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
+
+	std::cerr << "Cost: " << cost (x) << std::endl
+		  << "Grad: " << grad << std::endl
+		  << "FD Grad: " << fdgrad << std::endl
+		  << "Difference: " << grad - fdgrad << std::endl;
+	assert (0 && "Bad gradient");
+      }
+
+    x = params;
+    if (! checkGradient (cost, 0, x))
+      {
+	FiniteDifferenceGradient fdfunction (cost);
+	DerivableFunction::gradient_t grad = cost.gradient (x, 0);
+	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
+
+	std::cerr << "Cost: " << cost (x) << std::endl
+		  << "Grad: " << grad << std::endl
+		  << "FD Grad: " << fdgrad << std::endl
+		  << "Difference: " << grad - fdgrad << std::endl;
+	//	assert (0 && "Bad gradient");
+      }
+  }
 
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
@@ -188,7 +222,7 @@ int run_test ()
 
   FixStartEnd fse (params);
 
-  // Check gradient.
+  // Check constraint gradient.
   {
     Function::vector_t x (params.size ());
     x.clear ();
@@ -209,7 +243,7 @@ int run_test ()
   }
 
 
-  //problem.addConstraint (&fse, Function::makeBound (0., 0.));
+  problem.addConstraint (&fse, Function::makeBound (0., 0.));
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
