@@ -1,3 +1,10 @@
+2009-05-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Clean tests cases.
+	* tests/spline-gradient.cc,
+	* tests/spline-optimization.cc: Clean code.
+	* tests/spline-optimization.stdout: Regenerate.
+
 2009-05-22  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Debug tests.

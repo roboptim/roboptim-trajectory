@@ -34,58 +34,6 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-
-// FIXME: Fix parameter function design to avoid this special case.
-bool checkGradientParam (const Spline & spline, const Spline::vector_t& p,
-			 double t);
-
-bool checkGradientParam (const Spline & spline, const Spline::vector_t& p,
-			 double t)
-{
-  using namespace boost::numeric::ublas;
-
-  const double epsilon = 1e-3;
-  bool checkres = true;
-
-  Spline updatedSpline = spline;
-  updatedSpline.setParameters (p);
-
-  Spline::jacobian_t jacobian = updatedSpline.variationDerivWrtParam (t, 1);
-  Spline::jacobian_t fdjacobian (spline.m, spline.m * p.size ());
-
-  Spline::vector_t res = updatedSpline (t);
-
-  for (unsigned j = 0; j < spline.n; ++j)
-    {
-      Spline::vector_t pEps = p;
-
-      pEps[j] += epsilon;
-      updatedSpline.setParameters (pEps);
-      Spline::vector_t resEps = updatedSpline (t);
-
-      Spline::gradient_t fdgradient = (resEps - res) / epsilon;
-
-      Spline::gradient_t gradient (spline.n);
-      for (unsigned k = 0; k < spline.m; ++k)
-	fdjacobian (j, k) = fdgradient[k],
-	  gradient[k] = jacobian (j, k);
-
-      if (norm_2 (fdgradient - gradient) >= .01)
-	checkres = false;
-    }
-
-  if (!checkres)
-    {
-      std::cerr
-	<< "t : " << t << std::endl
-	<< "p : " << p << std::endl
-	<< "Jacobian : " << jacobian << std::endl
-	<< "FD jacobian : " << fdjacobian << std::endl;
-    }
-  return checkres;
-}
-
-
 int run_test ()
 {
   Spline::vector_t params (4);
@@ -133,9 +81,6 @@ int run_test ()
 	  for (double t = boost::get<0> (window); t < boost::get<1> (window);
 	       t += boost::get<2> (window))
 	    {
-// 	      if (!checkGradientParam (spline, params, t))
-// 		assert (0 && "Bad gradient.");
-
 	      Spline::vector_t grad = spline.derivative (t, i);
 	      std::cout << (boost::format ("%1% %2%\n") % t % grad (0)).str ();
 	    }

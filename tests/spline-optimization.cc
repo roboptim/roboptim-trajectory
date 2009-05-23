@@ -83,10 +83,8 @@ struct LengthCost : public TrajectoryCost<Spline>
 
     for (value_type t = get<0> (interval_); t <= get<1> (interval_);
 	 t += get<2> (interval_))
-      grad += prod (
-		    traj.derivative (t, 2),
-		    traj.variationDerivWrtParam (t, 2)
-		    );
+      noalias (grad) += prod (traj.derivative (t, 2),
+			      traj.variationDerivWrtParam (t, 2));
     return grad;
   }
 
@@ -105,8 +103,6 @@ struct FixStartEnd : public DerivableFunction
 
   virtual vector_t operator () (const vector_t& x) const throw ()
   {
-    std::cerr << "C::operator () (" << x << ")" << std::endl;
-
     vector_t res (m);
     res (0) = 0.;
 
@@ -217,19 +213,12 @@ int run_test ()
 		  << "Grad: " << grad << std::endl
 		  << "FD Grad: " << fdgrad << std::endl
 		  << "Difference: " << grad - fdgrad << std::endl;
-	//	assert (0 && "Bad gradient");
+	assert (0 && "Bad gradient");
       }
   }
 
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
-
-//   problem.argBounds ()[0] = Function::makeBound (params[0], params[0]);
-//   problem.argBounds ()[1] = Function::makeBound (params[1], params[1]);
-
-//   const int n = params.size ();
-//   problem.argBounds ()[n - 2] = Function::makeBound (params[n - 2], params[n - 2]);
-//   problem.argBounds ()[n - 1] = Function::makeBound (params[n - 1], params[n - 1]);
 
   FixStartEnd fse (params);
 
