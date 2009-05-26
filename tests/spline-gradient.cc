@@ -112,7 +112,6 @@ int run_test ()
 		 t += boost::get<2> (window))
 	      {
 		Spline::matrix_t jac = spline.variationDerivWrtParam (t, i);
-		//std::cerr << jac.size1 () << "/" << jac.size2 () << std::endl;
 		std::cout << (boost::format ("%1% %2%\n") % t % jac (0, j)).str ();
 	      }
 	std::cout << "e" << std::endl;

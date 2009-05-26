@@ -1,3 +1,12 @@
+2009-05-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Use new function interface.
+	* include/roboptim/trajectory/spline.hh,
+	* include/roboptim/trajectory/trajectory.hxx,
+	* src/spline.cc: Use new interface.
+	* tests/spline-gradient.cc: Remove dead code.
+	* tests/spline-optimization.cc: Use new interface.
+
 2009-05-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Clean tests cases.

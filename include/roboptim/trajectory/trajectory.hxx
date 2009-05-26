@@ -25,9 +25,11 @@
 namespace roboptim
 {
   template <unsigned dorder>
-  Trajectory<dorder>::Trajectory (bound_t tr, size_type m, const vector_t& p)
+  Trajectory<dorder>::Trajectory (bound_t tr,
+				  size_type outputSize,
+				  const vector_t& p)
     throw ()
-    : parent_t (m),
+    : parent_t (outputSize),
       timeRange_ (tr),
       parameters_ (p),
       singularPoints_ ()
@@ -78,7 +80,7 @@ namespace roboptim
   typename Trajectory<dorder>::vector_t
   Trajectory<dorder>::state (double t, size_type order) const throw ()
   {
-    size_type dimension = this->m;
+    size_type dimension = this->outputSize ();
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)
@@ -96,7 +98,7 @@ namespace roboptim
   Trajectory<dorder>::variationStateWrtParam (double t, size_type order)
     const throw ()
   {
-    size_type dimension = this->m;
+    size_type dimension = this->outputSize ();
     size_type parameterSize = parameters ().size ();
     jacobian_t result ((dimension + 1) * order, parameterSize);
 

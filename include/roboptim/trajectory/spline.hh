@@ -37,11 +37,7 @@ namespace roboptim
 
     virtual ~Spline () throw ();
 
-    virtual vector_t operator () (double) const throw ();
-
     virtual void setParameters (const vector_t&) throw ();
-
-    virtual vector_t derivative (double x, size_type order) const throw ();
 
     virtual jacobian_t variationConfigWrtParam (double t) const throw ();
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
@@ -53,6 +49,12 @@ namespace roboptim
       const;
 
     virtual std::ostream& print (std::ostream&) const throw ();
+
+  protected:
+    void impl_compute (result_t&, double) const throw ();
+    void impl_derivative (gradient_t& g, double x, size_type order)
+      const throw ();
+
   private:
     vector_t makeBSplineVector ();
 

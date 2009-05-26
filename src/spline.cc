@@ -28,34 +28,39 @@
 namespace roboptim
 {
   //FIXME: defined_lc_in has to be true (false untested).
-  Spline::Spline (bound_t tr, size_type m, const vector_t& p) throw ()
-    : Trajectory<4> (tr, m, p),
+  Spline::Spline (bound_t tr, size_type outputSize, const vector_t& p) throw ()
+    : Trajectory<4> (tr, outputSize, p),
       spline_ (),
-      nbp_ (p.size () / m)
+      nbp_ (p.size () / outputSize)
   {
     // Can not work with a smalle parameters vector.
     assert (parameters_.size () >= 4);
 
     //
-    assert (parameters_.size () >= 2 * m
-	    && parameters_.size () % m == 0);
+    assert (parameters_.size () >= 2 * outputSize
+	    && parameters_.size () % outputSize == 0);
 
     //FIXME: check params here.
-    spline_ = new bspline (m, nbp_ + 4, 1, true, true, true);
+    spline_ = new bspline (outputSize, nbp_ + 4, 1, true, true, true);
 
     setParameters (p);
   }
 
   Spline::Spline (const Spline& spline) throw ()
-    : Trajectory<4> (spline.timeRange (), spline.m, spline.parameters ()),
+    : Trajectory<4> (spline.timeRange (), spline.outputSize (),
+		     spline.parameters ()),
       spline_ (),
-      nbp_ (spline.parameters ().size () / m)
+      nbp_ (spline.parameters ().size () / spline.outputSize ())
   {
-    assert (parameters_.size () >= 2 * m
-	    && parameters_.size () % m == 0);
+    // Can not work with a smalle parameters vector.
+    assert (parameters_.size () >= 4);
+
+    assert (parameters_.size () >= 2 * spline.outputSize ()
+	    && parameters_.size () % spline.outputSize () == 0);
 
     //FIXME: check params here.
-    spline_ = new bspline (m, nbp_ + 4, 1, true, true, true);
+    spline_ = new bspline (spline.outputSize (), nbp_ + 4, 1,
+			   true, true, true);
 
     setParameters (spline.parameters ());
   }
@@ -73,10 +78,10 @@ namespace roboptim
     parameters_ = p;
 
     // Initialized by convert_parameters.
-    vector_t pos_init (m);
-    vector_t final_pos (m);
+    vector_t pos_init (outputSize ());
+    vector_t final_pos (outputSize ());
     double l = 0.;
-    matrix_t mp (m, nbp_ - 2);
+    matrix_t mp (outputSize (), nbp_ - 2);
 
     vector_t splineParams = makeBSplineVector ();
 
@@ -88,35 +93,32 @@ namespace roboptim
     spline_->def_parameters (&mp, pos_init, final_pos, l);
   }
 
-  Spline::vector_t
-  Spline::operator () (double t) const throw ()
+  void
+  Spline::impl_compute (result_t& derivative, double t) const throw ()
   {
     assert (timeRange ().first <= t && t <= timeRange ().second);
-    vector_t res (m);
-    spline_->calc_fun (t, &res);
-    return res;
+    this->derivative (derivative, t, 0);
   }
 
-  Spline::vector_t
-  Spline::derivative (double t, size_type order) const throw ()
+  void
+  Spline::impl_derivative (gradient_t& derivative, double t, size_type order)
+    const throw ()
   {
     assert (timeRange ().first <= t && t <= timeRange ().second);
-    vector_t res (m);
     switch (order)
       {
       case 0:
-	return operator () (t);
+	spline_->calc_fun (t, &derivative);
 	break;
       case 1:
-	spline_->calc_dfun (t, &res);
+	spline_->calc_dfun (t, &derivative);
 	break;
       case 2:
-	spline_->calc_ddfun(t, &res);
+	spline_->calc_ddfun(t, &derivative);
 	break;
       default:
 	assert (0);
       }
-    return res;
   }
 
   Spline::jacobian_t
@@ -130,13 +132,13 @@ namespace roboptim
     const throw ()
   {
     assert (timeRange ().first <= t && t <= timeRange ().second);
-    matrix_t fun (m, 1);
+    matrix_t fun (outputSize (), 1);
 
     vector_t all_t (1);
     all_t[0] = t;
 
-    ublas::matrix<ublas::vector<double> > fun_grad (m, 1);
-    for (size_type i = 0; i < m; ++i)
+    ublas::matrix<ublas::vector<double> > fun_grad (outputSize (), 1);
+    for (size_type i = 0; i < outputSize (); ++i)
       fun_grad (i, 0).resize (5);
 
     switch (order)
@@ -155,8 +157,8 @@ namespace roboptim
 	assert (0);
       }
 
-    ublas::matrix<ublas::vector<double> > tmp (m, 1);
-    for (size_type i = 0; i < m; ++i)
+    ublas::matrix<ublas::vector<double> > tmp (outputSize (), 1);
+    for (size_type i = 0; i < outputSize (); ++i)
       tmp (i, 0).resize (parameters_.size ()+1);
 
     spline_->uncompress_grad (&all_t,
@@ -164,9 +166,9 @@ namespace roboptim
 			      &tmp,
 			      1);
 
-    jacobian_t jac (m, nbp_ * m);
-    for (size_type i = 0; i < m; ++i)
-      for (size_type j = 0; j < nbp_ * m; ++j)
+    jacobian_t jac (outputSize (), nbp_ * outputSize ());
+    for (size_type i = 0; i < outputSize (); ++i)
+      for (size_type j = 0; j < nbp_ * outputSize (); ++j)
 	jac (i, j) = tmp (i, 0)[j];
 
     return jac;

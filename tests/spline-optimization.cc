@@ -48,10 +48,9 @@ struct LengthCost : public TrajectoryCost<Spline>
   {
   }
 
-  virtual vector_t operator () (const vector_t& x) const throw ()
+  void
+  impl_compute (result_t& res, const argument_t& x) const throw ()
   {
-    vector_t res (m);
-
     trajectory_t traj = trajectory_;
     traj.setParameters (x);
 
@@ -65,14 +64,12 @@ struct LengthCost : public TrajectoryCost<Spline>
 	res[0] += tmp * tmp;
       }
     res[0] /= 2.;
-    return res;
   }
 
-  virtual gradient_t gradient (const vector_t& x, int i) const throw ()
+  void
+  impl_gradient (gradient_t& grad, const argument_t& x, int i) const throw ()
   {
     assert (i == 0);
-
-    gradient_t grad (n);
     grad.clear ();
 
     trajectory_t traj = trajectory_;
@@ -85,7 +82,6 @@ struct LengthCost : public TrajectoryCost<Spline>
 	 t += get<2> (interval_))
       noalias (grad) += prod (traj.derivative (t, 2),
 			      traj.variationDerivWrtParam (t, 2));
-    return grad;
   }
 
     discreteInterval_t interval_;
@@ -101,9 +97,9 @@ struct FixStartEnd : public DerivableFunction
 
   ~FixStartEnd () throw () {}
 
-  virtual vector_t operator () (const vector_t& x) const throw ()
+  void
+  impl_compute (result_t& res, const argument_t& x) const throw ()
   {
-    vector_t res (m);
     res (0) = 0.;
 
     res (0) += (x[0] - parameters_[0]) * (x[0] - parameters_[0]);
@@ -115,13 +111,11 @@ struct FixStartEnd : public DerivableFunction
     ++n;
     res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
     res (0) -= 1;
-
-    return res;
   }
 
-  virtual gradient_t gradient (const vector_t& x, int i) const throw ()
+  void
+  impl_gradient (gradient_t& grad, const argument_t& x, int i) const throw ()
   {
-    gradient_t grad (n);
     grad.clear ();
 
     grad (0) += 2 * (x[0] - parameters_[0]);
@@ -132,7 +126,6 @@ struct FixStartEnd : public DerivableFunction
 
     ++n;
     grad (n) += 2 * (x[n] - parameters_[n]);
-    return grad;
   }
 
   const vector_t parameters_;
