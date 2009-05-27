@@ -30,7 +30,7 @@ edit = $(SED) -e "s|@prefix\@|$(prefix)|"			\
               -e 's,@PACKAGE_REQD\@,$(PACKAGE_REQD),g'	\
               -e 's,@VERSION\@,$(PACKAGE_VERSION),g'
 
-@PACKAGE_TARNAME@.pc: $(srcdir)/build-aux/pkg-config.pc.in
+@PACKAGE_TARNAME@.pc: $(srcdir)/configure $(srcdir)/build-aux/pkg-config.pc.in
 	$(edit) $(srcdir)/build-aux/pkg-config.pc.in >$@
 
 EXTRA_DIST += build-aux/pkg-config.pc.in
