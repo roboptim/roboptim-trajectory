@@ -1,5 +1,10 @@
 2009-05-27  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Distribute pkg.m4.
+	* build-aux/pkg.m4: New.
+
+2009-05-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Use new function interface.
 	* include/roboptim/trajectory/spline.hh,
 	* include/roboptim/trajectory/trajectory.hxx,
