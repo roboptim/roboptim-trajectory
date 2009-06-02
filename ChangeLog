@@ -1,5 +1,21 @@
 2009-06-02  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Make Libtool support more robust.
+	* .gitignore: Remove committed file from ignore list.
+	* build-aux/config.guess: New.
+	* build-aux/config.sub: New.
+	* build-aux/depcomp: New.
+	* build-aux/install-sh: New.
+	* build-aux/libtool.m4: New.
+	* build-aux/ltmain.sh: New.
+	* build-aux/ltoptions.m4: New.
+	* build-aux/ltsugar.m4: New.
+	* build-aux/ltversion.m4: New.
+	* build-aux/lt~obsolete.m4: New.
+	* build-aux/missing: New.
+
+2009-06-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Clean building chain.
 	* Makefile.am: Add Libtool rules.
 	* build-aux/acx_pthread.m4: Remove.
