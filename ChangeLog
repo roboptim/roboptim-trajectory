@@ -1,3 +1,12 @@
+2009-06-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Clean building chain.
+	* Makefile.am: Add Libtool rules.
+	* build-aux/acx_pthread.m4: Remove.
+	* build-aux/bootstrap: Remove force from autoreconf call.
+	* configure.ac: Remove unneeded macro.
+	* src/Makefile.am: Do not link against pthreads.
+
 2009-05-27  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Make pkg-config depends on configure.

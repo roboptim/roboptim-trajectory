@@ -15,6 +15,10 @@ EXTRA_DIST = bootstrap build-aux/bootstrap
 # Nothing to do in this directory.
 all:
 
+# Libtool rules
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
+libtool: $(LIBTOOL_DEPS)
+
 
 # Pkg-config generation
 PKG_CONFIG_FILE = @PACKAGE_TARNAME@.pc

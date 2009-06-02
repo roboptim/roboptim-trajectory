@@ -17,6 +17,6 @@ libroboptim_trajectory_la_SOURCES += 	\
 
 
 libroboptim_trajectory_la_LIBADD = \
-	$(ROBOPTIMCORE_LIBS) $(PTHREAD_LIBS) -lroboptim-core
+	$(ROBOPTIMCORE_LIBS)
 libroboptim_trajectory_la_CXXFLAGS = \
-	$(ROBOPTIM_CORE_HEADERS) $(ROBOPTIMCORE_CFLAGS) $(PTHREAD_CFLAGS)
+	$(ROBOPTIM_CORE_HEADERS) $(ROBOPTIMCORE_CFLAGS)
