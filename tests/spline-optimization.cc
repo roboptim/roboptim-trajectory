@@ -28,6 +28,7 @@
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
+#include <roboptim/trajectory/spline-length.hh>
 
 #include "common.hh"
 
@@ -39,53 +40,6 @@ typedef boost::variant<const DerivableFunction*,
 		       const LinearFunction*> constraint_t;
 typedef Solver<DerivableFunction, constraint_t> solver_t;
 
-
-struct LengthCost : public TrajectoryCost<Spline>
-{
-  LengthCost (const Spline& spline, discreteInterval_t interval)
-    : TrajectoryCost<Spline> (spline),
-      interval_ (interval)
-  {
-  }
-
-  void
-  impl_compute (result_t& res, const argument_t& x) const throw ()
-  {
-    trajectory_t traj = trajectory_;
-    traj.setParameters (x);
-
-    using namespace boost;
-    using namespace boost::numeric::ublas;
-
-    for (value_type t = get<0> (interval_); t <= get<1> (interval_);
-	 t += get<2> (interval_))
-      {
-	double tmp = norm_2 (traj.derivative (t, 2));
-	res[0] += tmp * tmp;
-      }
-    res[0] /= 2.;
-  }
-
-  void
-  impl_gradient (gradient_t& grad, const argument_t& x, int i) const throw ()
-  {
-    assert (i == 0);
-    grad.clear ();
-
-    trajectory_t traj = trajectory_;
-    traj.setParameters (x);
-
-    using namespace boost;
-    using namespace boost::numeric::ublas;
-
-    for (value_type t = get<0> (interval_); t <= get<1> (interval_);
-	 t += get<2> (interval_))
-      noalias (grad) += prod (traj.derivative (t, 2),
-			      traj.variationDerivWrtParam (t, 2));
-  }
-
-    discreteInterval_t interval_;
-};
 
 struct FixStartEnd : public DerivableFunction
 {
@@ -176,7 +130,7 @@ int run_test ()
 
   // Optimize.
   discreteInterval_t costInterval (0., 4., 0.5);
-  LengthCost cost (spline, costInterval);
+  SplineLength cost (spline, costInterval);
 
   // Check cost gradient.
   {

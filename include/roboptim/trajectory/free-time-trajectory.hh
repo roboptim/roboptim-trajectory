@@ -25,9 +25,11 @@ namespace roboptim
   class FreeTimeTrajectory : public Trajectory<DerivabilityOrder>
   {
   public:
-    /// \brief Constructor with fixed definition interval trajectory
-    /// \param traj Trajectory defining this one by reparameterization
-    FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, double) throw ();
+    /// Constructor with fixed definition interval trajectory
+    ///
+    /// \param traj trajectory defining this one by reparameterization
+    /// \param s time scale
+    FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, double s) throw ();
     virtual ~FreeTimeTrajectory () throw ();
 
     virtual vector_t operator () (double) const throw ();
@@ -43,16 +45,16 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    /// \brief Get index of time scaling parameter in vector
+    /// Get index of time scaling parameter in vector
     double timeScale () const throw ();
 
     virtual std::ostream& print (std::ostream&) const throw ();
   private:
     double scaleTime (double) const throw ();
 
-    /// \brief Fixed time trajectory
+    /// Fixed time trajectory
     const Trajectory<DerivabilityOrder>& trajectory_;
-    /// \brief Store time scaling parameter \f$\textbf{p}_{m+1}\f$.
+    /// Store time scaling parameter \f$\textbf{p}_{m+1}\f$.
     double timeScale_;
   };
 } // end of namespace roboptim.
