@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <boost/assign/list_of.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
 #include <roboptim/core/finite-difference-gradient.hh>
-
+#include <roboptim/core/freeze.hh>
 #include <roboptim/core/solver-factory.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
@@ -40,53 +41,9 @@ typedef boost::variant<const DerivableFunction*,
 		       const LinearFunction*> constraint_t;
 typedef Solver<DerivableFunction, constraint_t> solver_t;
 
-
-struct FixStartEnd : public DerivableFunction
-{
-  FixStartEnd (const vector_t& parameters) throw ()
-    : DerivableFunction (parameters.size (), 1),
-      parameters_ (parameters)
-  {
-  }
-
-  ~FixStartEnd () throw () {}
-
-  void
-  impl_compute (result_t& res, const argument_t& x) const throw ()
-  {
-    res (0) = 0.;
-
-    res (0) += (x[0] - parameters_[0]) * (x[0] - parameters_[0]);
-    res (0) += (x[1] - parameters_[1]) * (x[1] - parameters_[1]);
-
-    int n = parameters_.size () - 2;
-    res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
-
-    ++n;
-    res (0) += (x[n] - parameters_[n]) * (x[n] - parameters_[n]);
-    res (0) -= 1;
-  }
-
-  void
-  impl_gradient (gradient_t& grad, const argument_t& x, int i) const throw ()
-  {
-    grad.clear ();
-
-    grad (0) += 2 * (x[0] - parameters_[0]);
-    grad (1) += 2 * (x[1] - parameters_[1]);
-
-    int n = parameters_.size () - 2;
-    grad (n) += 2 * (x[n] - parameters_[n]);
-
-    ++n;
-    grad (n) += 2 * (x[n] - parameters_[n]);
-  }
-
-  const vector_t parameters_;
-};
-
 int run_test ()
 {
+  using namespace boost::assign;
   Spline::vector_t params (8);
 
   // Initial position.
@@ -167,30 +124,32 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
-  FixStartEnd fse (params);
+  Freeze freeze (params.size (), list_of <Freeze::frozenArgument_t> (0, params[0])
+		 (1, params[1])
+		 (params.size () - 2, params[params.size () - 2])
+		 (params.size () - 1, params[params.size () - 1]));
 
   // Check constraint gradient.
   {
     Function::vector_t x (params.size ());
     x.clear ();
-    if (! checkGradient (fse, 0, x))
+    if (! checkGradient (freeze, 0, x))
       {
-	FiniteDifferenceGradient fdfunction (fse);
-	DerivableFunction::gradient_t grad = fse.gradient (x, 0);
+	FiniteDifferenceGradient fdfunction (freeze);
+	DerivableFunction::gradient_t grad = freeze.gradient (x, 0);
 	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
 
-	std::cerr << fse (x) << std::endl
+	std::cerr << freeze (x) << std::endl
 		  << grad << std::endl
 		  << fdgrad << std::endl;
 	assert (0 && "Bad gradient");
       }
 
     x = params;
-    assert (checkGradient (fse, 0, x));
+    assert (checkGradient (freeze, 0, x));
   }
 
-
-  problem.addConstraint (&fse, Function::makeBound (0., 0.));
+  problem.addConstraint (&freeze, Function::makeBound (0., 0.));
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();

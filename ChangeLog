@@ -1,5 +1,11 @@
 2009-06-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use Freeze constraint in test suite.
+	* tests/spline-optimization.cc: Use the freeze
+	generic constraint.
+
+2009-06-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement SplineLength.
 	* include/Makefile.am: Distribute new header.
 	* include/roboptim/trajectory/free-time-trajectory.hh:
