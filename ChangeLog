@@ -1,3 +1,8 @@
+2009-06-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add tests to Doxygen EXAMPLE_PATH.
+	* doc/Doxyfile.in: Here.
+
 2009-06-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Use Freeze constraint in test suite.
