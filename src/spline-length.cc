@@ -16,7 +16,6 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <roboptim/trajectory/spline-length.hh>
-#include <roboptim/trajectory/spline.hh>
 
 namespace roboptim
 {
@@ -52,7 +51,8 @@ namespace roboptim
   }
 
   void
-  SplineLength::impl_gradient (gradient_t& grad, const argument_t& p, int i)
+  SplineLength::impl_gradient (gradient_t& grad, const argument_t& p,
+			       size_type i)
     const throw ()
   {
     assert (i == 0);

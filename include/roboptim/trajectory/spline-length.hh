@@ -18,17 +18,22 @@
 #ifndef ROBOPTIM_TRAJECTORY_SPLINE_LENGTH_HH
 # define ROBOPTIM_TRAJECTORY_SPLINE_LENGTH_HH
 # include <roboptim/trajectory/fwd.hh>
+# include <roboptim/trajectory/spline.hh>
 # include <roboptim/trajectory/trajectory-cost.hh>
+
 
 namespace roboptim
 {
-  /// Approximate the length of a Spline.
+  /// \addtogroup roboptim_function
+  /// @{
+
+  /// \brief Approximate the length of a Spline.
   ///
   /// The length is computed using:
   ///
-  /// \f[\frac{1}{2} \int_{tmin}^{tmax} ||\ddot{\Gamma_p(t)}||^2 dt\f]
+  /// \f[\frac{1}{2} \int_{t_{min}}^{t_{max}} ||\ddot{\Gamma_p(t)}||^2 dt\f]
   ///
-  /// \f$tmin\f$ and \f$tmax\f$ are given when the object is instantiated.
+  /// \f$t_{min}\f$ and \f$t_{max}\f$ are given when the object is instantiated.
   class SplineLength : public TrajectoryCost<Spline>
   {
   public:
@@ -44,13 +49,15 @@ namespace roboptim
     virtual ~SplineLength () throw ();
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
-    void impl_gradient (gradient_t& grad, const argument_t& p, int i) const throw ();
+    void impl_compute (result_t&, const argument_t&) const throw ();
+    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw ();
 
   private:
-    /// Interval on which the length is computed.
+    /// \brief Interval on which the length is computed.
     discreteInterval_t interval_;
   };
+
+  /// \@
 
 } // end of namespace roboptim.
 

@@ -15,10 +15,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * \brief Class Trajectory declaration.
- */
-
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # include <utility>
@@ -28,38 +24,43 @@
 
 namespace roboptim
 {
-  /**
-     \brief Abstract trajectory
-     A trajectory is a piecewise smooth mapping \f$\Gamma\f$ from
-     <ul>
-     <li>the Cartesian product of a definition interval and a vector space
-     of parameters \f$\textbf{R}^m\f$</li>
-     <li>to a vector space \f$\textbf{R}^n\f$:
-     \f[
-     \begin{array}{llll}
-     \Gamma : & [t_{min}, t_{max}] \times \textbf{R}^m & \rightarrow &
-     \textbf{R}^n \\
-     & (t, \textbf{p}) & \rightarrow & \Gamma_{\textbf{p}}(t)
-     \end{array}
-     \f]
-     </li>
-     </ul>
-  */
+  /// \addtogroup roboptim_meta_function
+  /// @{
+
+  /// \brief Abstract trajectory
+  ///
+  /// A trajectory is a piecewise smooth mapping \f$\Gamma\f$ from
+  /// - the Cartesian product of a definition interval and a vector space
+  ///   of parameters \f$\textbf{R}^m\f$
+  /// - to a vector space \f$\textbf{R}^n\f$:
+  /**   \f[
+\begin{array}{llll}
+ \Gamma: & [t_{min}, t_{max}] \times \textbf{R}^m & \rightarrow & \textbf{R}^n \\
+  & (t, \textbf{p}) & \rightarrow & \Gamma_{\textbf{p}}(t)
+\end{array}
+        \f]*/
+  ///
+  /// \tparam DerivabilityOrder derivability order
   template <unsigned DerivabilityOrder>
   class Trajectory : public NTimesDerivableFunction<DerivabilityOrder>
   {
   public:
+    /// \brief Parent type.
     typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
 
+    /// \brief Import value type.
     typedef typename parent_t::value_type value_type;
+    /// \brief Import size type.
     typedef typename parent_t::size_type size_type;
+    /// \brief Import vector type.
     typedef typename parent_t::vector_t vector_t;
+    /// \brief Import jacobian type.
     typedef typename parent_t::jacobian_t jacobian_t;
+    /// \brief Import interval type.
+    typedef typename parent_t::interval_t interval_t;
 
-    typedef std::pair<value_type, value_type> bound_t;
 
-
-    Trajectory (bound_t, size_type, const vector_t&) throw ();
+    Trajectory (interval_t, size_type, const vector_t&) throw ();
     virtual ~Trajectory () throw ();
 
     /// \name Accessing parameters, and state.
@@ -68,7 +69,7 @@ namespace roboptim
     const vector_t& parameters () const throw ();
     virtual void setParameters (const vector_t&) throw ();
 
-    bound_t timeRange () const throw ();
+    interval_t timeRange () const throw ();
     value_type length () const throw ();
 
     /// \brief Get state along trajectory
@@ -77,11 +78,11 @@ namespace roboptim
     /// \param order the higher order \f$r\f$ of the required derivative
     /// \return the state defined as the vector containing the
     /// config and first derivatives:
-    /// \f[
-    /// \textbf{X}(t) = \left(\Gamma_{\textbf{p}}(t),
-    /// \frac{d\Gamma_{\textbf{p}}}{dt}(t),\cdots,
-    /// \frac{d^{r}\Gamma_{\textbf{p}}}{dt^{r}}(t)\right)
-    /// \f]
+    /** \f[
+\textbf{X}(t) = \left(\Gamma_{\textbf{p}}(t),
+\frac{d\Gamma_{\textbf{p}}}{dt}(t),\cdots,
+\frac{d^{r}\Gamma_{\textbf{p}}}{dt^{r}}(t)\right)
+    \f]*/
     /// The configuration and derivatives are concatenated in one vector.
     virtual vector_t state (double t, size_type order) const throw ();
 
@@ -102,24 +103,27 @@ namespace roboptim
     ///
     /// \param t value \f$t\f$ in the definition interval.
     /// \param order order \f$r\f$ of the derivative.
-    /// \return Jacobian:
-    /// \f[\frac{\partial}{\partial\textbf{p}}
-    /// \left(\frac{d^r\Gamma_{\textbf{p}}}{dt^r}(t)\right)\f]
+    /// \return jacobian
+    /** \f[
+\frac{\partial}{\partial\textbf{p}}
+\left(\frac{d^r\Gamma_{\textbf{p}}}{dt^r}(t)\right)
+        \f]*/
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
       const throw () = 0;
 
-    /**
-       \brief Get the variation of the state with respect to parameter vector
+    /// \brief Get the variation of the state with respect to parameter vector
+    ///
+    /// \param t value \f$t\f$ in the definition interval.
+    /// \param order order \f$r\f$ of the derivative.
+    /// \return jacobian
+    /** \f[
+\left(\begin{array}{c}\frac{\partial}{\partial \lambda}
+ \Gamma_{\textbf{p}}(t) \\
+ \vdots \\
+ \frac{\partial}{\partial \lambda}\frac{d\Gamma_{\textbf{p}}^r}{dt^r}(t)
+\end{array}\right)
+        \f]**/
 
-       \param t value \f$t\f$ in the definition interval.
-       \param order order \f$r\f$ of the derivative.
-       \return Jacobian:
-       \f[\left(\begin{array}{c}\frac{\partial}{\partial \lambda}
-       \Gamma_{\textbf{p}}(t) \						\
-       \vdots \								\
-       \frac{\partial}{\partial \lambda}\frac{d\Gamma_{\textbf{p}}^r}{dt^r}(t)
-       \end{array}\right)\f]
-    */
     jacobian_t variationStateWrtParam (double t, size_type order) const throw ();
 
     /// \}
@@ -154,10 +158,13 @@ namespace roboptim
 
     virtual std::ostream& print (std::ostream&) const throw ();
   protected:
-    bound_t timeRange_;
+    interval_t timeRange_;
     vector_t parameters_;
     size_type singularPoints_;
   };
+
+  /// @}
+
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/trajectory.hxx>

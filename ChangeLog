@@ -1,3 +1,22 @@
+2009-06-08  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Update to new interface and document.
+	* doc/Doxyfile.in,
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/fwd.hh,
+	* include/roboptim/trajectory/spline-length.hh,
+	* include/roboptim/trajectory/spline.hh,
+	* include/roboptim/trajectory/state-cost.hh,
+	* include/roboptim/trajectory/trajectory-cost.hh,
+	* include/roboptim/trajectory/trajectory-sum-cost.hh,
+	* include/roboptim/trajectory/trajectory.hh,
+	* include/roboptim/trajectory/trajectory.hxx,
+	* src/doc.hh,
+	* src/spline-length.cc,
+	* src/spline.cc,
+	* tests/spline-optimization.cc: Update to new interface
+	and add documentation.
+
 2009-06-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Add tests to Doxygen EXAMPLE_PATH.

@@ -15,17 +15,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * \brief Class Trajectory implementation.
- */
-
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX
 
 namespace roboptim
 {
   template <unsigned dorder>
-  Trajectory<dorder>::Trajectory (bound_t tr,
+  Trajectory<dorder>::Trajectory (interval_t tr,
 				  size_type outputSize,
 				  const vector_t& p)
     throw ()
@@ -62,7 +58,7 @@ namespace roboptim
 
 
   template <unsigned dorder>
-  typename Trajectory<dorder>::bound_t
+  typename Trajectory<dorder>::interval_t
   Trajectory<dorder>::timeRange () const throw ()
   {
     return timeRange_;

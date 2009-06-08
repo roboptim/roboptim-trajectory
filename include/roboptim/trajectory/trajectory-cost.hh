@@ -22,17 +22,35 @@
 
 namespace roboptim
 {
+  /// \addtogroup roboptim_meta_function
+  /// @{
+
+  /// \brief Meta-function for trajectory cost.
+  ///
+  /// This is a \f$\mathbb{R}^n \rightarrow \mathbb{R}\f$
+  /// meta-function for costs on trajectories.
+  ///
+  /// It takes a trajectory as its input.
+  ///
+  /// \tparam T trajectory type
   template <typename T>
   class TrajectoryCost : public DerivableFunction
   {
   public:
+    /// \brief Trajectory type.
     typedef T trajectory_t;
 
-    TrajectoryCost (const trajectory_t&) throw ();
+    /// \brief Concret class should call this constructor.
+    ///
+    /// \param traj trajectory on which the cost is computed
+    TrajectoryCost (const trajectory_t& traj) throw ();
     virtual ~TrajectoryCost () throw ();
   protected:
+    /// \brief Input trajectory.
     const trajectory_t& trajectory_;
   };
+
+  /// @}
 
 } // end of namespace roboptim.
 

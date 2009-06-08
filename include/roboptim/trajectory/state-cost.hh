@@ -22,30 +22,38 @@
 
 namespace roboptim
 {
+  /// \addtogroup roboptim_meta_function
+  /// @{
 
-  /**
-     \brief Cost of a state
-
-     The state of a system is defined as the vector containing the configuration and derivatives up to order \f$r\f$ of the configuration:
-     \f[
-     \textbf{X} = \left(\textbf{q}, \frac{d\textbf{q}}{dt},\cdots,\frac{d^{r}\textbf{q}}{dt^{r}}(t)\right)
-     \f]
-     \f$r\f$ is called the order of the state.
-
-     The cost of a state is a real valued function defined over the state space:
-     \f[
-     C(\textbf{X})\in \textbf{R}
-     \f]
-  */
+  /// \brief Cost function taking a state as its input.
+  ///
+  /// The state of a system is defined as the vector containing the
+  /// configuration and derivatives up to order \f$r\f$ of the
+  /// configuration:
+  /**\f[
+\textbf{X} =
+\left(\textbf{q}, \frac{d\textbf{q}}{dt},\cdots,\frac{d^{r}\textbf{q}}{dt^{r}}(t)
+\right)
+     \f]*/
+  /// \f$r\f$ is called the order of the state.
+  /// The cost of a state is a real valued function defined over the state space:
+  /// \f[C(\textbf{X})\in \textbf{R}\f]
   template <typename T>
   class StateCost : public DerivableFunction
   {
   public:
+    /// \brief Trajectory type.
     typedef T trajectory_t;
-    StateCost (size_type m) throw ();
+
+    /// \brief Concrete class should call this constructor.
+    /// /param inputSize input size
+    StateCost (size_type inputSize) throw ();
 
     virtual ~StateCost() throw ();
   };
+
+  /// @}
+
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/state-cost.hxx>

@@ -149,7 +149,7 @@ int run_test ()
     assert (checkGradient (freeze, 0, x));
   }
 
-  problem.addConstraint (&freeze, Function::makeBound (0., 0.));
+  problem.addConstraint (&freeze, Function::makeInterval (0., 0.));
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();

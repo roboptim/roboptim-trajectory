@@ -21,6 +21,13 @@
 
 namespace roboptim
 {
+  /// \addtogroup roboptim_function
+  /// @{
+
+  /// \brief Decorate a trajectory to make time scalable.
+  ///
+  /// Build a trajectory from an input trajectory and a time scale
+  /// factor.
   template <unsigned DerivabilityOrder>
   class FreeTimeTrajectory : public Trajectory<DerivabilityOrder>
   {
@@ -30,10 +37,17 @@ namespace roboptim
     /// \param traj trajectory defining this one by reparameterization
     /// \param s time scale
     FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, double s) throw ();
+
     virtual ~FreeTimeTrajectory () throw ();
 
     virtual vector_t operator () (double) const throw ();
 
+    /// \brief Compute the derivative of the function.
+    ///
+    /// Derivative is computed for a certain order, at a given point.
+    /// \param x point at which the derivative will be computed
+    /// \param order derivative order (if 0 then function is evaluated)
+    /// \return derivative vector
     virtual vector_t derivative (double x, size_type order) const throw ();
 
     virtual jacobian_t variationConfigWrtParam (double t) const throw ();
@@ -45,18 +59,36 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    /// Get index of time scaling parameter in vector
+    /// \brief Get time scale factor.
+    /// \return time scale factor.
     double timeScale () const throw ();
 
-    virtual std::ostream& print (std::ostream&) const throw ();
+    /// \brief Display the function on the specified output stream.
+    ///
+    /// \param o output stream used for display
+    /// \return output stream
+    virtual std::ostream& print (std::ostream& o) const throw ();
   private:
-    double scaleTime (double) const throw ();
+    /// \brief Scale input time argument.
+    ///
+    /// Scale input argument with the same factor that the input
+    /// trajectory:
+    /// \f[t' = t_{min} + \lambda * (t - t_{min})\f]
+    /// where \f$[t_{min}, t_{max}]\f$ is the input trajectory time range and
+    /// \f[\lambda\f] the scale factor.
+    ///
+    /// \param t input time
+    /// \return new scaled time
+    double scaleTime (double t) const throw ();
 
-    /// Fixed time trajectory
+    /// \brief Input fixed time trajectory.
     const Trajectory<DerivabilityOrder>& trajectory_;
-    /// Store time scaling parameter \f$\textbf{p}_{m+1}\f$.
+    /// \brief Store time scaling parameter \f$\textbf{p}_{m+1}\f$.
     double timeScale_;
   };
+
+  /// @}
+
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/free-time-trajectory.hxx>

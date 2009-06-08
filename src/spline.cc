@@ -16,10 +16,6 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * \brief Class Spline implementation.
- */
-
 #include <roboptim/core/indent.hh>
 #include <roboptim/trajectory/spline.hh>
 
@@ -28,7 +24,8 @@
 namespace roboptim
 {
   //FIXME: defined_lc_in has to be true (false untested).
-  Spline::Spline (bound_t tr, size_type outputSize, const vector_t& p) throw ()
+  Spline::Spline (interval_t tr, size_type outputSize, const vector_t& p)
+    throw ()
     : Trajectory<4> (tr, outputSize, p),
       spline_ (),
       nbp_ (p.size () / outputSize)

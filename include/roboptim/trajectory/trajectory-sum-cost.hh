@@ -26,23 +26,52 @@
 
 namespace roboptim
 {
+  /// \addtogroup roboptim_meta_function
+  /// @{
+
+  /// \brief Define trajectory cost as the sum of state costs.
+  ///
+  /// Define a generic cost on a trajectory as the sum of costs
+  /// on several states.
+  ///
+  /// \tparam T trajectory type
   template <typename T>
   class TrajectorySumCost : public TrajectoryCost<T>
   {
   public:
+    /// \brief Parent type.
     typedef TrajectoryCost<T> parent_t;
+    /// \brief Trajectory type.
     typedef T trajectory_t;
+    /// \brief State cost type.
     typedef StateCost<T> stateCost_t;
 
-    // FIXME: remove this.
+    /// \brief Import vector type.
     typedef typename parent_t::vector_t vector_t;
+    /// \brief Import gradient type.
     typedef typename parent_t::gradient_t gradient_t;
+    /// \brief Import discrete interval type.
     typedef typename parent_t::discreteInterval_t discreteInterval_t;
 
-    TrajectorySumCost (const trajectory_t&, const stateCost_t&,
-		       const vector_t&) throw ();
-    TrajectorySumCost (const trajectory_t&, const stateCost_t&,
-		       const discreteInterval_t&) throw ();
+    /// \brief Instantiate from a trajectory, a state cost and a list
+    /// of discrete points.
+    ///
+    /// \param traj trajectory on which the cost is computed
+    /// \param statecost state cost object
+    /// \param vector point list
+    TrajectorySumCost (const trajectory_t& traj,
+		       const stateCost_t& statecost,
+		       const vector_t& vector) throw ();
+
+    /// \brief Instantiate from a trajectory, a state cost and a list
+    /// of discrete points.
+    ///
+    /// \param traj trajectory on which the cost is computed
+    /// \param statecost state cost object
+    /// \param interval discrete interval used to generate point list
+    TrajectorySumCost (const trajectory_t& traj,
+		       const stateCost_t& statecost,
+		       const discreteInterval_t& interval) throw ();
 
     virtual ~TrajectorySumCost () throw ();
 
@@ -50,9 +79,13 @@ namespace roboptim
     virtual gradient_t gradient (const vector_t&, int) const throw ();
 
   protected:
+    /// \brief State cost object.
     const stateCost_t& stateCost_;
+    /// \brief Point list.
     std::vector<double> points_;
   };
+
+  /// @}
 
 } // end of namespace roboptim.
 
