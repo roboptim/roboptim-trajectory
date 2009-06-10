@@ -1,3 +1,19 @@
+2009-06-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Synchronize with share.
+	* build-aux/boost.m4,
+	* build-aux/deb.mk: Synchronize.
+	* build-aux/doxygen.m4: New.
+	* build-aux/ebuild.mk,
+	* build-aux/init.mk: Synchronize.
+	* build-aux/pkg-config.mk: New.
+	* build-aux/pkg-config.pc.in,
+	* build-aux/rpm.mk: Synchronize.
+	* configure.ac,
+	* doc/Doxyfile.in,
+	* doc/Makefile.am,
+	* doc/sf-upload.sh.in: Synchronize.
+
 2009-06-08  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Update to new interface and document.

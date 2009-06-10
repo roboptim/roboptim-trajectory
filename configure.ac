@@ -52,15 +52,25 @@ AC_PROG_MKDIR_P
 AC_PROG_SED
 
 # Search for Doxygen.
-AC_ARG_VAR([DOXYGEN], [the Doxygen documentation generation program])
-AC_CHECK_PROGS([DOXYGEN], [doxygen])
+JRL_PROG_DOXYGEN
 
 # Search for Libtool.
 LT_INIT([dlopen])
 
 # Search for RobOptim core.
 ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.2])
-AC_SUBST([PACKAGE_REQD], ["roboptim-core >= 0.2"])
+
+
+## ------------ ##
+## Pkg-config.  ##
+## ------------ ##
+
+AC_SUBST([PKGCONFIG_DESCRIPTION], ['RobOptim core library'])
+AC_SUBST([PKGCONFIG_REQUIRES], ["roboptim-core >= 0.2"])
+AC_SUBST([PKGCONFIG_CONFLICTS], [])
+AC_SUBST([PKGCONFIG_LIBS], [-lroboptim-core])
+AC_SUBST([PKGCONFIG_CFLAGS], [])
+
 
 ## ------------ ##
 ## Test-suite.  ##
@@ -87,10 +97,6 @@ AC_CONFIG_FILES([
     tests/atlocal
     tests/package.m4
 ])
-
-AC_CONFIG_FILES([doc/Doxyfile])
-
-AC_CONFIG_FILES([doc/sf-upload.sh], [chmod +x doc/sf-upload.sh])
 
 # Write files.
 AC_OUTPUT
