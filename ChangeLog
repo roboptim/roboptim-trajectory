@@ -1,3 +1,9 @@
+2009-06-11  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix build-chain when headers are in non-standard directories.
+	* src/Makefile.am,
+	* tests/Makefile.am: Add ROBOPTIMCORE_CFLAGS to CPPFLAGS.
+
 2009-06-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Synchronize.

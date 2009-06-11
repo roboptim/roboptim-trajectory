@@ -1,6 +1,9 @@
 include $(top_srcdir)/build-aux/init.mk
 include $(top_srcdir)/build-aux/autotest.mk
 
+# Add RobOptim flags.
+AM_CPPFLAGS += $(ROBOPTIMCORE_CFLAGS)
+
 # Add available warnings flags.
 AM_CXXFLAGS += $(WARNING_CXXFLAGS)
 
