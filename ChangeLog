@@ -1,5 +1,10 @@
 2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix buildchain.
+	* Makefile.am: Use new pkg-config rules.
+
+2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement Freeze class.
 	* include/Makefile.am: Distribute new headers.
 	* include/roboptim/trajectory/freeze.hh: New.
