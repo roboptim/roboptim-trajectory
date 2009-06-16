@@ -1,5 +1,10 @@
 2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Do not use boost::make_shared.
+	* include/roboptim/trajectory/freeze.hxx: Here.
+
+2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Synchonize with share.
 	* build-aux/pkg-config.mk: Here.
 

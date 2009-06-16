@@ -17,8 +17,6 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREEZE_HXX
 # define ROBOPTIM_TRAJECTORY_FREEZE_HXX
-# include <boost/make_shared.hpp>
-
 # include <roboptim/core/numeric-linear-function.hh>
 
 namespace roboptim
@@ -57,9 +55,10 @@ namespace roboptim
 
 	b[0] = -it->second;
 
-	shared_ptr<C> ptr = static_pointer_cast<C>
-	  (make_shared<NumericLinearFunction> (a, b));
-	this->problem_.addConstraint (ptr,
+	NumericLinearFunction* ptr = new NumericLinearFunction (a, b);
+	shared_ptr<C> constraint =
+	  static_pointer_cast<C> (shared_ptr<NumericLinearFunction> (ptr));
+	this->problem_.addConstraint (constraint,
 				      Function::makeInterval (0., 0.));
       }
   }
