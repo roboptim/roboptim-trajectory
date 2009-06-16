@@ -17,3 +17,4 @@ tests/testsuite
 +committed/
 ,*
 testsuite.log
+*svn-log*

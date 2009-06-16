@@ -4,6 +4,8 @@ include $(top_srcdir)/build-aux/init.mk
 nobase_include_HEADERS =					\
 	roboptim/trajectory/free-time-trajectory.hh		\
 	roboptim/trajectory/free-time-trajectory.hxx		\
+	roboptim/trajectory/freeze.hh				\
+	roboptim/trajectory/freeze.hxx				\
 	roboptim/trajectory/fwd.hh				\
 	roboptim/trajectory/spline.hh				\
 	roboptim/trajectory/spline-length.hh			\

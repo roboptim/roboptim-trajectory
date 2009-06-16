@@ -1,3 +1,12 @@
+2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Implement Freeze class.
+	* include/Makefile.am: Distribute new headers.
+	* include/roboptim/trajectory/freeze.hh: New.
+	* include/roboptim/trajectory/freeze.hxx: New.
+	* tests/spline-optimization.cc: Use Freeze.
+	* tests/spline-optimization.stdout: Regenerate.
+
 2009-06-11  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix build-chain when headers are in non-standard directories.

@@ -16,20 +16,21 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/assign/list_of.hpp>
+#include <boost/mpl/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
 #include <roboptim/core/finite-difference-gradient.hh>
-#include <roboptim/core/freeze.hh>
 #include <roboptim/core/solver-factory.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
 #include <roboptim/core/visualization/gnuplot-function.hh>
 
+#include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/fwd.hh>
+#include <roboptim/trajectory/spline-length.hh>
 #include <roboptim/trajectory/spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
-#include <roboptim/trajectory/spline-length.hh>
 
 #include "common.hh"
 
@@ -37,8 +38,7 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-typedef boost::variant<const DerivableFunction*,
-		       const LinearFunction*> constraint_t;
+typedef boost::mpl::vector<DerivableFunction, LinearFunction> constraint_t;
 typedef Solver<DerivableFunction, constraint_t> solver_t;
 
 int run_test ()
@@ -124,32 +124,14 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
-  Freeze freeze (params.size (), list_of <Freeze::frozenArgument_t> (0, params[0])
-		 (1, params[1])
-		 (params.size () - 2, params[params.size () - 2])
-		 (params.size () - 1, params[params.size () - 1]));
-
-  // Check constraint gradient.
-  {
-    Function::vector_t x (params.size ());
-    x.clear ();
-    if (! checkGradient (freeze, 0, x))
-      {
-	FiniteDifferenceGradient fdfunction (freeze);
-	DerivableFunction::gradient_t grad = freeze.gradient (x, 0);
-	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
-
-	std::cerr << freeze (x) << std::endl
-		  << grad << std::endl
-		  << fdgrad << std::endl;
-	assert (0 && "Bad gradient");
-      }
-
-    x = params;
-    assert (checkGradient (freeze, 0, x));
-  }
-
-  problem.addConstraint (&freeze, Function::makeInterval (0., 0.));
+  typedef Freeze<DerivableFunction, constraint_t, LinearFunction> freeze_t;
+  freeze_t freeze (problem,
+		   list_of <freeze_t::frozenArgument_t>
+		   (0, params[0])
+		   (1, params[1])
+		   (params.size () - 2, params[params.size () - 2])
+		   (params.size () - 1, params[params.size () - 1]));
+  freeze ();
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
@@ -158,8 +140,6 @@ int run_test ()
   std::cerr << "Parameters (before): " << params << std::endl;
 
   solver_t::result_t res = solver.minimum ();
-
-  std::cerr << "Parameters (after): " << params << std::endl;
 
   std::cerr << solver << std::endl;
 
@@ -197,6 +177,7 @@ int run_test ()
       }
     }
 
+  std::cerr << "Parameters (after): " << params << std::endl;
 
   // Check cost gradient (final).
   {
