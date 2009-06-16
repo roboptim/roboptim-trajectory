@@ -65,10 +65,10 @@ ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.2])
 ## Pkg-config.  ##
 ## ------------ ##
 
-AC_SUBST([PKGCONFIG_DESCRIPTION], ['RobOptim core library'])
+AC_SUBST([PKGCONFIG_DESCRIPTION], ['RobOptim trajectory library'])
 AC_SUBST([PKGCONFIG_REQUIRES], ["roboptim-core >= 0.2"])
 AC_SUBST([PKGCONFIG_CONFLICTS], [])
-AC_SUBST([PKGCONFIG_LIBS], [-lroboptim-core])
+AC_SUBST([PKGCONFIG_LIBS], [-lroboptim-trajectory])
 AC_SUBST([PKGCONFIG_CFLAGS], [])
 
 
