@@ -1,5 +1,11 @@
 2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Regenerate test suite output on 32-bits machine.
+	* tests/spline-gradient.stdout,
+	* tests/spline-optimization.stdout: Regenerate.
+
+2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix pkg-config file.
 	* configure.ac: Here.
 
