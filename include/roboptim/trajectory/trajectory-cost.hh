@@ -43,7 +43,9 @@ namespace roboptim
     /// \brief Concret class should call this constructor.
     ///
     /// \param traj trajectory on which the cost is computed
-    TrajectoryCost (const trajectory_t& traj) throw ();
+    /// \param name function's name
+    TrajectoryCost (const trajectory_t& traj,
+		    std::string name = std::string ()) throw ();
     virtual ~TrajectoryCost () throw ();
   protected:
     /// \brief Input trajectory.

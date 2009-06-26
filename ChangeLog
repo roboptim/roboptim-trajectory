@@ -1,3 +1,10 @@
+2009-06-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add titles to functions.
+	* include/roboptim/trajectory/trajectory-cost.hh,
+	* include/roboptim/trajectory/trajectory-cost.hxx,
+	* src/spline-length.cc: Add titles to function.
+
 2009-06-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Regenerate test suite output on 32-bits machine.

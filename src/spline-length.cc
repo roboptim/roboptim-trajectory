@@ -22,7 +22,7 @@ namespace roboptim
   SplineLength::SplineLength (const Spline& spline,
 			      discreteInterval_t interval)
     throw ()
-    : TrajectoryCost<Spline> (spline),
+    : TrajectoryCost<Spline> (spline, "spline length"),
       interval_ (interval)
   {
   }
