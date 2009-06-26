@@ -1,5 +1,10 @@
 2009-06-26  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use foreach for iterating.
+	* src/spline-length.cc: Here.
+
+2009-06-26  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add titles to functions.
 	* include/roboptim/trajectory/trajectory-cost.hh,
 	* include/roboptim/trajectory/trajectory-cost.hxx,

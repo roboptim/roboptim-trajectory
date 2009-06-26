@@ -19,6 +19,49 @@
 
 namespace roboptim
 {
+  namespace
+  {
+    struct SumLength
+    {
+      SumLength (const Spline& traj, double& res)
+	: traj_ (traj),
+	  res_ (res)
+      {}
+
+      void operator () (const double& t)
+      {
+	using namespace boost::numeric::ublas;
+	double tmp = norm_2 (traj_.derivative (t, 2));
+	res_ += tmp * tmp;
+      }
+
+    private:
+      const Spline& traj_;
+      double& res_;
+    };
+
+    struct SumLengthGrad
+    {
+      SumLengthGrad (const Spline& traj,
+		     SplineLength::gradient_t& grad)
+	: traj_ (traj),
+	  grad_ (grad)
+      {}
+
+      void operator () (const double& t)
+      {
+	using namespace boost::numeric::ublas;
+	noalias (grad_) += prod (traj_.derivative (t, 2),
+				 traj_.variationDerivWrtParam (t, 2));
+      }
+
+    private:
+      const Spline& traj_;
+      SplineLength::gradient_t& grad_;
+    };
+
+  }
+
   SplineLength::SplineLength (const Spline& spline,
 			      discreteInterval_t interval)
     throw ()
@@ -38,15 +81,8 @@ namespace roboptim
     trajectory_t traj = trajectory_;
     traj.setParameters (p);
 
-    using namespace boost;
-    using namespace boost::numeric::ublas;
-
-    for (value_type t = get<0> (interval_); t <= get<1> (interval_);
-	 t += get<2> (interval_))
-      {
-	double tmp = norm_2 (traj.derivative (t, 2));
-	res[0] += tmp * tmp;
-      }
+    SumLength sumlength (traj, res[0]);
+    foreach (interval_, sumlength);
     res[0] /= 2.;
   }
 
@@ -61,12 +97,7 @@ namespace roboptim
     trajectory_t traj = trajectory_;
     traj.setParameters (p);
 
-    using namespace boost;
-    using namespace boost::numeric::ublas;
-
-    for (value_type t = get<0> (interval_); t <= get<1> (interval_);
-	 t += get<2> (interval_))
-      noalias (grad) += prod (traj.derivative (t, 2),
-			      traj.variationDerivWrtParam (t, 2));
+    SumLengthGrad sumlengthgrad (traj, grad);
+    foreach (interval_, sumlengthgrad);
   }
 } // end of namespace roboptim.
