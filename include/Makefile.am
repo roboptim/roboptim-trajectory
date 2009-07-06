@@ -17,3 +17,6 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/trajectory-sum-cost.hxx		\
 	roboptim/trajectory/trajectory.hh			\
 	roboptim/trajectory/trajectory.hxx
+
+nobase_include_HEADERS +=					\
+	roboptim/trajectory/visualization/trajectory.hh

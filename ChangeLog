@@ -1,3 +1,12 @@
+2009-07-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add Gnuplot command for trajectory display.
+	* include/Makefile.am: Distribute new header.
+	* include/roboptim/trajectory/visualization/trajectory.hh: New.
+	* tests/spline-optimization.cc: Display trajectory using new
+	plotting function.
+	* tests/spline-optimization.stdout: Regenerate.
+
 2009-07-02  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Handle submodules and check git.
@@ -459,7 +468,7 @@
 	* src/Makefile.am,
 	* configure.ac,
 	* Makefile.am,
-	* build-aux/pkg-config.pc.in: 
+	* build-aux/pkg-config.pc.in:
 	* If roboptim-core is not found, use pkg-config.
 	* doc/Doxyfile.in: Retrieve roboptim-core doxytag.
 

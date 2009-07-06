@@ -31,6 +31,7 @@
 #include <roboptim/trajectory/spline-length.hh>
 #include <roboptim/trajectory/spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
+#include <roboptim/trajectory/visualization/trajectory.hh>
 
 #include "common.hh"
 
@@ -83,7 +84,7 @@ int run_test ()
   gnuplot
     << set ("multiplot layout 1,2")
     << set ("grid")
-    << plot_xy (spline, interval);
+    << plot_xy (spline);
 
   // Optimize.
   discreteInterval_t costInterval (0., 4., 0.5);
@@ -150,7 +151,7 @@ int run_test ()
 	Result& result = boost::get<Result> (res);
 	spline.setParameters (result.x);
 	params = result.x;
-	gnuplot << plot_xy (spline, interval);
+	gnuplot << plot_xy (spline);
 	break;
       }
 
@@ -165,7 +166,7 @@ int run_test ()
 	spline.setParameters (result.x);
 	params = result.x;
 	std::cerr << result << std::endl;
-	gnuplot << plot_xy (spline, interval);
+	gnuplot << plot_xy (spline);
 	break;
       }
 
