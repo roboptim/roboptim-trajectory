@@ -51,7 +51,7 @@ namespace roboptim
 	  void operator () (const typename T::value_type t) const
 	  {
 	    Function::vector_t res = traj_ (t);
-	    assert (res.size () == 2);
+	    assert (res.size () >= 2);
 	    str_ += (boost::format ("%1% %2%\n") % res[0] % res [1]).str ();
 	  }
 
@@ -66,7 +66,7 @@ namespace roboptim
 		       typename Trajectory<N>::value_type step)
       {
 	using namespace detail;
-	assert (traj.outputSize () == 2);
+	assert (traj.outputSize () >= 2);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
 	Function::discreteInterval_t interval (min, max, step);

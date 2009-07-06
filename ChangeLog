@@ -1,5 +1,13 @@
 2009-07-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Make checks on displayed trajectories less stricts.
+	* include/roboptim/trajectory/visualization/trajectory.hh:
+	Allow trajectories that have more than two dimensions to be
+	plotted, additional dimensions will be discarded by the
+	drawing algorithm.
+
+2009-07-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add Gnuplot command for trajectory display.
 	* include/Makefile.am: Distribute new header.
 	* include/roboptim/trajectory/visualization/trajectory.hh: New.
