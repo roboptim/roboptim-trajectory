@@ -23,6 +23,22 @@
 
 namespace roboptim
 {
+  namespace detail
+  {
+    // Allow small underflow and overflow of t.
+    double fixTime (double t, const Spline& spline)
+    {
+      static const double epsilon = 1e-5;
+      const double tmin = Function::getLowerBound (spline.timeRange ());
+      const double tmax = Function::getUpperBound (spline.timeRange ());
+      if (t < tmin && (t + epsilon) >= tmin)
+	  return tmin;
+      if (t > tmax && (t - epsilon) <= tmax)
+	  return tmax;
+      return t;
+    }
+  } // end of namespace detail.
+
   //FIXME: defined_lc_in has to be true (false untested).
   Spline::Spline (interval_t tr, size_type outputSize, const vector_t& p)
     throw ()
@@ -93,6 +109,7 @@ namespace roboptim
   void
   Spline::impl_compute (result_t& derivative, double t) const throw ()
   {
+    t = detail::fixTime (t, *this);
     assert (timeRange ().first <= t && t <= timeRange ().second);
     this->derivative (derivative, t, 0);
   }
@@ -101,6 +118,7 @@ namespace roboptim
   Spline::impl_derivative (gradient_t& derivative, double t, size_type order)
     const throw ()
   {
+    t = detail::fixTime (t, *this);
     assert (timeRange ().first <= t && t <= timeRange ().second);
     switch (order)
       {
@@ -128,6 +146,7 @@ namespace roboptim
   Spline::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
+    t = detail::fixTime (t, *this);
     assert (timeRange ().first <= t && t <= timeRange ().second);
     matrix_t fun (outputSize (), 1);
 

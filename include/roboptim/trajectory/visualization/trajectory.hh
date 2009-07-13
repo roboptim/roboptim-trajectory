@@ -35,7 +35,7 @@ namespace roboptim
       /// \param step discretization step.
       /// \return Gnuplot command
       template <unsigned N>
-      Command plot_xy (const Trajectory<N>& f,
+      Command plot_xy (const Trajectory<N>& traj,
 		       typename Trajectory<N>::value_type step = .01);
 
       namespace detail

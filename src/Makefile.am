@@ -20,7 +20,7 @@ libroboptim_trajectory_la_SOURCES += 	\
 	spline/bspline.h
 
 
-libroboptim_trajectory_la_LIBADD = \
+libroboptim_trajectory_la_LIBADD = 	\
 	$(ROBOPTIMCORE_LIBS)
-libroboptim_trajectory_la_CXXFLAGS = \
+libroboptim_trajectory_la_CXXFLAGS = 	\
 	$(ROBOPTIM_CORE_HEADERS) $(ROBOPTIMCORE_CFLAGS)
