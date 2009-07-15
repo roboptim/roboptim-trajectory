@@ -52,7 +52,7 @@ namespace roboptim
 	  {
 	    Function::vector_t res = traj_ (t);
 	    assert (res.size () >= 2);
-	    str_ += (boost::format ("%1% %2%\n") % res[0] % res [1]).str ();
+	    str_ += (boost::format ("%1f %2f\n") % res[0] % res [1]).str ();
 	  }
 
 	private:

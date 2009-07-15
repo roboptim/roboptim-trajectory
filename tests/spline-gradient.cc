@@ -82,7 +82,7 @@ int run_test ()
 	       t += boost::get<2> (window))
 	    {
 	      Spline::vector_t grad = spline.derivative (t, i);
-	      std::cout << (boost::format ("%1% %2%\n") % t % grad (0)).str ();
+	      std::cout << (boost::format ("%1f %2f\n") % t % grad (0)).str ();
 	    }
 	  std::cout << "e" << std::endl;
 	}
@@ -112,7 +112,7 @@ int run_test ()
 		 t += boost::get<2> (window))
 	      {
 		Spline::matrix_t jac = spline.variationDerivWrtParam (t, i);
-		std::cout << (boost::format ("%1% %2%\n") % t % jac (0, j)).str ();
+		std::cout << (boost::format ("%1f %2f\n") % t % jac (0, j)).str ();
 	      }
 	std::cout << "e" << std::endl;
 	  }
