@@ -1,0 +1,42 @@
+Cost function (before): [1](1)
+Parameters (before): [5](1,0,25,75,100)
+Problem:
+  Numeric linear function
+    A = [1,5]((1,0,0,0,0))
+    B = [1](0)
+  Argument's bounds: (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf)
+  Argument's scales: 1, 1, 1, 1, 1
+  Number of constraints: 2
+  Constraint 0
+      Numeric linear function
+        A = [1,5]((0,1,0,0,0))
+        B = [1](-0)
+      Bounds: (0, 0)
+      Scales: 1
+      Initial value: [1](0)
+      
+  Constraint 1
+      Numeric linear function
+        A = [1,5]((0,0,0,0,1))
+        B = [1](-100)
+      Bounds: (0, 0)
+      Scales: 1
+      Initial value: [1](0)
+      
+  Starting point: [5](1,0,25,75,100)
+  Starting value: [1](1)
+  Infinity value (for all functions): inf
+CFSQP specific variables: 
+  Nineq: 0
+  Nineqn: 0
+  Neq: 2
+  Neqn: 2
+  Mode: 100
+  Iprint: 0
+  Miter: 500
+  Bigbnd: 1e+10
+  Eps: 1e-08
+  Epseqn: 1e-08
+  Udelta: 1e-08
+  CFSQP constraints: (0, 1), (1, 1)
+Parameters (after): [5](-1e+10,-2.95264e-14,25,75,100)

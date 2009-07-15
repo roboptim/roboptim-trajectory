@@ -19,7 +19,7 @@
 set terminal wxt persist
 set multiplot layout 1,2
 set grid
-plot '-' with line
+plot '-' title 'before' with line
 0.000000 0.000000
 0.000008 0.000033
 0.000065 0.000260
@@ -423,7 +423,7 @@ plot '-' with line
 100.000000 100.000000
 e
 
-plot '-' with line
+plot '-' title 'after' with line
 -0.000000 -0.000000
 0.000011 0.000011
 0.000086 0.000086

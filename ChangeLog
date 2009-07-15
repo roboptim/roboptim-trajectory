@@ -1,5 +1,30 @@
 2009-07-15  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Debug free-time-trajectory.
+	* include/Makefile.am: Distribute new header.
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Fix implementation.
+	* include/roboptim/trajectory/fwd.hh: Add generic trajectory
+	type.
+	* include/roboptim/trajectory/limit-speed.hh:
+	Copy from include/roboptim/trajectory/fwd.hh.
+	* include/roboptim/trajectory/spline.hh,
+	* include/roboptim/trajectory/trajectory.hh: Add clone.
+	* src/Makefile.am: Compile limit-speed.cc.
+	* src/limit-speed.cc: New.
+	* tests/Makefile.am: Compile new tests.
+	* tests/free-time-trajectory.cc:
+	Copy from include/roboptim/trajectory/fwd.hh.
+	* tests/free-time-trajectory.stdout: New.
+	* tests/spline-optimization.stdout: Regenerate.
+	* tests/spline-time-optimization.cc: New.
+	* tests/spline-time-optimization.stdout: New.
+	* tests/spline.stdout: Regenerate.
+	* tests/testsuite.at: Run new tests.
+
+2009-07-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Make use of function's names in trajectory classes.
 	* include/roboptim/trajectory/spline.hh,
 	* include/roboptim/trajectory/trajectory.hh,

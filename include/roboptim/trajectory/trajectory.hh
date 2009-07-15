@@ -22,6 +22,12 @@
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/n-times-derivable-function.hh>
 
+# define ROBOPTIM_IMPLEMENT_CLONE(C)		\
+    virtual C* clone () const throw ()		\
+    {						\
+      return new C (*this);			\
+    }
+
 namespace roboptim
 {
   /// \addtogroup roboptim_meta_function
@@ -154,8 +160,9 @@ namespace roboptim
       const = 0;
     /// \}
 
-    virtual std::ostream& print (std::ostream&) const throw ();
+    virtual Trajectory<DerivabilityOrder>* clone () const throw () = 0;
 
+    virtual std::ostream& print (std::ostream&) const throw ();
   protected:
     Trajectory (interval_t, size_type, const vector_t&,
 		std::string name = std::string ()) throw ();

@@ -36,6 +36,16 @@ check_PROGRAMS += spline-optimization
 spline_optimization_SOURCES = spline-optimization.cc $(COMMON_SOURCES)
 spline_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# free-time-trajectory
+check_PROGRAMS += free-time-trajectory
+free_time_trajectory_SOURCES = free-time-trajectory.cc $(COMMON_SOURCES)
+free_time_trajectory_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
+# spline-time-optimization
+check_PROGRAMS += spline-time-optimization
+spline_time_optimization_SOURCES = spline-time-optimization.cc $(COMMON_SOURCES)
+spline_time_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
 
 .PHONY: generate-reference
 
@@ -59,7 +69,9 @@ generate-reference:
 
 # Distribute reference files.
 EXTRA_DIST +=					\
+	free-time-trajectory.stdout		\
 	simple.stdout				\
 	spline-gradient.stdout			\
 	spline-optimization.stdout		\
+	spline-optimization-time.stdout		\
 	spline.stdout

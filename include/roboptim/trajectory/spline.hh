@@ -73,6 +73,8 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
+    ROBOPTIM_IMPLEMENT_CLONE(Spline)
+
     /// \brief Display the function on the specified output stream.
     ///
     /// \param o output stream used for display

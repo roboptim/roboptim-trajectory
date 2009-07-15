@@ -32,23 +32,34 @@ namespace roboptim
   class FreeTimeTrajectory : public Trajectory<DerivabilityOrder>
   {
   public:
+    /// \brief Parent type.
+    typedef Trajectory<DerivabilityOrder> parent_t;
+
+    /// \brief Import value type.
+    typedef typename parent_t::value_type value_type;
+    /// \brief Import size type.
+    typedef typename parent_t::size_type size_type;
+    /// \brief Import result type.
+    typedef typename parent_t::result_t result_t;
+    /// \brief Import gradient type.
+    typedef typename parent_t::gradient_t gradient_t;
+    /// \brief Import vector type.
+    typedef typename parent_t::vector_t vector_t;
+    /// \brief Import jacobian type.
+    typedef typename parent_t::jacobian_t jacobian_t;
+    /// \brief Import interval type.
+    typedef typename parent_t::interval_t interval_t;
+
     /// Constructor with fixed definition interval trajectory
     ///
     /// \param traj trajectory defining this one by reparameterization
     /// \param s time scale
     FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, double s) throw ();
 
+    FreeTimeTrajectory (const FreeTimeTrajectory<DerivabilityOrder>& traj) throw ();
+
     virtual ~FreeTimeTrajectory () throw ();
 
-    virtual vector_t operator () (double) const throw ();
-
-    /// \brief Compute the derivative of the function.
-    ///
-    /// Derivative is computed for a certain order, at a given point.
-    /// \param x point at which the derivative will be computed
-    /// \param order derivative order (if 0 then function is evaluated)
-    /// \return derivative vector
-    virtual vector_t derivative (double x, size_type order) const throw ();
 
     virtual jacobian_t variationConfigWrtParam (double t) const throw ();
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
@@ -59,15 +70,30 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
+    virtual void setParameters (const vector_t&) throw ();
+
     /// \brief Get time scale factor.
     /// \return time scale factor.
     double timeScale () const throw ();
+
+    size_type getTimeScalingIndex () const throw ()
+    {
+      return 0;
+    }
+
+    ROBOPTIM_IMPLEMENT_CLONE(FreeTimeTrajectory<DerivabilityOrder>)
 
     /// \brief Display the function on the specified output stream.
     ///
     /// \param o output stream used for display
     /// \return output stream
     virtual std::ostream& print (std::ostream& o) const throw ();
+
+  protected:
+    void impl_compute (result_t&, double) const throw ();
+    void impl_derivative (gradient_t& g, double x, size_type order)
+      const throw ();
+
   private:
     /// \brief Scale input time argument.
     ///
@@ -82,9 +108,7 @@ namespace roboptim
     double scaleTime (double t) const throw ();
 
     /// \brief Input fixed time trajectory.
-    const Trajectory<DerivabilityOrder>& trajectory_;
-    /// \brief Store time scaling parameter \f$\textbf{p}_{m+1}\f$.
-    double timeScale_;
+    Trajectory<DerivabilityOrder>* trajectory_;
   };
 
   /// @}
