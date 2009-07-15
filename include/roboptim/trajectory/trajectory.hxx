@@ -23,9 +23,10 @@ namespace roboptim
   template <unsigned dorder>
   Trajectory<dorder>::Trajectory (interval_t tr,
 				  size_type outputSize,
-				  const vector_t& p)
+				  const vector_t& p,
+				  std::string name)
     throw ()
-    : parent_t (outputSize),
+    : parent_t (outputSize, name),
       timeRange_ (tr),
       parameters_ (p),
       singularPoints_ ()

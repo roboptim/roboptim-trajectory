@@ -40,9 +40,10 @@ namespace roboptim
   } // end of namespace detail.
 
   //FIXME: defined_lc_in has to be true (false untested).
-  Spline::Spline (interval_t tr, size_type outputSize, const vector_t& p)
+  Spline::Spline (interval_t tr, size_type outputSize, const vector_t& p,
+		  std::string name)
     throw ()
-    : Trajectory<4> (tr, outputSize, p),
+    : Trajectory<4> (tr, outputSize, p, name),
       spline_ (),
       nbp_ (p.size () / outputSize)
   {

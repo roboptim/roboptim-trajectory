@@ -56,7 +56,9 @@ int run_test ()
   // Final position.
   params[6] = 100., params[7] = 100.;
 
-  Spline spline (std::make_pair (0., 4.), 2, params);
+  Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
+
+  Spline spline (timeRange, 2, params, "before");
   discreteInterval_t interval (0., 4., 0.01);
 
   std::cout
@@ -149,9 +151,9 @@ int run_test ()
     case GenericSolver::SOLVER_VALUE:
       {
 	Result& result = boost::get<Result> (res);
-	spline.setParameters (result.x);
+	Spline optimizedSpline (timeRange, 2, result.x, "after");
 	params = result.x;
-	gnuplot << plot_xy (spline);
+	gnuplot << plot_xy (optimizedSpline);
 	break;
       }
 
@@ -163,10 +165,10 @@ int run_test ()
     case GenericSolver::SOLVER_VALUE_WARNINGS:
       {
 	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
-	spline.setParameters (result.x);
+	Spline optimizedSpline (timeRange, 2, result.x, "after");
 	params = result.x;
 	std::cerr << result << std::endl;
-	gnuplot << plot_xy (spline);
+	gnuplot << plot_xy (optimizedSpline);
 	break;
       }
 

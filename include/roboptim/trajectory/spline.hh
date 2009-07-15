@@ -53,7 +53,7 @@ namespace roboptim
     /// \param dimension spline dimension
     /// \param parameters vector of parameters defining control points
     Spline (interval_t timeRange, size_type dimension,
-	    const vector_t& parameters) throw ();
+	    const vector_t& parameters, std::string name = "spline") throw ();
 
     /// \brief Copy constructor.
     /// \param spline spline that will be copied

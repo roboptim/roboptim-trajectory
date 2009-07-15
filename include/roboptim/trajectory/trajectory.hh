@@ -59,8 +59,6 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
-
-    Trajectory (interval_t, size_type, const vector_t&) throw ();
     virtual ~Trajectory () throw ();
 
     /// \name Accessing parameters, and state.
@@ -157,7 +155,11 @@ namespace roboptim
     /// \}
 
     virtual std::ostream& print (std::ostream&) const throw ();
+
   protected:
+    Trajectory (interval_t, size_type, const vector_t&,
+		std::string name = std::string ()) throw ();
+
     interval_t timeRange_;
     vector_t parameters_;
     size_type singularPoints_;

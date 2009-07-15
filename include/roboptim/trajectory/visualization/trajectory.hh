@@ -71,7 +71,9 @@ namespace roboptim
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
 	Function::discreteInterval_t interval (min, max, step);
 
-	std::string str = "plot '-' with line\n";
+	std::string str = (boost::format ("plot '-' title '%1%' with line\n")
+			   % traj.getName ()).str ();
+
 	traj.foreach (interval, PlotTrajectory<Trajectory<N> > (traj, str));
 	str += "e\n";
 	return Command (str);
