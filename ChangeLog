@@ -1,5 +1,10 @@
 2009-07-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add missing include.
+	* include/Makefile.am: Distribute missing include.
+
+2009-07-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug time optimization.
 	* include/Makefile.am: Distribute new header.
 	* include/roboptim/trajectory/free-time-trajectory.hxx: Debug.
