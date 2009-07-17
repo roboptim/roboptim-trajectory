@@ -23,8 +23,6 @@ namespace roboptim
   template <unsigned dorder>
   class Trajectory;
 
-  typedef Trajectory<2> GenericTrajectory;
-
   template <typename T>
   class StateCost;
 

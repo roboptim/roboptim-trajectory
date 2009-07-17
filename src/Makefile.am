@@ -10,7 +10,6 @@ lib_LTLIBRARIES = libroboptim-trajectory.la
 
 libroboptim_trajectory_la_SOURCES = 	\
 	doc.hh				\
-	limit-speed.cc			\
 	spline.cc			\
 	spline-length.cc
 

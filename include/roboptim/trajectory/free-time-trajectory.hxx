@@ -211,7 +211,11 @@ namespace roboptim
   void
   FreeTimeTrajectory<dorder>::setParameters (const vector_t& p) throw ()
   {
+    assert (p[0] >= 0.);
+
     this->parameters_ = p;
+    this->timeRange_ = makeInterval(getLowerBound (trajectory_->timeRange ()),
+				    p[0] * getUpperBound (trajectory_->timeRange ()));
     this->trajectory_->setParameters (detail::removeScaleFromParams (p));
   }
 
@@ -226,9 +230,20 @@ namespace roboptim
   double
   FreeTimeTrajectory<dorder>::scaleTime (double unscaled) const throw ()
   {
-    return detail::scaleTime (unscaled,
-			      getLowerBound (this->timeRange ()),
-			      this->timeScale ());
+    value_type tmin = getLowerBound (this->timeRange ());
+    value_type tmax = getUpperBound (this->timeRange ());
+    value_type tMin = getLowerBound (this->trajectory_->timeRange ());
+    value_type tMax = getUpperBound (this->trajectory_->timeRange ());
+
+    assert (tmin <= unscaled && unscaled <= tmax);
+
+    value_type res = tMin + (unscaled - tmin) / timeScale ();
+
+    if (res > tMax)
+      res = tMax;
+    else if (res < tMin)
+      res = tMin;
+    return res;
   }
 
   template <unsigned dorder>

@@ -25,15 +25,19 @@
 
 namespace roboptim
 {
-  struct LimitSpeed : public DerivableFunction
+  template <typename T>
+  class LimitSpeed : public DerivableFunction
   {
-    LimitSpeed (StableTimePoint timePoint, const GenericTrajectory& spline) throw ();
+  public:
+
+    LimitSpeed (StableTimePoint timePoint, const T& spline) throw ();
     ~LimitSpeed () throw ();
 
     template <typename F, typename CLIST>
-    static void addToProblem (const GenericTrajectory&,
+    static void addToProblem (const T&,
 			      Problem<F, CLIST>&,
-			      typename Function::interval_t);
+			      typename Function::interval_t,
+			      unsigned);
 
   protected:
     void impl_compute (result_t& res, const argument_t& p) const throw ();
@@ -41,24 +45,9 @@ namespace roboptim
       const throw ();
   private:
     StableTimePoint timePoint_;
-    const GenericTrajectory& trajectory_;
+    const T& trajectory_;
   };
-
-  template <typename F, typename CLIST>
-  void
-  LimitSpeed::addToProblem (const GenericTrajectory& trajectory,
-			    Problem<F, CLIST>& problem,
-			    typename Function::interval_t vRange)
-  {
-    using namespace boost;
-    for (double i = 0; i < 1.; i += 0.1)
-      {
-	shared_ptr<LimitSpeed> speed (new LimitSpeed (i * tMax, trajectory));
-	problem.addConstraint
-	  (static_pointer_cast<DerivableFunction> (speed),
-	   vRange);
-      }
-  }
 } // end of namespace roboptim.
 
+# include <roboptim/trajectory/limit-speed.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HH

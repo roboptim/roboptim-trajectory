@@ -31,16 +31,23 @@ namespace roboptim
 
     explicit StableTimePoint (value_type alpha)
       : alpha_ (alpha)
-    {}
+    {
+      assert (alpha_ >= 0. && alpha <= 1.);
+    }
 
     const value_type& getAlpha () const
     {
       return alpha_;
     }
 
-    value_type getTime (value_type tmax) const
+    value_type getTime (Function::interval_t timeRange) const
     {
-      return alpha_ * tmax;
+      value_type tmin = Function::getLowerBound (timeRange);
+      value_type tmax = Function::getUpperBound (timeRange);
+
+      value_type res = tmin + alpha_ * (tmax - tmin);
+      res = (res > tmax) ? tmax : ((res < tmin) ? tmin : res);
+      return res;
     }
   private:
     value_type alpha_;

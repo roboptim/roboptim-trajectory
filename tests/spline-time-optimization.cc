@@ -39,6 +39,7 @@ typedef Solver<DerivableFunction, constraint_t> solver_t;
 
 int run_test ()
 {
+  using namespace boost;
   using namespace boost::assign;
   Spline::vector_t params (4);
 
@@ -68,12 +69,30 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = freeTimeTraj.parameters ();
 
+  {
+    // Be sure that scale is positive.
+    Function::matrix_t a (1, problem.function ().inputSize ());
+    Function::vector_t b (1);
+    a.clear (), b.clear ();
+    a(0, 0) = 1.;
+    shared_ptr<NumericLinearFunction> speedPositivity
+      (new NumericLinearFunction (a, b));    
+    problem.addConstraint
+      (static_pointer_cast<DerivableFunction> (speedPositivity),
+       Function::makeLowerInterval (0.));
+  }
+
+
   typedef Freeze<DerivableFunction, constraint_t, LinearFunction> freeze_t;
   freeze_t freeze (problem,
 		   list_of <freeze_t::frozenArgument_t>
 		   (1, params[0])
 		   (params.size (), params[params.size () - 1]));
   freeze ();
+
+
+  Function::interval_t vRange (0., 100.);
+  LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem (freeTimeTraj, problem, vRange, 10);
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
@@ -84,9 +103,9 @@ int run_test ()
 	    << "Parameters (before): " << freeTimeTraj.parameters ()
 	    << std::endl;
 
-  solver_t::result_t res = solver.minimum ();
-
   std::cout << solver << std::endl;
+
+  solver_t::result_t res = solver.minimum ();
 
   switch (res.which ())
     {
