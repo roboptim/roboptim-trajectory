@@ -25,7 +25,7 @@
 
 namespace roboptim
 {
-  /// \brief Add constraints that freezes parmeters.
+  /// \brief Add constraints that freeze parameters.
   ///
   /// This constraint expects a vector of pairs (argument id, value) to
   /// build a function that will freeze the given arguments to their

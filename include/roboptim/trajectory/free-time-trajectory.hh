@@ -18,6 +18,7 @@
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # include <roboptim/trajectory/trajectory.hh>
+# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
@@ -69,6 +70,8 @@ namespace roboptim
       const;
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
+
+    //FIXME: add stable time point gradient computation.
 
     virtual void setParameters (const vector_t&) throw ();
 

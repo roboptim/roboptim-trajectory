@@ -26,10 +26,11 @@
 
 namespace roboptim
 {
-  LimitSpeed::LimitSpeed (double t, const GenericTrajectory& spline) throw ()
+  LimitSpeed::LimitSpeed (StableTimePoint timePoint,
+			  const GenericTrajectory& spline) throw ()
     : DerivableFunction (1 + spline.parameters ().size (), 1, "limit speed"),
-      t_ (t),
-      spline_ (spline)
+      timePoint_ (timePoint),
+      trajectory_ (spline)
   {}
 
   LimitSpeed::~LimitSpeed () throw ()
@@ -41,10 +42,13 @@ namespace roboptim
     using namespace boost::numeric::ublas;
     res.clear ();
 
-    boost::scoped_ptr<GenericTrajectory> updatedSpline (spline_.clone ());
+    boost::scoped_ptr<GenericTrajectory> updatedSpline (trajectory_.clone ());
     updatedSpline->setParameters (p);
 
-    res[0] = norm_2 (updatedSpline->derivative (t_));
+    //FIXME: should be done in updatedSpline!
+    value_type t =
+      timePoint_.getTime (getUpperBound (updatedSpline->timeRange ()));
+    res[0] = norm_2 (updatedSpline->derivative (t));
   }
 
   void

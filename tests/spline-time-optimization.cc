@@ -25,6 +25,7 @@
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/fwd.hh>
+#include <roboptim/trajectory/limit-speed.hh>
 #include <roboptim/trajectory/spline-length.hh>
 #include <roboptim/trajectory/spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>

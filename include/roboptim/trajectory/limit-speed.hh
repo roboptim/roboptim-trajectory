@@ -17,23 +17,48 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HH
+# include <boost/shared_ptr.hpp>
+
 # include <roboptim/core/derivable-function.hh>
 # include <roboptim/trajectory/fwd.hh>
+# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
   struct LimitSpeed : public DerivableFunction
   {
-    LimitSpeed (double t, const GenericTrajectory& spline) throw ();
+    LimitSpeed (StableTimePoint timePoint, const GenericTrajectory& spline) throw ();
     ~LimitSpeed () throw ();
+
+    template <typename F, typename CLIST>
+    static void addToProblem (const GenericTrajectory&,
+			      Problem<F, CLIST>&,
+			      typename Function::interval_t);
+
   protected:
     void impl_compute (result_t& res, const argument_t& p) const throw ();
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
       const throw ();
   private:
-    double t_;
-    const GenericTrajectory& spline_;
+    StableTimePoint timePoint_;
+    const GenericTrajectory& trajectory_;
   };
+
+  template <typename F, typename CLIST>
+  void
+  LimitSpeed::addToProblem (const GenericTrajectory& trajectory,
+			    Problem<F, CLIST>& problem,
+			    typename Function::interval_t vRange)
+  {
+    using namespace boost;
+    for (double i = 0; i < 1.; i += 0.1)
+      {
+	shared_ptr<LimitSpeed> speed (new LimitSpeed (i * tMax, trajectory));
+	problem.addConstraint
+	  (static_pointer_cast<DerivableFunction> (speed),
+	   vRange);
+      }
+  }
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HH

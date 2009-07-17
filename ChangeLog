@@ -1,3 +1,18 @@
+2009-07-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add stable time point class.
+	* include/roboptim/trajectory/free-time-trajectory.hh:
+	Placeholder for stable time point gradient evaluation.
+	* include/roboptim/trajectory/freeze.hh: Fix typo
+	* include/roboptim/trajectory/limit-speed.hh:
+	Use stable time points to handle constraint on free time trajectories.
+	* include/roboptim/trajectory/stable-time-point.hh:
+	Implement stable time points.
+	* src/limit-speed.cc: Modify implementation to use stable time
+	points.
+	* tests/spline-time-optimization.cc: Include LimitSpeed class.
+	* tests/free-time-optimization.stdout: New.
+
 2009-07-15  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Debug free-time-trajectory.
