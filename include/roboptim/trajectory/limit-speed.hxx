@@ -47,11 +47,7 @@ namespace roboptim
 
     boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
-
-    //FIXME: should be done in updatedTrajectory!
-    value_type t =
-      timePoint_.getTime (updatedTrajectory->timeRange ());
-    res[0] = norm_2 (updatedTrajectory->derivative (t));
+    res[0] = norm_2 (updatedTrajectory->derivative (timePoint_));
   }
 
   template <typename T>

@@ -65,13 +65,52 @@ namespace roboptim
     virtual jacobian_t variationConfigWrtParam (double t) const throw ();
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
       const throw ();
+
     virtual value_type singularPointAtRank (size_type rank) const;
     virtual vector_t derivBeforeSingularPoint (size_type rank, size_type order)
       const;
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    //FIXME: add stable time point gradient computation.
+
+    result_t operator () (StableTimePoint argument) const throw ()
+    {
+      result_t result (this->outputSize ());
+      result.clear ();
+      (*this) (result, argument);
+      return result;
+    }
+
+    void operator () (result_t& result, StableTimePoint argument) const throw ()
+    {
+      assert (isValidResult (result));
+      this->impl_compute (result, argument);
+      assert (isValidResult (result));
+    }
+
+    gradient_t derivative (StableTimePoint argument, size_type order = 1) const
+      throw ()
+    {
+      gradient_t derivative (this->derivativeSize ());
+      derivative.clear ();
+      this->derivative (derivative, argument, order);
+      return derivative;
+    }
+
+    void derivative (gradient_t& derivative,
+		     StableTimePoint argument,
+		     size_type order = 1) const
+      throw ()
+    {
+      assert (order <= Trajectory<DerivabilityOrder>::derivabilityOrder
+	      && this->isValidDerivative (derivative));
+      this->impl_derivative (derivative, argument, order);
+      assert (this->isValidDerivative (derivative));
+    }
+
+    virtual jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    virtual jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
+      const throw ();
 
     virtual void setParameters (const vector_t&) throw ();
 
@@ -84,7 +123,7 @@ namespace roboptim
       return 0;
     }
 
-    ROBOPTIM_IMPLEMENT_CLONE(FreeTimeTrajectory<DerivabilityOrder>)
+    ROBOPTIM_IMPLEMENT_CLONE (FreeTimeTrajectory<DerivabilityOrder>)
 
     /// \brief Display the function on the specified output stream.
     ///
@@ -95,6 +134,9 @@ namespace roboptim
   protected:
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
+      const throw ();
+    void impl_compute (result_t&, StableTimePoint) const throw ();
+    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const throw ();
 
   private:
