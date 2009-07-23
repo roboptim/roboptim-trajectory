@@ -76,7 +76,7 @@ int run_test ()
     a.clear (), b.clear ();
     a(0, 0) = 1.;
     shared_ptr<NumericLinearFunction> speedPositivity
-      (new NumericLinearFunction (a, b));    
+      (new NumericLinearFunction (a, b));
     problem.addConstraint
       (static_pointer_cast<DerivableFunction> (speedPositivity),
        Function::makeLowerInterval (0.));

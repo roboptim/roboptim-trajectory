@@ -102,7 +102,7 @@ namespace roboptim
     assert (order >= 0);
     double scaled = this->scaleTime (t);
     trajectory_->derivative (derivative, scaled, order);
-    derivative *= std::pow (this->timeScale (), 0. + order);
+    derivative /= std::pow (this->timeScale (), 0. + order);
   }
 
   template <unsigned dorder>

@@ -1,5 +1,12 @@
 2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix computation error in free time trajectory.
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Fix computation error.
+	* tests/spline-time-optimization.cc: Restyle.
+
+2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug free time trajectory.
 	* include/roboptim/trajectory/free-time-trajectory.hxx:
 	Debug and clean code.
