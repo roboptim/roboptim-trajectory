@@ -89,7 +89,7 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::impl_compute
   (typename FreeTimeTrajectory<dorder>::result_t& res , StableTimePoint stp) const throw ()
   {
-    (*trajectory_) (res, stp.getTime (trajectory_->timeRange ()));
+    (*this) (res, stp.getTime (this->timeRange ()));
   }
 
   template <unsigned dorder>
@@ -112,29 +112,16 @@ namespace roboptim
    StableTimePoint stp,
    typename FreeTimeTrajectory<dorder>::size_type order) const throw ()
   {
-    assert (order >= 0);
-    double scaled = stp.getTime (trajectory_->timeRange ());
-    trajectory_->derivative (derivative, scaled, order);
-    derivative *= std::pow (this->timeScale (), 0. + order);
+    return this->impl_derivative (derivative,
+				  stp.getTime (this->timeRange ()),
+				  order);
   }
 
   template <unsigned dorder>
   typename FreeTimeTrajectory<dorder>::jacobian_t
   FreeTimeTrajectory<dorder>::variationConfigWrtParam (double t) const throw ()
   {
-    double t_min = this->getLowerBound (this->timeRange ());
-    double scaled = this->scaleTime (t);
-    jacobian_t jac = trajectory_->variationConfigWrtParam (scaled);
-
-    // Last column corresponds to derivative wrt lambda_{p+1}
-    vector_t dGamma0_dt = trajectory_->derivative (scaled, 1);
-    dGamma0_dt *= (t - t_min);
-
-    // Fill last column of Jacobian with dGamma0_dt
-    size_type timeScalingIndex = getTimeScalingIndex ();
-    for (size_type i = 0; i < jac.size1(); ++i)
-      jac (i, timeScalingIndex) = dGamma0_dt (i);
-    return jac;
+    return this->variationDerivWrtParam (t, 0.);
   }
 
   template <unsigned dorder>
@@ -142,19 +129,16 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::variationConfigWrtParam (StableTimePoint stp)
     const throw ()
   {
-    return this->variationConfigWrtParam (stp.getTime (trajectory_->timeRange ()));
+    return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
   }
 
+  //FIXME: check that!
   template <unsigned dorder>
   typename FreeTimeTrajectory<dorder>::jacobian_t
   FreeTimeTrajectory<dorder>::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
     using namespace boost::numeric::ublas;
-
-    if (!order)
-      return variationConfigWrtParam (t);
-
     value_type scaled = this->scaleTime (t);
 
     double tMin = this->getLowerBound (this->timeRange ());
@@ -180,15 +164,15 @@ namespace roboptim
     const throw ()
   {
     return this->variationDerivWrtParam
-      (stp.getTime (trajectory_->timeRange ()), order);
+      (stp.getTime (this->timeRange ()), order);
   }
 
   template <unsigned dorder>
   typename FreeTimeTrajectory<dorder>::value_type
   FreeTimeTrajectory<dorder>::singularPointAtRank (size_type rank) const
   {
-    double t_min = this->getLowerBound (this->timeRange ());
-    return t_min + (trajectory_->singularPointAtRank (rank) - t_min)
+    double tMin = this->getLowerBound (this->timeRange ());
+    return tMin + (trajectory_->singularPointAtRank (rank) - tMin)
       / this->timeScale ();
   }
 
@@ -216,8 +200,7 @@ namespace roboptim
     assert (p[0] > 0.);
 
     this->parameters_ = p;
-    this->timeRange_ = makeInterval(getLowerBound (trajectory_->timeRange ()),
-				    p[0] * getUpperBound (trajectory_->timeRange ()));
+    this->timeRange_ = detail::scaleInterval (*trajectory_, this->timeScale ());
     this->trajectory_->setParameters (removeScaleFromParameters (p));
   }
 
@@ -237,6 +220,7 @@ namespace roboptim
     value_type tmin = getLowerBound (this->trajectory_->timeRange ());
     value_type tmax = getUpperBound (this->trajectory_->timeRange ());
 
+    unscaled = detail::fixTime (unscaled, *this);
     assert (tMin <= unscaled && unscaled <= tMax);
 
     value_type res = tmin + (unscaled - tMin) / timeScale ();
@@ -257,6 +241,7 @@ namespace roboptim
     value_type tmin = getLowerBound (this->trajectory_->timeRange ());
     value_type tmax = getUpperBound (this->trajectory_->timeRange ());
 
+    scaled = detail::fixTime (scaled, *this);
     assert (tmin <= scaled && scaled <= tmax);
 
     value_type res = tMin + (scaled - tmin) * timeScale ();

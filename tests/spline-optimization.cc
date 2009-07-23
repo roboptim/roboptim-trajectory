@@ -93,36 +93,20 @@ int run_test ()
   SplineLength cost (spline, costInterval);
 
   // Check cost gradient.
+  try
   {
     Function::vector_t x (params.size ());
     x.clear ();
-    if (! checkGradient (cost, 0, x))
-      {
-	FiniteDifferenceGradient fdfunction (cost);
-	DerivableFunction::gradient_t grad = cost.gradient (x, 0);
-	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
-
-	std::cerr << "Cost: " << cost (x) << std::endl
-		  << "Grad: " << grad << std::endl
-		  << "FD Grad: " << fdgrad << std::endl
-		  << "Difference: " << grad - fdgrad << std::endl;
-	assert (0 && "Bad gradient");
-      }
+    checkGradientAndThrow (cost, 0, x, 2e-3);
 
     x = params;
-    if (! checkGradient (cost, 0, x))
-      {
-	FiniteDifferenceGradient fdfunction (cost);
-	DerivableFunction::gradient_t grad = cost.gradient (x, 0);
-	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (x, 0);
-
-	std::cerr << "Cost: " << cost (x) << std::endl
-		  << "Grad: " << grad << std::endl
-		  << "FD Grad: " << fdgrad << std::endl
-		  << "Difference: " << grad - fdgrad << std::endl;
-	assert (0 && "Bad gradient");
-      }
+    checkGradientAndThrow (cost, 0, x, 2e-3);
   }
+  catch (BadGradient& bg)
+    {
+      std::cout << bg << std::endl;
+      return 1;
+    }
 
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
@@ -183,21 +167,15 @@ int run_test ()
   std::cerr << "Parameters (after): " << params << std::endl;
 
   // Check cost gradient (final).
-  {
-    if (! checkGradient (cost, 0, params))
-      {
-	FiniteDifferenceGradient fdfunction (cost);
-	DerivableFunction::gradient_t grad = cost.gradient (params, 0);
-	DerivableFunction::gradient_t fdgrad = fdfunction.gradient (params, 0);
-
-	std::cerr << "Cost: " << cost (params) << std::endl
-		  << "Grad: " << grad << std::endl
-		  << "FD Grad: " << fdgrad << std::endl
-		  << "Difference: " << grad - fdgrad << std::endl;
-	assert (0 && "Bad gradient");
-      }
-  }
-
+  try
+    {
+      checkGradientAndThrow (cost, 0, params, 2e-3);
+    }
+  catch (BadGradient& bg)
+    {
+      std::cout << bg << std::endl;
+      return 1;
+    }
 
   std::cout << (gnuplot << unset ("multiplot"));
   return 0;

@@ -30,6 +30,25 @@
 
 namespace roboptim
 {
+  namespace detail
+  {
+    template <typename T>
+    double fixTime (double t, const T& trajectory);
+
+    template <typename T>
+    double fixTime (double t, const T& trajectory)
+    {
+      static const double epsilon = 1e-5;
+      const double tmin = Function::getLowerBound (trajectory.timeRange ());
+      const double tmax = Function::getUpperBound (trajectory.timeRange ());
+      if (t < tmin && (t + epsilon) >= tmin)
+	  return tmin;
+      if (t > tmax && (t - epsilon) <= tmax)
+	  return tmax;
+      return t;
+    }
+  } // end of namespace detail.
+
   /// \addtogroup roboptim_meta_function
   /// @{
 

@@ -2,6 +2,20 @@
 
 	Debug free time trajectory.
 	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Debug and clean code.
+	* include/roboptim/trajectory/trajectory.hh: Add fixTime
+	free function.
+	* src/spline.cc: Remove fixTime free function.
+	* tests/free-time-trajectory.cc: Add more tests.
+	* tests/spline-optimization.cc: Use a bigger threshold
+	for gradient checking.
+	* tests/testsuite.at: Tag free-time-trajectory test as XFAIL
+	for now.
+
+2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Debug free time trajectory.
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
 	Rewrite variationConfigWrtParam.
 	* tests/free-time-trajectory.cc: Display derivatives.
 

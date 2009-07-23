@@ -23,21 +23,6 @@
 
 namespace roboptim
 {
-  namespace detail
-  {
-    // Allow small underflow and overflow of t.
-    double fixTime (double t, const Spline& spline)
-    {
-      static const double epsilon = 1e-5;
-      const double tmin = Function::getLowerBound (spline.timeRange ());
-      const double tmax = Function::getUpperBound (spline.timeRange ());
-      if (t < tmin && (t + epsilon) >= tmin)
-	  return tmin;
-      if (t > tmax && (t - epsilon) <= tmax)
-	  return tmax;
-      return t;
-    }
-  } // end of namespace detail.
 
   //FIXME: defined_lc_in has to be true (false untested).
   Spline::Spline (interval_t tr, size_type outputSize, const vector_t& p,

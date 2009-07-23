@@ -76,12 +76,36 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	fmter % "N/A";
       fmter % freeTimeTraj.derivative (t, 1)[0];
 
-
       std:: cout << fmter << std::endl;
     }
   std::cout << "\\---------------------------------------"
 	    << "---------------------------------------/"
 	    << std::endl << std::endl;
+
+  std::cout << "Gradient check." << std::endl;
+
+  for (double t = fttTmin; t <= fttTmax + 1e-3; t += .1)
+    {
+      if (t > fttTmax)
+	t = fttTmax;
+
+      Spline::vector_t x (1);
+      x[0] = t;
+
+      try
+	{
+	  std::cout << "Spline gradient." << std::endl;
+	  if (tmin <= t && t <= tmax)
+	    checkGradientAndThrow (spline, 0, x);
+	  std::cout << "Free time trajectory gradient." << std::endl;
+	  checkGradientAndThrow (freeTimeTraj, 0, x);
+	}
+      catch (BadGradient& bg)
+	{
+	  std::cout << bg << std::endl;
+	}
+    }
+  std::cout << std::endl;
 
 
   std::cout << "Variation of the derivative w.r.t to parameters:" << std::endl;
