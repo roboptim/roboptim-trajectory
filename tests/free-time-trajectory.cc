@@ -15,10 +15,105 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <boost/format.hpp>
+
+#include <roboptim/core/finite-difference-gradient.hh>
+
+#include <roboptim/trajectory/free-time-trajectory.hh>
+#include <roboptim/trajectory/fwd.hh>
+#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/trajectory-cost.hh>
+
 #include "common.hh"
+
+using boost::format;
+using boost::io::group;
+
+using namespace roboptim;
+
+
+typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
+
+
+void printTable (const Spline& spline, const freeTime_t& freeTimeTraj);
+
+void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
+{
+  double tmin = Function::getLowerBound (spline.timeRange ());
+  double tmax = Function::getUpperBound (spline.timeRange ());
+  double fttTmin = Function::getLowerBound (freeTimeTraj.timeRange ());
+  double fttTmax = Function::getUpperBound (freeTimeTraj.timeRange ());
+
+  std::cout << format ("Spline range: [%1%, %2%]") % tmin % tmax << std::endl
+	    << format ("FTT range: [%1%, %2%]") % fttTmin % fttTmax << std::endl;
+
+  format fmter ("| %1% %|6t||| %2% %|20t|| %3% %|35t||| %4% %|55t|| %5% %|79t||");
+  std::cout << "/---------------------------------------"
+	    << "---------------------------------------\\" << std::endl
+	    << fmter
+    % "T" % "Value" % "Value (ftt)"
+    % "Derivative" % "Derivative (ftt)"
+	    << std::endl
+	    << "----------------------------------------"
+	    << "----------------------------------------"
+	    << std::endl;
+
+  for (double t = fttTmin; t <= fttTmax + 1e-3; t += .1)
+    {
+      if (t > fttTmax)
+	t = fttTmax;
+
+      fmter % t;
+      if (tmin <= t && t <= tmax)
+	fmter % spline (t)[0];
+      else
+	fmter % "N/A";
+      fmter % freeTimeTraj (t)[0];
+      if (tmin <= t && t <= tmax)
+	fmter % spline.derivative (t, 1)[0];
+      else
+	fmter % "N/A";
+      fmter % freeTimeTraj.derivative (t, 1)[0];
+
+
+	std:: cout << fmter << std::endl;
+    }
+  std::cout << "\\---------------------------------------"
+	    << "---------------------------------------/" 
+	    << std::endl << std::endl;
+
+}
 
 int run_test ()
 {
+  Spline::vector_t params (5);
+
+  // Scale.
+  params[0] = 1.;
+  // Initial position.
+  params[1] = 0.;
+  // Control point 1.
+  params[2] = 25.;
+  // Control point 2.
+  params[3] = 75.;
+  // Final position.
+  params[4] = 100.;
+
+  // Make trajectories.
+  Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
+  Spline spline (timeRange, 1, removeScaleFromParameters (params), "before");
+  FreeTimeTrajectory<Spline::derivabilityOrder> freeTimeTraj (spline, 1.);
+
+  printTable (spline, freeTimeTraj);
+
+  params[0] = 2.;
+  freeTimeTraj.setParameters (params);
+  printTable (spline, freeTimeTraj);
+
+//   params[0] = .5;
+//   freeTimeTraj.setParameters (params);
+//   printTable (spline, freeTimeTraj);
+
   return 0;
 }
 

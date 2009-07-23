@@ -51,11 +51,15 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
+    using typename parent_t::operator ();
+    using typename parent_t::derivative;
+
     /// Constructor with fixed definition interval trajectory
     ///
     /// \param traj trajectory defining this one by reparameterization
     /// \param s time scale
-    FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, double s) throw ();
+    FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, value_type s)
+      throw ();
 
     FreeTimeTrajectory (const FreeTimeTrajectory<DerivabilityOrder>& traj) throw ();
 
@@ -72,7 +76,6 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-
     result_t operator () (StableTimePoint argument) const throw ()
     {
       result_t result (this->outputSize ());
@@ -83,9 +86,9 @@ namespace roboptim
 
     void operator () (result_t& result, StableTimePoint argument) const throw ()
     {
-      assert (isValidResult (result));
+      assert (this->isValidResult (result));
       this->impl_compute (result, argument);
-      assert (isValidResult (result));
+      assert (this->isValidResult (result));
     }
 
     gradient_t derivative (StableTimePoint argument, size_type order = 1) const
@@ -116,7 +119,7 @@ namespace roboptim
 
     /// \brief Get time scale factor.
     /// \return time scale factor.
-    double timeScale () const throw ();
+    value_type timeScale () const throw ();
 
     size_type getTimeScalingIndex () const throw ()
     {
@@ -151,12 +154,39 @@ namespace roboptim
     /// \param t input time
     /// \return new scaled time
     double scaleTime (double t) const throw ();
+    double unscaleTime (double t) const throw ();
 
     /// \brief Input fixed time trajectory.
     Trajectory<DerivabilityOrder>* trajectory_;
   };
 
   /// @}
+
+  Function::vector_t
+  addScaleToParameters (const Function::vector_t& p,
+			Function::value_type t = 1.);
+  Function::vector_t
+  removeScaleFromParameters (const Function::vector_t& v);
+
+  Function::vector_t
+  addScaleToParameters (const Function::vector_t& p,
+			Function::value_type t)
+  {
+    Function::vector_t res (p.size () + 1);
+    res[0] = t;
+    for (unsigned i = 0; i < p.size (); ++i)
+      res[i + 1] = p[i];
+    return res;
+  }
+
+  Function::vector_t
+  removeScaleFromParameters (const Function::vector_t& p)
+  {
+    Function::vector_t res (p.size () - 1);
+    for (unsigned i = 1; i < p.size (); ++i)
+      res[i - 1] = p[i];
+    return res;
+  }
 
 } // end of namespace roboptim.
 
