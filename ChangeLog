@@ -1,5 +1,12 @@
 2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Debug free time trajectory.
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Rewrite variationConfigWrtParam.
+	* tests/free-time-trajectory.cc: Display derivatives.
+
+2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug free time trajectory and add stable time point.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hxx:

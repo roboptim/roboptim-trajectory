@@ -16,6 +16,7 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/format.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 #include <roboptim/core/finite-difference-gradient.hh>
 
@@ -76,12 +77,37 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
       fmter % freeTimeTraj.derivative (t, 1)[0];
 
 
-	std:: cout << fmter << std::endl;
+      std:: cout << fmter << std::endl;
     }
   std::cout << "\\---------------------------------------"
-	    << "---------------------------------------/" 
+	    << "---------------------------------------/"
 	    << std::endl << std::endl;
 
+
+  std::cout << "Variation of the derivative w.r.t to parameters:" << std::endl;
+  format fmterDeriv ("%1% %|50t|%2%");
+  for (double t = fttTmin; t <= fttTmax + 1e-3; t += .1)
+    {
+      if (t > fttTmax)
+	t = fttTmax;
+
+      if (tmin <= t && t <= tmax)
+	{
+	  Spline::jacobian_t splineVarDeriv =
+	    spline.variationDerivWrtParam (t, 1);
+	  fmterDeriv % splineVarDeriv;
+	}
+      else
+	fmterDeriv % "N/A";
+
+      freeTime_t::jacobian_t fttVarDeriv =
+	freeTimeTraj.variationDerivWrtParam (t, 1);
+      fmterDeriv % fttVarDeriv;
+
+      std::cout << fmterDeriv << std::endl;
+    }
+
+  std::cout << std::endl;
 }
 
 int run_test ()
@@ -110,9 +136,9 @@ int run_test ()
   freeTimeTraj.setParameters (params);
   printTable (spline, freeTimeTraj);
 
-//   params[0] = .5;
-//   freeTimeTraj.setParameters (params);
-//   printTable (spline, freeTimeTraj);
+  params[0] = .5;
+  freeTimeTraj.setParameters (params);
+  printTable (spline, freeTimeTraj);
 
   return 0;
 }

@@ -19,6 +19,9 @@
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HXX
 # include <cmath>
 
+# include <boost/numeric/ublas/matrix.hpp>
+# include <boost/numeric/ublas/matrix_proxy.hpp>
+
 namespace roboptim
 {
   namespace detail
@@ -110,7 +113,7 @@ namespace roboptim
    typename FreeTimeTrajectory<dorder>::size_type order) const throw ()
   {
     assert (order >= 0);
-    double scaled = stp.getTime (this->timeRange ());
+    double scaled = stp.getTime (trajectory_->timeRange ());
     trajectory_->derivative (derivative, scaled, order);
     derivative *= std::pow (this->timeScale (), 0. + order);
   }
@@ -139,7 +142,7 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::variationConfigWrtParam (StableTimePoint stp)
     const throw ()
   {
-    return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
+    return this->variationConfigWrtParam (stp.getTime (trajectory_->timeRange ()));
   }
 
   template <unsigned dorder>
@@ -147,35 +150,27 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
+    using namespace boost::numeric::ublas;
+
     if (!order)
       return variationConfigWrtParam (t);
 
-    double t_min = this->getLowerBound (this->timeRange ());
+    value_type scaled = this->scaleTime (t);
 
-    double scaled = this->scaleTime (t);
-    jacobian_t jac =
-      trajectory_->variationDerivWrtParam (scaled, order);
+    double tMin = this->getLowerBound (this->timeRange ());
 
-    double lambda_p_plus_1_pow_n_minus_1 = 1.;
-    for (size_type i = 0; i< order - 1; ++i)
-      lambda_p_plus_1_pow_n_minus_1 *= this->timeScale ();
+    jacobian_t result (this->outputSize (),
+		       this->parameters ().size ());
+    result.clear ();
 
-    jac *= lambda_p_plus_1_pow_n_minus_1 * this->timeScale ();
+    // Compute variation w.r.t time scale (p_0)
+    column (result, 0) = (t - tMin) * trajectory_->derivative (scaled);
 
-    // Fill last column of Jacobian
-    vector_t lastColumn1 = trajectory_->derivative (scaled, order);
-    lastColumn1 *= order;
+    // Fill 1..(n-1) lines with original jacobian.
+    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+      = trajectory_->variationDerivWrtParam (scaled, order);
 
-    vector_t lastColumn2 = trajectory_->derivative (scaled, order);
-    lastColumn2 *= this->timeScale () * (t-t_min);
-
-    vector_t lastColumn =
-      (lastColumn1 + lastColumn2) * lambda_p_plus_1_pow_n_minus_1;
-
-    size_type timeScalingIndex = getTimeScalingIndex ();
-    for (size_type i = 0; i < jac.size1(); ++i)
-      jac (i, timeScalingIndex) = lastColumn (i);
-    return jac;
+    return result;
   }
 
   template <unsigned dorder>
@@ -185,7 +180,7 @@ namespace roboptim
     const throw ()
   {
     return this->variationDerivWrtParam
-      (stp.getTime (this->timeRange ()), order);
+      (stp.getTime (trajectory_->timeRange ()), order);
   }
 
   template <unsigned dorder>
