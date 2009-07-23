@@ -117,6 +117,46 @@ namespace roboptim
     return singularPoints_;
   }
 
+
+  template <unsigned dorder>
+  void
+  Trajectory<dorder>::impl_compute
+  (typename Trajectory<dorder>::result_t& res , StableTimePoint stp) const throw ()
+  {
+    (*this) (res, stp.getTime (this->timeRange ()));
+  }
+
+  template <unsigned dorder>
+  void
+  Trajectory<dorder>::impl_derivative
+  (typename Trajectory<dorder>::gradient_t& derivative,
+   StableTimePoint stp,
+   typename Trajectory<dorder>::size_type order) const throw ()
+  {
+    return this->impl_derivative (derivative,
+				  stp.getTime (this->timeRange ()),
+				  order);
+  }
+
+  template <unsigned dorder>
+  typename Trajectory<dorder>::jacobian_t
+  Trajectory<dorder>::variationConfigWrtParam (StableTimePoint stp)
+    const throw ()
+  {
+    return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
+  }
+
+
+  template <unsigned dorder>
+  typename Trajectory<dorder>::jacobian_t
+  Trajectory<dorder>::variationDerivWrtParam (StableTimePoint stp,
+					      size_type order)
+    const throw ()
+  {
+    return this->variationDerivWrtParam
+      (stp.getTime (this->timeRange ()), order);
+  }
+
   template <unsigned dorder>
   std::ostream&
   Trajectory<dorder>::print (std::ostream& o) const throw ()

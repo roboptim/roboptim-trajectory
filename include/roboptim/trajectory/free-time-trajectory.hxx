@@ -68,13 +68,11 @@ namespace roboptim
   {
   }
 
-
   template <unsigned dorder>
   FreeTimeTrajectory<dorder>::~FreeTimeTrajectory () throw ()
   {
     delete trajectory_;
   }
-
 
   template <unsigned dorder>
   void
@@ -82,14 +80,6 @@ namespace roboptim
   (typename FreeTimeTrajectory<dorder>::result_t& res , double t) const throw ()
   {
     (*trajectory_) (res, this->scaleTime (t));
-  }
-
-  template <unsigned dorder>
-  void
-  FreeTimeTrajectory<dorder>::impl_compute
-  (typename FreeTimeTrajectory<dorder>::result_t& res , StableTimePoint stp) const throw ()
-  {
-    (*this) (res, stp.getTime (this->timeRange ()));
   }
 
   template <unsigned dorder>
@@ -106,30 +96,10 @@ namespace roboptim
   }
 
   template <unsigned dorder>
-  void
-  FreeTimeTrajectory<dorder>::impl_derivative
-  (typename FreeTimeTrajectory<dorder>::gradient_t& derivative,
-   StableTimePoint stp,
-   typename FreeTimeTrajectory<dorder>::size_type order) const throw ()
-  {
-    return this->impl_derivative (derivative,
-				  stp.getTime (this->timeRange ()),
-				  order);
-  }
-
-  template <unsigned dorder>
   typename FreeTimeTrajectory<dorder>::jacobian_t
   FreeTimeTrajectory<dorder>::variationConfigWrtParam (double t) const throw ()
   {
     return this->variationDerivWrtParam (t, 0.);
-  }
-
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationConfigWrtParam (StableTimePoint stp)
-    const throw ()
-  {
-    return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
   }
 
   //FIXME: check that!
@@ -155,16 +125,6 @@ namespace roboptim
       = trajectory_->variationDerivWrtParam (scaled, order);
 
     return result;
-  }
-
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationDerivWrtParam (StableTimePoint stp,
-						      size_type order)
-    const throw ()
-  {
-    return this->variationDerivWrtParam
-      (stp.getTime (this->timeRange ()), order);
   }
 
   template <unsigned dorder>

@@ -22,4 +22,5 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/trajectory.hxx
 
 nobase_include_HEADERS +=					\
+	roboptim/trajectory/visualization/limit-speed.hh	\
 	roboptim/trajectory/visualization/trajectory.hh

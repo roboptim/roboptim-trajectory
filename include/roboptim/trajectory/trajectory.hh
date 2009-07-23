@@ -19,8 +19,9 @@
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # include <utility>
 
-# include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/n-times-derivable-function.hh>
+# include <roboptim/trajectory/fwd.hh>
+# include <roboptim/trajectory/stable-time-point.hh>
 
 # define ROBOPTIM_IMPLEMENT_CLONE(C)		\
     virtual C* clone () const throw ()		\
@@ -73,12 +74,21 @@ namespace roboptim
     /// \brief Parent type.
     typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
 
+    using typename parent_t::operator ();
+    using typename parent_t::derivative;
+    using typename parent_t::impl_compute;
+    using typename parent_t::impl_derivative;
+
     /// \brief Import value type.
     typedef typename parent_t::value_type value_type;
     /// \brief Import size type.
     typedef typename parent_t::size_type size_type;
     /// \brief Import vector type.
     typedef typename parent_t::vector_t vector_t;
+    /// \brief Import result type.
+    typedef typename parent_t::result_t result_t;
+    /// \brief Import gradient type.
+    typedef typename parent_t::gradient_t gradient_t;
     /// \brief Import jacobian type.
     typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Import interval type.
@@ -179,10 +189,56 @@ namespace roboptim
       const = 0;
     /// \}
 
+
+    result_t operator () (StableTimePoint argument) const throw ()
+    {
+      result_t result (this->outputSize ());
+      result.clear ();
+      (*this) (result, argument);
+      return result;
+    }
+
+    void operator () (result_t& result, StableTimePoint argument) const throw ()
+    {
+      assert (this->isValidResult (result));
+      this->impl_compute (result, argument);
+      assert (this->isValidResult (result));
+    }
+
+    gradient_t derivative (StableTimePoint argument, size_type order = 1) const
+      throw ()
+    {
+      gradient_t derivative (this->derivativeSize ());
+      derivative.clear ();
+      this->derivative (derivative, argument, order);
+      return derivative;
+    }
+
+    void derivative (gradient_t& derivative,
+		     StableTimePoint argument,
+		     size_type order = 1) const
+      throw ()
+    {
+      assert (order <= Trajectory<DerivabilityOrder>::derivabilityOrder
+	      && this->isValidDerivative (derivative));
+      this->impl_derivative (derivative, argument, order);
+      assert (this->isValidDerivative (derivative));
+    }
+
+    virtual jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    virtual jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
+      const throw ();
+
+
+
     virtual Trajectory<DerivabilityOrder>* clone () const throw () = 0;
 
     virtual std::ostream& print (std::ostream&) const throw ();
   protected:
+    void impl_compute (result_t&, StableTimePoint) const throw ();
+    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+      const throw ();
+
     Trajectory (interval_t, size_type, const vector_t&,
 		std::string name = std::string ()) throw ();
 

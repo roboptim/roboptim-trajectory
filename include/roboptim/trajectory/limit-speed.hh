@@ -33,6 +33,8 @@ namespace roboptim
     LimitSpeed (StableTimePoint timePoint, const T& spline) throw ();
     ~LimitSpeed () throw ();
 
+    const T& trajectory () const throw ();
+
     template <typename F, typename CLIST>
     static void addToProblem (const T&,
 			      Problem<F, CLIST>&,

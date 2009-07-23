@@ -1,5 +1,22 @@
 2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Move time stable point gradient interface into Trajectory class.
+	* include/Makefile.am: Distribue new header.
+	* include/roboptim/trajectory/free-time-trajectory.hh:,
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Move gradient methods taking a stable time point as input
+	into trajectory.
+	* include/roboptim/trajectory/limit-speed.hh,
+	* include/roboptim/trajectory/limit-speed.hxx: Add trajectory getter..
+	* include/roboptim/trajectory/stable-time-point.hh: Add missing inline.
+	* include/roboptim/trajectory/trajectory.hh,
+	* include/roboptim/trajectory/trajectory.hxx: Add gradient interfaces
+	taking as input a stable time point..
+	* include/roboptim/trajectory/visualization/limit-speed.hh: New.
+	* tests/spline-time-optimization.cc: Display speed limit.
+
+2009-07-23  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix computation error in free time trajectory.
 	* include/roboptim/trajectory/free-time-trajectory.hxx:
 	Fix computation error.

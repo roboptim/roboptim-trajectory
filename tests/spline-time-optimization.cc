@@ -15,12 +15,18 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <fstream>
+
 #include <boost/assign/list_of.hpp>
 #include <boost/mpl/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
 #include <roboptim/core/finite-difference-gradient.hh>
 #include <roboptim/core/solver-factory.hh>
+
+#include <roboptim/core/visualization/gnuplot.hh>
+#include <roboptim/core/visualization/gnuplot-commands.hh>
+#include <roboptim/core/visualization/gnuplot-function.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/freeze.hh>
@@ -30,9 +36,14 @@
 #include <roboptim/trajectory/spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
+#include <roboptim/trajectory/visualization/limit-speed.hh>
+
+
 #include "common.hh"
 
 using namespace roboptim;
+using namespace roboptim::visualization;
+using namespace roboptim::visualization::gnuplot;
 
 typedef boost::mpl::vector<DerivableFunction, LinearFunction> constraint_t;
 typedef Solver<DerivableFunction, constraint_t> solver_t;
@@ -117,6 +128,10 @@ int run_test ()
 	optimizedTrajectory.setParameters (result.x);
 	std::cout << "Parameters (after): " << optimizedTrajectory.parameters ()
 		  << std::endl;
+	std::ofstream limitSpeedStream ("limit-speed.gp");
+	limitSpeedStream
+	  << (Gnuplot::make_interactive_gnuplot ()
+	      << plot_limitSpeed (optimizedTrajectory));
 	break;
       }
 
@@ -134,6 +149,10 @@ int run_test ()
 	std::cout << result << std::endl;
 	std::cout << "Parameters (after): " << optimizedTrajectory.parameters ()
 		  << std::endl;
+	std::ofstream limitSpeedStream ("limit-speed.gp");
+	limitSpeedStream
+	  << (Gnuplot::make_interactive_gnuplot ()
+	      << plot_limitSpeed (optimizedTrajectory));
 	break;
       }
 
@@ -144,6 +163,7 @@ int run_test ()
       return 1;
       }
     }
+
   return 0;
 }
 

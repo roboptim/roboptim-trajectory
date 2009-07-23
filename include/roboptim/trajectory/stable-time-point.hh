@@ -22,7 +22,7 @@
 namespace roboptim
 {
   class TMax {};
-  TMax tMax;
+  static const TMax tMax = TMax ();
 
   class StableTimePoint
   {
@@ -53,12 +53,12 @@ namespace roboptim
     value_type alpha_;
   };
 
-  StableTimePoint operator* (Function::value_type alpha, TMax)
+  inline StableTimePoint operator* (Function::value_type alpha, TMax)
   {
     return StableTimePoint (alpha);
   }
 
-  StableTimePoint operator* (TMax, Function::value_type alpha)
+  inline StableTimePoint operator* (TMax, Function::value_type alpha)
   {
     return StableTimePoint (alpha);
   }

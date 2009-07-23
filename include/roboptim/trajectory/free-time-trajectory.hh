@@ -18,7 +18,6 @@
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # include <roboptim/trajectory/trajectory.hh>
-# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
@@ -51,9 +50,6 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
-    using typename parent_t::operator ();
-    using typename parent_t::derivative;
-
     /// Constructor with fixed definition interval trajectory
     ///
     /// \param traj trajectory defining this one by reparameterization
@@ -75,45 +71,6 @@ namespace roboptim
       const;
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
-
-    result_t operator () (StableTimePoint argument) const throw ()
-    {
-      result_t result (this->outputSize ());
-      result.clear ();
-      (*this) (result, argument);
-      return result;
-    }
-
-    void operator () (result_t& result, StableTimePoint argument) const throw ()
-    {
-      assert (this->isValidResult (result));
-      this->impl_compute (result, argument);
-      assert (this->isValidResult (result));
-    }
-
-    gradient_t derivative (StableTimePoint argument, size_type order = 1) const
-      throw ()
-    {
-      gradient_t derivative (this->derivativeSize ());
-      derivative.clear ();
-      this->derivative (derivative, argument, order);
-      return derivative;
-    }
-
-    void derivative (gradient_t& derivative,
-		     StableTimePoint argument,
-		     size_type order = 1) const
-      throw ()
-    {
-      assert (order <= Trajectory<DerivabilityOrder>::derivabilityOrder
-	      && this->isValidDerivative (derivative));
-      this->impl_derivative (derivative, argument, order);
-      assert (this->isValidDerivative (derivative));
-    }
-
-    virtual jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
-    virtual jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw ();
 
     virtual void setParameters (const vector_t&) throw ();
 
@@ -137,9 +94,6 @@ namespace roboptim
   protected:
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
-      const throw ();
-    void impl_compute (result_t&, StableTimePoint) const throw ();
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const throw ();
 
   private:

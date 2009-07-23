@@ -37,7 +37,14 @@ namespace roboptim
   template <typename T>
   LimitSpeed<T>::~LimitSpeed () throw ()
   {}
-  
+
+  template <typename T>
+  const T&
+  LimitSpeed<T>::trajectory () const throw ()
+  {
+    return trajectory_;
+  }
+
   template <typename T>
   void
   LimitSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
