@@ -1,5 +1,11 @@
 2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Force range when displaying speed limit in Gnuplot.
+	* include/roboptim/trajectory/visualization/limit-speed.hh:
+	Indicate explicitly the range in the display code.
+
+2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add missing ``inline''.
 	* include/roboptim/trajectory/free-time-trajectory.hxx: Here.
 

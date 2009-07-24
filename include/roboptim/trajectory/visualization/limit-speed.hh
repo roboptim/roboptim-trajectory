@@ -68,6 +68,7 @@ namespace roboptim
       Command plot_limitSpeed (const Trajectory<dorder>& trajectory,
 			       typename Trajectory<dorder>::value_type step)
       {
+	using boost::format;
 	using namespace detail;
 	Function::value_type min =
 	  Function::getLowerBound (trajectory.timeRange ());
@@ -75,7 +76,9 @@ namespace roboptim
 	  Function::getUpperBound (trajectory.timeRange ());
 	Function::discreteInterval_t interval (min, max, step);
 
-	std::string str = (boost::format ("plot '-' title '%1%' with line\n")
+	std::string str = (format ("plot [%1%:%2%] '-' title '%3%' with line\n")
+			   % min
+			   % max
 			   % trajectory.getName ()).str ();
 
 	trajectory.foreach
