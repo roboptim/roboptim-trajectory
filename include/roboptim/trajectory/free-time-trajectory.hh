@@ -122,7 +122,7 @@ namespace roboptim
   Function::vector_t
   removeScaleFromParameters (const Function::vector_t& v);
 
-  Function::vector_t
+  inline Function::vector_t
   addScaleToParameters (const Function::vector_t& p,
 			Function::value_type t)
   {
@@ -133,7 +133,7 @@ namespace roboptim
     return res;
   }
 
-  Function::vector_t
+  inline Function::vector_t
   removeScaleFromParameters (const Function::vector_t& p)
   {
     Function::vector_t res (p.size () - 1);
