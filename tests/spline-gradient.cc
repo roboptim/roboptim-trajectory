@@ -83,6 +83,18 @@ int run_test ()
 	    {
 	      Spline::vector_t grad = spline.derivative (t, i);
 	      std::cout << (boost::format ("%1f %2f\n") % t % grad (0)).str ();
+
+	      try
+	      {
+		// Check gradient
+		Function::vector_t x (1);
+		x[0] = t;
+		checkGradientAndThrow (spline, 0, x);
+	      }
+	      catch (BadGradient& bg)
+		{
+		  std::cerr << bg << std::endl;
+		}
 	    }
 	  std::cout << "e" << std::endl;
 	}
