@@ -18,6 +18,7 @@
 #ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH
 # include <boost/format.hpp>
+# include <boost/optional.hpp>
 
 # include <roboptim/core/visualization/gnuplot-commands.hh>
 # include <roboptim/trajectory/limit-speed.hh>
@@ -34,6 +35,7 @@ namespace roboptim
       template <unsigned dorder>
       Command plot_limitSpeed
       (const Trajectory<dorder>& trajectory,
+       boost::optional<double> vMax = boost::optional<double> (),
        typename Trajectory<dorder>::value_type step = .01);
 
       namespace detail
@@ -66,6 +68,7 @@ namespace roboptim
 
       template <unsigned dorder>
       Command plot_limitSpeed (const Trajectory<dorder>& trajectory,
+			       boost::optional<double> vMax,
 			       typename Trajectory<dorder>::value_type step)
       {
 	using boost::format;
@@ -76,10 +79,19 @@ namespace roboptim
 	  Function::getUpperBound (trajectory.timeRange ());
 	Function::discreteInterval_t interval (min, max, step);
 
-	std::string str = (format ("plot [%1%:%2%] '-' title '%3%' with line\n")
+	std::string str = (format ("plot [%1%:%2%] '-' title '%3%' with line")
 			   % min
 			   % max
-			   % trajectory.getName ()).str ();
+			   % "speed variation").str ();
+
+	if (vMax)
+	  {
+	    const double vmax = *vMax;
+	    str += (format (", %1% title 'vMax (%2%)' with lines")
+		    % (vmax * vmax) % vmax).str ();
+	  }
+
+	str += "\n";
 
 	trajectory.foreach
 	  (interval,
