@@ -97,10 +97,10 @@ int run_test ()
   {
     Function::vector_t x (params.size ());
     x.clear ();
-    checkGradientAndThrow (cost, 0, x, 2e-3);
+    checkGradientAndThrow (cost, 0, x, 2e-4);
 
     x = params;
-    checkGradientAndThrow (cost, 0, x, 2e-3);
+    checkGradientAndThrow (cost, 0, x, 2e-4);
   }
   catch (BadGradient& bg)
     {

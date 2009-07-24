@@ -1,5 +1,11 @@
 2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Be more strict in gradient checking in spline-optimization.
+	* tests/spline-optimization.cc: Be more strict while
+	checking gradient.
+
+2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check gradient in spline-gradient test.
 	* tests/spline-gradient.cc: Check gradient while
 	building the graphs.
