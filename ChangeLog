@@ -1,5 +1,11 @@
 2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix vMax display in plot_limitSpeed.
+	* include/roboptim/trajectory/visualization/limit-speed.hh:
+	Fix vMax display.
+
+2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Be more strict in gradient checking in spline-optimization.
 	* tests/spline-optimization.cc: Be more strict while
 	checking gradient.

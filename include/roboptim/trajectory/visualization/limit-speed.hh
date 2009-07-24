@@ -88,7 +88,7 @@ namespace roboptim
 	  {
 	    const double vmax = *vMax;
 	    str += (format (", %1% title 'vMax (%2%)' with lines")
-		    % (vmax * vmax) % vmax).str ();
+		    % (2 * vmax * vmax) % vmax).str ();
 	  }
 
 	str += "\n";
