@@ -156,11 +156,14 @@ namespace roboptim
   void
   FreeTimeTrajectory<dorder>::setParameters (const vector_t& p) throw ()
   {
-    assert (p[0] > 0.);
+    //FIXME: is this ok?
+    vector_t p_ = p;
+    if (p_[0] <= 0.)
+      p_[0] = 1e-8;
 
-    this->parameters_ = p;
+    this->parameters_ = p_;
     this->timeRange_ = detail::scaleInterval (*trajectory_, this->timeScale ());
-    this->trajectory_->setParameters (removeScaleFromParameters (p));
+    this->trajectory_->setParameters (removeScaleFromParameters (p_));
   }
 
   template <unsigned dorder>

@@ -47,26 +47,28 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef boost::mpl::vector<DerivableFunction, LinearFunction> constraint_t;
 typedef Solver<DerivableFunction, constraint_t> solver_t;
+typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
+
+
+// Problem parameters.
+const unsigned nControlPoints = 26;
+const double vMax = 125.;
 
 int run_test ()
 {
   using namespace boost;
   using namespace boost::assign;
-  Spline::vector_t params (4);
 
-  // Initial position.
-  params[0] = 0.;
-  // Control point 1.
-  params[1] = 25.;
-  // Control point 2.
-  params[2] = 75.;
-  // Final position.
-  params[3] = 100.;
+  const double finalPos = 200.;
+  Spline::vector_t params (nControlPoints);
+
+  for (unsigned i = 0; i < nControlPoints; ++i)
+    params[i] = finalPos / (nControlPoints - 1) * i;
 
   // Make trajectories.
   Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
   Spline spline (timeRange, 1, params, "before");
-  FreeTimeTrajectory<Spline::derivabilityOrder> freeTimeTraj (spline, 1.);
+  freeTime_t freeTimeTraj (spline, 1.);
 
   // Define cost.
   Function::matrix_t a (1, freeTimeTraj.parameters ().size ());
@@ -85,34 +87,41 @@ int run_test ()
     Function::matrix_t a (1, problem.function ().inputSize ());
     Function::vector_t b (1);
     a.clear (), b.clear ();
-    a(0, 0) = 1.;
+    a (0, 0) = 1.;
     shared_ptr<NumericLinearFunction> speedPositivity
       (new NumericLinearFunction (a, b));
     problem.addConstraint
-      (static_pointer_cast<DerivableFunction> (speedPositivity),
-       Function::makeLowerInterval (0.));
+      (static_pointer_cast<LinearFunction> (speedPositivity),
+       Function::makeLowerInterval (1e-3));
   }
 
+  const freeTime_t::vector_t freeTimeParams = freeTimeTraj.parameters ();
+  const unsigned freeTimeParamsSize = freeTimeParams.size ();
 
-  typedef Freeze<DerivableFunction, constraint_t, LinearFunction> freeze_t;
+  typedef Freeze<DerivableFunction, constraint_t, DerivableFunction> freeze_t;
   freeze_t freeze (problem,
 		   list_of <freeze_t::frozenArgument_t>
-		   (1, params[0])
-		   (params.size (), params[params.size () - 1]));
+		   (1, freeTimeParams[1])
+		   (freeTimeParamsSize - 1,
+		    freeTimeParams[freeTimeParamsSize - 1]));
   freeze ();
 
+  Function::interval_t vRange (0., 2 * vMax * vMax);
+  LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem
+    (freeTimeTraj, problem, vRange, nControlPoints * 10);
 
-  Function::interval_t vRange (0., 100.);
-  LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem (freeTimeTraj, problem, vRange, 10);
+  std::ofstream limitSpeedStream ("limit-speed.gp");
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+
+  gnuplot
+    << set ("multiplot layout 1,2 title "
+	    "'variation of speed before and after optimization'")
+    << set ("grid");
+  gnuplot << plot_limitSpeed (freeTimeTraj, vMax);
+
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
-
-
-  std::cout << "Cost function (before): " << cost (freeTimeTraj.parameters ())
-	    << std::endl
-	    << "Parameters (before): " << freeTimeTraj.parameters ()
-	    << std::endl;
 
   std::cout << solver << std::endl;
 
@@ -126,12 +135,8 @@ int run_test ()
 	FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
 	  freeTimeTraj;
 	optimizedTrajectory.setParameters (result.x);
-	std::cout << "Parameters (after): " << optimizedTrajectory.parameters ()
-		  << std::endl;
-	std::ofstream limitSpeedStream ("limit-speed.gp");
-	limitSpeedStream
-	  << (Gnuplot::make_interactive_gnuplot ()
-	      << plot_limitSpeed (optimizedTrajectory));
+	std::cout << result << std::endl;
+	gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
 	break;
       }
 
@@ -147,12 +152,7 @@ int run_test ()
 	  freeTimeTraj;
 	optimizedTrajectory.setParameters (result.x);
 	std::cout << result << std::endl;
-	std::cout << "Parameters (after): " << optimizedTrajectory.parameters ()
-		  << std::endl;
-	std::ofstream limitSpeedStream ("limit-speed.gp");
-	limitSpeedStream
-	  << (Gnuplot::make_interactive_gnuplot ()
-	      << plot_limitSpeed (optimizedTrajectory));
+	gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
 	break;
       }
 
@@ -163,7 +163,7 @@ int run_test ()
       return 1;
       }
     }
-
+  limitSpeedStream << (gnuplot << unset ("multiplot"));
   return 0;
 }
 
