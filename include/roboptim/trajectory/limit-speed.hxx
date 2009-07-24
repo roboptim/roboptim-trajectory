@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HXX
 # define ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HXX
+# include <boost/format.hpp>
 # include <boost/numeric/ublas/vector.hpp>
 # include <boost/scoped_ptr.hpp>
 
@@ -26,10 +27,23 @@
 
 namespace roboptim
 {
+  namespace detail
+  {
+    std::string getLimitSpeedName (const StableTimePoint& timePoint);
+
+    std::string getLimitSpeedName (const StableTimePoint& timePoint)
+    {
+      using boost::format;
+      return (format ("speed limit (%1%)") % timePoint.getAlpha ()).str ();
+    }
+  }
+
+
   template <typename T>
   LimitSpeed<T>::LimitSpeed (StableTimePoint timePoint,
 			     const T& trajectory) throw ()
-    : DerivableFunction (trajectory.parameters ().size (), 1, "limit speed"),
+    : DerivableFunction (trajectory.parameters ().size (), 1,
+			 detail::getLimitSpeedName (timePoint)),
       timePoint_ (timePoint),
       trajectory_ (trajectory)
   {}
@@ -54,7 +68,9 @@ namespace roboptim
 
     boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
-    res[0] = norm_2 (updatedTrajectory->derivative (timePoint_));
+    res[0] = prec_inner_prod (updatedTrajectory->derivative (timePoint_),
+			      updatedTrajectory->derivative (timePoint_));
+    res[0] /= 2;
   }
 
   template <typename T>
