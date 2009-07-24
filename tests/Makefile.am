@@ -73,5 +73,5 @@ EXTRA_DIST +=					\
 	simple.stdout				\
 	spline-gradient.stdout			\
 	spline-optimization.stdout		\
-	spline-optimization-time.stdout		\
+	spline-time-optimization.stdout		\
 	spline.stdout
