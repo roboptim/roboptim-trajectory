@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_TRAJECTORY_HH
-# define ROBOPTIM_TRAJECTORY_VISUALIZATION_TRAJECTORY_HH
+#ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH
+# define ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH
 # include <boost/format.hpp>
 
 # include <roboptim/core/visualization/gnuplot-commands.hh>
@@ -88,4 +88,4 @@ namespace roboptim
   } // end of namespace visualization.
 } // end of namespace roboptim.
 
-#endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_TRAJECTORY_HH
+#endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH

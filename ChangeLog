@@ -1,5 +1,10 @@
 2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix naming clash in inclusion guards.
+	* include/roboptim/trajectory/visualization/limit-speed.hh: Here.
+
+2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Remove orphan stdout file and distribute the right one.
 	* tests/Makefile.am: Fix typo.
 	* tests/spline-optimization-time.stdout: Remove.
