@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <boost/numeric/ublas/vector_expression.hpp>
 #include <roboptim/trajectory/spline-length.hh>
 
 namespace roboptim
@@ -31,8 +32,8 @@ namespace roboptim
       void operator () (const double& t)
       {
 	using namespace boost::numeric::ublas;
-	double tmp = norm_2 (traj_.derivative (t, 2));
-	res_ += tmp * tmp;
+	res_ += prec_inner_prod (traj_.derivative (t, 1),
+				 traj_.derivative (t, 1));
       }
 
     private:
@@ -51,8 +52,8 @@ namespace roboptim
       void operator () (const double& t)
       {
 	using namespace boost::numeric::ublas;
-	noalias (grad_) += prod (traj_.derivative (t, 2),
-				 traj_.variationDerivWrtParam (t, 2));
+	noalias (grad_) += prec_prod (traj_.derivative (t, 1),
+				      traj_.variationDerivWrtParam (t, 1));
       }
 
     private:
