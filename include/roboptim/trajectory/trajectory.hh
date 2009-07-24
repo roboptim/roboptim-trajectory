@@ -229,7 +229,7 @@ namespace roboptim
     virtual jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
       const throw ();
 
-
+    bool isValidTime (value_type t) const throw ();
 
     virtual Trajectory<DerivabilityOrder>* clone () const throw () = 0;
 

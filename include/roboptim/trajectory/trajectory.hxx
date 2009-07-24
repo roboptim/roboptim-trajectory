@@ -158,6 +158,15 @@ namespace roboptim
   }
 
   template <unsigned dorder>
+  bool
+  Trajectory<dorder>::isValidTime (value_type t) const throw ()
+  {
+    value_type tmin = getLowerBound (this->timeRange ());
+    value_type tmax = getUpperBound (this->timeRange ());
+    return (tmin <= t && t <= tmax);
+  }
+
+  template <unsigned dorder>
   std::ostream&
   Trajectory<dorder>::print (std::ostream& o) const throw ()
   {

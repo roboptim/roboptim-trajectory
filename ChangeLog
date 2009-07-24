@@ -1,5 +1,15 @@
 2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add isValidTime method.
+	This patch fix a warning due to the fact that some variables
+	are not used anymore if one compiles with -DNDEBUG
+	(as assertions are dropped).
+	* include/roboptim/trajectory/free-time-trajectory.hxx: Use isValidTime.
+	* include/roboptim/trajectory/trajectory.hh,
+	* include/roboptim/trajectory/trajectory.hxx: Add isValidTime method.
+
+2009-07-24  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix naming clash in inclusion guards.
 	* include/roboptim/trajectory/visualization/limit-speed.hh: Here.
 

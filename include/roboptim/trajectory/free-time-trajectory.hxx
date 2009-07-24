@@ -45,7 +45,6 @@ namespace roboptim
 	scaleTime (Function::getUpperBound (traj.timeRange ()), min, scale);
       return Function::makeInterval (min, max);
     }
-
   } // end of namespace detail
 
   template <unsigned dorder>
@@ -176,12 +175,11 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::scaleTime (double unscaled) const throw ()
   {
     value_type tMin = getLowerBound (this->timeRange ());
-    value_type tMax = getUpperBound (this->timeRange ());
     value_type tmin = getLowerBound (this->trajectory_->timeRange ());
     value_type tmax = getUpperBound (this->trajectory_->timeRange ());
 
     unscaled = detail::fixTime (unscaled, *this);
-    assert (tMin <= unscaled && unscaled <= tMax);
+    assert (this->isValidTime (unscaled));
 
     value_type res = tmin + (unscaled - tMin) / timeScale ();
 
@@ -199,10 +197,9 @@ namespace roboptim
     value_type tMin = getLowerBound (this->timeRange ());
     value_type tMax = getUpperBound (this->timeRange ());
     value_type tmin = getLowerBound (this->trajectory_->timeRange ());
-    value_type tmax = getUpperBound (this->trajectory_->timeRange ());
 
     scaled = detail::fixTime (scaled, *this);
-    assert (tmin <= scaled && scaled <= tmax);
+    assert (trajectory_->isValidTime (scaled));
 
     value_type res = tMin + (scaled - tmin) * timeScale ();
 
