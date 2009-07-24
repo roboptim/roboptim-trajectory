@@ -26,7 +26,7 @@ namespace roboptim
 {
   namespace detail
   {
-    Function::value_type
+    inline Function::value_type
     scaleTime (Function::value_type unscaled,
 	       Function::value_type min,
 	       Function::value_type scale)
