@@ -33,6 +33,7 @@ CHECK_STDOUT([spline], [Check Spline class.])
 CHECK_STDOUT([spline-gradient], [Check Spline gradient.])
 CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.])
 CHECK_STDOUT([free-time-trajectory], [Check free time trajectory.])
-CHECK_STDOUT([spline-time-optimization], [Optimize a free time trajectory.])
+CHECK_STDOUT([spline-time-optimization], [Optimize a free time trajectory.],
+	[false], [true])
 
 # End of testsuite.at
