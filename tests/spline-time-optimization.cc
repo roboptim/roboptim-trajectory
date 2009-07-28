@@ -51,8 +51,8 @@ typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
 
 // Problem parameters.
-const unsigned nControlPoints = 26;
-const double vMax = 125.;
+const unsigned nControlPoints = 31;
+const double vMax = 200.;
 
 int run_test ()
 {
@@ -126,43 +126,34 @@ int run_test ()
   std::cout << solver << std::endl;
 
   solver_t::result_t res = solver.minimum ();
+  std::cout << res << std::endl;
 
-  switch (res.which ())
+  FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
+    freeTimeTraj;
+
+  switch (solver.minimumType ())
     {
     case GenericSolver::SOLVER_VALUE:
       {
-	Result& result = boost::get<Result> (res);
-	FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
-	  freeTimeTraj;
+	const Result& result = solver.getMinimum<Result> ();
 	optimizedTrajectory.setParameters (result.x);
-	std::cout << result << std::endl;
-	gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
+	break;
+      }
+
+    case GenericSolver::SOLVER_VALUE_WARNINGS:
+      {
+	const ResultWithWarnings& result =
+	  solver.getMinimum<ResultWithWarnings> ();
+	optimizedTrajectory.setParameters (result.x);
 	break;
       }
 
     case GenericSolver::SOLVER_NO_SOLUTION:
-      {
-	std::cout << "No solution" << std::endl;
-	return 1;
-      }
-    case GenericSolver::SOLVER_VALUE_WARNINGS:
-      {
-	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
-	FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
-	  freeTimeTraj;
-	optimizedTrajectory.setParameters (result.x);
-	std::cout << result << std::endl;
-	gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
-	break;
-      }
-
     case GenericSolver::SOLVER_ERROR:
-      {
-	SolverError& result = boost::get<SolverError> (res);
-	std::cout << result << std::endl;
       return 1;
-      }
     }
+
+  gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
   limitSpeedStream << (gnuplot << unset ("multiplot"));
   return 0;
 }
