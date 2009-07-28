@@ -1,5 +1,10 @@
 2009-07-28  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use new io.hh roboptim-core header.
+	* tests/spline-time-optimization.cc: Here.
+
+2009-07-28  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Clean test.
 	* tests/spline-time-optimization.cc: Simplify.
 

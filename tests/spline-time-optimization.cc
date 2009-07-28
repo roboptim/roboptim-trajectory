@@ -19,8 +19,8 @@
 
 #include <boost/assign/list_of.hpp>
 #include <boost/mpl/vector.hpp>
-#include <boost/numeric/ublas/io.hpp>
 
+#include <roboptim/core/io.hh>
 #include <roboptim/core/finite-difference-gradient.hh>
 #include <roboptim/core/solver-factory.hh>
 
