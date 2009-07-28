@@ -106,7 +106,7 @@ int run_test ()
 		    freeTimeParams[freeTimeParamsSize - 1]));
   freeze ();
 
-  Function::interval_t vRange (0., 2 * vMax * vMax);
+  Function::interval_t vRange (0., .5 * vMax * vMax);
   LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem
     (freeTimeTraj, problem, vRange, nControlPoints * 10);
 
