@@ -1,3 +1,8 @@
+2009-07-29  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Use argument bounds to force a positive scale.
+	* tests/spline-time-optimization.cc: Force a positive scale properly.
+
 2009-07-28  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix speed limit vmax computation and output.

@@ -82,18 +82,8 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = freeTimeTraj.parameters ();
 
-  {
-    // Be sure that scale is positive.
-    Function::matrix_t a (1, problem.function ().inputSize ());
-    Function::vector_t b (1);
-    a.clear (), b.clear ();
-    a (0, 0) = 1.;
-    shared_ptr<NumericLinearFunction> speedPositivity
-      (new NumericLinearFunction (a, b));
-    problem.addConstraint
-      (static_pointer_cast<LinearFunction> (speedPositivity),
-       Function::makeLowerInterval (1e-3));
-  }
+  // Scale has to remain positive.
+  problem.argumentBounds ()[0] = Function::makeLowerInterval (0.);
 
   const freeTime_t::vector_t freeTimeParams = freeTimeTraj.parameters ();
   const unsigned freeTimeParamsSize = freeTimeParams.size ();
