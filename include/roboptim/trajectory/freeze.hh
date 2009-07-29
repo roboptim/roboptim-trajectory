@@ -34,9 +34,8 @@ namespace roboptim
   /// For instance, the vector: [(0, 5.), (3, -12.)] forces the first
   /// parameter to five and the fourth one to minus twelve.
   ///
-  /// This class adds to the problem one linear constraint per
-  /// frozen parameter.
-  template <typename F, typename CLIST, typename C>
+  /// This adds to the problem one linear constraint per frozen parameter.
+  template <typename P>
   class Freeze
   {
   public:
@@ -44,7 +43,7 @@ namespace roboptim
     typedef std::pair<size_t, Function::value_type> frozenArgument_t;
 
     /// \brief Problem type.
-    typedef Problem<F, CLIST> problem_t;
+    typedef P problem_t;
 
     /// \brief Vector of pairs (argument index, value).
     ///
@@ -55,21 +54,30 @@ namespace roboptim
     /// \brief Create the constraint from a vector of pairs.
     ///
     /// \param problem problem that will be modified.
-    /// \param fa Vector of pairs containing what to freeze and to what value.
-    Freeze (problem_t& problem, const frozenArguments_t fa) throw ();
+    Freeze (problem_t& problem) throw ();
 
     virtual ~Freeze () throw ();
 
     /// \brief Apply modification.
-    void operator () () throw ();
+    /// \param fa Vector of pairs containing what to freeze and to what value.
+    void operator () (const frozenArguments_t fa) throw ();
+
+    /// \brief Apply modification.
+    /// \param indices Vector of parameters index that will be frozen.
+    /// \param values Vector of parameters values.
+    void operator () (const std::vector<Function::size_type>& indices,
+		      const Function::vector_t& values) throw ();
 
   private:
     /// \brief Reference to the problem that will be modified.
     problem_t& problem_;
-
-    /// \brief Vector which defines how to freeze values.
-    const frozenArguments_t frozenArguments_;
   };
+
+  template <typename P>
+  Freeze<P> makeFreeze (P& problem) throw ()
+  {
+    return Freeze<P> (problem);
+  }
 
   /// Example shows freeze use.
   /// \example spline-optimization.cc

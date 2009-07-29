@@ -86,15 +86,11 @@ int run_test ()
   problem.argumentBounds ()[0] = Function::makeLowerInterval (0.);
 
   const freeTime_t::vector_t freeTimeParams = freeTimeTraj.parameters ();
-  const unsigned freeTimeParamsSize = freeTimeParams.size ();
 
-  typedef Freeze<DerivableFunction, constraint_t, DerivableFunction> freeze_t;
-  freeze_t freeze (problem,
-		   list_of <freeze_t::frozenArgument_t>
-		   (1, freeTimeParams[1])
-		   (freeTimeParamsSize - 1,
-		    freeTimeParams[freeTimeParamsSize - 1]));
-  freeze ();
+  std::vector<Function::size_type> indices;
+  indices.push_back (1);
+  indices.push_back (freeTimeParams.size () - 1);
+  makeFreeze (problem) (indices, freeTimeParams);
 
   Function::interval_t vRange (0., .5 * vMax * vMax);
   LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem

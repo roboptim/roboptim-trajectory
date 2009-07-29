@@ -21,46 +21,52 @@
 
 namespace roboptim
 {
-  template <typename F, typename CLIST, typename C>
-  Freeze<F, CLIST, C>::Freeze (problem_t& problem,
-			       const frozenArguments_t fa) throw ()
-    : problem_ (problem),
-      frozenArguments_ (fa)
+  template <typename P>
+  Freeze<P>::Freeze (problem_t& problem) throw ()
+    : problem_ (problem)
   {
   }
 
-  template <typename F, typename CLIST, typename C>
-  Freeze<F, CLIST, C>::~Freeze () throw ()
+  template <typename P>
+  Freeze<P>::~Freeze () throw ()
   {
   }
 
-  template <typename F, typename CLIST, typename C>
+  template <typename P>
   void
-  Freeze<F, CLIST, C>::operator () () throw ()
+  Freeze<P>::operator () (const frozenArguments_t frozenArguments) throw ()
   {
     using namespace boost;
     typedef frozenArguments_t::const_iterator citer_t;
 
-    for (citer_t it = frozenArguments_.begin ();
-	 it != frozenArguments_.end (); ++it)
+    for (citer_t it = frozenArguments.begin ();
+	 it != frozenArguments.end (); ++it)
       {
 	assert (it->first < problem_.function ().inputSize ());
 
-	Function::matrix_t a (1, problem_.function ().inputSize ());
-	Function::vector_t b (1);
+	Function::interval_t& interval =
+	  this->problem_.argumentBounds()[it->first];
 
-	a.clear (), b.clear ();
-
-	a(0, it->first) = 1.;
-
-	b[0] = -it->second;
-
-	NumericLinearFunction* ptr = new NumericLinearFunction (a, b);
-	shared_ptr<C> constraint =
-	  static_pointer_cast<C> (shared_ptr<NumericLinearFunction> (ptr));
-	this->problem_.addConstraint (constraint,
-				      Function::makeInterval (0., 0.));
+	Function::value_type min =
+	  std::max (Function::getLowerBound (interval), it->second);
+	Function::value_type max =
+	  std::min (Function::getUpperBound (interval), it->second);
+	this->problem_.argumentBounds()[it->first] = Function::makeInterval (min, max);
       }
+  }
+
+  template <typename P>
+  void
+  Freeze<P>::operator () (const std::vector<Function::size_type>& indices,
+			  const Function::vector_t& values) throw ()
+  {
+    frozenArguments_t fa;
+    for (unsigned i = 0; i < indices.size (); ++i)
+      {
+	assert (indices[i] < values.size ());
+	fa.push_back (std::make_pair (indices[i], values[indices[i]]));
+      }
+    (*this) (fa);
   }
 
 } // end of namespace roboptim.

@@ -111,14 +111,12 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
-  typedef Freeze<DerivableFunction, constraint_t, LinearFunction> freeze_t;
-  freeze_t freeze (problem,
-		   list_of <freeze_t::frozenArgument_t>
-		   (0, params[0])
-		   (1, params[1])
-		   (params.size () - 2, params[params.size () - 2])
-		   (params.size () - 1, params[params.size () - 1]));
-  freeze ();
+  std::vector<Function::size_type> indices;
+  indices.push_back (0);
+  indices.push_back (1);
+  indices.push_back (params.size () - 2);
+  indices.push_back (params.size () - 1);
+  makeFreeze (problem) (indices, params);
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
@@ -126,9 +124,9 @@ int run_test ()
   std::cerr << "Cost function (before): " << cost (params) << std::endl;
   std::cerr << "Parameters (before): " << params << std::endl;
 
-  solver_t::result_t res = solver.minimum ();
-
   std::cerr << solver << std::endl;
+
+  solver_t::result_t res = solver.minimum ();
 
   switch (res.which ())
     {
