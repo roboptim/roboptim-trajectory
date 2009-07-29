@@ -1,5 +1,10 @@
 2009-07-29  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Rewrite variationDerivWrtParam in freeTimeTrajectory.
+	* include/roboptim/trajectory/free-time-trajectory.hxx: Restyle.
+
+2009-07-29  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Re-implement free-time-trajectory.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hxx:
