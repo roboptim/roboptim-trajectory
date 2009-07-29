@@ -156,11 +156,11 @@ int run_test ()
 
   printTable (spline, freeTimeTraj);
 
-  params[0] = 2.;
+  params[0] = .5;
   freeTimeTraj.setParameters (params);
   printTable (spline, freeTimeTraj);
 
-  params[0] = .5;
+  params[0] = 2.;
   freeTimeTraj.setParameters (params);
   printTable (spline, freeTimeTraj);
 

@@ -31,7 +31,7 @@ namespace roboptim
 	       Function::value_type min,
 	       Function::value_type scale)
     {
-      return min + (unscaled - min) * scale;
+      return min + (unscaled - min) / scale;
     }
 
     template <unsigned dorder>
@@ -91,37 +91,59 @@ namespace roboptim
     assert (order >= 0);
     double scaled = this->scaleTime (t);
     trajectory_->derivative (derivative, scaled, order);
-    derivative /= std::pow (this->timeScale (), 0. + order);
+    derivative *= std::pow (this->timeScale (), 0. + order);
   }
 
   template <unsigned dorder>
   typename FreeTimeTrajectory<dorder>::jacobian_t
   FreeTimeTrajectory<dorder>::variationConfigWrtParam (double t) const throw ()
   {
-    return this->variationDerivWrtParam (t, 0.);
-  }
-
-  //FIXME: check that!
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationDerivWrtParam (double t, size_type order)
-    const throw ()
-  {
     using namespace boost::numeric::ublas;
     value_type scaled = this->scaleTime (t);
 
-    double tMin = this->getLowerBound (this->timeRange ());
+    double tMin = this->getLowerBound (this->trajectory_->timeRange ());
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
     result.clear ();
 
     // Compute variation w.r.t time scale (p_0)
-    column (result, 0) = (t - tMin) * trajectory_->derivative (scaled);
+    column (result, 0) = (t - tMin) * trajectory_->derivative (scaled, 1);
 
     // Fill 1..(n-1) lines with original jacobian.
     project (result, range (0, result.size1 ()), range (1, result.size2 ()))
-      = trajectory_->variationDerivWrtParam (scaled, order);
+      = trajectory_->variationConfigWrtParam (scaled);
+
+    return result;
+  }
+
+  template <unsigned dorder>
+  typename FreeTimeTrajectory<dorder>::jacobian_t
+  FreeTimeTrajectory<dorder>::variationDerivWrtParam (double t, size_type order)
+    const throw ()
+  {
+    if (order == 0)
+      return this->variationConfigWrtParam (t);
+
+    using namespace boost::numeric::ublas;
+    value_type scaled = this->scaleTime (t);
+
+    double tMin = this->getLowerBound (this->trajectory_->timeRange ());
+
+    jacobian_t result (this->outputSize (),
+		       this->parameters ().size ());
+    result.clear ();
+
+    // Compute variation w.r.t time scale (p_0)
+    column (result, 0) = trajectory_->derivative (scaled, 1) * order;
+    column (result, 0) += trajectory_->derivative (scaled, 1)
+      * this->timeScale () * (t - tMin);
+    column (result, 0) *= std::pow (this->timeScale (), order - 1.);
+
+    // Fill 1..(n-1) lines with original jacobian.
+    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+      = trajectory_->variationDerivWrtParam (scaled, order)
+      * std::pow (this->timeScale (), 0. + order);
 
     return result;
   }
@@ -132,7 +154,7 @@ namespace roboptim
   {
     double tMin = this->getLowerBound (this->timeRange ());
     return tMin + (trajectory_->singularPointAtRank (rank) - tMin)
-      / this->timeScale ();
+      * this->timeScale ();
   }
 
   template <unsigned dorder>
@@ -184,7 +206,7 @@ namespace roboptim
     unscaled = detail::fixTime (unscaled, *this);
     assert (this->isValidTime (unscaled));
 
-    value_type res = tmin + (unscaled - tMin) / timeScale ();
+    value_type res = tmin + (unscaled - tMin) * timeScale ();
 
     if (res > tmax)
       res = tmax;
@@ -204,7 +226,7 @@ namespace roboptim
     scaled = detail::fixTime (scaled, *this);
     assert (trajectory_->isValidTime (scaled));
 
-    value_type res = tMin + (scaled - tmin) * timeScale ();
+    value_type res = tMin + (scaled - tmin) / timeScale ();
 
     if (res > tMax)
       res = tMax;

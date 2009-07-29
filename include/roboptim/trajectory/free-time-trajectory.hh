@@ -50,6 +50,9 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
+    using typename parent_t::variationConfigWrtParam;
+    using typename parent_t::variationDerivWrtParam;
+
     /// Constructor with fixed definition interval trajectory
     ///
     /// \param traj trajectory defining this one by reparameterization

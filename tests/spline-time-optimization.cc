@@ -51,8 +51,9 @@ typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
 
 // Problem parameters.
-const unsigned nControlPoints = 31;
-const double vMax = 200.;
+const unsigned nControlPoints = 6;
+const unsigned nConstraintsPerCtrlPts = 1;
+const double vMax = 75.;
 
 int run_test ()
 {
@@ -73,7 +74,7 @@ int run_test ()
   // Define cost.
   Function::matrix_t a (1, freeTimeTraj.parameters ().size ());
   a.clear ();
-  a (0, 0) = 1.;
+  a (0, 0) = -1.;
   Function::vector_t b (1);
   b.clear ();
   roboptim::NumericLinearFunction cost (a, b);
@@ -94,7 +95,7 @@ int run_test ()
 
   Function::interval_t vRange (0., .5 * vMax * vMax);
   LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem
-    (freeTimeTraj, problem, vRange, nControlPoints * 10);
+    (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
 
   std::ofstream limitSpeedStream ("limit-speed.gp");
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
