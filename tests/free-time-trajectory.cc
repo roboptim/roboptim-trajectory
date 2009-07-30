@@ -16,9 +16,10 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/format.hpp>
-#include <boost/numeric/ublas/io.hpp>
+#include <boost/scoped_ptr.hpp>
 
 #include <roboptim/core/finite-difference-gradient.hh>
+#include <roboptim/core/io.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/fwd.hh>
@@ -34,6 +35,43 @@ using namespace roboptim;
 
 
 typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
+
+struct ConfigWrtParam : public DerivableFunction
+{
+  ConfigWrtParam (const freeTime_t& traj, double t) throw ()
+    : DerivableFunction (traj.parameters ().size (),
+			 traj.outputSize (),
+			 "config wrt param"),
+      traj_ (traj),
+      t_ (t)
+  {
+  }
+
+  ~ConfigWrtParam () throw ()
+  {
+  }
+
+  void
+  impl_compute (result_t& res, const argument_t& p) const throw ()
+  {
+    boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
+    updatedTrajectory->setParameters (p);
+    res = (*updatedTrajectory) (t_);
+  }
+
+  void
+  impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+    const throw ()
+  {
+    boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
+    updatedTrajectory->setParameters (p);
+    matrix_t tmp = updatedTrajectory->variationConfigWrtParam (t_);
+    grad = row (tmp, 0);
+  }
+
+  const freeTime_t& traj_;
+  double t_;
+};
 
 
 void printTable (const Spline& spline, const freeTime_t& freeTimeTraj);
@@ -105,8 +143,43 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	  std::cout << bg << std::endl;
 	}
     }
-  std::cout << std::endl;
+  std::cout << std::endl << std::endl;
 
+
+  std::cout << "Variation of the configuration w.r.t to parameters:" << std::endl;
+  format fmterConfig ("%1% %|50t|%2%");
+  for (double t = fttTmin; t <= fttTmax + 1e-3; t += .1)
+    {
+      if (t > fttTmax)
+	t = fttTmax;
+
+      if (tmin <= t && t <= tmax)
+	{
+	  Spline::jacobian_t splineVarConfig =
+	    spline.variationConfigWrtParam (t);
+	  fmterConfig % splineVarConfig;
+	}
+      else
+	fmterConfig % "N/A";
+
+      freeTime_t::jacobian_t fttVarConfig =
+	freeTimeTraj.variationConfigWrtParam (t);
+      fmterConfig % fttVarConfig;
+
+      try
+	{
+	  ConfigWrtParam configWrtParam (freeTimeTraj, t);
+	  checkGradientAndThrow (configWrtParam, 0,
+				 freeTimeTraj.parameters ());
+	}
+      catch (BadGradient& bg)
+	{
+	  std::cout << bg << std::endl;
+	}
+
+      std::cout << fmterConfig << std::endl;
+    }
+  std::cout << std::endl << std::endl;
 
   std::cout << "Variation of the derivative w.r.t to parameters:" << std::endl;
   format fmterDeriv ("%1% %|50t|%2%");
@@ -153,6 +226,9 @@ int run_test ()
   Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
   Spline spline (timeRange, 1, removeScaleFromParameters (params), "before");
   FreeTimeTrajectory<Spline::derivabilityOrder> freeTimeTraj (spline, 1.);
+
+  assert (freeTimeTraj.inputSize () == 1);
+  assert (freeTimeTraj.outputSize () == 1);
 
   printTable (spline, freeTimeTraj);
 

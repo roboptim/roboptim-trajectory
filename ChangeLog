@@ -1,3 +1,10 @@
+2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Check variationConfigWrtParam in FreeTimeTrajectory class.
+	* tests/free-time-trajectory.cc: Check variationConfigWrtParam
+	using finite difference gradient.
+	* tests/free-time-trajectory.stdout: Regenerate.
+
 2009-07-29  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Rewrite variationDerivWrtParam in freeTimeTrajectory.
