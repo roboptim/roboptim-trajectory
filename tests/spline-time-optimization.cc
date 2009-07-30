@@ -39,19 +39,22 @@
 #include <roboptim/trajectory/visualization/limit-speed.hh>
 
 
+#include <roboptim/core/plugin/cfsqp.hh>
+
+
 #include "common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-typedef boost::mpl::vector<DerivableFunction, LinearFunction> constraint_t;
-typedef Solver<DerivableFunction, constraint_t> solver_t;
+typedef CFSQPSolver::problem_t::constraints_t constraint_t;
+typedef CFSQPSolver solver_t;
 typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
 
 // Problem parameters.
-const unsigned nControlPoints = 6;
+const unsigned nControlPoints = 11;
 const unsigned nConstraintsPerCtrlPts = 1;
 const double vMax = 75.;
 

@@ -33,14 +33,18 @@
 #include <roboptim/trajectory/trajectory-cost.hh>
 #include <roboptim/trajectory/visualization/trajectory.hh>
 
+
+#include <roboptim/core/plugin/cfsqp.hh>
+
+
 #include "common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-typedef boost::mpl::vector<DerivableFunction, LinearFunction> constraint_t;
-typedef Solver<DerivableFunction, constraint_t> solver_t;
+typedef CFSQPSolver::problem_t::constraints_t constraint_t;
+typedef CFSQPSolver solver_t;
 
 int run_test ()
 {
