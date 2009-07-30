@@ -55,8 +55,8 @@ typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
 // Problem parameters.
 const unsigned nControlPoints = 11;
-const unsigned nConstraintsPerCtrlPts = 1;
-const double vMax = 75.;
+const unsigned nConstraintsPerCtrlPts = 10;
+const double vMax = 85.;
 
 int run_test ()
 {

@@ -1,1607 +1,671 @@
 Problem:
   Numeric linear function
-    A = [1,27]((1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
+    A = [1,12]((-1,0,0,0,0,0,0,0,0,0,0,0))
     B = [1](0)
-  Argument's bounds: (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf)
-  Argument's scales: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-  Number of constraints: 264
+  Argument's bounds: (0, inf), (0, 0), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (200, 200)
+  Argument's scales: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+  Number of constraints: 109
   Constraint 0
-      Numeric linear function
-        A = [1,27]((1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
-        B = [1](0)
-      Bounds: (0.001, inf)
+      speed limit (0.00909091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1)
+      Initial value: [1](0.0637334)
       
   Constraint 1
-      Numeric linear function
-        A = [1,27]((0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
-        B = [1](-0)
-      Bounds: (0, 0)
+      speed limit (0.0181818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](0)
+      Initial value: [1](1.01973)
       
   Constraint 2
-      Numeric linear function
-        A = [1,27]((0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1))
-        B = [1](-200)
-      Bounds: (0, 0)
+      speed limit (0.0272727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](0)
+      Initial value: [1](5.1624)
       
   Constraint 3
-      speed limit (0) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0363636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](0)
+      Initial value: [1](16.3157)
       
   Constraint 4
-      speed limit (0.00384615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0454545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](0.0423896)
+      Initial value: [1](39.8333)
       
   Constraint 5
-      speed limit (0.00769231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0545455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](0.678233)
+      Initial value: [1](82.5984)
       
   Constraint 6
-      speed limit (0.0115385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0636364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](3.43356)
+      Initial value: [1](153.024)
       
   Constraint 7
-      speed limit (0.0153846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0727273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](10.8517)
+      Initial value: [1](261.052)
       
   Constraint 8
-      speed limit (0.0192308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0818182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](26.4935)
+      Initial value: [1](418.155)
       
   Constraint 9
-      speed limit (0.0230769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.0909091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](54.9369)
+      Initial value: [1](619.753)
       
   Constraint 10
-      speed limit (0.0269231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.1) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](101.777)
+      Initial value: [1](832.32)
       
   Constraint 11
-      speed limit (0.0307692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.109091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](173.628)
+      Initial value: [1](1043.3)
       
   Constraint 12
-      speed limit (0.0346154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.118182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](278.118)
+      Initial value: [1](1242.24)
       
   Constraint 13
-      speed limit (0.0384615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.127273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](421.573)
+      Initial value: [1](1420.22)
       
   Constraint 14
-      speed limit (0.0423077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.136364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](582.696)
+      Initial value: [1](1569.85)
       
   Constraint 15
-      speed limit (0.0461538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.145455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](747.156)
+      Initial value: [1](1685.26)
       
   Constraint 16
-      speed limit (0.05) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.154545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](907.061)
+      Initial value: [1](1762.12)
       
   Constraint 17
-      speed limit (0.0538462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.163636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1055.53)
+      Initial value: [1](1797.62)
       
   Constraint 18
-      speed limit (0.0576923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.172727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1186.71)
+      Initial value: [1](1800)
       
   Constraint 19
-      speed limit (0.0615385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.181818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1295.76)
+      Initial value: [1](1800)
       
   Constraint 20
-      speed limit (0.0653846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.190909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1378.85)
+      Initial value: [1](1800)
       
   Constraint 21
-      speed limit (0.0692308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.2) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1433.17)
+      Initial value: [1](1800)
       
   Constraint 22
-      speed limit (0.0730769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.209091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1456.94)
+      Initial value: [1](1800)
       
   Constraint 23
-      speed limit (0.0769231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.218182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 24
-      speed limit (0.0807692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.227273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 25
-      speed limit (0.0846154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.236364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 26
-      speed limit (0.0884615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.245455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 27
-      speed limit (0.0923077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.254545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 28
-      speed limit (0.0961538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.263636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 29
-      speed limit (0.1) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.272727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 30
-      speed limit (0.103846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.281818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 31
-      speed limit (0.107692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.290909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 32
-      speed limit (0.111538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.3) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 33
-      speed limit (0.115385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.309091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 34
-      speed limit (0.119231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.318182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 35
-      speed limit (0.123077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.327273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 36
-      speed limit (0.126923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.336364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 37
-      speed limit (0.130769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.345455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 38
-      speed limit (0.134615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.354545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 39
-      speed limit (0.138462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.363636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 40
-      speed limit (0.142308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.372727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 41
-      speed limit (0.146154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.381818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 42
-      speed limit (0.15) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.390909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 43
-      speed limit (0.153846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.4) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 44
-      speed limit (0.157692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.409091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 45
-      speed limit (0.161538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.418182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 46
-      speed limit (0.165385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.427273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 47
-      speed limit (0.169231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.436364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 48
-      speed limit (0.173077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.445455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 49
-      speed limit (0.176923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.454545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 50
-      speed limit (0.180769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.463636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 51
-      speed limit (0.184615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.472727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 52
-      speed limit (0.188462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.481818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 53
-      speed limit (0.192308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.490909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 54
-      speed limit (0.196154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.5) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 55
-      speed limit (0.2) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.509091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 56
-      speed limit (0.203846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.518182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 57
-      speed limit (0.207692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.527273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 58
-      speed limit (0.211538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.536364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 59
-      speed limit (0.215385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.545455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 60
-      speed limit (0.219231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.554545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 61
-      speed limit (0.223077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.563636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 62
-      speed limit (0.226923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.572727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 63
-      speed limit (0.230769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.581818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 64
-      speed limit (0.234615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.590909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 65
-      speed limit (0.238462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.6) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 66
-      speed limit (0.242308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.609091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 67
-      speed limit (0.246154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.618182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 68
-      speed limit (0.25) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.627273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 69
-      speed limit (0.253846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.636364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 70
-      speed limit (0.257692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.645455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 71
-      speed limit (0.261538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.654545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 72
-      speed limit (0.265385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.663636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 73
-      speed limit (0.269231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.672727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 74
-      speed limit (0.273077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.681818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 75
-      speed limit (0.276923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.690909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 76
-      speed limit (0.280769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.7) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 77
-      speed limit (0.284615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.709091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 78
-      speed limit (0.288462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.718182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 79
-      speed limit (0.292308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.727273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 80
-      speed limit (0.296154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.736364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 81
-      speed limit (0.3) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.745455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 82
-      speed limit (0.303846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.754545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 83
-      speed limit (0.307692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.763636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 84
-      speed limit (0.311538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.772727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 85
-      speed limit (0.315385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.781818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 86
-      speed limit (0.319231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.790909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 87
-      speed limit (0.323077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.8) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 88
-      speed limit (0.326923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.809091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 89
-      speed limit (0.330769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.818182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 90
-      speed limit (0.334615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.827273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1800)
       
   Constraint 91
-      speed limit (0.338462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.836364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1797.62)
       
   Constraint 92
-      speed limit (0.342308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.845455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1762.12)
       
   Constraint 93
-      speed limit (0.346154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.854545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1685.26)
       
   Constraint 94
-      speed limit (0.35) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.863636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1569.85)
       
   Constraint 95
-      speed limit (0.353846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.872727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1420.22)
       
   Constraint 96
-      speed limit (0.357692) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.881818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1242.24)
       
   Constraint 97
-      speed limit (0.361538) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.890909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1043.3)
       
   Constraint 98
-      speed limit (0.365385) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.9) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](832.32)
       
   Constraint 99
-      speed limit (0.369231) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.909091) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](619.753)
       
   Constraint 100
-      speed limit (0.373077) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.918182) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](418.155)
       
   Constraint 101
-      speed limit (0.376923) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.927273) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](261.052)
       
   Constraint 102
-      speed limit (0.380769) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.936364) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](153.024)
       
   Constraint 103
-      speed limit (0.384615) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.945455) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](82.5984)
       
   Constraint 104
-      speed limit (0.388462) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.954545) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](39.8333)
       
   Constraint 105
-      speed limit (0.392308) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.963636) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](16.3157)
       
   Constraint 106
-      speed limit (0.396154) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.972727) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](5.1624)
       
   Constraint 107
-      speed limit (0.4) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.981818) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](1.01973)
       
   Constraint 108
-      speed limit (0.403846) (derivable function)
-      Bounds: (0, 31250)
+      speed limit (0.990909) (derivable function)
+      Bounds: (0, 3612.5)
       Scales: 1
-      Initial value: [1](1458)
+      Initial value: [1](0.0637334)
       
-  Constraint 109
-      speed limit (0.407692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 110
-      speed limit (0.411538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 111
-      speed limit (0.415385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 112
-      speed limit (0.419231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 113
-      speed limit (0.423077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 114
-      speed limit (0.426923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 115
-      speed limit (0.430769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 116
-      speed limit (0.434615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 117
-      speed limit (0.438462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 118
-      speed limit (0.442308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 119
-      speed limit (0.446154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 120
-      speed limit (0.45) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 121
-      speed limit (0.453846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 122
-      speed limit (0.457692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 123
-      speed limit (0.461538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 124
-      speed limit (0.465385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 125
-      speed limit (0.469231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 126
-      speed limit (0.473077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 127
-      speed limit (0.476923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 128
-      speed limit (0.480769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 129
-      speed limit (0.484615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 130
-      speed limit (0.488462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 131
-      speed limit (0.492308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 132
-      speed limit (0.496154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 133
-      speed limit (0.5) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 134
-      speed limit (0.503846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 135
-      speed limit (0.507692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 136
-      speed limit (0.511538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 137
-      speed limit (0.515385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 138
-      speed limit (0.519231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 139
-      speed limit (0.523077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 140
-      speed limit (0.526923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 141
-      speed limit (0.530769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 142
-      speed limit (0.534615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 143
-      speed limit (0.538462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 144
-      speed limit (0.542308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 145
-      speed limit (0.546154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 146
-      speed limit (0.55) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 147
-      speed limit (0.553846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 148
-      speed limit (0.557692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 149
-      speed limit (0.561538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 150
-      speed limit (0.565385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 151
-      speed limit (0.569231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 152
-      speed limit (0.573077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 153
-      speed limit (0.576923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 154
-      speed limit (0.580769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 155
-      speed limit (0.584615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 156
-      speed limit (0.588462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 157
-      speed limit (0.592308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 158
-      speed limit (0.596154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 159
-      speed limit (0.6) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 160
-      speed limit (0.603846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 161
-      speed limit (0.607692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 162
-      speed limit (0.611538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 163
-      speed limit (0.615385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 164
-      speed limit (0.619231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 165
-      speed limit (0.623077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 166
-      speed limit (0.626923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 167
-      speed limit (0.630769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 168
-      speed limit (0.634615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 169
-      speed limit (0.638462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 170
-      speed limit (0.642308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 171
-      speed limit (0.646154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 172
-      speed limit (0.65) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 173
-      speed limit (0.653846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 174
-      speed limit (0.657692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 175
-      speed limit (0.661538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 176
-      speed limit (0.665385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 177
-      speed limit (0.669231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 178
-      speed limit (0.673077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 179
-      speed limit (0.676923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 180
-      speed limit (0.680769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 181
-      speed limit (0.684615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 182
-      speed limit (0.688462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 183
-      speed limit (0.692308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 184
-      speed limit (0.696154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 185
-      speed limit (0.7) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 186
-      speed limit (0.703846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 187
-      speed limit (0.707692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 188
-      speed limit (0.711538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 189
-      speed limit (0.715385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 190
-      speed limit (0.719231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 191
-      speed limit (0.723077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 192
-      speed limit (0.726923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 193
-      speed limit (0.730769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 194
-      speed limit (0.734615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 195
-      speed limit (0.738462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 196
-      speed limit (0.742308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 197
-      speed limit (0.746154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 198
-      speed limit (0.75) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 199
-      speed limit (0.753846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 200
-      speed limit (0.757692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 201
-      speed limit (0.761538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 202
-      speed limit (0.765385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 203
-      speed limit (0.769231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 204
-      speed limit (0.773077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 205
-      speed limit (0.776923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 206
-      speed limit (0.780769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 207
-      speed limit (0.784615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 208
-      speed limit (0.788462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 209
-      speed limit (0.792308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 210
-      speed limit (0.796154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 211
-      speed limit (0.8) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 212
-      speed limit (0.803846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 213
-      speed limit (0.807692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 214
-      speed limit (0.811538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 215
-      speed limit (0.815385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 216
-      speed limit (0.819231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 217
-      speed limit (0.823077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 218
-      speed limit (0.826923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 219
-      speed limit (0.830769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 220
-      speed limit (0.834615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 221
-      speed limit (0.838462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 222
-      speed limit (0.842308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 223
-      speed limit (0.846154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 224
-      speed limit (0.85) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 225
-      speed limit (0.853846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 226
-      speed limit (0.857692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 227
-      speed limit (0.861538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 228
-      speed limit (0.865385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 229
-      speed limit (0.869231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 230
-      speed limit (0.873077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 231
-      speed limit (0.876923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 232
-      speed limit (0.880769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 233
-      speed limit (0.884615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 234
-      speed limit (0.888462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 235
-      speed limit (0.892308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 236
-      speed limit (0.896154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 237
-      speed limit (0.9) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 238
-      speed limit (0.903846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 239
-      speed limit (0.907692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 240
-      speed limit (0.911538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 241
-      speed limit (0.915385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 242
-      speed limit (0.919231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 243
-      speed limit (0.923077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1458)
-      
-  Constraint 244
-      speed limit (0.926923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1456.94)
-      
-  Constraint 245
-      speed limit (0.930769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1433.17)
-      
-  Constraint 246
-      speed limit (0.934615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1378.85)
-      
-  Constraint 247
-      speed limit (0.938462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1295.76)
-      
-  Constraint 248
-      speed limit (0.942308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1186.71)
-      
-  Constraint 249
-      speed limit (0.946154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](1055.53)
-      
-  Constraint 250
-      speed limit (0.95) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](907.061)
-      
-  Constraint 251
-      speed limit (0.953846) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](747.156)
-      
-  Constraint 252
-      speed limit (0.957692) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](582.696)
-      
-  Constraint 253
-      speed limit (0.961538) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](421.573)
-      
-  Constraint 254
-      speed limit (0.965385) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](278.118)
-      
-  Constraint 255
-      speed limit (0.969231) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](173.628)
-      
-  Constraint 256
-      speed limit (0.973077) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](101.777)
-      
-  Constraint 257
-      speed limit (0.976923) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](54.9369)
-      
-  Constraint 258
-      speed limit (0.980769) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](26.4935)
-      
-  Constraint 259
-      speed limit (0.984615) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](10.8517)
-      
-  Constraint 260
-      speed limit (0.988462) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](3.43356)
-      
-  Constraint 261
-      speed limit (0.992308) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](0.678233)
-      
-  Constraint 262
-      speed limit (0.996154) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](0.0423896)
-      
-  Constraint 263
-      speed limit (1) (derivable function)
-      Bounds: (0, 31250)
-      Scales: 1
-      Initial value: [1](6.66587e-29)
-      
-  Starting point: [27](1,0,8,16,24,32,40,48,56,64,72,80,88,96,104,112,120,128,136,144,152,160,168,176,184,192,200)
-  Starting value: [1](1)
+  Starting point: [12](1,0,20,40,60,80,100,120,140,160,180,200)
+  Starting value: [1](-1)
   Infinity value (for all functions): inf
 CFSQP specific variables: 
-  Nineq: 523
-  Nineqn: 1
-  Neq: 2
+  Nineq: 218
+  Nineqn: 218
+  Neq: 0
   Neqn: 0
   Mode: 100
   Iprint: 0
@@ -1610,11 +674,10 @@ CFSQP specific variables:
   Eps: 1e-08
   Epseqn: 1e-08
   Udelta: 1e-08
-  CFSQP constraints: (0, 1), (3, 1), (3, 0), (4, 1), (4, 0), (5, 1), (5, 0), (6, 1), (6, 0), (7, 1), (7, 0), (8, 1), (8, 0), (9, 1), (9, 0), (10, 1), (10, 0), (11, 1), (11, 0), (12, 1), (12, 0), (13, 1), (13, 0), (14, 1), (14, 0), (15, 1), (15, 0), (16, 1), (16, 0), (17, 1), (17, 0), (18, 1), (18, 0), (19, 1), (19, 0), (20, 1), (20, 0), (21, 1), (21, 0), (22, 1), (22, 0), (23, 1), (23, 0), (24, 1), (24, 0), (25, 1), (25, 0), (26, 1), (26, 0), (27, 1), (27, 0), (28, 1), (28, 0), (29, 1), (29, 0), (30, 1), (30, 0), (31, 1), (31, 0), (32, 1), (32, 0), (33, 1), (33, 0), (34, 1), (34, 0), (35, 1), (35, 0), (36, 1), (36, 0), (37, 1), (37, 0), (38, 1), (38, 0), (39, 1), (39, 0), (40, 1), (40, 0), (41, 1), (41, 0), (42, 1), (42, 0), (43, 1), (43, 0), (44, 1), (44, 0), (45, 1), (45, 0), (46, 1), (46, 0), (47, 1), (47, 0), (48, 1), (48, 0), (49, 1), (49, 0), (50, 1), (50, 0), (51, 1), (51, 0), (52, 1), (52, 0), (53, 1), (53, 0), (54, 1), (54, 0), (55, 1), (55, 0), (56, 1), (56, 0), (57, 1), (57, 0), (58, 1), (58, 0), (59, 1), (59, 0), (60, 1), (60, 0), (61, 1), (61, 0), (62, 1), (62, 0), (63, 1), (63, 0), (64, 1), (64, 0), (65, 1), (65, 0), (66, 1), (66, 0), (67, 1), (67, 0), (68, 1), (68, 0), (69, 1), (69, 0), (70, 1), (70, 0), (71, 1), (71, 0), (72, 1), (72, 0), (73, 1), (73, 0), (74, 1), (74, 0), (75, 1), (75, 0), (76, 1), (76, 0), (77, 1), (77, 0), (78, 1), (78, 0), (79, 1), (79, 0), (80, 1), (80, 0), (81, 1), (81, 0), (82, 1), (82, 0), (83, 1), (83, 0), (84, 1), (84, 0), (85, 1), (85, 0), (86, 1), (86, 0), (87, 1), (87, 0), (88, 1), (88, 0), (89, 1), (89, 0), (90, 1), (90, 0), (91, 1), (91, 0), (92, 1), (92, 0), (93, 1), (93, 0), (94, 1), (94, 0), (95, 1), (95, 0), (96, 1), (96, 0), (97, 1), (97, 0), (98, 1), (98, 0), (99, 1), (99, 0), (100, 1), (100, 0), (101, 1), (101, 0), (102, 1), (102, 0), (103, 1), (103, 0), (104, 1), (104, 0), (105, 1), (105, 0), (106, 1), (106, 0), (107, 1), (107, 0), (108, 1), (108, 0), (109, 1), (109, 0), (110, 1), (110, 0), (111, 1), (111, 0), (112, 1), (112, 0), (113, 1), (113, 0), (114, 1), (114, 0), (115, 1), (115, 0), (116, 1), (116, 0), (117, 1), (117, 0), (118, 1), (118, 0), (119, 1), (119, 0), (120, 1), (120, 0), (121, 1), (121, 0), (122, 1), (122, 0), (123, 1), (123, 0), (124, 1), (124, 0), (125, 1), (125, 0), (126, 1), (126, 0), (127, 1), (127, 0), (128, 1), (128, 0), (129, 1), (129, 0), (130, 1), (130, 0), (131, 1), (131, 0), (132, 1), (132, 0), (133, 1), (133, 0), (134, 1), (134, 0), (135, 1), (135, 0), (136, 1), (136, 0), (137, 1), (137, 0), (138, 1), (138, 0), (139, 1), (139, 0), (140, 1), (140, 0), (141, 1), (141, 0), (142, 1), (142, 0), (143, 1), (143, 0), (144, 1), (144, 0), (145, 1), (145, 0), (146, 1), (146, 0), (147, 1), (147, 0), (148, 1), (148, 0), (149, 1), (149, 0), (150, 1), (150, 0), (151, 1), (151, 0), (152, 1), (152, 0), (153, 1), (153, 0), (154, 1), (154, 0), (155, 1), (155, 0), (156, 1), (156, 0), (157, 1), (157, 0), (158, 1), (158, 0), (159, 1), (159, 0), (160, 1), (160, 0), (161, 1), (161, 0), (162, 1), (162, 0), (163, 1), (163, 0), (164, 1), (164, 0), (165, 1), (165, 0), (166, 1), (166, 0), (167, 1), (167, 0), (168, 1), (168, 0), (169, 1), (169, 0), (170, 1), (170, 0), (171, 1), (171, 0), (172, 1), (172, 0), (173, 1), (173, 0), (174, 1), (174, 0), (175, 1), (175, 0), (176, 1), (176, 0), (177, 1), (177, 0), (178, 1), (178, 0), (179, 1), (179, 0), (180, 1), (180, 0), (181, 1), (181, 0), (182, 1), (182, 0), (183, 1), (183, 0), (184, 1), (184, 0), (185, 1), (185, 0), (186, 1), (186, 0), (187, 1), (187, 0), (188, 1), (188, 0), (189, 1), (189, 0), (190, 1), (190, 0), (191, 1), (191, 0), (192, 1), (192, 0), (193, 1), (193, 0), (194, 1), (194, 0), (195, 1), (195, 0), (196, 1), (196, 0), (197, 1), (197, 0), (198, 1), (198, 0), (199, 1), (199, 0), (200, 1), (200, 0), (201, 1), (201, 0), (202, 1), (202, 0), (203, 1), (203, 0), (204, 1), (204, 0), (205, 1), (205, 0), (206, 1), (206, 0), (207, 1), (207, 0), (208, 1), (208, 0), (209, 1), (209, 0), (210, 1), (210, 0), (211, 1), (211, 0), (212, 1), (212, 0), (213, 1), (213, 0), (214, 1), (214, 0), (215, 1), (215, 0), (216, 1), (216, 0), (217, 1), (217, 0), (218, 1), (218, 0), (219, 1), (219, 0), (220, 1), (220, 0), (221, 1), (221, 0), (222, 1), (222, 0), (223, 1), (223, 0), (224, 1), (224, 0), (225, 1), (225, 0), (226, 1), (226, 0), (227, 1), (227, 0), (228, 1), (228, 0), (229, 1), (229, 0), (230, 1), (230, 0), (231, 1), (231, 0), (232, 1), (232, 0), (233, 1), (233, 0), (234, 1), (234, 0), (235, 1), (235, 0), (236, 1), (236, 0), (237, 1), (237, 0), (238, 1), (238, 0), (239, 1), (239, 0), (240, 1), (240, 0), (241, 1), (241, 0), (242, 1), (242, 0), (243, 1), (243, 0), (244, 1), (244, 0), (245, 1), (245, 0), (246, 1), (246, 0), (247, 1), (247, 0), (248, 1), (248, 0), (249, 1), (249, 0), (250, 1), (250, 0), (251, 1), (251, 0), (252, 1), (252, 0), (253, 1), (253, 0), (254, 1), (254, 0), (255, 1), (255, 0), (256, 1), (256, 0), (257, 1), (257, 0), (258, 1), (258, 0), (259, 1), (259, 0), (260, 1), (260, 0), (261, 1), (261, 0), (262, 1), (262, 0), (263, 1), (263, 0), (1, 1), (2, 1)
+  CFSQP constraints: (0, 1), (0, 0), (1, 1), (1, 0), (2, 1), (2, 0), (3, 1), (3, 0), (4, 1), (4, 0), (5, 1), (5, 0), (6, 1), (6, 0), (7, 1), (7, 0), (8, 1), (8, 0), (9, 1), (9, 0), (10, 1), (10, 0), (11, 1), (11, 0), (12, 1), (12, 0), (13, 1), (13, 0), (14, 1), (14, 0), (15, 1), (15, 0), (16, 1), (16, 0), (17, 1), (17, 0), (18, 1), (18, 0), (19, 1), (19, 0), (20, 1), (20, 0), (21, 1), (21, 0), (22, 1), (22, 0), (23, 1), (23, 0), (24, 1), (24, 0), (25, 1), (25, 0), (26, 1), (26, 0), (27, 1), (27, 0), (28, 1), (28, 0), (29, 1), (29, 0), (30, 1), (30, 0), (31, 1), (31, 0), (32, 1), (32, 0), (33, 1), (33, 0), (34, 1), (34, 0), (35, 1), (35, 0), (36, 1), (36, 0), (37, 1), (37, 0), (38, 1), (38, 0), (39, 1), (39, 0), (40, 1), (40, 0), (41, 1), (41, 0), (42, 1), (42, 0), (43, 1), (43, 0), (44, 1), (44, 0), (45, 1), (45, 0), (46, 1), (46, 0), (47, 1), (47, 0), (48, 1), (48, 0), (49, 1), (49, 0), (50, 1), (50, 0), (51, 1), (51, 0), (52, 1), (52, 0), (53, 1), (53, 0), (54, 1), (54, 0), (55, 1), (55, 0), (56, 1), (56, 0), (57, 1), (57, 0), (58, 1), (58, 0), (59, 1), (59, 0), (60, 1), (60, 0), (61, 1), (61, 0), (62, 1), (62, 0), (63, 1), (63, 0), (64, 1), (64, 0), (65, 1), (65, 0), (66, 1), (66, 0), (67, 1), (67, 0), (68, 1), (68, 0), (69, 1), (69, 0), (70, 1), (70, 0), (71, 1), (71, 0), (72, 1), (72, 0), (73, 1), (73, 0), (74, 1), (74, 0), (75, 1), (75, 0), (76, 1), (76, 0), (77, 1), (77, 0), (78, 1), (78, 0), (79, 1), (79, 0), (80, 1), (80, 0), (81, 1), (81, 0), (82, 1), (82, 0), (83, 1), (83, 0), (84, 1), (84, 0), (85, 1), (85, 0), (86, 1), (86, 0), (87, 1), (87, 0), (88, 1), (88, 0), (89, 1), (89, 0), (90, 1), (90, 0), (91, 1), (91, 0), (92, 1), (92, 0), (93, 1), (93, 0), (94, 1), (94, 0), (95, 1), (95, 0), (96, 1), (96, 0), (97, 1), (97, 0), (98, 1), (98, 0), (99, 1), (99, 0), (100, 1), (100, 0), (101, 1), (101, 0), (102, 1), (102, 0), (103, 1), (103, 0), (104, 1), (104, 0), (105, 1), (105, 0), (106, 1), (106, 0), (107, 1), (107, 0), (108, 1), (108, 0)
 Result: 
-    Size (input, output): 27, 1
-    X: [27](0.215963,5.02319e-32,8.00087,16.0002,24.0002,32.0002,40.0001,48.0001,56.0001,64.0001,72.0001,80,88,96,104,112,120,128,136,144,152,160,168,176,184,191.999,200)
-    Value: [1](0.215963)
-    Constraints values: [264](0.215963,-5.02319e-32,0,0,0.909062,14.545,73.634,232.72,568.164,1178.14,2182.66,3723.52,5964.36,9040.81,12496.1,16022.8,19451.7,22635.3,25447.9,27785.6,29566.5,30730.5,31239,31260.5,31259.4,31258.6,31257.9,31257.5,31257.2,31257.1,31257.2,31257.5,31258,31258.5,31258.9,31259.3,31259.6,31259.9,31260.1,31260.3,31260.4,31260.5,31260.5,31260.5,31260.5,31260.4,31260.4,31260.4,31260.4,31260.4,31260.4,31260.4,31260.4,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.5,31260.4,31260.4,31260.4,31260.4,31260.4,31260.4,31260.4,31260.4,31260.5,31260.5,31260.5,31260.5,31260.4,31260.3,31260.1,31259.9,31259.6,31259.3,31258.9,31258.5,31258,31257.5,31257.2,31257.1,31257.2,31257.5,31257.9,31258.6,31259.4,31260.5,31239,30730.5,29566.5,27785.6,25447.9,22635.3,19451.7,16022.8,12496.1,9040.81,5964.36,3723.52,2182.66,1178.14,568.164,232.72,73.634,14.545,0.909062,0)
-    Lambda: [525](0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-    Warnings: New iterate equivalent to previous one.
+    Size (input, output): 12, 1
+    X: [12](1.41692,-1.68622e-39,20.0686,40.0104,60.0077,80.0035,100,119.996,139.992,159.99,179.931,200)
+    Value: [1](-1.41692)
+    Constraints values: [109](0.128834,2.06134,10.4356,32.9815,80.5212,166.969,309.33,527.704,845.28,1252.69,1681.87,2107.31,2507.8,2865.24,3164.69,3394.32,3545.45,3612.5,3612.5,3608.42,3605.12,3602.6,3600.87,3599.92,3599.76,3600.37,3601.77,3603.83,3605.76,3607.46,3608.91,3610.11,3611.08,3611.8,3612.27,3612.5,3612.5,3612.45,3612.41,3612.38,3612.36,3612.35,3612.35,3612.35,3612.37,3612.39,3612.41,3612.43,3612.45,3612.47,3612.48,3612.49,3612.49,3612.5,3612.5,3612.5,3612.49,3612.49,3612.48,3612.47,3612.45,3612.43,3612.41,3612.39,3612.37,3612.35,3612.35,3612.35,3612.36,3612.38,3612.41,3612.45,3612.5,3612.5,3612.27,3611.8,3611.08,3610.11,3608.91,3607.46,3605.76,3603.83,3601.77,3600.37,3599.76,3599.92,3600.87,3602.6,3605.12,3608.42,3612.5,3612.5,3545.45,3394.32,3164.69,2865.24,2507.8,2107.31,1681.87,1252.69,845.28,527.704,309.33,166.969,80.5212,32.9815,10.4356,2.06134,0.128834)
+    Lambda: [218](0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2.60732e-05,0,1.31596e-05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.31596e-05,0,2.60733e-05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3.91812e-05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2.60732e-05,0,1.31598e-05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.31596e-05,0,2.60734e-05,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1)

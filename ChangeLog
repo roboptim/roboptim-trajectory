@@ -1,5 +1,12 @@
 2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix free time optimization test case.
+	* tests/spline-time-optimization.cc: Fix parameters.
+	* tests/spline-time-optimization.stdout: Regenerate.
+	* tests/testsuite.at: Not XFAIL anymore.
+
+2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Do not add constraints on trajectory bounds as gradient is null.
 	* include/roboptim/trajectory/limit-speed.hxx: Here.
 
