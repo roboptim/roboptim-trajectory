@@ -98,7 +98,10 @@ namespace roboptim
     using namespace boost;
     if (nConstraints == 0)
       return;
-    for (double i = 0; i < 1.; i += 1. / nConstraints)
+
+    const value_type delta = 1. / nConstraints;
+
+    for (double i = delta; i < 1. - delta; i += delta)
       {
 	shared_ptr<LimitSpeed> speed (new LimitSpeed (i * tMax, trajectory));
 	problem.addConstraint
