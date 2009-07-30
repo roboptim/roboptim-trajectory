@@ -1,5 +1,10 @@
 2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Precise derivation order explicitly.
+	* include/roboptim/trajectory/limit-speed.hxx: Here.
+
+2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Use constraint type from cfsqp.hh.
 	* tests/spline-optimization.cc,
 	* tests/spline-time-optimization.cc:
