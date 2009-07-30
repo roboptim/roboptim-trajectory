@@ -96,7 +96,7 @@ int run_test ()
   indices.push_back (freeTimeParams.size () - 1);
   makeFreeze (problem) (indices, freeTimeParams);
 
-  Function::interval_t vRange (0., .5 * vMax * vMax);
+  Function::interval_t vRange = Function::makeUpperInterval (.5 * vMax * vMax);
   LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem
     (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
 

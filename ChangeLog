@@ -1,5 +1,11 @@
 2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Remove useless constraints.
+	* tests/spline-time-optimization.cc: Remove useless constraints.
+	* tests/spline-time-optimization.stdout: Regenerate.
+
+2009-07-30  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix free time optimization test case.
 	* tests/spline-time-optimization.cc: Fix parameters.
 	* tests/spline-time-optimization.stdout: Regenerate.
