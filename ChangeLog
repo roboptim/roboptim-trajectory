@@ -1,5 +1,10 @@
 2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix test case.
+	* tests/complex-cost-function.cc: Remove useless constraints.
+
+2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Make time input argument of frontal/orthogonal speed.
 	* include/roboptim/trajectory/frontal-speed.hh,
 	* include/roboptim/trajectory/frontal-speed.hxx,

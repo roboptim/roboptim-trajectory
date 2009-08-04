@@ -31,13 +31,11 @@
 #include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/frontal-speed.hh>
 #include <roboptim/trajectory/fwd.hh>
-#include <roboptim/trajectory/limit-speed.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
 #include <roboptim/trajectory/spline-length.hh>
 #include <roboptim/trajectory/spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
-#include <roboptim/trajectory/visualization/limit-speed.hh>
 #include <roboptim/trajectory/visualization/trajectory.hh>
 
 #include <roboptim/core/plugin/cfsqp.hh>
@@ -61,8 +59,6 @@ const unsigned nConstraintsPerCtrlPts = 0;
 const double finalX = 200.;
 const double finalY = 200.;
 const double finalTheta = 3.14;
-
-const double vMax = 200.;
 
 namespace roboptim
 {
@@ -106,12 +102,15 @@ namespace roboptim
 
       for (double i = 0.; i < 1.; i += delta)
 	{
-	  FrontalSpeed<T> frontalSpeed (i * tMax, *updatedTrajectory);
-	  OrthogonalSpeed<T> orthogonalSpeed (i * tMax, *updatedTrajectory);
+	  FrontalSpeed<T> frontalSpeed (*updatedTrajectory);
+	  OrthogonalSpeed<T> orthogonalSpeed (*updatedTrajectory);
 
-	  const value_type u1 = frontalSpeed.gradient (p)[0];
+	  StableTimePoint timePoint = i * tMax;
+	  vector_t t (1);
+	  t[0] = timePoint.getTime (updatedTrajectory->timeRange ());
+	  const value_type u1 = frontalSpeed.gradient (t)[0];
 	  const value_type u2 = updatedTrajectory->derivative (i * tMax, 2)[2];
-	  const value_type u3 = orthogonalSpeed.gradient (p)[0];
+	  const value_type u3 = orthogonalSpeed.gradient (t)[0];
 	  res[0] +=
 	    alpha_[0]
 	    + alpha_[1] * u1 * u1
@@ -188,25 +187,12 @@ int run_test ()
   indices.push_back (freeTimeParams.size () - 1);
   makeFreeze (problem) (indices, freeTimeParams);
 
-  Function::interval_t vRange = Function::makeUpperInterval (.5 * vMax * vMax);
-  LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem
-    (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
-
-  std::ofstream trajectoryStream ("trajectory.gp");
-  std::ofstream limitSpeedStream ("limit-speed.gp");
-  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
-
-  gnuplot
-    << set ("multiplot layout 1,2 title "
-	    "'variation of speed before and after optimization'")
-    << set ("grid");
-  gnuplot << plot_limitSpeed (freeTimeTraj, vMax);
-
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
 
   std::cerr << solver << std::endl;
 
+  std::ofstream trajectoryStream ("trajectory.gp");
   Gnuplot gnuplotTraj = Gnuplot::make_interactive_gnuplot ();
   gnuplotTraj
     << set ("multiplot layout 1, 2 title 'trajectory'")
@@ -247,11 +233,8 @@ int run_test ()
      removeScaleFromParameters (optimizedTrajectory.parameters ()),
      "after");
 
-  gnuplotTraj << plot_xy (updatedSpline);
+  gnuplotTraj << plot_xy (updatedSpline, updatedSpline.length () / 100);
   trajectoryStream << (gnuplotTraj << unset ("multiplot"));
-
-  gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
-  limitSpeedStream << (gnuplot << unset ("multiplot"));
 
   return 0;
 }
