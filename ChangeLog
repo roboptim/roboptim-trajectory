@@ -1,5 +1,12 @@
 2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add orthogonal speed.
+	* include/Makefile.am: Distribute new headers.
+	* include/roboptim/trajectory/orthogonal-speed.hh: New.
+	* include/roboptim/trajectory/orthogonal-speed.hxx: New.
+
+2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement frontal-speed.
 	* include/Makefile.am: Distribute new headers.
 	* include/roboptim/trajectory/frontal-speed.hh: New.
