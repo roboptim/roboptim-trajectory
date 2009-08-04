@@ -6,6 +6,8 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/free-time-trajectory.hxx		\
 	roboptim/trajectory/freeze.hh				\
 	roboptim/trajectory/freeze.hxx				\
+	roboptim/trajectory/frontal-speed.hh			\
+	roboptim/trajectory/frontal-speed.hxx			\
 	roboptim/trajectory/fwd.hh				\
 	roboptim/trajectory/limit-speed.hh			\
 	roboptim/trajectory/limit-speed.hxx			\

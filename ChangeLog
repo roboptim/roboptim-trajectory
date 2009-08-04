@@ -1,3 +1,10 @@
+2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Implement frontal-speed.
+	* include/Makefile.am: Distribute new headers.
+	* include/roboptim/trajectory/frontal-speed.hh: New.
+	* include/roboptim/trajectory/frontal-speed.hxx: New.
+
 2009-08-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Update test case output.
