@@ -80,7 +80,7 @@ namespace roboptim
     const value_type& ydot = speed[1];
     // const value_type& thetadot = speed[2];
 
-    res[0] = std::sin (theta) * ydot + std::cos (theta) * xdot;
+    res[0] = std::sin (theta) * ydot - std::cos (theta) * xdot;
   }
 
   template <typename T>

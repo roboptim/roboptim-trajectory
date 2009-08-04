@@ -1,5 +1,10 @@
 2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix computation error in frontal speed.
+	* include/roboptim/trajectory/frontal-speed.hxx: Here.
+
+2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add new test case.
 	* tests/Makefile.am: Compile new test and distribute reference file.
 	* tests/complex-cost-function.cc: New.
