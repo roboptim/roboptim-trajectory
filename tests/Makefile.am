@@ -46,6 +46,11 @@ check_PROGRAMS += spline-time-optimization
 spline_time_optimization_SOURCES = spline-time-optimization.cc $(COMMON_SOURCES)
 spline_time_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# complex-cost-function
+check_PROGRAMS += complex-cost-function
+complex_cost_function_SOURCES = complex-cost-function.cc $(COMMON_SOURCES)
+complex_cost_function_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
 
 .PHONY: generate-reference
 
@@ -69,6 +74,7 @@ generate-reference:
 
 # Distribute reference files.
 EXTRA_DIST +=					\
+	complex-cost-function.stdout		\
 	free-time-trajectory.stdout		\
 	simple.stdout				\
 	spline-gradient.stdout			\

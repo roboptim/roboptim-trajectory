@@ -1,5 +1,13 @@
 2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add new test case.
+	* tests/Makefile.am: Compile new test and distribute reference file.
+	* tests/complex-cost-function.cc: New.
+	* tests/complex-cost-function.stdout: New.
+	* tests/testsuite.at: Run new test.
+
+2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add missing newline.
 	* include/Makefile.am: Add missing newline.
 
