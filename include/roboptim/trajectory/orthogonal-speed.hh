@@ -21,7 +21,6 @@
 
 # include <roboptim/core/derivable-function.hh>
 # include <roboptim/trajectory/fwd.hh>
-# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
@@ -29,24 +28,14 @@ namespace roboptim
   class OrthogonalSpeed : public DerivableFunction
   {
   public:
-
-    OrthogonalSpeed (StableTimePoint timePoint, const T& spline) throw ();
+    OrthogonalSpeed (const T& spline) throw ();
     ~OrthogonalSpeed () throw ();
-
-    const T& trajectory () const throw ();
-
-    template <typename F, typename CLIST>
-    static void addToProblem (const T&,
-			      Problem<F, CLIST>&,
-			      typename Function::interval_t,
-			      unsigned);
 
   protected:
     void impl_compute (result_t& res, const argument_t& p) const throw ();
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
       const throw ();
   private:
-    StableTimePoint timePoint_;
     const T& trajectory_;
   };
 } // end of namespace roboptim.

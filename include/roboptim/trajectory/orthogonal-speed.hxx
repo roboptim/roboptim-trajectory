@@ -28,24 +28,9 @@
 
 namespace roboptim
 {
-  namespace detail
-  {
-    std::string getOrthogonalSpeedName (const StableTimePoint& timePoint);
-
-    std::string getOrthogonalSpeedName (const StableTimePoint& timePoint)
-    {
-      using boost::format;
-      return (format ("orthogonal speed (%1%)") % timePoint.getAlpha ()).str ();
-    }
-  }
-
-
   template <typename T>
-  OrthogonalSpeed<T>::OrthogonalSpeed (StableTimePoint timePoint,
-			     const T& trajectory) throw ()
-    : DerivableFunction (trajectory.parameters ().size (), 1,
-			 detail::getOrthogonalSpeedName (timePoint)),
-      timePoint_ (timePoint),
+  OrthogonalSpeed<T>::OrthogonalSpeed (const T& trajectory) throw ()
+    : DerivableFunction (1, 1, "orthogonal speed"),
       trajectory_ (trajectory)
   {}
 
@@ -53,66 +38,45 @@ namespace roboptim
   OrthogonalSpeed<T>::~OrthogonalSpeed () throw ()
   {}
 
-  template <typename T>
-  const T&
-  OrthogonalSpeed<T>::trajectory () const throw ()
-  {
-    return trajectory_;
-  }
 
   template <typename T>
   void
-  OrthogonalSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
+  OrthogonalSpeed<T>::impl_compute (result_t& res, const argument_t& t) const throw ()
   {
     using namespace boost::numeric::ublas;
     res.clear ();
 
-    boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
-    updatedTrajectory->setParameters (p);
-
-    result_t position = (*updatedTrajectory) (timePoint_);
-    // const value_type& x = position[0];
-    // const value_type& y = position[1];
+    result_t position = trajectory_ (t[0]);
     const value_type& theta = position[2];
 
-    gradient_t speed = updatedTrajectory->derivative (timePoint_, 1);
+    gradient_t speed = trajectory_.derivative (t[0], 1);
     const value_type& xdot = speed[0];
     const value_type& ydot = speed[1];
-    // const value_type& thetadot = speed[2];
 
     res[0] = std::cos (theta) * ydot + std::sin (theta) * xdot;
   }
 
   template <typename T>
   void
-  OrthogonalSpeed<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+  OrthogonalSpeed<T>::impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
     const throw ()
   {
-    FiniteDifferenceGradient fdfunction (*this);
-    fdfunction.gradient (grad, p, 0);
-  }
+    grad.clear ();
 
-  template <typename T>
-  template <typename F, typename CLIST>
-  void
-  OrthogonalSpeed<T>::addToProblem (const T& trajectory,
-			       Problem<F, CLIST>& problem,
-			       typename Function::interval_t vRange,
-			       unsigned nConstraints)
-  {
-    using namespace boost;
-    if (nConstraints == 0)
-      return;
+    result_t position = trajectory_ (t[0]);
+    const value_type& theta = position[2];
 
-    const value_type delta = 1. / nConstraints;
+    gradient_t speed = trajectory_.derivative (t[0], 1);
+    const value_type& dx = speed[0];
+    const value_type& dy = speed[1];
+    const value_type& dtheta = speed[2];
 
-    for (double i = delta; i < 1. - delta; i += delta)
-      {
-	shared_ptr<OrthogonalSpeed> speed (new OrthogonalSpeed (i * tMax, trajectory));
-	problem.addConstraint
-	  (static_pointer_cast<DerivableFunction> (speed),
-	   vRange);
-      }
+    gradient_t acceleration = trajectory_.derivative (t[0], 2);
+    const value_type& ddx = acceleration[0];
+    const value_type& ddy = acceleration[1];
+
+    grad[0] = dtheta * (std::cos (theta) * (ddy + dx)
+			+ std::sin (theta) * (ddx - dy));
   }
 } // end of namespace roboptim.
 

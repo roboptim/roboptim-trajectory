@@ -1,5 +1,14 @@
 2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Make time input argument of frontal/orthogonal speed.
+	* include/roboptim/trajectory/frontal-speed.hh,
+	* include/roboptim/trajectory/frontal-speed.hxx,
+	* include/roboptim/trajectory/orthogonal-speed.hh,
+	* include/roboptim/trajectory/orthogonal-speed.hxx:
+	Make time input argument of frontal/argument speed.
+
+2009-08-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix computation error in frontal speed.
 	* include/roboptim/trajectory/frontal-speed.hxx: Here.
 
