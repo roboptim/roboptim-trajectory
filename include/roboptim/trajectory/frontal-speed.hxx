@@ -52,7 +52,7 @@ namespace roboptim
     const value_type& xdot = speed[0];
     const value_type& ydot = speed[1];
 
-    res[0] = std::sin (theta) * ydot - std::cos (theta) * xdot;
+    res[0] = std::cos (theta) * xdot + std::sin (theta) * ydot;
   }
 
   template <typename T>
@@ -60,6 +60,7 @@ namespace roboptim
   FrontalSpeed<T>::impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
     const throw ()
   {
+
     grad.clear ();
 
     result_t position = trajectory_ (t[0]);
@@ -74,8 +75,9 @@ namespace roboptim
     const value_type& ddx = acceleration[0];
     const value_type& ddy = acceleration[1];
 
-    grad[0] = dtheta * (std::cos (theta) * (dy - ddx)
-			+ std::sin (theta) * (dx + ddy));
+    grad[0] =
+      std::cos (theta) * (ddx + dtheta * dy)
+      + std::sin (theta) * (ddy - dtheta * dx);
   }
 } // end of namespace roboptim.
 

@@ -53,7 +53,7 @@ namespace roboptim
     const value_type& xdot = speed[0];
     const value_type& ydot = speed[1];
 
-    res[0] = std::cos (theta) * ydot + std::sin (theta) * xdot;
+    res[0] = std::cos (theta) * ydot - std::sin (theta) * xdot;
   }
 
   template <typename T>
@@ -75,8 +75,9 @@ namespace roboptim
     const value_type& ddx = acceleration[0];
     const value_type& ddy = acceleration[1];
 
-    grad[0] = dtheta * (std::cos (theta) * (ddy + dx)
-			+ std::sin (theta) * (ddx - dy));
+    grad[0] =
+      std::cos (theta) * (ddy - dtheta * dx)
+      - std::sin (theta) * (ddx + dtheta * dy);
   }
 } // end of namespace roboptim.
 
