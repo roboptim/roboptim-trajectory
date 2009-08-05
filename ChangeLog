@@ -1,5 +1,10 @@
 2009-08-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Update test case.
+	* tests/complex-cost-function.cc: Here.
+
+2009-08-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix frontal/orthogonal speed computation.
 	* include/roboptim/trajectory/frontal-speed.hxx,
 	* include/roboptim/trajectory/orthogonal-speed.hxx: Fix computation.
