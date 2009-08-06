@@ -1,5 +1,13 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix test case.
+	* tests/anthropomorphic-cost-function-case-2.cc,
+	* tests/anthropomorphic-cost-function-case-3.cc,
+	* tests/anthropomorphic-cost-function-case-4.cc,
+	* tests/anthropomorphic-cost-function-case-5.cc: Here.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Use new foreach variant.
 	* include/roboptim/trajectory/spline-length.hh:
 	Add number of discretization point as an optional argument.

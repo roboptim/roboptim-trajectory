@@ -24,9 +24,9 @@ int run_test ()
   const double initialY = 0.;
   const double initialTheta = M_PI / 2.;
 
-  const double finalX = 3.;
-  const double finalY = 3.;
-  const double finalTheta = M_PI/2.;
+  const double finalX = 1.;
+  const double finalY = 0.;
+  const double finalTheta = 0.;
 
   return optimize (initialX,
 		   initialY,
