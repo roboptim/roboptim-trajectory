@@ -1,5 +1,11 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use foreach variant.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx:
+	Here.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix integral computation.
 	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx:
 	* src/spline-length.cc:	Fix integral computation.

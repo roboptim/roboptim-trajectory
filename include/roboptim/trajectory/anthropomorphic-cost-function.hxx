@@ -107,13 +107,11 @@ namespace roboptim
     boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
     updatedTrajectory->setParameters (params);
 
-    discreteInterval_t interval =
-      makeDiscreteInterval (updatedTrajectory->timeRange (), .1);
-
+    const size_type nbDiscretizationPoints = 50;
     detail::ComputeIntegral<T> ci (*updatedTrajectory, alpha_, alpha3_, res[0]);
-    foreach (interval, ci);
+    foreach (updatedTrajectory->timeRange (), nbDiscretizationPoints, ci);
 
-    res *= updatedTrajectory->length ();
+    res[0] *= updatedTrajectory->length () / nbDiscretizationPoints;
   }
 
   template <typename T>
