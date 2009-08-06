@@ -1,5 +1,11 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add speed visualization.
+	* include/Makefile.am: Distribute new header.
+	* include/roboptim/trajectory/visualization/speed.hh: New.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add plot_xytheta visualization function.
 	* include/roboptim/trajectory/visualization/trajectory.hh: Here.
 
