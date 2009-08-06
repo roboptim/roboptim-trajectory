@@ -1,5 +1,12 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use stable time point when displaying trajectory.
+	Avoid display to take too much time when displaying a long trajectory
+	(usually happens with a free time trajectore with a low scale value).
+	* include/roboptim/trajectory/visualization/trajectory.hh: Here.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add constraint function for frontal/orthogonal speed.
 	* include/roboptim/trajectory/frontal-speed.hh,
 	* include/roboptim/trajectory/frontal-speed.hxx:

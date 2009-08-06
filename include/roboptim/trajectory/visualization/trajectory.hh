@@ -21,6 +21,7 @@
 
 # include <roboptim/core/visualization/gnuplot-commands.hh>
 # include <roboptim/trajectory/trajectory.hh>
+# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
@@ -50,9 +51,6 @@ namespace roboptim
 
 	  void operator () (const typename T::value_type t) const
 	  {
-	    Function::vector_t res = traj_ (t);
-	    assert (res.size () >= 2);
-	    str_ += (boost::format ("%1f %2f\n") % res[0] % res [1]).str ();
 	  }
 
 	private:
@@ -65,16 +63,25 @@ namespace roboptim
       Command plot_xy (const Trajectory<N>& traj,
 		       typename Trajectory<N>::value_type step)
       {
+	using boost::format;
 	using namespace detail;
 	assert (traj.outputSize () >= 2);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
 	Function::discreteInterval_t interval (min, max, step);
 
+	if (min + step > max)
+	  throw std::string ("bad interval");
+
 	std::string str = (boost::format ("plot '-' title '%1%' with line\n")
 			   % traj.getName ()).str ();
 
-	traj.foreach (interval, PlotTrajectory<Trajectory<N> > (traj, str));
+	for (double i = step; i < 1. - step; i += step)
+	  {
+	    Function::vector_t res = traj (i * tMax);
+	    str += (format ("%1f %2f\n") % res[0] % res [1]).str ();
+	  }
+
 	str += "e\n";
 	return Command (str);
       }
