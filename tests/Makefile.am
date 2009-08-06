@@ -46,10 +46,65 @@ check_PROGRAMS += spline-time-optimization
 spline_time_optimization_SOURCES = spline-time-optimization.cc $(COMMON_SOURCES)
 spline_time_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
-# complex-cost-function
-check_PROGRAMS += complex-cost-function
-complex_cost_function_SOURCES = complex-cost-function.cc $(COMMON_SOURCES)
-complex_cost_function_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+# anthropomorphic-cost-function-case-1
+check_PROGRAMS += anthropomorphic-cost-function-case-1
+anthropomorphic_cost_function_case_1_SOURCES = 	\
+	anthropomorphic-cost-function-case-1.cc \
+	anthropomorphic-cost-function.cc 	\
+	anthropomorphic-cost-function.hh 	\
+	$(COMMON_SOURCES)
+anthropomorphic_cost_function_case_1_LDADD = 	\
+	$(top_builddir)/src/libroboptim-trajectory.la
+
+# anthropomorphic-cost-function-case-2
+check_PROGRAMS += anthropomorphic-cost-function-case-2
+anthropomorphic_cost_function_case_2_SOURCES = 	\
+	anthropomorphic-cost-function-case-2.cc \
+	anthropomorphic-cost-function.cc 	\
+	anthropomorphic-cost-function.hh 	\
+	$(COMMON_SOURCES)
+anthropomorphic_cost_function_case_2_LDADD = 	\
+	$(top_builddir)/src/libroboptim-trajectory.la
+
+# anthropomorphic-cost-function-case-3
+check_PROGRAMS += anthropomorphic-cost-function-case-3
+anthropomorphic_cost_function_case_3_SOURCES = 	\
+	anthropomorphic-cost-function-case-3.cc \
+	anthropomorphic-cost-function.cc 	\
+	anthropomorphic-cost-function.hh 	\
+	$(COMMON_SOURCES)
+anthropomorphic_cost_function_case_3_LDADD = 	\
+	$(top_builddir)/src/libroboptim-trajectory.la
+
+# anthropomorphic-cost-function-case-4
+check_PROGRAMS += anthropomorphic-cost-function-case-4
+anthropomorphic_cost_function_case_4_SOURCES = 	\
+	anthropomorphic-cost-function-case-4.cc \
+	anthropomorphic-cost-function.cc 	\
+	anthropomorphic-cost-function.hh 	\
+	$(COMMON_SOURCES)
+anthropomorphic_cost_function_case_4_LDADD = 	\
+	$(top_builddir)/src/libroboptim-trajectory.la
+
+# anthropomorphic-cost-function-case-5
+check_PROGRAMS += anthropomorphic-cost-function-case-5
+anthropomorphic_cost_function_case_5_SOURCES = 	\
+	anthropomorphic-cost-function-case-5.cc \
+	anthropomorphic-cost-function.cc 	\
+	anthropomorphic-cost-function.hh 	\
+	$(COMMON_SOURCES)
+anthropomorphic_cost_function_case_5_LDADD = 	\
+	$(top_builddir)/src/libroboptim-trajectory.la
+
+# anthropomorphic-cost-function-case-6
+check_PROGRAMS += anthropomorphic-cost-function-case-6
+anthropomorphic_cost_function_case_6_SOURCES = 	\
+	anthropomorphic-cost-function-case-6.cc \
+	anthropomorphic-cost-function.cc 	\
+	anthropomorphic-cost-function.hh 	\
+	$(COMMON_SOURCES)
+anthropomorphic_cost_function_case_6_LDADD = 	\
+	$(top_builddir)/src/libroboptim-trajectory.la
 
 
 .PHONY: generate-reference
@@ -73,11 +128,16 @@ generate-reference:
 # ------------ #
 
 # Distribute reference files.
-EXTRA_DIST +=					\
-	complex-cost-function.stdout		\
-	free-time-trajectory.stdout		\
-	simple.stdout				\
-	spline-gradient.stdout			\
-	spline-optimization.stdout		\
-	spline-time-optimization.stdout		\
+EXTRA_DIST +=						\
+	anthropomorphic-cost-function-case-1.stdout	\
+	anthropomorphic-cost-function-case-2.stdout	\
+	anthropomorphic-cost-function-case-3.stdout	\
+	anthropomorphic-cost-function-case-4.stdout	\
+	anthropomorphic-cost-function-case-5.stdout	\
+	anthropomorphic-cost-function-case-6.stdout	\
+	free-time-trajectory.stdout			\
+	simple.stdout					\
+	spline-gradient.stdout				\
+	spline-optimization.stdout			\
+	spline-time-optimization.stdout			\
 	spline.stdout

@@ -1,5 +1,32 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Split test case.
+	* tests/Makefile.am: Split test case.
+	* tests/anthropomorphic-cost-function-case-1.cc: New.
+	* tests/anthropomorphic-cost-function-case-1.stdout:
+	Copy from tests/complex-cost-function.stdout.
+	* tests/anthropomorphic-cost-function-case-2.cc: New.
+	* tests/anthropomorphic-cost-function-case-2.stdout:
+	Copy from tests/complex-cost-function.stdout.
+	* tests/anthropomorphic-cost-function-case-3.cc: New.
+	* tests/anthropomorphic-cost-function-case-3.stdout:
+	Copy from tests/complex-cost-function.stdout.
+	* tests/anthropomorphic-cost-function-case-4.cc: New.
+	* tests/anthropomorphic-cost-function-case-4.stdout:
+	Copy from tests/complex-cost-function.stdout.
+	* tests/anthropomorphic-cost-function-case-5.cc: New.
+	* tests/anthropomorphic-cost-function-case-5.stdout:
+	Copy from tests/complex-cost-function.stdout.
+	* tests/anthropomorphic-cost-function-case-6.cc: New.
+	* tests/anthropomorphic-cost-function-case-6.stdout:
+	Rename from tests/complex-cost-function.stdout.
+	* tests/anthropomorphic-cost-function.cc: New.
+	* tests/anthropomorphic-cost-function.hh: New.
+	* tests/complex-cost-function.cc: Remove.
+	* tests/testsuite.at: Run new tests optionally.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Regenerate.
 	* tests/spline-optimization.stdout: Regenerate.
 
