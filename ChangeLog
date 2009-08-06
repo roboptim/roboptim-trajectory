@@ -1,5 +1,12 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add LimitOmega class.
+	* include/Makefile.am: Distribute new headers.
+	* include/roboptim/trajectory/limit-omega.hh: New.
+	* include/roboptim/trajectory/limit-omega.hxx: New.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Use stable time point when displaying trajectory.
 	Avoid display to take too much time when displaying a long trajectory
 	(usually happens with a free time trajectore with a low scale value).
