@@ -1,5 +1,13 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix integral computation.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx:
+	* src/spline-length.cc:	Fix integral computation.
+	* tests/anthropomorphic-cost-function-case-1.cc: Fix test case.
+	* tests/spline-optimization.cc: Be less strict.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Split test case.
 	* tests/Makefile.am: Split test case.
 	* tests/anthropomorphic-cost-function-case-1.cc: New.

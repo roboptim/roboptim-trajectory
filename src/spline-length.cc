@@ -84,6 +84,7 @@ namespace roboptim
 
     SumLength sumlength (traj, res[0]);
     foreach (interval_, sumlength);
+    res[0] *= getUpperBound (interval_) - getLowerBound (interval_);
     res[0] /= 2.;
   }
 
@@ -100,5 +101,6 @@ namespace roboptim
 
     SumLengthGrad sumlengthgrad (traj, grad);
     foreach (interval_, sumlengthgrad);
+    grad *= getUpperBound (interval_) - getLowerBound (interval_);
   }
 } // end of namespace roboptim.

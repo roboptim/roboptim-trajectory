@@ -112,6 +112,8 @@ namespace roboptim
 
     detail::ComputeIntegral<T> ci (*updatedTrajectory, alpha_, alpha3_, res[0]);
     foreach (interval, ci);
+
+    res *= updatedTrajectory->length ();
   }
 
   template <typename T>
