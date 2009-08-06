@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_SPLINE_LENGTH_HH
 # define ROBOPTIM_TRAJECTORY_SPLINE_LENGTH_HH
+# include <boost/optional/optional_fwd.hpp>
+
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/trajectory/spline.hh>
 # include <roboptim/trajectory/trajectory-cost.hh>
@@ -43,8 +45,11 @@ namespace roboptim
     /// on a specific interval. The step associated to the interval controls
     /// the approximation precision.
     /// \param spline spline used for length computation
-    /// \param interval discrete interval on which the length is computed.
-    SplineLength (const Spline& spline, discreteInterval_t interval) throw ();
+    /// \param interval interval on which the length is computed.
+    /// \param nDiscretizationPoints number of discretization points
+    SplineLength (const Spline& spline,
+		  const size_type nDiscretizationPoints = 100,
+		  boost::optional<interval_t> interval = boost::none_t ()) throw ();
 
     virtual ~SplineLength () throw ();
 
@@ -54,7 +59,9 @@ namespace roboptim
 
   private:
     /// \brief Interval on which the length is computed.
-    discreteInterval_t interval_;
+    interval_t interval_;
+    /// \brief Number of discretization points.
+    size_type nDiscretizationPoints_;
   };
 
   /// \@

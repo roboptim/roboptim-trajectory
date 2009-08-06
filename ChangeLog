@@ -1,5 +1,12 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use new foreach variant.
+	* include/roboptim/trajectory/spline-length.hh:
+	Add number of discretization point as an optional argument.
+	* src/spline-length.cc: Use new foreach.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Use foreach variant.
 	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx:
 	Here.

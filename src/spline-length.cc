@@ -16,6 +16,8 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/numeric/ublas/vector_expression.hpp>
+#include <boost/optional.hpp>
+
 #include <roboptim/trajectory/spline-length.hh>
 
 namespace roboptim
@@ -64,10 +66,12 @@ namespace roboptim
   }
 
   SplineLength::SplineLength (const Spline& spline,
-			      discreteInterval_t interval)
+			      size_type nDiscretizationPoints,
+			      boost::optional<interval_t> interval)
     throw ()
     : TrajectoryCost<Spline> (spline, "spline length"),
-      interval_ (interval)
+      interval_ (interval ? *interval : spline.timeRange ()),
+      nDiscretizationPoints_ (nDiscretizationPoints)
   {
   }
 
@@ -83,8 +87,11 @@ namespace roboptim
     traj.setParameters (p);
 
     SumLength sumlength (traj, res[0]);
-    foreach (interval_, sumlength);
-    res[0] *= getUpperBound (interval_) - getLowerBound (interval_);
+    foreach (interval_, nDiscretizationPoints_, sumlength);
+
+    const value_type delta =
+      getUpperBound (interval_) - getLowerBound (interval_);
+    res[0] *= delta / nDiscretizationPoints_;
     res[0] /= 2.;
   }
 
@@ -100,7 +107,9 @@ namespace roboptim
     traj.setParameters (p);
 
     SumLengthGrad sumlengthgrad (traj, grad);
-    foreach (interval_, sumlengthgrad);
-    grad *= getUpperBound (interval_) - getLowerBound (interval_);
+    foreach (interval_, nDiscretizationPoints_, sumlengthgrad);
+    const value_type delta =
+      getUpperBound (interval_) - getLowerBound (interval_);
+    grad *= delta / nDiscretizationPoints_;
   }
 } // end of namespace roboptim.
