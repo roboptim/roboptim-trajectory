@@ -79,6 +79,77 @@ namespace roboptim
       std::cos (theta) * (ddx + dtheta * dy)
       + std::sin (theta) * (ddy - dtheta * dx);
   }
+
+
+
+
+  template <typename T>
+  LimitFrontalSpeed<T>::LimitFrontalSpeed (StableTimePoint timePoint,
+					   const T& trajectory) throw ()
+    : DerivableFunction (trajectory.parameters ().size (), 1,
+			 (boost::format ("frontal speed limit (%1%)")
+			  % timePoint.getAlpha ()).str ()),
+      timePoint_ (timePoint),
+      trajectory_ (trajectory)
+  {}
+
+  template <typename T>
+  LimitFrontalSpeed<T>::~LimitFrontalSpeed () throw ()
+  {}
+
+  template <typename T>
+  void
+  LimitFrontalSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
+  {
+    using namespace boost::numeric::ublas;
+    res.clear ();
+
+    boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
+    updatedTrajectory->setParameters (p);
+
+    FrontalSpeed<T> frontalSpeed (*updatedTrajectory);
+    vector_t t (1);
+    t[0] = this->timePoint_.getTime (updatedTrajectory->timeRange ());
+    res = frontalSpeed (t);
+  }
+
+  template <typename T>
+  void
+  LimitFrontalSpeed<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+    const throw ()
+  {
+    assert (i == 0);
+    grad.clear ();
+
+    //FIXME: compute gradient analytically.
+    FiniteDifferenceGradient fdfunction (*this);
+    fdfunction.gradient (grad, p, 0);
+  }
+
+  template <typename T>
+  template <typename F, typename CLIST>
+  void
+  LimitFrontalSpeed<T>::addToProblem (const T& trajectory,
+			       Problem<F, CLIST>& problem,
+			       typename Function::interval_t vRange,
+			       unsigned nConstraints)
+  {
+    using namespace boost;
+    if (nConstraints == 0)
+      return;
+
+    const value_type delta = 1. / nConstraints;
+
+    for (double i = delta; i < 1. - delta; i += delta)
+      {
+	shared_ptr<LimitFrontalSpeed> speed
+	  (new LimitFrontalSpeed (i * tMax, trajectory));
+	problem.addConstraint
+	  (static_pointer_cast<DerivableFunction> (speed),
+	   vRange);
+      }
+  }
+
 } // end of namespace roboptim.
 
 

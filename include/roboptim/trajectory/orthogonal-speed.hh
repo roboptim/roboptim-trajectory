@@ -38,6 +38,30 @@ namespace roboptim
   private:
     const T& trajectory_;
   };
+
+  template <typename T>
+  class LimitOrthogonalSpeed : public DerivableFunction
+  {
+  public:
+    LimitOrthogonalSpeed (StableTimePoint timePoint,
+			  const T& trajectory) throw ();
+    ~LimitOrthogonalSpeed () throw ();
+    
+    template <typename F, typename CLIST>
+    static void addToProblem (const T&,
+			      Problem<F, CLIST>&,
+			      typename Function::interval_t,
+			      unsigned);
+    
+  protected:
+    void impl_compute (result_t& res, const argument_t& p) const throw ();
+    void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+      const throw ();
+  private:
+    StableTimePoint timePoint_;
+    const T& trajectory_;
+  };
+
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/orthogonal-speed.hxx>

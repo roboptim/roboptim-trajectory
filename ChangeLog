@@ -1,3 +1,13 @@
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add constraint function for frontal/orthogonal speed.
+	* include/roboptim/trajectory/frontal-speed.hh,
+	* include/roboptim/trajectory/frontal-speed.hxx:
+	Add LimitFrontalSpeed class.
+	* include/roboptim/trajectory/orthogonal-speed.hh,
+	* include/roboptim/trajectory/orthogonal-speed.hxx:
+	Add LimitOrthogonalSpeed class.
+
 2009-08-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Update test case.
