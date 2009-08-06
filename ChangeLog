@@ -1,5 +1,10 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Regenerate.
+	* tests/spline-optimization.stdout: Regenerate.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add speed visualization.
 	* include/Makefile.am: Distribute new header.
 	* include/roboptim/trajectory/visualization/speed.hh: New.
