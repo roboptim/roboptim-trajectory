@@ -1,5 +1,10 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Regenerate test case.
+	* tests/spline-optimization.stdout: Regenerate.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix gradient checking.
 	* tests/spline-optimization.cc: Here.
 
