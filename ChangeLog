@@ -1,5 +1,14 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add complex-cost-function test case cost function into a class.
+	* include/Makefile.am: Distribute new headers.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hh:
+	New.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx:
+	New.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add LimitOmega class.
 	* include/Makefile.am: Distribute new headers.
 	* include/roboptim/trajectory/limit-omega.hh: New.
