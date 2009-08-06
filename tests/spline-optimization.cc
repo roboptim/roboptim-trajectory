@@ -93,18 +93,17 @@ int run_test ()
     << plot_xy (spline);
 
   // Optimize.
-  discreteInterval_t costInterval (0., 4., 0.5);
-  SplineLength cost (spline, costInterval);
+  SplineLength cost (spline);
 
   // Check cost gradient.
   try
   {
     Function::vector_t x (params.size ());
     x.clear ();
-    checkGradientAndThrow (cost, 0, x, 3e-3);
+    checkGradientAndThrow (cost, 0, x, 2e-3);
 
     x = params;
-    checkGradientAndThrow (cost, 0, x, 3e-3);
+    checkGradientAndThrow (cost, 0, x, 2e-3);
   }
   catch (BadGradient& bg)
     {

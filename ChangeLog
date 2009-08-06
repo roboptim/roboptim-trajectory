@@ -1,5 +1,10 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix gradient checking.
+	* tests/spline-optimization.cc: Here.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix test case.
 	* tests/anthropomorphic-cost-function-case-2.cc,
 	* tests/anthropomorphic-cost-function-case-3.cc,
