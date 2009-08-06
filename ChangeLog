@@ -1,5 +1,10 @@
 2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add plot_xytheta visualization function.
+	* include/roboptim/trajectory/visualization/trajectory.hh: Here.
+
+2009-08-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add complex-cost-function test case cost function into a class.
 	* include/Makefile.am: Distribute new headers.
 	* include/roboptim/trajectory/anthropomorphic-cost-function.hh:

@@ -39,6 +39,10 @@ namespace roboptim
       Command plot_xy (const Trajectory<N>& traj,
 		       typename Trajectory<N>::value_type step = .01);
 
+      template <typename T>
+      Command plot_xytheta (const T& traj,
+			    typename T::value_type step = .01);
+
       namespace detail
       {
 	template <typename T>
@@ -85,6 +89,55 @@ namespace roboptim
 	str += "e\n";
 	return Command (str);
       }
+
+
+      template <typename T>
+      Command plot_xytheta (const T& traj, typename T::value_type step)
+      {
+	using boost::format;
+	assert (traj.outputSize () == 3);
+	Function::value_type min = Function::getLowerBound (traj.timeRange ());
+	Function::value_type max = Function::getUpperBound (traj.timeRange ());
+	Function::discreteInterval_t interval (min, max, step);
+
+	if (min + step > max)
+	  throw std::string ("bad interval");
+
+	const char* color[] =
+	  {
+	    "red",
+	    "blue",
+	    "green"
+	  };
+
+	std::string str =
+	  (boost::format ("plot '-' title '%1% (0)' with lines lc rgb '%2%'")
+	   % traj.getName ()
+	   % color[0]).str ();
+
+	for (unsigned i = 1; i < traj.outputSize (); ++i)
+	  {
+	    str += (format (", '-' title '%1% (%2%)' with lines lc rgb '%3%'")
+		    % traj.getName ()
+		    % i
+		    % color[i]).str ();
+	  }
+	str += "\n";
+	for (unsigned component = 0; component < traj.outputSize (); ++component)
+	  {
+	    for (double i = step; i < 1. - step; i += step)
+	      {
+		StableTimePoint timePoint = i * tMax;
+		Function::vector_t res = traj (timePoint);
+		str += (format ("%1f %2f\n")
+			% timePoint.getTime (traj.timeRange ())
+			% res [component]).str ();
+	      }
+	    str += "e\n";
+	  }
+	return Command (str);
+      }
+
     } // end of namespace gnuplot.
   } // end of namespace visualization.
 } // end of namespace roboptim.
