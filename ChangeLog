@@ -1,6 +1,13 @@
 2009-08-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Optimize.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx,
+	* include/roboptim/trajectory/free-time-trajectory.hh:
+	Optimize and enhance style.
+
+2009-08-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Optimize.
 	* include/roboptim/trajectory/frontal-speed.hxx,
 	* include/roboptim/trajectory/orthogonal-speed.hxx: Optimize.
 

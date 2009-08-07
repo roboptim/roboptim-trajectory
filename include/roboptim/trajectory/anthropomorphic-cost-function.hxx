@@ -71,10 +71,9 @@ namespace roboptim
 
       void operator () (const double& t)
       {
+	static Function::vector_t t_ (1);
 	FrontalSpeed<T> frontalSpeed (traj_);
 	OrthogonalSpeed<T> orthogonalSpeed (traj_);
-
-	Function::vector_t t_ (1);
 	t_[0] = t;
 	const Function::value_type u1 = frontalSpeed.gradient (t_)[0];
 	const Function::value_type u2 = traj_.derivative (t, 2)[2];
@@ -102,16 +101,14 @@ namespace roboptim
   {
     res.clear ();
 
-    vector_t params = p;
-
-    boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
-    updatedTrajectory->setParameters (params);
+    static T updatedTrajectory = trajectory_;
+    updatedTrajectory.setParameters (p);
 
     const size_type nbDiscretizationPoints = 50;
-    detail::ComputeIntegral<T> ci (*updatedTrajectory, alpha_, alpha3_, res[0]);
-    foreach (updatedTrajectory->timeRange (), nbDiscretizationPoints, ci);
+    detail::ComputeIntegral<T> ci (updatedTrajectory, alpha_, alpha3_, res[0]);
+    foreach (updatedTrajectory.timeRange (), nbDiscretizationPoints, ci);
 
-    res[0] *= updatedTrajectory->length () / nbDiscretizationPoints;
+    res[0] *= updatedTrajectory.length () / nbDiscretizationPoints;
   }
 
   template <typename T>

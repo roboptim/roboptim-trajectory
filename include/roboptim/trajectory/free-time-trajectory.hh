@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
+# include <boost/numeric/ublas/vector_proxy.hpp>
+
 # include <roboptim/trajectory/trajectory.hh>
 
 namespace roboptim
@@ -129,10 +131,11 @@ namespace roboptim
   addScaleToParameters (const Function::vector_t& p,
 			Function::value_type t)
   {
+    using namespace boost::numeric::ublas;
+
     Function::vector_t res (p.size () + 1);
     res[0] = t;
-    for (unsigned i = 0; i < p.size (); ++i)
-      res[i + 1] = p[i];
+    subrange (res, 1, p.size () + 1) = p;
     return res;
   }
 
@@ -140,8 +143,7 @@ namespace roboptim
   removeScaleFromParameters (const Function::vector_t& p)
   {
     Function::vector_t res (p.size () - 1);
-    for (unsigned i = 1; i < p.size (); ++i)
-      res[i - 1] = p[i];
+    res = subrange (p, 1, p.size ());
     return res;
   }
 
