@@ -68,11 +68,9 @@ namespace roboptim
   void
   LimitOmega<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
   {
-    res.clear ();
-
-    boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
-    updatedTrajectory->setParameters (p);
-    res[0] = updatedTrajectory->derivative (timePoint_, 1)[2];
+    static T updatedTrajectory  = trajectory_;
+    updatedTrajectory.setParameters (p);
+    res[0] = updatedTrajectory.derivative (timePoint_, 1)[2];
   }
 
   template <typename T>
@@ -80,12 +78,10 @@ namespace roboptim
   LimitOmega<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
     const throw ()
   {
-    assert (i == 0);
-    grad.clear ();
-
-    //FIXME: compute gradient analytically.
-    FiniteDifferenceGradient fdfunction (*this);
-    fdfunction.gradient (grad, p, 0);
+    using namespace boost::numeric::ublas;
+    static T updatedTrajectory  = trajectory_;
+    updatedTrajectory.setParameters (p);
+    grad = column (updatedTrajectory.variationDerivWrtParam (timePoint_, 1), 0);
   }
 
 } // end of namespace roboptim.
