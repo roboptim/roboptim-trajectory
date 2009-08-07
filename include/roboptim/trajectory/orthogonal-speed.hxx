@@ -99,16 +99,13 @@ namespace roboptim
   void
   LimitOrthogonalSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
   {
-    using namespace boost::numeric::ublas;
-    res.clear ();
+    static T updatedTrajectory  = trajectory_;
+    static OrthogonalSpeed<T> orthogonalSpeed (updatedTrajectory);
+    static vector_t t (1);
 
-    boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
-    updatedTrajectory->setParameters (p);
-
-    OrthogonalSpeed<T> frontalSpeed (*updatedTrajectory);
-    vector_t t (1);
-    t[0] = this->timePoint_.getTime (updatedTrajectory->timeRange ());
-    res = frontalSpeed (t);
+    updatedTrajectory.setParameters (p);
+    t[0] = this->timePoint_.getTime (updatedTrajectory.timeRange ());
+    res = orthogonalSpeed (t);
   }
 
   template <typename T>

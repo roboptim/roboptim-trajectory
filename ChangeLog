@@ -1,5 +1,11 @@
 2009-08-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Optimize.
+	* include/roboptim/trajectory/frontal-speed.hxx,
+	* include/roboptim/trajectory/orthogonal-speed.hxx: Optimize.
+
+2009-08-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add analytical gradient for LimitOmega.
 	* include/roboptim/trajectory/limit-omega.hxx: Here.
 

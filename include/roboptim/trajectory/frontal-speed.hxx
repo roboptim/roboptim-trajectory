@@ -91,7 +91,8 @@ namespace roboptim
 			  % timePoint.getAlpha ()).str ()),
       timePoint_ (timePoint),
       trajectory_ (trajectory)
-  {}
+  {
+  }
 
   template <typename T>
   LimitFrontalSpeed<T>::~LimitFrontalSpeed () throw ()
@@ -101,15 +102,12 @@ namespace roboptim
   void
   LimitFrontalSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
   {
-    using namespace boost::numeric::ublas;
-    res.clear ();
+    static T updatedTrajectory  = trajectory_;
+    static FrontalSpeed<T> frontalSpeed (updatedTrajectory);
+    static vector_t t (1);
 
-    boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
-    updatedTrajectory->setParameters (p);
-
-    FrontalSpeed<T> frontalSpeed (*updatedTrajectory);
-    vector_t t (1);
-    t[0] = this->timePoint_.getTime (updatedTrajectory->timeRange ());
+    updatedTrajectory.setParameters (p);
+    t[0] = this->timePoint_.getTime (updatedTrajectory.timeRange ());
     res = frontalSpeed (t);
   }
 
