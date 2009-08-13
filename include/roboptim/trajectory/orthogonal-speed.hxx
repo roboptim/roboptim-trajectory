@@ -85,7 +85,7 @@ namespace roboptim
   LimitOrthogonalSpeed<T>::LimitOrthogonalSpeed (StableTimePoint timePoint,
 					   const T& trajectory) throw ()
     : DerivableFunction (trajectory.parameters ().size (), 1,
-			 (boost::format ("frontal speed limit (%1%)")
+			 (boost::format ("orthogonal speed limit (%1%)")
 			  % timePoint.getAlpha ()).str ()),
       timePoint_ (timePoint),
       trajectory_ (trajectory)
@@ -135,11 +135,9 @@ namespace roboptim
       {
 	const value_type t = (i + 1.) / (nConstraints + 1.);
 	assert (t > 0. && t < 1.);
-	shared_ptr<LimitOrthogonalSpeed> speed
+	shared_ptr<DerivableFunction> speed
 	  (new LimitOrthogonalSpeed (t * tMax, trajectory));
-	problem.addConstraint
-	  (static_pointer_cast<DerivableFunction> (speed),
-	   vRange);
+	problem.addConstraint (speed, vRange);
       }
   }
 } // end of namespace roboptim.

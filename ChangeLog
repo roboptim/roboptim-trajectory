@@ -1,3 +1,9 @@
+2009-08-14  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix orthogonal speed function name and clean code.
+	* include/roboptim/trajectory/orthogonal-speed.hxx: Here.
+	* tests/spline-time-optimization.stdout: Regenerate.
+
 2009-08-13  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Make regular constraint add more robust.
