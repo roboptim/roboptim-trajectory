@@ -125,26 +125,23 @@ namespace roboptim
   template <typename F, typename CLIST>
   void
   LimitOrthogonalSpeed<T>::addToProblem (const T& trajectory,
-			       Problem<F, CLIST>& problem,
-			       typename Function::interval_t vRange,
-			       unsigned nConstraints)
+					 Problem<F, CLIST>& problem,
+					 typename Function::interval_t vRange,
+					 unsigned nConstraints)
   {
     using namespace boost;
-    if (nConstraints == 0)
-      return;
 
-    const value_type delta = 1. / nConstraints;
-
-    for (double i = delta; i < 1. - delta; i += delta)
+    for (unsigned i = 0; i < nConstraints; ++i)
       {
+	const value_type t = (i + 1.) / (nConstraints + 1.);
+	assert (t > 0. && t < 1.);
 	shared_ptr<LimitOrthogonalSpeed> speed
-	  (new LimitOrthogonalSpeed (i * tMax, trajectory));
+	  (new LimitOrthogonalSpeed (t * tMax, trajectory));
 	problem.addConstraint
 	  (static_pointer_cast<DerivableFunction> (speed),
 	   vRange);
       }
   }
-
 } // end of namespace roboptim.
 
 

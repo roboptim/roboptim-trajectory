@@ -1,3 +1,12 @@
+2009-08-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Make regular constraint add more robust.
+	* include/roboptim/trajectory/frontal-speed.hxx,
+	* include/roboptim/trajectory/limit-speed.hxx,
+	* include/roboptim/trajectory/orthogonal-speed.hxx,
+	* tests/spline-time-optimization.stdout: Make addToProblem
+	methods more robust.
+
 2009-08-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Optimize.
