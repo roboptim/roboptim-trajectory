@@ -50,7 +50,7 @@ namespace roboptim
 
     /// \brief Concrete class should call this constructor.
     StateCost (const trajectory_t&,
-	       const DerivableFunction&,
+	       boost::shared_ptr<DerivableFunction>,
 	       const StableTimePoint tpt,
 	       size_type order = 1) throw ();
 
@@ -60,7 +60,7 @@ namespace roboptim
 
     template <typename F, typename CLIST>
     static void addToProblem (const T& trajectory,
-			      const DerivableFunction& function,
+			      boost::shared_ptr<DerivableFunction> function,
 			      unsigned order,
 			      Problem<F, CLIST>& problem,
 			      typename Function::interval_t bounds,
@@ -84,7 +84,7 @@ namespace roboptim
 
   private:
     const trajectory_t& trajectory_;
-    const DerivableFunction& function_;
+    boost::shared_ptr<DerivableFunction> function_;
     StableTimePoint tpt_;
     size_type order_;
   };

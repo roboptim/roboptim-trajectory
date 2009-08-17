@@ -23,19 +23,19 @@ namespace roboptim
 {
   template <typename T>
   StateCost<T>::StateCost (const trajectory_t& trajectory,
-			   const DerivableFunction& function,
+			   boost::shared_ptr<DerivableFunction> function,
 			   const StableTimePoint tpt,
 			   size_type order) throw ()
     : DerivableFunction (trajectory.parameters ().size (),
-			 function.outputSize (),
+			 function->outputSize (),
 			 (boost::format ("state cost using function ``%1%''")
-			  % function.getName ()).str ()),
+			  % function->getName ()).str ()),
       trajectory_ (trajectory),
       function_ (function),
       tpt_ (tpt),
       order_ (order)
   {
-    assert (function_.inputSize () == trajectory_.outputSize () * (order + 1));
+    assert (function_->inputSize () == trajectory_.outputSize () * (order + 1));
   }
 
   template <typename T>
@@ -56,8 +56,8 @@ namespace roboptim
   {
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
-    function_ (res, updatedTrajectory.state
-	       (tpt_.getTime (updatedTrajectory.timeRange ()), this->order_));
+    (*function_) (res, updatedTrajectory.state
+		  (tpt_.getTime (updatedTrajectory.timeRange ()), this->order_));
   }
 
   template <typename T>
@@ -68,7 +68,7 @@ namespace roboptim
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
     const value_type t = tpt_.getTime (updatedTrajectory.timeRange ());
-    grad = prod (function_.gradient (updatedTrajectory.state (t, this->order_), i),
+    grad = prod (function_->gradient (updatedTrajectory.state (t, this->order_), i),
 		 updatedTrajectory.variationStateWrtParam (t, this->order_));
   }
 

@@ -49,10 +49,10 @@ int run_test ()
       const StableTimePoint timePoint = i / 10. * tMax;
       const double t = timePoint.getTime (spline.timeRange ());
 
-      FrontalSpeed frontalSpeed;
+      boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
       StateCost<Spline> stateCost (spline, frontalSpeed, timePoint, orderMax);
 
-      OrthogonalSpeed orthogonalSpeed;
+      boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
       StateCost<Spline> orthoStateCost (spline, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl
@@ -73,10 +73,10 @@ int run_test ()
       try
 	{
 	  std::cout << "Check frontal speed gradient." << std::endl;
-	  checkGradientAndThrow (frontalSpeed, 0, spline.state (t, orderMax));
+	  checkGradientAndThrow (*frontalSpeed, 0, spline.state (t, orderMax));
 
 	  std::cout << "Check orthogonal speed gradient." << std::endl;
-	  checkGradientAndThrow (orthogonalSpeed, 0, spline.state (t, orderMax));
+	  checkGradientAndThrow (*orthogonalSpeed, 0, spline.state (t, orderMax));
 
 	  std::cout << "Check state cost gradient." << std::endl;
 	  checkGradientAndThrow (stateCost, 0, params);

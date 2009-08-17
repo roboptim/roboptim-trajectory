@@ -117,14 +117,14 @@ int optimize (double initialX,
 
   // Add constraints on speeds.
   // Frontal
-  FrontalSpeed frontalSpeed;
+  boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
   Function::interval_t vRangeFrontal = Function::makeInterval (0., vMax);
   StateCost<freeTime_t>::addToProblem
     (freeTimeTraj, frontalSpeed, 1, problem, vRangeFrontal,
      nControlPoints * nConstraintsPerCtrlPts);
 
   // Orthogonal
-  OrthogonalSpeed orthogonalSpeed;
+  boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
   Function::interval_t vRangeOrthogonal = Function::makeInterval (-vMax, vMax);
   StateCost<freeTime_t>::addToProblem
     (freeTimeTraj, orthogonalSpeed, 1, problem, vRangeOrthogonal,

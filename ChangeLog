@@ -1,5 +1,13 @@
 2009-08-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Use boost::shared_ptr to store function in StateCost.
+	* include/roboptim/trajectory/state-cost.hh,
+	* include/roboptim/trajectory/state-cost.hxx: Use shared pointer.
+	* tests/anthropomorphic-cost-function.cc,
+	* tests/state-cost.cc: Use new interface.
+
+2009-08-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Reimplement speed limits using StateCost.
 	* include/Makefile.am: Remove frontal-speed.hxx, orthogonal-speed.hxx.
 	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx,
