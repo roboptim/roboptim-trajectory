@@ -35,6 +35,7 @@
 #include <roboptim/trajectory/limit-omega.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
 #include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/state-cost.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include <roboptim/trajectory/visualization/trajectory.hh>
@@ -116,15 +117,17 @@ int optimize (double initialX,
 
   // Add constraints on speeds.
   // Frontal
+  FrontalSpeed frontalSpeed;
   Function::interval_t vRangeFrontal = Function::makeInterval (0., vMax);
-  LimitFrontalSpeed<freeTime_t>::addToProblem
-    (freeTimeTraj, problem, vRangeFrontal,
+  StateCost<freeTime_t>::addToProblem
+    (freeTimeTraj, frontalSpeed, 1, problem, vRangeFrontal,
      nControlPoints * nConstraintsPerCtrlPts);
 
   // Orthogonal
+  OrthogonalSpeed orthogonalSpeed;
   Function::interval_t vRangeOrthogonal = Function::makeInterval (-vMax, vMax);
-  LimitOrthogonalSpeed<freeTime_t>::addToProblem
-    (freeTimeTraj, problem, vRangeOrthogonal,
+  StateCost<freeTime_t>::addToProblem
+    (freeTimeTraj, orthogonalSpeed, 1, problem, vRangeOrthogonal,
      nControlPoints * nConstraintsPerCtrlPts);
 
   // Omega (theta dot)

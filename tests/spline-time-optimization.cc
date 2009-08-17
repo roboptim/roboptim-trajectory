@@ -116,7 +116,7 @@ int run_test ()
   std::cout << solver << std::endl;
 
   solver_t::result_t res = solver.minimum ();
-  std::cout << res << std::endl;
+  std::cerr << res << std::endl;
 
   FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
     freeTimeTraj;

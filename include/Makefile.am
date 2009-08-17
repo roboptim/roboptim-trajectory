@@ -9,14 +9,12 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/freeze.hh				\
 	roboptim/trajectory/freeze.hxx				\
 	roboptim/trajectory/frontal-speed.hh			\
-	roboptim/trajectory/frontal-speed.hxx			\
 	roboptim/trajectory/fwd.hh				\
 	roboptim/trajectory/limit-omega.hh			\
 	roboptim/trajectory/limit-omega.hxx			\
 	roboptim/trajectory/limit-speed.hh			\
 	roboptim/trajectory/limit-speed.hxx			\
 	roboptim/trajectory/orthogonal-speed.hh			\
-	roboptim/trajectory/orthogonal-speed.hxx		\
 	roboptim/trajectory/spline.hh				\
 	roboptim/trajectory/spline-length.hh			\
 	roboptim/trajectory/stable-time-point.hh		\

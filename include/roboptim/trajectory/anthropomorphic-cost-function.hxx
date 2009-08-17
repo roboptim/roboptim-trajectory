@@ -72,12 +72,12 @@ namespace roboptim
       void operator () (const double& t)
       {
 	static Function::vector_t t_ (1);
-	FrontalSpeed<T> frontalSpeed (traj_);
-	OrthogonalSpeed<T> orthogonalSpeed (traj_);
+	FrontalSpeed frontalSpeed;
+	OrthogonalSpeed orthogonalSpeed;
 	t_[0] = t;
-	const Function::value_type u1 = frontalSpeed.gradient (t_)[0];
+	const Function::value_type u1 = frontalSpeed.gradient (traj_.state (t, 1))[0];
 	const Function::value_type u2 = traj_.derivative (t, 2)[2];
-	const Function::value_type u3 = orthogonalSpeed.gradient (t_)[0];
+	const Function::value_type u3 = orthogonalSpeed.gradient (traj_.state (t, 1))[0];
 	res_ +=
 	  alpha_[0]
 	  + alpha_[1] * u1 * u1

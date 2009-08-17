@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX
+# include <boost/numeric/ublas/matrix_proxy.hpp>
+# include <boost/numeric/ublas/vector_proxy.hpp>
 
 namespace roboptim
 {
@@ -77,15 +79,13 @@ namespace roboptim
   typename Trajectory<dorder>::vector_t
   Trajectory<dorder>::state (double t, size_type order) const throw ()
   {
-    size_type dimension = this->outputSize ();
+    using namespace boost::numeric::ublas;
+    const value_type dimension = this->outputSize ();
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)
-      {
-	vector_t df = derivative (t, o);
-	for (size_type i = 0; i < dimension; ++i)
-	  result (i + dimension * o) = df (i);
-    }
+      subrange (result, o * dimension, (o + 1) * dimension) =
+	this->derivative (t, o);
     return result;
   }
 
@@ -95,16 +95,16 @@ namespace roboptim
   Trajectory<dorder>::variationStateWrtParam (double t, size_type order)
     const throw ()
   {
-    size_type dimension = this->outputSize ();
-    size_type parameterSize = parameters ().size ();
-    jacobian_t result ((dimension + 1) * order, parameterSize);
+    using namespace boost::numeric::ublas;
+    const size_type dimension = this->outputSize ();
+    const size_type parameterSize = parameters ().size ();
+    jacobian_t result (dimension * (order + 1), parameterSize);
 
     for (size_type o = 0; o <= order; ++o)
       {
-	jacobian_t jacobian = variationDerivWrtParam (t, order);
-	for (size_type i = 0; i < dimension; ++i)
-	  for (size_type j = 0; j < parameterSize; ++j)
-	    result (i + dimension * order, j) = jacobian (i, j);
+	range xrange (o * dimension, (o + 1) * dimension);
+	range yrange (0, parameterSize);
+	project (result, xrange, yrange) = this->variationDerivWrtParam (t, o);
       }
     return result;
   }

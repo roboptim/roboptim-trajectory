@@ -17,52 +17,21 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_ORTHOGONAL_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_ORTHOGONAL_SPEED_HH
-# include <boost/shared_ptr.hpp>
-
 # include <roboptim/core/derivable-function.hh>
-# include <roboptim/trajectory/fwd.hh>
 
 namespace roboptim
 {
-  template <typename T>
   class OrthogonalSpeed : public DerivableFunction
   {
   public:
-    OrthogonalSpeed (const T& spline) throw ();
+    OrthogonalSpeed () throw ();
     ~OrthogonalSpeed () throw ();
 
   protected:
     void impl_compute (result_t& res, const argument_t& p) const throw ();
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
       const throw ();
-  private:
-    const T& trajectory_;
   };
-
-  template <typename T>
-  class LimitOrthogonalSpeed : public DerivableFunction
-  {
-  public:
-    LimitOrthogonalSpeed (StableTimePoint timePoint,
-			  const T& trajectory) throw ();
-    ~LimitOrthogonalSpeed () throw ();
-    
-    template <typename F, typename CLIST>
-    static void addToProblem (const T&,
-			      Problem<F, CLIST>&,
-			      typename Function::interval_t,
-			      unsigned);
-    
-  protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
-    void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const throw ();
-  private:
-    StableTimePoint timePoint_;
-    const T& trajectory_;
-  };
-
 } // end of namespace roboptim.
 
-# include <roboptim/trajectory/orthogonal-speed.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_ORTHOGONAL_SPEED_HH

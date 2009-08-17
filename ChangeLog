@@ -1,5 +1,29 @@
 2009-08-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Reimplement speed limits using StateCost.
+	* include/Makefile.am: Remove frontal-speed.hxx, orthogonal-speed.hxx.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx,
+	* include/roboptim/trajectory/frontal-speed.hh: Reimplement.
+	* include/roboptim/trajectory/frontal-speed.hxx: Remove.
+	* include/roboptim/trajectory/orthogonal-speed.hh: Reimplement.
+	* include/roboptim/trajectory/orthogonal-speed.hxx: Remove.
+	* include/roboptim/trajectory/trajectory.hxx: Fix state related methods.
+	* include/roboptim/trajectory/visualization/speed.hh: Draw speed properly.
+	* src/Makefile.am: Add new sources.
+	* src/frontal-speed.cc: New.
+	* src/orthogonal-speed.cc: New.
+	* src/spline.cc: Fix documentation.
+	* tests/Makefile.am: Add test case for StateCost.
+	* tests/anthropomorphic-cost-function.cc: Use new speed functions.
+	* tests/spline-time-optimization.cc: Do not write optimization result
+	on stdout.
+	* tests/spline-time-optimization.stdout: Regenerate.
+	* tests/state-cost.cc: New.
+	* tests/state-cost.stdout: New.
+	* tests/testsuite.at: Run new test.
+
+2009-08-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement StateCost.
 	* include/roboptim/trajectory/state-cost.hh,
 	* include/roboptim/trajectory/state-cost.hxx: Implement state cost.

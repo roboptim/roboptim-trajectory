@@ -17,52 +17,21 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FRONTAL_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_FRONTAL_SPEED_HH
-# include <boost/shared_ptr.hpp>
-
 # include <roboptim/core/derivable-function.hh>
-# include <roboptim/trajectory/fwd.hh>
 
 namespace roboptim
 {
-  template <typename T>
   class FrontalSpeed : public DerivableFunction
   {
   public:
-    FrontalSpeed (const T& trajectory) throw ();
+    FrontalSpeed () throw ();
     ~FrontalSpeed () throw ();
 
   protected:
     void impl_compute (result_t& res, const argument_t& t) const throw ();
     void impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
       const throw ();
-  private:
-    const T& trajectory_;
-  };
-
-
-  template <typename T>
-  class LimitFrontalSpeed : public DerivableFunction
-  {
-  public:
-    LimitFrontalSpeed (StableTimePoint timePoint,
-		       const T& trajectory) throw ();
-    ~LimitFrontalSpeed () throw ();
-
-    template <typename F, typename CLIST>
-    static void addToProblem (const T&,
-			      Problem<F, CLIST>&,
-			      typename Function::interval_t,
-			      unsigned);
-
-  protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
-    void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const throw ();
-  private:
-    StableTimePoint timePoint_;
-    const T& trajectory_;
   };
 } // end of namespace roboptim.
 
-# include <roboptim/trajectory/frontal-speed.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_FRONTAL_SPEED_HH

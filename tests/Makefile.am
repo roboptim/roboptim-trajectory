@@ -46,6 +46,13 @@ check_PROGRAMS += spline-time-optimization
 spline_time_optimization_SOURCES = spline-time-optimization.cc $(COMMON_SOURCES)
 spline_time_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# state-cost
+check_PROGRAMS += state-cost
+state_cost_SOURCES = state-cost.cc $(COMMON_SOURCES)
+state_cost_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
+
+
 # anthropomorphic-cost-function-case-1
 check_PROGRAMS += anthropomorphic-cost-function-case-1
 anthropomorphic_cost_function_case_1_SOURCES = 	\
@@ -140,4 +147,5 @@ EXTRA_DIST +=						\
 	spline-gradient.stdout				\
 	spline-optimization.stdout			\
 	spline-time-optimization.stdout			\
-	spline.stdout
+	spline.stdout					\
+	state-cost.stdout

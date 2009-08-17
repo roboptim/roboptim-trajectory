@@ -56,31 +56,29 @@ namespace roboptim
 	   % traj.getName ()).str ();
 
 	{
-	  FrontalSpeed<T> frontalSpeed (traj);
+	  FrontalSpeed frontalSpeed;
 	  for (double i = step; i < 1. - step; i += step)
 	    {
 	      StableTimePoint timePoint = i * tMax;
-	      Function::vector_t t_ (1);
-	      t_[0] = timePoint.getTime (traj.timeRange ());
+	      double t = timePoint.getTime (traj.timeRange ());
 
 	      str += (format ("%1f %2f\n")
-		      % t_[0]
-		      % frontalSpeed (t_)[0]).str ();
+		      % t
+		      % frontalSpeed (traj.state (t, 1))[0]).str ();
 	    }
 	  str += "e\n";
 	}
 
 	{
-	  OrthogonalSpeed<T> orthogonalSpeed (traj);
+	  OrthogonalSpeed orthogonalSpeed;
 	  for (double i = step; i < 1. - step; i += step)
 	    {
 	      StableTimePoint timePoint = i * tMax;
-	      Function::vector_t t_ (1);
-	      t_[0] = timePoint.getTime (traj.timeRange ());
+	      double t = timePoint.getTime (traj.timeRange ());
 
 	      str += (format ("%1f %2f\n")
-		      % t_[0]
-		      % orthogonalSpeed (t_)[0]).str ();
+		      % t
+		      % orthogonalSpeed (traj.state(t, 1))[0]).str ();
 	    }
 	  str += "e\n";
 	}
@@ -89,11 +87,10 @@ namespace roboptim
 	  for (double i = step; i < 1. - step; i += step)
 	    {
 	      StableTimePoint timePoint = i * tMax;
-	      Function::vector_t t_ (1);
-	      t_[0] = timePoint.getTime (traj.timeRange ());
+	      double t = timePoint.getTime (traj.timeRange ());
 
 	      str += (format ("%1f %2f\n")
-		      % t_[0]
+		      % t
 		      % traj.derivative (timePoint, 1)[2]).str ();
 	    }
 	  str += "e\n";
