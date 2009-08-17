@@ -17,19 +17,61 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_STATE_COST_HXX
 # define ROBOPTIM_TRAJECTORY_STATE_COST_HXX
+# include <boost/format.hpp>
 
 namespace roboptim
 {
   template <typename T>
-  StateCost<T>::StateCost (size_type m) throw ()
-    : DerivableFunction (m, 1)
+  StateCost<T>::StateCost (const trajectory_t& trajectory,
+			   const DerivableFunction& function,
+			   const StableTimePoint tpt,
+			   size_type order) throw ()
+    : DerivableFunction (trajectory.parameters ().size (),
+			 function.outputSize (),
+			 (boost::format ("state cost using function ``%1%''")
+			  % function.getName ()).str ()),
+      trajectory_ (trajectory),
+      function_ (function),
+      tpt_ (tpt),
+      order_ (order)
   {
+    assert (function_.inputSize () == trajectory_.outputSize () * (order + 1));
   }
 
   template <typename T>
   StateCost<T>::~StateCost() throw ()
   {
   }
+
+  template <typename T>
+  typename StateCost<T>::size_type
+  StateCost<T>::order () const throw ()
+  {
+    return order_;
+  }
+
+  template <typename T>
+  void
+  StateCost<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
+  {
+    static trajectory_t updatedTrajectory = trajectory_;
+    updatedTrajectory.setParameters (p);
+    function_ (res, updatedTrajectory.state
+	       (tpt_.getTime (updatedTrajectory.timeRange ()), this->order_));
+  }
+
+  template <typename T>
+  void
+  StateCost<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i) const throw ()
+  {
+    using namespace boost::numeric::ublas;
+    static trajectory_t updatedTrajectory = trajectory_;
+    updatedTrajectory.setParameters (p);
+    const value_type t = tpt_.getTime (updatedTrajectory.timeRange ());
+    grad = prod (function_.gradient (updatedTrajectory.state (t, this->order_), i),
+		 updatedTrajectory.variationStateWrtParam (t, this->order_));
+  }
+
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_STATE_COST_HXX

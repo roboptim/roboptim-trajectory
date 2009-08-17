@@ -1,3 +1,9 @@
+2009-08-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Implement StateCost.
+	* include/roboptim/trajectory/state-cost.hh,
+	* include/roboptim/trajectory/state-cost.hxx: Implement state cost.
+
 2009-08-14  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix orthogonal speed function name and clean code.

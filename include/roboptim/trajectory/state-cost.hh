@@ -17,8 +17,11 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_STATE_COST_HH
 # define ROBOPTIM_TRAJECTORY_STATE_COST_HH
+# include <boost/shared_ptr.hpp>
+
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/derivable-function.hh>
+# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
@@ -46,10 +49,44 @@ namespace roboptim
     typedef T trajectory_t;
 
     /// \brief Concrete class should call this constructor.
-    /// /param inputSize input size
-    StateCost (size_type inputSize) throw ();
+    StateCost (const trajectory_t&,
+	       const DerivableFunction&,
+	       const StableTimePoint tpt,
+	       size_type order = 1) throw ();
 
-    virtual ~StateCost() throw ();
+    virtual ~StateCost () throw ();
+
+    size_type order () const throw ();
+
+    template <typename F, typename CLIST>
+    static void addToProblem (const T& trajectory,
+			      const DerivableFunction& function,
+			      unsigned order,
+			      Problem<F, CLIST>& problem,
+			      typename Function::interval_t bounds,
+			      unsigned nConstraints)
+    {
+      using namespace boost;
+
+      for (unsigned i = 0; i < nConstraints; ++i)
+	{
+	  const value_type t = (i + 1.) / (nConstraints + 1.);
+	  assert (t > 0. && t < 1.);
+	  shared_ptr<DerivableFunction> constraint
+	    (new StateCost (trajectory, function, t * tMax, order));
+	  problem.addConstraint (constraint, bounds);
+	}
+    }
+
+  protected:
+    void impl_compute (result_t&, const argument_t&) const throw ();
+    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw ();
+
+  private:
+    const trajectory_t& trajectory_;
+    const DerivableFunction& function_;
+    StableTimePoint tpt_;
+    size_type order_;
   };
 
   /// @}
