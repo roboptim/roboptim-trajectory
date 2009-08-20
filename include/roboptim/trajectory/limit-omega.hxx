@@ -78,10 +78,8 @@ namespace roboptim
   LimitOmega<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
     const throw ()
   {
-    using namespace boost::numeric::ublas;
-    static T updatedTrajectory  = trajectory_;
-    updatedTrajectory.setParameters (p);
-    grad = column (updatedTrajectory.variationDerivWrtParam (timePoint_, 1), 0);
+    FiniteDifferenceGradient fd (*this);
+    fd.gradient (grad, p, i);
   }
 
 } // end of namespace roboptim.
