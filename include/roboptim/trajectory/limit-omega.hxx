@@ -78,7 +78,7 @@ namespace roboptim
   LimitOmega<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
     const throw ()
   {
-    FiniteDifferenceGradient fd (*this);
+    FiniteDifferenceGradient<> fd (*this);
     fd.gradient (grad, p, i);
   }
 

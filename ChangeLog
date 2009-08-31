@@ -1,3 +1,11 @@
+2009-08-31  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Update to new interface.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx,
+	* include/roboptim/trajectory/limit-omega.hxx,
+	* include/roboptim/trajectory/limit-speed.hxx:
+	Update to new finite difference gradient interface.
+
 2009-08-24  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Update submodules to new SourceForge URLs.

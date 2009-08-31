@@ -118,7 +118,7 @@ namespace roboptim
 						 size_type i)
     const throw ()
   {
-    FiniteDifferenceGradient fdfunction (*this);
+    FiniteDifferenceGradient<> fdfunction (*this);
     fdfunction.gradient (grad, p, 0);
   }
 

@@ -83,7 +83,7 @@ namespace roboptim
     grad.clear ();
 
     //FIXME: compute gradient analytically.
-    FiniteDifferenceGradient fdfunction (*this);
+    FiniteDifferenceGradient<> fdfunction (*this);
     fdfunction.gradient (grad, p, 0);
   }
 
