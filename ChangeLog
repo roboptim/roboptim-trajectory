@@ -1,5 +1,10 @@
 2009-08-31  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Predeclare function.
+	* tests/anthropomorphic-cost-function.cc: Here.
+
+2009-08-31  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Update to new interface.
 	* include/roboptim/trajectory/anthropomorphic-cost-function.hxx,
 	* include/roboptim/trajectory/limit-omega.hxx,

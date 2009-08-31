@@ -64,6 +64,14 @@ int optimize (double initialX,
 	      double finalX,
 	      double finalY,
 	      double finalTheta,
+	      bool setStartingPoint);
+
+int optimize (double initialX,
+	      double initialY,
+	      double initialTheta,
+	      double finalX,
+	      double finalY,
+	      double finalTheta,
 	      bool setStartingPoint)
 {
   using namespace boost;
