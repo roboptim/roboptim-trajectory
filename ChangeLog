@@ -1,3 +1,9 @@
+2009-10-05 Florent Lamiraux <florent@laas.fr>
+
+	Document state cost.
+	* include/roboptim/trajectory/state-cost.hh: Make documentation
+	match implementation.
+
 2009-08-31  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Update to new interface.
