@@ -1,5 +1,14 @@
 2009-10-06  Florent Lamiraux <florent@laas.fr>
 
+	Rewrite TrajectorySumCost to fit StateCost interface.
+	* include/roboptim/trajectory/trajectory-sum-cost.hh,
+	* include/roboptim/trajectory/trajectory-sum-cost.hxx: 
+	TrajectorySumCost and StateCost are similar classes. The interface
+	and implementation of the first one has been adapted from the second
+	one.
+
+2009-10-06  Florent Lamiraux <florent@laas.fr>
+
 	Fix comment.
 	* include/roboptim/trajectory/state-cost.hh.
 

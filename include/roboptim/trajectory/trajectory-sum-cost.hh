@@ -17,34 +17,41 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
-# include <vector>
-# include <roboptim/core/derivable-function.hh>
+# include <boost/shared_ptr.hpp>
 
 # include <roboptim/trajectory/fwd.hh>
-# include <roboptim/trajectory/state-cost.hh>
-# include <roboptim/trajectory/trajectory-cost.hh>
+# include <roboptim/core/derivable-function.hh>
 
 namespace roboptim
 {
   /// \addtogroup roboptim_meta_function
   /// @{
 
-  /// \brief Define trajectory cost as the sum of state costs.
+  /// \brief Trajectory cost function defined by sum of state evaluations at parameters.
   ///
-  /// Define a generic cost on a trajectory as the sum of costs
-  /// on several states.
+  /// The state along a trajectory is defined as the vector containing the
+  /// configuration and derivatives up to order \f$r\f$ of the
+  /// configuration.
+  /**\f[
+\textbf{Cost}(\Gamma) = \sum_{i=1}{n} cost
+\left({\Gamma(t_i)}, {\dot{\Gamma}(t_i)},\cdots,\frac{d^{r}\Gamma}{dt^{r}}(t_i)
+\right)
+     \f]*/
+  /// where
+  /// - \f$\textbf{Cost}\f$ is the trajectory cost,
+  /// - \f$cost\f$ is the state cost,
+  /// - \f$t_i\ \ i=1\cdots n\f$ are the parameters along the trajectory where the cost is evaluated,
+  /// - \f$r\f$ is called the order of the state.
   ///
   /// \tparam T trajectory type
   template <typename T>
-  class TrajectorySumCost : public TrajectoryCost<T>
+  class TrajectorySumCost : public DerivableFunction
   {
   public:
     /// \brief Parent type.
-    typedef TrajectoryCost<T> parent_t;
+    typedef DerivableFunction parent_t;
     /// \brief Trajectory type.
     typedef T trajectory_t;
-    /// \brief State cost type.
-    typedef StateCost<T> stateCost_t;
 
     /// \brief Import vector type.
     typedef typename parent_t::vector_t vector_t;
@@ -53,36 +60,30 @@ namespace roboptim
     /// \brief Import discrete interval type.
     typedef typename parent_t::discreteInterval_t discreteInterval_t;
 
-    /// \brief Instantiate from a trajectory, a state cost and a list
-    /// of discrete points.
+    /// \brief Constructor.
     ///
-    /// \param traj trajectory on which the cost is computed
-    /// \param statecost state cost object
-    /// \param vector point list
-    TrajectorySumCost (const trajectory_t& traj,
-		       const stateCost_t& statecost,
-		       const vector_t& vector) throw ();
-
-    /// \brief Instantiate from a trajectory, a state cost and a list
-    /// of discrete points.
-    ///
-    /// \param traj trajectory on which the cost is computed
-    /// \param statecost state cost object
-    /// \param interval discrete interval used to generate point list
-    TrajectorySumCost (const trajectory_t& traj,
-		       const stateCost_t& statecost,
-		       const discreteInterval_t& interval) throw ();
+    /// \param gamma Trajectory \f$\Gamma\f$ along which the state is evaluated.
+    /// \param cost state cost: \f$cost\f$.
+    /// \param tpt parameter \f$t\f$ where the state is evaluated.
+    /// \param order order \f$r\f$ of derivation.
+    TrajectorySumCost (const trajectory_t& gamma,
+		       boost::shared_ptr<DerivableFunction> cost,
+		       const discreteInterval_t& interval,
+		       size_type order = 1) throw ();
 
     virtual ~TrajectorySumCost () throw ();
 
-    virtual vector_t operator () (const vector_t&) const throw ();
-    virtual gradient_t gradient (const vector_t&, int) const throw ();
+    size_type order () const throw ();
 
   protected:
-    /// \brief State cost object.
-    const stateCost_t& stateCost_;
-    /// \brief Point list.
-    std::vector<double> points_;
+    void impl_compute (result_t&, const argument_t&) const throw ();
+    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw ();
+
+  private:
+    const trajectory_t& trajectory_;
+    boost::shared_ptr<DerivableFunction> function_;
+    discreteInterval_t interval_;
+    size_type order_;
   };
 
   /// @}
