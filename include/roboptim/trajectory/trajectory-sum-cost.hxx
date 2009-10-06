@@ -22,70 +22,74 @@
 namespace roboptim
 {
   template <typename T>
-  TrajectorySumCost<T>::TrajectorySumCost (const trajectory_t& traj,
-					   const stateCost_t& sc,
-					   const vector_t& pts) throw ()
-    : parent_t (traj),
-      stateCost_ (sc),
-      points_ (pts)
+  TrajectorySumCost<T>::
+  TrajectorySumCost (const trajectory_t& gamma,
+		     boost::shared_ptr<DerivableFunction> cost,
+		     const discreteInterval_t& interval,
+		     size_type order) throw ()
+    : DerivableFunction (gamma.parameters ().size (),
+			 cost->outputSize (),
+			 (boost::format ("sum cost using function ``%1%''")
+			  % cost->getName ()).str ()),
+      trajectory_ (gamma),
+      function_ (cost),
+      interval_ (interval),
+      order_ (order)
+  {
+    assert (function_->inputSize () == trajectory_.outputSize () * (order + 1));
+  }
+
+  template <typename T>
+  TrajectorySumCost<T>::~TrajectorySumCost() throw ()
   {
   }
 
   template <typename T>
-  TrajectorySumCost<T>::TrajectorySumCost
-  (const trajectory_t& traj,
-   const stateCost_t& sc,
-   const discreteInterval_t& interval) throw ()
-    : parent_t (traj),
-      stateCost_ (sc),
-      points_ ()
+  typename TrajectorySumCost<T>::size_type
+  TrajectorySumCost<T>::order () const throw ()
   {
-    using namespace boost;
-    for (double i = get<0> (interval); i <= get<1> (interval);
-	 i += get<2> (interval))
-      points_.push_back (i);
-  }
-
-
-  template <typename T>
-  TrajectorySumCost<T>::~TrajectorySumCost () throw ()
-  {
+    return order_;
   }
 
   template <typename T>
-  typename TrajectorySumCost<T>::vector_t
-  TrajectorySumCost<T>::operator () (const vector_t& x) const throw ()
+  void
+  TrajectorySumCost<T>::impl_compute (result_t& res, 
+				      const argument_t& p) const throw ()
   {
-    double result = 0.;
+    static trajectory_t updatedTrajectory = trajectory_;
+    updatedTrajectory.setParameters (p);
 
-    typedef typename std::vector<double>::const_iterator citer_t;
-    for (citer_t it = points_.begin (); it != points_.end (); ++it)
-      result += stateCost_ (this->trajectory_ (*it))[0];
-
-    vector_t res (this->m);
-    res[0] = result;
-    return res;
+    // Loop over sample points.
+    // TODO replace by stable time points
+    vector_t cost(1);
+    cost.clear();
+    for (value_type t=interval_.get<0>(); t < interval_.get<1>(); 
+	 t += interval_.get<2>()) {
+      (*function_) (cost, updatedTrajectory.state(t, this->order_));
+      res += cost;
+    }
   }
 
   template <typename T>
-  typename TrajectorySumCost<T>::gradient_t
-  TrajectorySumCost<T>::gradient (const vector_t& x, int) const throw ()
+  void
+  TrajectorySumCost<T>::impl_gradient (gradient_t& grad, const argument_t& p, 
+				       size_type i) const throw ()
   {
-    gradient_t result (this->n);
-    result.clear ();
-
-    typedef typename std::vector<double>::const_iterator citer_t;
-    for (citer_t it = points_.begin (); it != points_.end (); ++it)
-      {
-	assert (this->trajectory_.timeRange ().first <= *it
-		&& *it <= this->trajectory_.timeRange ().second);
-
-	result += prod (stateCost_.gradient (this->trajectory_ (*it), 0),
-			this->trajectory_.variationConfigWrtParam (*it));
-      }
-    return result;
+    using namespace boost::numeric::ublas;
+    static trajectory_t updatedTrajectory = trajectory_;
+    updatedTrajectory.setParameters (p);
+    grad.clear();
+    // Loop over sample points.
+    // TODO replace by stable time points
+    gradient_t gr(grad.size());
+    for (value_type t=interval_.get<0>(); t < interval_.get<1>(); 
+	 t += interval_.get<2>()) {
+      gr = prod (function_->gradient (updatedTrajectory.state (t, this->order_),
+				      i),
+		 updatedTrajectory.variationStateWrtParam (t, this->order_));
+      grad += gr;
+    }
   }
-
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX

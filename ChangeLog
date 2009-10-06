@@ -1,3 +1,37 @@
+2009-10-06 Florent Lamiraux <florent@laas.fr>
+
+	Add a test: minimization of positive height variation along a spline.
+	* tests/Makefile.am,
+	* tests/spline-bicycle-optim.cc: New,
+	* tests/spline-bicycle-optim.stdout: New,
+	* tests/testsuite.at.
+
+2009-10-06  Florent Lamiraux <florent@laas.fr>
+
+	Rewrite TrajectorySumCost to fit StateCost interface.
+	* include/roboptim/trajectory/trajectory-sum-cost.hh,
+	* include/roboptim/trajectory/trajectory-sum-cost.hxx: 
+	TrajectorySumCost and StateCost are similar classes. The interface
+	and implementation of the first one has been adapted from the second
+	one.
+
+2009-10-06  Florent Lamiraux <florent@laas.fr>
+
+	Fix comment.
+	* include/roboptim/trajectory/state-cost.hh.
+
+2009-10-06 Florent Lamiraux <florent@laas.fr> 
+
+	Add declaration before definition to remove warning.
+	* tests/anthropomorphic-cost-function.cc: declare function
+	optimize().
+
+2009-10-05 Florent Lamiraux <florent@laas.fr>
+
+	Document state cost.
+	* include/roboptim/trajectory/state-cost.hh: Make documentation
+	match implementation.
+
 2009-08-31  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Predeclare function.

@@ -28,19 +28,25 @@ namespace roboptim
   /// \addtogroup roboptim_meta_function
   /// @{
 
-  /// \brief Cost function taking a state as its input.
+  /// \brief Trajectory cost function defined by state evaluation at parameter.
   ///
-  /// The state of a system is defined as the vector containing the
+  /// The state along a trajectory is defined as the vector containing the
   /// configuration and derivatives up to order \f$r\f$ of the
-  /// configuration:
+  /// configuration.
   /**\f[
-\textbf{X} =
-\left(\textbf{q}, \frac{d\textbf{q}}{dt},\cdots,\frac{d^{r}\textbf{q}}{dt^{r}}(t)
+\textbf{Cost}(\Gamma) = cost
+\left({\Gamma(t)}, {\dot{\Gamma}(t)},\cdots,\frac{d^{r}\Gamma}{dt^{r}}(t)
 \right)
      \f]*/
-  /// \f$r\f$ is called the order of the state.
-  /// The cost of a state is a real valued function defined over the state space:
-  /// \f[C(\textbf{X})\in \textbf{R}\f]
+  /// where
+  /// - \f$\textbf{Cost}\f$ is the trajectory cost,
+  /// - \f$cost\f$ is the state cost,
+  /// - \f$t\f$ is the parameter along the trajectory where the cost is
+  /// evaluated (fixed at construction),
+  /// - \f$r\f$ is called the order of the state.
+  ///
+  /// \tparam T trajectory type
+
   template <typename T>
   class StateCost : public DerivableFunction
   {
@@ -48,9 +54,14 @@ namespace roboptim
     /// \brief Trajectory type.
     typedef T trajectory_t;
 
-    /// \brief Concrete class should call this constructor.
-    StateCost (const trajectory_t&,
-	       boost::shared_ptr<DerivableFunction>,
+    /// \brief Constructor.
+    ///
+    /// \param gamma Trajectory \f$\Gamma\f$ along which the state is evaluated.
+    /// \param cost state cost: \f$cost\f$.
+    /// \param tpt parameter \f$t\f$ where the state is evaluated.
+    /// \param order order \f$r\f$ of derivation.
+    StateCost (const trajectory_t& gamma,
+	       boost::shared_ptr<DerivableFunction> cost,
 	       const StableTimePoint tpt,
 	       size_type order = 1) throw ();
 
