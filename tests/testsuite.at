@@ -36,6 +36,7 @@ CHECK_STDOUT([state-cost], [Check state cost.])
 
 AT_BANNER([Optimization (require solver plug-in)])
 CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.])
+CHECK_STDOUT([spline-bicycle-optim], [Optimize a Spline with Cfsqp.])
 CHECK_STDOUT([spline-time-optimization], [Optimize a free time trajectory.])
 
 AT_BANNER([Long tests (disabled unless ALL_TESTS=1)])

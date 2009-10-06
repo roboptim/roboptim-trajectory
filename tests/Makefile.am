@@ -36,6 +36,11 @@ check_PROGRAMS += spline-optimization
 spline_optimization_SOURCES = spline-optimization.cc $(COMMON_SOURCES)
 spline_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# spline-bicycle-optim
+check_PROGRAMS += spline-bicycle-optim
+spline_bicycle_optim_SOURCES = spline-bicycle-optim.cc $(COMMON_SOURCES)
+spline_bicycle_optim_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
 # free-time-trajectory
 check_PROGRAMS += free-time-trajectory
 free_time_trajectory_SOURCES = free-time-trajectory.cc $(COMMON_SOURCES)
@@ -146,6 +151,7 @@ EXTRA_DIST +=						\
 	simple.stdout					\
 	spline-gradient.stdout				\
 	spline-optimization.stdout			\
+	spline-bicycle-optim.stdout			\
 	spline-time-optimization.stdout			\
 	spline.stdout					\
 	state-cost.stdout
