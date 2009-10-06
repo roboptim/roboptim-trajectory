@@ -18,6 +18,8 @@
 
 #ifndef OPTIMIZATION_TESTS_COMMON_HH
 # define OPTIMIZATION_TESTS_COMMON_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <iostream>
 # include <stdexcept>
 # include "config.h"

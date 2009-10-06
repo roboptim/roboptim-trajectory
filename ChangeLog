@@ -1,5 +1,17 @@
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Include ``sys.hh'' first.
+	* tests/anthropomorphic-cost-function.cc,
+	* tests/common.hh,
+	* tests/free-time-trajectory.cc,
+	* tests/spline-bicycle-optim.cc,
+	* tests/spline-gradient.cc,
+	* tests/spline-optimization.cc,
+	* tests/spline-time-optimization.cc,
+	* tests/spline.cc: Here.
+
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Include ``sys.hh'' first in all headers.
 	* include/roboptim/trajectory/visualization/limit-speed.hh,
 	* include/roboptim/trajectory/visualization/speed.hh,
