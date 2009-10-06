@@ -5,8 +5,11 @@ AC_PREREQ([2.59])
 ## --------------------- ##
 ## Package configuration ##
 ## --------------------- ##
-AC_INIT([RobOptim trajectory library], [0.2.1],
-        [roboptim-user@lists.sourceforge.net], [roboptim-trajectory])
+AC_INIT([RobOptim trajectory library],
+        [m4_esyscmd(build-aux/git-version-gen .tarball-version)],
+        [roboptim-user@lists.sourceforge.net],
+	[roboptim-trajectory],
+        [http://roboptim.sourceforge.net/])
 
 # Auxiliary files.
 AC_CONFIG_AUX_DIR([build-aux])

@@ -27,3 +27,15 @@ include $(top_srcdir)/build-aux/pkg-config.mk
 .PHONY: doc html
 doc html:
 	cd doc && $(MAKE) $(AM_MAKEFLAGS) $@
+
+# Update version files when needed.
+BUILT_SOURCES = $(top_srcdir)/.version
+
+#  Do not generate .version in distributed tarball.
+$(top_srcdir)/.version:
+	if ! test -f $(top_srcdir)/.tarball-version; then	\
+	 echo $(VERSION) > $@-t && mv $@-t $@;			\
+	fi
+
+dist-hook:
+	echo $(VERSION) > $(distdir)/.tarball-version

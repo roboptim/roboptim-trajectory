@@ -18,3 +18,5 @@ tests/testsuite
 ,*
 testsuite.log
 *svn-log*
+.version
+.tarball-version
