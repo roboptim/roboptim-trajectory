@@ -1,3 +1,9 @@
+2009-10-06 Florent Lamiraux <florent@laas.fr> 
+
+	Add declaration before definition to remove warning.
+	* tests/anthropomorphic-cost-function.cc: declare function
+	optimize().
+
 2009-10-05 Florent Lamiraux <florent@laas.fr>
 
 	Document state cost.
