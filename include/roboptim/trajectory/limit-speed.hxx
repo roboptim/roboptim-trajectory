@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HXX
 # define ROBOPTIM_TRAJECTORY_LIMIT_SPEED_HXX
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/format.hpp>
 # include <boost/numeric/ublas/vector.hpp>
 # include <boost/scoped_ptr.hpp>

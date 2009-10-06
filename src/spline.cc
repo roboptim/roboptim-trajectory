@@ -16,6 +16,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <roboptim/trajectory/sys.hh>
+
 #include <roboptim/core/indent.hh>
 #include <roboptim/trajectory/spline.hh>
 

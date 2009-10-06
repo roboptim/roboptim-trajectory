@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
+# include <roboptim/trajectory/sys.hh>
 # include <boost/numeric/ublas/vector_proxy.hpp>
 
 # include <roboptim/trajectory/trajectory.hh>

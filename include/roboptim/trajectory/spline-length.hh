@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_SPLINE_LENGTH_HH
 # define ROBOPTIM_TRAJECTORY_SPLINE_LENGTH_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/optional/optional_fwd.hpp>
 
 # include <roboptim/trajectory/fwd.hh>

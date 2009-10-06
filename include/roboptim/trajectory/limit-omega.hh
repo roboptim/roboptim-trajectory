@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_LIMIT_OMEGA_HH
 # define ROBOPTIM_TRAJECTORY_LIMIT_OMEGA_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/shared_ptr.hpp>
 
 # include <roboptim/core/derivable-function.hh>

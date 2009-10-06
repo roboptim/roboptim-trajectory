@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREEZE_HH
 # define ROBOPTIM_TRAJECTORY_FREEZE_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <vector>
 # include <utility>
 

@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <roboptim/trajectory/sys.hh>
+
 #include <boost/numeric/ublas/vector_expression.hpp>
 #include <boost/optional.hpp>
 

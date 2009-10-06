@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_COST_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_COST_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/derivable-function.hh>
 

@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_ORTHOGONAL_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_ORTHOGONAL_SPEED_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <roboptim/core/derivable-function.hh>
 
 namespace roboptim

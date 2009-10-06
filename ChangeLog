@@ -1,5 +1,31 @@
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add sys.hh to avoid problem with libcwd.
+	* include/roboptim/trajectory/anthropomorphic-cost-function.hh,
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/freeze.hh,
+	* include/roboptim/trajectory/frontal-speed.hh,
+	* include/roboptim/trajectory/fwd.hh,
+	* include/roboptim/trajectory/limit-omega.hh,
+	* include/roboptim/trajectory/limit-omega.hxx,
+	* include/roboptim/trajectory/limit-speed.hh,
+	* include/roboptim/trajectory/limit-speed.hxx,
+	* include/roboptim/trajectory/orthogonal-speed.hh,
+	* include/roboptim/trajectory/spline-length.hh,
+	* include/roboptim/trajectory/spline.hh,
+	* include/roboptim/trajectory/stable-time-point.hh,
+	* include/roboptim/trajectory/state-cost.hh,
+	* include/roboptim/trajectory/trajectory-cost.hh,
+	* include/roboptim/trajectory/trajectory-sum-cost.hh,
+	* include/roboptim/trajectory/trajectory.hh,
+	* src/frontal-speed.cc,
+	* src/orthogonal-speed.cc,
+	* src/spline-length.cc,
+	* src/spline.cc: Include ``sys.hh'' first in all headers/sources.
+	* include/roboptim/trajectory/sys.hh: New.
+
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement normalizeAngle in Trajectory and FreeTimeTrajectory.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hxx:

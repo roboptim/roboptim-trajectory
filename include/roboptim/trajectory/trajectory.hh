@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
+# include <roboptim/core/sys.hh>
+
 # include <utility>
 
 # include <roboptim/core/n-times-derivable-function.hh>

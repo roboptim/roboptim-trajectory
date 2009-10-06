@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_COST_FUNCTION_HH
 # define ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_COST_FUNCTION_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/optional.hpp>
 
 # include <roboptim/core/derivable-function.hh>

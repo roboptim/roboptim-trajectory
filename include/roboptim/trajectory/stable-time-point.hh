@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_STABLE_TIME_POINT_HH
 # define ROBOPTIM_TRAJECTORY_STABLE_TIME_POINT_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <roboptim/core/function.hh>
 
 namespace roboptim

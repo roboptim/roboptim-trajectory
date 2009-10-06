@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/shared_ptr.hpp>
 
 # include <roboptim/trajectory/fwd.hh>
