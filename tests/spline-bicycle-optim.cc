@@ -48,6 +48,8 @@ using namespace roboptim::visualization::gnuplot;
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
 
+typedef TrajectorySumCost<Spline>::discreteStableTimePointInterval_t discreteStableTimePointInterval_t;
+
 /*
   Parameter of the cost function
 */
@@ -95,7 +97,7 @@ public:
     grad[2] = v*x1;
     grad[3] = v*y1;
 #endif
-  };  
+  };
 };
 
 int run_test ()
@@ -129,7 +131,8 @@ int run_test ()
   Spline::interval_t timeRange = Spline::makeInterval (0., 1.);
 
   Spline spline (timeRange, 2, params, "before");
-  discreteInterval_t interval (0., 1., 0.01);
+  discreteStableTimePointInterval_t interval
+    (0. * tMax, 1. * tMax, 0.01 * tMax);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   gnuplot
@@ -138,7 +141,7 @@ int run_test ()
     << plot_xy (spline);
 
   // Optimize.
-  boost::shared_ptr<PositiveCostVar> 
+  boost::shared_ptr<PositiveCostVar>
     positiveCostVarShPtr(new PositiveCostVar()) ;
 
   TrajectorySumCost < Spline > sumCost(spline, positiveCostVarShPtr,

@@ -1,5 +1,12 @@
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Implement DiscreteStableTimePointInterval_t.
+	* include/roboptim/trajectory/trajectory-sum-cost.hh,
+	* include/roboptim/trajectory/trajectory-sum-cost.hxx: Implement type.
+	* tests/spline-bicycle-optim.cc: Update to new interface.
+
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Synchronize.
 	* build-aux: Here.
 

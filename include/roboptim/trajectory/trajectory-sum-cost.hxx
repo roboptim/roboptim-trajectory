@@ -25,7 +25,7 @@ namespace roboptim
   TrajectorySumCost<T>::
   TrajectorySumCost (const trajectory_t& gamma,
 		     boost::shared_ptr<DerivableFunction> cost,
-		     const discreteInterval_t& interval,
+		     const discreteStableTimePointInterval_t& interval,
 		     size_type order) throw ()
     : DerivableFunction (gamma.parameters ().size (),
 			 cost->outputSize (),
@@ -53,42 +53,57 @@ namespace roboptim
 
   template <typename T>
   void
-  TrajectorySumCost<T>::impl_compute (result_t& res, 
+  TrajectorySumCost<T>::impl_compute (result_t& res,
 				      const argument_t& p) const throw ()
   {
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
 
     // Loop over sample points.
-    // TODO replace by stable time points
-    vector_t cost(1);
-    cost.clear();
-    for (value_type t=interval_.get<0>(); t < interval_.get<1>(); 
-	 t += interval_.get<2>()) {
-      (*function_) (cost, updatedTrajectory.state(t, this->order_));
-      res += cost;
-    }
+    vector_t cost (1);
+    cost.clear ();
+
+    value_type min =
+      this->getLowerBound (interval_).getTime (updatedTrajectory.timeRange ());
+    value_type max =
+      this->getUpperBound (interval_).getTime (updatedTrajectory.timeRange ());
+    value_type step =
+      this->getStep (interval_).getTime (updatedTrajectory.timeRange ());
+
+    for (value_type t = min; t < max; t += step)
+      {
+	(*function_) (cost, updatedTrajectory.state(t, this->order_));
+	res += cost;
+      }
   }
 
   template <typename T>
   void
-  TrajectorySumCost<T>::impl_gradient (gradient_t& grad, const argument_t& p, 
+  TrajectorySumCost<T>::impl_gradient (gradient_t& grad, const argument_t& p,
 				       size_type i) const throw ()
   {
     using namespace boost::numeric::ublas;
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
-    grad.clear();
+    grad.clear ();
+
     // Loop over sample points.
-    // TODO replace by stable time points
-    gradient_t gr(grad.size());
-    for (value_type t=interval_.get<0>(); t < interval_.get<1>(); 
-	 t += interval_.get<2>()) {
-      gr = prod (function_->gradient (updatedTrajectory.state (t, this->order_),
-				      i),
-		 updatedTrajectory.variationStateWrtParam (t, this->order_));
-      grad += gr;
-    }
+    gradient_t gr (grad.size ());
+
+    value_type min =
+      this->getLowerBound (interval_).getTime (updatedTrajectory.timeRange ());
+    value_type max =
+      this->getUpperBound (interval_).getTime (updatedTrajectory.timeRange ());
+    value_type step =
+      this->getStep (interval_).getTime (updatedTrajectory.timeRange ());
+
+    for (value_type t = min; t < max; t += step)
+      {
+	gr = prod (function_->gradient
+		   (updatedTrajectory.state (t, this->order_), i),
+		   updatedTrajectory.variationStateWrtParam (t, this->order_));
+	grad += gr;
+      }
   }
 } // end of namespace roboptim.
 

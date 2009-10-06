@@ -20,9 +20,11 @@
 # include <roboptim/trajectory/sys.hh>
 
 # include <boost/shared_ptr.hpp>
+# include <boost/tuple/tuple.hpp>
 
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/derivable-function.hh>
+# include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
 {
@@ -62,6 +64,80 @@ namespace roboptim
     /// \brief Import discrete interval type.
     typedef typename parent_t::discreteInterval_t discreteInterval_t;
 
+
+    /// \name Discrete interval of stable time points.
+    /// \{
+
+    /// \brief Types representing a discrete interval of stable time points.
+    /// A discrete interval is a triplet of values:
+    /// - lower bound,
+    /// - upper bound,
+    /// - step.
+    typedef boost::tuple<StableTimePoint,
+			 StableTimePoint,
+			 StableTimePoint> discreteStableTimePointInterval_t;
+
+
+    /// \brief Construct a discrete interval.
+    ///
+    /// \param min miminum value of the interval
+    /// \param max maxinum value of the interval
+    /// \param step discretization step
+    static discreteStableTimePointInterval_t
+    makeDiscreteInterval (StableTimePoint min,
+			  StableTimePoint max,
+			  StableTimePoint step)
+    {
+      return discreteStableTimePointInterval_t (min, max, step);
+    }
+
+    /// \brief Construct a discrete interval.
+    ///
+    /// \param interval continuous interval
+    /// \param step discretization step
+    static discreteStableTimePointInterval_t
+    makeDiscreteInterval (interval_t interval,
+			  StableTimePoint step)
+    {
+      return discreteStableTimePointInterval_t (getLowerBound (interval),
+						getUpperBound (interval),
+						step);
+    }
+
+    /// \brief Get the lower bound of a discrete interval
+    ///
+    /// \param interval accessed discrete interval
+    /// \return lower bound of the discrete interval
+    static StableTimePoint
+    getLowerBound (const discreteStableTimePointInterval_t& interval) throw ()
+    {
+      return boost::get<0> (interval);
+    }
+
+    /// \brief Get the upper bound of a discrete interval
+    ///
+    /// \param interval accessed discrete interval
+    /// \return upper bound of the discrete interval
+    static StableTimePoint
+    getUpperBound (const discreteStableTimePointInterval_t& interval) throw ()
+    {
+      return boost::get<1> (interval);
+    }
+
+    /// \brief Get the upper step of a discrete interval
+    ///
+    /// \param interval accessed discrete interval
+    /// \return upper step of the discrete interval
+    static StableTimePoint
+    getStep (const discreteStableTimePointInterval_t& interval) throw ()
+    {
+      return boost::get<2> (interval);
+    }
+
+    /// \}
+
+
+
     /// \brief Constructor.
     ///
     /// \param gamma Trajectory \f$\Gamma\f$ along which the state is evaluated.
@@ -70,7 +146,7 @@ namespace roboptim
     /// \param order order \f$r\f$ of derivation.
     TrajectorySumCost (const trajectory_t& gamma,
 		       boost::shared_ptr<DerivableFunction> cost,
-		       const discreteInterval_t& interval,
+		       const discreteStableTimePointInterval_t& interval,
 		       size_type order = 1) throw ();
 
     virtual ~TrajectorySumCost () throw ();
@@ -84,7 +160,7 @@ namespace roboptim
   private:
     const trajectory_t& trajectory_;
     boost::shared_ptr<DerivableFunction> function_;
-    discreteInterval_t interval_;
+    discreteStableTimePointInterval_t interval_;
     size_type order_;
   };
 
