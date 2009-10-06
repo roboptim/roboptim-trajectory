@@ -1,3 +1,14 @@
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Implement normalizeAngle in Trajectory and FreeTimeTrajectory.
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Specialize normalizeAngles implementation for free time
+	trajectories.
+	* include/roboptim/trajectory/trajectory.hh,
+	* include/roboptim/trajectory/trajectory.hxx:
+	Implement general algorithm.
+
 2009-10-06 Florent Lamiraux <florent@laas.fr>
 
 	Add a test: minimization of positive height variation along a spline.

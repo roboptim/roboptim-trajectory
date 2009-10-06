@@ -167,6 +167,30 @@ namespace roboptim
   }
 
   template <unsigned dorder>
+  void
+  Trajectory<dorder>::normalizeAngles (size_type index) throw ()
+  {
+    this->normalizeAngles (index, 0.);
+  }
+
+  template <unsigned dorder>
+  void
+  Trajectory<dorder>::normalizeAngles (size_type index, size_type offset)
+    throw ()
+  {
+    value_type thetaPrev = 0.;
+    for (unsigned i = 0; i < (parameters_.size () - offset) / this->outputSize (); ++i)
+      {
+	value_type& theta = this->parameters_[offset + i * this->outputSize () + index];
+	if (theta - thetaPrev > M_PI)
+	  theta -= M_PI * 2;
+	else if (theta - thetaPrev < -M_PI)
+	  theta += M_PI * 2;
+	thetaPrev = theta;
+      }
+  }
+
+  template <unsigned dorder>
   std::ostream&
   Trajectory<dorder>::print (std::ostream& o) const throw ()
   {

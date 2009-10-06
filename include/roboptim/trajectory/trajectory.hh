@@ -231,6 +231,12 @@ namespace roboptim
 
     bool isValidTime (value_type t) const throw ();
 
+    /// \brief Normalize angles in parameters array.
+    ///
+    /// Make sure angles are continuous.
+    /// \param index Angles index in parameter array.
+    virtual void normalizeAngles (size_type index) throw ();
+
     virtual Trajectory<DerivabilityOrder>* clone () const throw () = 0;
 
     virtual std::ostream& print (std::ostream&) const throw ();
@@ -241,6 +247,13 @@ namespace roboptim
 
     Trajectory (interval_t, size_type, const vector_t&,
 		std::string name = std::string ()) throw ();
+
+    /// \brief Internal version of normalizeAngles allowing an optional offset.
+    ///
+    /// Used to factorize code between trajectories and free time trajectories.
+    /// \param index Angles index in parameter array.
+    /// \param offset Index of the first control point in the parameter vector.
+    virtual void normalizeAngles (size_type index, size_type offset) throw ();
 
     interval_t timeRange_;
     vector_t parameters_;

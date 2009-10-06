@@ -52,6 +52,7 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
+    using typename parent_t::normalizeAngles;
     using typename parent_t::variationConfigWrtParam;
     using typename parent_t::variationDerivWrtParam;
 
@@ -95,6 +96,12 @@ namespace roboptim
     /// \param o output stream used for display
     /// \return output stream
     virtual std::ostream& print (std::ostream& o) const throw ();
+
+    /// \brief Normalize angles in parameters array.
+    ///
+    /// Make sure angles are continuous.
+    /// \param index Angles index in parameter array.
+    virtual void normalizeAngles (size_type index) throw ();
 
   protected:
     void impl_compute (result_t&, double) const throw ();

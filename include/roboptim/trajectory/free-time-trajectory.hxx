@@ -241,6 +241,13 @@ namespace roboptim
     o << "Free time trajectory." << std::endl;
     return o;
   }
+
+  template <unsigned dorder>
+  void
+  FreeTimeTrajectory<dorder>::normalizeAngles (size_type index) throw ()
+  {
+    this->normalizeAngles (index, 1.);
+  }
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HXX
