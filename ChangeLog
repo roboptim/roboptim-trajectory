@@ -1,5 +1,10 @@
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Change test description.
+	* tests/testsuite.at: Here.
+
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Distribute ``sys.hh''.
 	* include/Makefile.am: Here.
 
