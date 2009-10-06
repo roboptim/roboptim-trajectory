@@ -1,5 +1,10 @@
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Distribute ``sys.hh''.
+	* include/Makefile.am: Here.
+
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Include ``sys.hh'' first.
 	* tests/anthropomorphic-cost-function.cc,
 	* tests/common.hh,

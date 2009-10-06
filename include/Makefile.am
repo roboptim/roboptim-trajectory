@@ -20,6 +20,7 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/stable-time-point.hh		\
 	roboptim/trajectory/state-cost.hh			\
 	roboptim/trajectory/state-cost.hxx			\
+	roboptim/trajectory/sys.hh				\
 	roboptim/trajectory/trajectory-cost.hh			\
 	roboptim/trajectory/trajectory-cost.hxx			\
 	roboptim/trajectory/trajectory-sum-cost.hh		\
