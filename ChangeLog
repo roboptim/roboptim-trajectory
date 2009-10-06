@@ -1,5 +1,12 @@
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Include ``sys.hh'' first in all headers.
+	* include/roboptim/trajectory/visualization/limit-speed.hh,
+	* include/roboptim/trajectory/visualization/speed.hh,
+	* include/roboptim/trajectory/visualization/trajectory.hh: Here.
+
+2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add sys.hh to avoid problem with libcwd.
 	* include/roboptim/trajectory/anthropomorphic-cost-function.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hh,

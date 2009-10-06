@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/format.hpp>
 # include <boost/optional.hpp>
 

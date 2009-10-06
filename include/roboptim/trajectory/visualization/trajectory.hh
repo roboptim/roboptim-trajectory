@@ -17,6 +17,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_TRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_VISUALIZATION_TRAJECTORY_HH
+# include <roboptim/trajectory/sys.hh>
+
 # include <boost/format.hpp>
 
 # include <roboptim/core/visualization/gnuplot-commands.hh>
