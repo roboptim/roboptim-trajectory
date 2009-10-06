@@ -1,3 +1,8 @@
+2009-10-06  Florent Lamiraux <florent@laas.fr>
+
+	Fix comment.
+	* include/roboptim/trajectory/state-cost.hh.
+
 2009-10-06 Florent Lamiraux <florent@laas.fr> 
 
 	Add declaration before definition to remove warning.

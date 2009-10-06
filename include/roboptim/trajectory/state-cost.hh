@@ -32,7 +32,7 @@ namespace roboptim
   ///
   /// The state along a trajectory is defined as the vector containing the
   /// configuration and derivatives up to order \f$r\f$ of the
-  /// configuration:
+  /// configuration.
   /**\f[
 \textbf{Cost}(\Gamma) = cost
 \left({\Gamma(t)}, {\dot{\Gamma}(t)},\cdots,\frac{d^{r}\Gamma}{dt^{r}}(t)
@@ -44,6 +44,8 @@ namespace roboptim
   /// - \f$t\f$ is the parameter along the trajectory where the cost is
   /// evaluated (fixed at construction),
   /// - \f$r\f$ is called the order of the state.
+  ///
+  /// \tparam T trajectory type
 
   template <typename T>
   class StateCost : public DerivableFunction
@@ -52,7 +54,7 @@ namespace roboptim
     /// \brief Trajectory type.
     typedef T trajectory_t;
 
-    /// \brief Concrete class should call this constructor.
+    /// \brief Constructor.
     ///
     /// \param gamma Trajectory \f$\Gamma\f$ along which the state is evaluated.
     /// \param cost state cost: \f$cost\f$.
