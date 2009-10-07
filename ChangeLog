@@ -1,5 +1,10 @@
 2009-10-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Synchronize.
+	* build-aux: Synchronize.
+
+2009-10-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix errors in Doxygen documentation.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hxx,
