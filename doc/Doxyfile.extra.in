@@ -1,0 +1,1 @@
+TAGFILES = "roboptim-core.doxytag = @ROBOPTIMCORE_DOXYGENDOCDIR@"

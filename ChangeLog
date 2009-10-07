@@ -1,5 +1,12 @@
 2009-10-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Remove doc submodule and add updated doc directory.
+	* doc/Doxyfile.extra.in: New.
+	* doc/Makefile.am: New.
+	* doc: Remove.
+
+2009-10-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Synchronize.
 	* build-aux: Synchronize.
 
