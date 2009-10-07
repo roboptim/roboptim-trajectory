@@ -39,7 +39,7 @@ namespace roboptim
     /// \brief Instantiate a Spline from its definition.
     ///
     /// Instantiate a Spline from its triplet definition:
-    /// - time range (\ft \in $[f_min, t_max]\f$): interval on
+    /// - time range (\f$t \in [f_min, t_max]\f$): interval on
     ///   which the spline is defined,
     /// - dimension: output space dimension,
     /// - parameters: vector containing concatenated control points.
@@ -53,6 +53,7 @@ namespace roboptim
     /// \param timeRange spline time range
     /// \param dimension spline dimension
     /// \param parameters vector of parameters defining control points
+    /// \param name function title
     Spline (interval_t timeRange, size_type dimension,
 	    const vector_t& parameters, std::string name = "spline") throw ();
 
@@ -100,9 +101,6 @@ namespace roboptim
 
   /// Example shows Spline use.
   /// \example spline-gradient.cc
-
-  /// Example shows Spline optimization.
-  /// \example spline-optimization.cc
 
   /// @}
 

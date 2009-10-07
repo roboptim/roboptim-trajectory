@@ -75,18 +75,17 @@ namespace roboptim
 
   template <unsigned dorder>
   void
-  FreeTimeTrajectory<dorder>::impl_compute
-  (typename FreeTimeTrajectory<dorder>::result_t& res , double t) const throw ()
+  FreeTimeTrajectory<dorder>::impl_compute (result_t& res , double t)
+    const throw ()
   {
     (*trajectory_) (res, this->scaleTime (t));
   }
 
   template <unsigned dorder>
   void
-  FreeTimeTrajectory<dorder>::impl_derivative
-  (typename FreeTimeTrajectory<dorder>::gradient_t& derivative,
-   double t,
-   typename FreeTimeTrajectory<dorder>::size_type order) const throw ()
+  FreeTimeTrajectory<dorder>::impl_derivative (gradient_t& derivative,
+					       double t,
+					       size_type order) const throw ()
   {
     assert (order >= 0);
     double scaled = this->scaleTime (t);

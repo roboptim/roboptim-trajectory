@@ -142,7 +142,7 @@ namespace roboptim
     ///
     /// \param gamma Trajectory \f$\Gamma\f$ along which the state is evaluated.
     /// \param cost state cost: \f$cost\f$.
-    /// \param tpt parameter \f$t\f$ where the state is evaluated.
+    /// \param interval Stable time points list where cost will be evaluated.
     /// \param order order \f$r\f$ of derivation.
     TrajectorySumCost (const trajectory_t& gamma,
 		       boost::shared_ptr<DerivableFunction> cost,

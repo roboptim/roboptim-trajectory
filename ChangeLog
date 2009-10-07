@@ -1,3 +1,13 @@
+2009-10-07  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix errors in Doxygen documentation.
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/free-time-trajectory.hxx,
+	* include/roboptim/trajectory/spline.hh,
+	* include/roboptim/trajectory/trajectory-sum-cost.hh,
+	* include/roboptim/trajectory/trajectory.hxx:
+	Simplify code and fix Doxygen documentation errors.
+
 2009-10-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Implement DiscreteStableTimePointInterval_t.

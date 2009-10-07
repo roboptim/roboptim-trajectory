@@ -127,6 +127,9 @@ namespace roboptim
     Trajectory<DerivabilityOrder>* trajectory_;
   };
 
+  /// Example shows FreeTimeTrajectory use.
+  /// \example spline-time-optimization.cc
+
   /// @}
 
   Function::vector_t
