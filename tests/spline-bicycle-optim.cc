@@ -53,7 +53,8 @@ typedef TrajectorySumCost<Spline>::discreteStableTimePointInterval_t discreteSta
 /*
   Parameter of the cost function
 */
-static double m=2.0;
+//#define BICYCLE_COST_FUNCTION
+static double m=.5;
 
 class PositiveCostVar : public DerivableFunction
 {
@@ -69,7 +70,7 @@ public:
     double y0 = x[1];
     double x1 = x[2];
     double y1 = x[3];
-    double v = m*y0;
+    double v = 1+m*y0;
     res[0] = .5*v*(x1*x1+y1*y1);
 #endif
   };
@@ -91,7 +92,7 @@ public:
     double y0 = x[1];
     double x1 = x[2];
     double y1 = x[3];
-    double v = m*y0;
+    double v = 1+m*y0;
 
     grad[1] = .5*m*(x1*x1+y1*y1);
     grad[2] = v*x1;
@@ -108,27 +109,33 @@ int run_test ()
   // Initial position.
   params[0] = 0.,  params[1] = 0.;
   // Control point .
-  params[2] = .1, params[3] = .01;
+  params[2] = .1, params[3] = -2.0;
   // Control point .
-  params[4] = .2, params[5] = .02;
+  params[4] = .2, params[5] = -2.0;
   // Control point .
-  params[6] = .3, params[7] = .03;
+  params[6] = .3, params[7] = -2.0;
   // Control point .
-  params[8] = .4, params[9] = .04;
+  params[8] = .4, params[9] = -2.0;
   // Control point .
-  params[10] = .5, params[11] = .05;
+  params[10] = .5, params[11] = -2.0;
   // Control point .
-  params[12] = .6, params[13] = .06;
+  params[12] = .6, params[13] = -2.0;
   // Control point .
-  params[14] = .7, params[15] = .07;
+  params[14] = .7, params[15] = -2.0;
   // Control point .
-  params[16] = .8, params[17] = .08;
+  params[16] = .8, params[17] = -2.0;
   // Control point .
-  params[18] = .9, params[19] = .09;
+  params[18] = .9, params[19] = -2.0;
   // Final position.
   params[20] = 1.,  params[21] = .1;
 
   Spline::interval_t timeRange = Spline::makeInterval (0., 1.);
+  std::vector<roboptim::Function::interval_t> defDomain;
+
+  for (unsigned int i=0; i<11; i++) {
+    defDomain.push_back(Function::makeInterval(0.0, 1.0));
+    defDomain.push_back(Function::makeInterval(-2.0, 10.0));
+  }
 
   Spline spline (timeRange, 2, params, "before");
   discreteStableTimePointInterval_t interval
@@ -159,11 +166,12 @@ int run_test ()
   catch (BadGradient& bg)
     {
       std::cout << bg << std::endl;
-      return 1;
+      //      return 1;
     }
 
   solver_t::problem_t problem (sumCost);
   problem.startingPoint () = params;
+  problem.argumentBounds() = defDomain;
 
   std::vector<Function::size_type> indices;
   indices.push_back (0);
@@ -226,7 +234,6 @@ int run_test ()
   catch (BadGradient& bg)
     {
       std::cout << bg << std::endl;
-      return 1;
     }
 
   std::cout << (gnuplot << unset ("multiplot"));
