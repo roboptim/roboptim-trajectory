@@ -1,3 +1,10 @@
+2009-10-19  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix documentation dependencies.
+	* build-aux: Synchronize.
+	* doc/Doxyfile.extra.in: Fix documentation
+	dependencies.
+
 2009-10-07  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Remove doc submodule and add updated doc directory.
