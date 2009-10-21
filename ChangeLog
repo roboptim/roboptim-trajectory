@@ -1,3 +1,8 @@
+2009-10-21  Florent Lamiraux  <florent@laas.fr>
+
+	Synchronize.
+	* build-aux: Use latest version.
+
 2009-10-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix documentation dependencies.
