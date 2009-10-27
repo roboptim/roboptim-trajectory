@@ -40,11 +40,13 @@ typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
 struct ConfigWrtParam : public DerivableFunction
 {
-  ConfigWrtParam (const freeTime_t& traj, double t) throw ()
+  ConfigWrtParam (const freeTime_t& traj, int order, double t) throw ()
     : DerivableFunction (traj.parameters ().size (),
-			 traj.outputSize (),
+			 (order < 0)
+			 ? traj.outputSize () : traj.parameters ().size (),
 			 "config wrt param"),
       traj_ (traj),
+      order_ (order),
       t_ (t)
   {
   }
@@ -53,25 +55,38 @@ struct ConfigWrtParam : public DerivableFunction
   {
   }
 
+  void compute (result_t& res, const argument_t& p, int order) const throw ()
+  {
+    if (order < 0)
+      {
+	boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
+	updatedTrajectory->setParameters (p);
+	res = (*updatedTrajectory) (t_);
+      }
+    else
+      {
+	boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
+	updatedTrajectory->setParameters (p);
+	matrix_t tmp = updatedTrajectory->variationDerivWrtParam (t_, order);
+	res = row (tmp, 0);
+      }
+  }
+
   void
   impl_compute (result_t& res, const argument_t& p) const throw ()
   {
-    boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
-    updatedTrajectory->setParameters (p);
-    res = (*updatedTrajectory) (t_);
+    compute (res, p, order_);
   }
 
   void
   impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
     const throw ()
   {
-    boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
-    updatedTrajectory->setParameters (p);
-    matrix_t tmp = updatedTrajectory->variationConfigWrtParam (t_);
-    grad = row (tmp, 0);
+    compute (grad, p, order_ + 1);
   }
 
   const freeTime_t& traj_;
+  const int order_;
   double t_;
 };
 
@@ -170,7 +185,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
       try
 	{
-	  ConfigWrtParam configWrtParam (freeTimeTraj, t);
+	  ConfigWrtParam configWrtParam (freeTimeTraj, -1, t);
 	  checkGradientAndThrow (configWrtParam, 0,
 				 freeTimeTraj.parameters ());
 	}
@@ -202,6 +217,17 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
       freeTime_t::jacobian_t fttVarDeriv =
 	freeTimeTraj.variationDerivWrtParam (t, 1);
       fmterDeriv % fttVarDeriv;
+
+      try
+	{
+	  ConfigWrtParam derivWrtParam (freeTimeTraj, 0, t);
+	  checkGradientAndThrow (derivWrtParam, 0,
+				 freeTimeTraj.parameters ());
+	}
+      catch (BadGradient& bg)
+	{
+	  std::cout << bg << std::endl;
+	}
 
       std::cout << fmterDeriv << std::endl;
     }

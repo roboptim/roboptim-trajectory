@@ -1,3 +1,9 @@
+2009-10-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Check FreeTimeTrajectory::variationDerivWrtParam.
+	* tests/free-time-trajectory.cc: Check combined derivatives
+	of free time trajectories.
+
 2009-10-21  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Synchronize.
