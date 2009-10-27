@@ -1,5 +1,10 @@
 2009-10-27  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix variationDerivWrtParam check in test suite.
+	* tests/free-time-trajectory.cc: Fix test case.
+
+2009-10-27  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check FreeTimeTrajectory::variationDerivWrtParam.
 	* tests/free-time-trajectory.cc: Check combined derivatives
 	of free time trajectories.

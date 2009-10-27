@@ -40,13 +40,11 @@ typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
 struct ConfigWrtParam : public DerivableFunction
 {
-  ConfigWrtParam (const freeTime_t& traj, int order, double t) throw ()
+  ConfigWrtParam (const freeTime_t& traj, double t) throw ()
     : DerivableFunction (traj.parameters ().size (),
-			 (order < 0)
-			 ? traj.outputSize () : traj.parameters ().size (),
+			 traj.outputSize (),
 			 "config wrt param"),
       traj_ (traj),
-      order_ (order),
       t_ (t)
   {
   }
@@ -55,39 +53,56 @@ struct ConfigWrtParam : public DerivableFunction
   {
   }
 
-  void compute (result_t& res, const argument_t& p, int order) const throw ()
-  {
-    if (order < 0)
-      {
-	boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
-	updatedTrajectory->setParameters (p);
-	res = (*updatedTrajectory) (t_);
-      }
-    else
-      {
-	boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
-	updatedTrajectory->setParameters (p);
-	matrix_t tmp = updatedTrajectory->variationDerivWrtParam (t_, order);
-	res = row (tmp, 0);
-      }
-  }
-
   void
   impl_compute (result_t& res, const argument_t& p) const throw ()
   {
-    compute (res, p, order_);
+    boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
+    updatedTrajectory->setParameters (p);
+    res = (*updatedTrajectory) (t_);
   }
 
   void
   impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
     const throw ()
   {
-    compute (grad, p, order_ + 1);
+    boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
+    updatedTrajectory->setParameters (p);
+    matrix_t tmp = updatedTrajectory->variationDerivWrtParam (t_, 0);
+    grad = row (tmp, 0);
   }
 
   const freeTime_t& traj_;
-  const int order_;
   double t_;
+};
+
+struct DerivWrtParam : public DerivableFunction
+{
+  DerivWrtParam (const freeTime_t& traj) throw ()
+    : DerivableFunction (traj.inputSize (),
+			 traj.parameters ().size (),
+			 "config wrt param"),
+      traj_ (traj.clone ())
+  {}
+
+  ~DerivWrtParam () throw ()
+  {}
+
+  void
+  impl_compute (result_t& res, const argument_t& t) const throw ()
+  {
+    matrix_t tmp = traj_->variationDerivWrtParam (t[0], 0);
+    res = row (tmp, 0);
+  }
+
+  void
+  impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
+    const throw ()
+  {
+    matrix_t tmp = traj_->variationDerivWrtParam (t[0], 1);
+    grad[0] = row (tmp, 0)[i];
+  }
+
+  const boost::scoped_ptr<const freeTime_t> traj_;
 };
 
 
@@ -185,7 +200,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
       try
 	{
-	  ConfigWrtParam configWrtParam (freeTimeTraj, -1, t);
+	  ConfigWrtParam configWrtParam (freeTimeTraj, t);
 	  checkGradientAndThrow (configWrtParam, 0,
 				 freeTimeTraj.parameters ());
 	}
@@ -220,9 +235,10 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
       try
 	{
-	  ConfigWrtParam derivWrtParam (freeTimeTraj, 0, t);
-	  checkGradientAndThrow (derivWrtParam, 0,
-				 freeTimeTraj.parameters ());
+	  Spline::vector_t t_ (1);
+	  t_[0] = t;
+	  DerivWrtParam derivWrtParam (freeTimeTraj);
+	  checkGradientAndThrow (derivWrtParam, 0, t_);
 	}
       catch (BadGradient& bg)
 	{
