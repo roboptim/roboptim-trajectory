@@ -1,6 +1,6 @@
 # Don't expend macros beginning by JRL_.
 m4_pattern_forbid([^JRL_])
-AC_PREREQ([2.59])
+AC_PREREQ([2.63])
 
 ## --------------------- ##
 ## Package configuration ##
@@ -13,6 +13,9 @@ AC_INIT([RobOptim trajectory library],
 
 # Auxiliary files.
 AC_CONFIG_AUX_DIR([build-aux])
+
+# Macros are stored in build-aux.
+AC_CONFIG_MACRO_DIR([build-aux])
 
 # Automake.
 AM_INIT_AUTOMAKE([1.9.6 dist-bzip2 -Wall nostdinc])
@@ -43,9 +46,6 @@ JRL_CXX_WARNINGS([[-Wall],
                    [-Wmissing-declarations],
                    [-Wnested-externs]])
 
-# Macros are stored in build-aux.
-AC_CONFIG_MACRO_DIR([build-aux])
-
 ## ------------------- ##
 ## Additionnal tools.  ##
 ## ------------------- ##
@@ -63,6 +63,15 @@ LT_INIT([dlopen])
 # Search for RobOptim core.
 ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.2])
 
+# Search for Roboptim core CFSQP plug-in.
+AC_CHECK_HEADERS([roboptim/core/plugin/cfsqp.hh],
+		 [have_roboptim_core_cfsqp_plugin=yes],
+		 [have_roboptim_core_cfsqp_plugin=no])
+
+AM_CONDITIONAL([HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN],
+	       [test x$have_roboptim_core_cfsqp_plugin = xyes])
+AC_SUBST([HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN],
+	 [$have_roboptim_core_cfsqp_plugin])
 
 ## ------------ ##
 ## Pkg-config.  ##

@@ -31,6 +31,22 @@ check_PROGRAMS += spline-gradient
 spline_gradient_SOURCES = spline-gradient.cc $(COMMON_SOURCES)
 spline_gradient_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# free-time-trajectory
+check_PROGRAMS += free-time-trajectory
+free_time_trajectory_SOURCES = free-time-trajectory.cc $(COMMON_SOURCES)
+free_time_trajectory_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
+
+# state-cost
+check_PROGRAMS += state-cost
+state_cost_SOURCES = state-cost.cc $(COMMON_SOURCES)
+state_cost_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
+#########################################
+# Tests which require the CFSQP solver. #
+#########################################
+if HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN
+
 # spline-optimization
 check_PROGRAMS += spline-optimization
 spline_optimization_SOURCES = spline-optimization.cc $(COMMON_SOURCES)
@@ -41,21 +57,12 @@ check_PROGRAMS += spline-bicycle-optim
 spline_bicycle_optim_SOURCES = spline-bicycle-optim.cc $(COMMON_SOURCES)
 spline_bicycle_optim_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
-# free-time-trajectory
-check_PROGRAMS += free-time-trajectory
-free_time_trajectory_SOURCES = free-time-trajectory.cc $(COMMON_SOURCES)
-free_time_trajectory_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
-
 # spline-time-optimization
 check_PROGRAMS += spline-time-optimization
 spline_time_optimization_SOURCES = spline-time-optimization.cc $(COMMON_SOURCES)
 spline_time_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
-# state-cost
-check_PROGRAMS += state-cost
-state_cost_SOURCES = state-cost.cc $(COMMON_SOURCES)
-state_cost_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
-
+endif
 
 
 # anthropomorphic-cost-function-case-1

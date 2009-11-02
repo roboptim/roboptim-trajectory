@@ -35,10 +35,13 @@ CHECK_STDOUT([free-time-trajectory], [Check free time trajectory.])
 CHECK_STDOUT([state-cost], [Check state cost.])
 
 AT_BANNER([Optimization (require solver plug-in)])
-CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.])
-CHECK_STDOUT([spline-bicycle-optim], [Optimize a Spline with Cfsqp (2).], [],
+CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.],
+	     [! test x$HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN = xyes])
+CHECK_STDOUT([spline-bicycle-optim], [Optimize a Spline with Cfsqp (2).],
+	     [! test x$HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN = xyes],
              [true])
-CHECK_STDOUT([spline-time-optimization], [Optimize a free time trajectory.])
+CHECK_STDOUT([spline-time-optimization], [Optimize a free time trajectory.],
+	     [! test x$HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN = xyes])
 
 AT_BANNER([Long tests (disabled unless ALL_TESTS=1)])
 # Do ``ALL_TESTS=1 make check'' to run those tests,

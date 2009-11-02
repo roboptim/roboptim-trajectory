@@ -23,3 +23,6 @@ PATH=@abs_builddir@:$PATH
 
 # Pass current roboptim-core version to test suite.
 ROBOPTIMCORE_VERSION=@ROBOPTIMCORE_VERSION@
+
+# Pass whether CFSQP plug-in is available or not.
+HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN=@HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN@

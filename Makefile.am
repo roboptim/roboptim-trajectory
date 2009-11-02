@@ -11,21 +11,14 @@ SUBDIRS = 		\
 
 
 # Provide bootstrap with the generated package.
-EXTRA_DIST += bootstrap build-aux/bootstrap
-
+EXTRA_DIST +=	bootstrap			\
+		build-aux/bootstrap
 
 # Nothing to do in this directory.
 all:
 
-# Libtool rules
-LIBTOOL_DEPS = @LIBTOOL_DEPS@
-libtool: $(LIBTOOL_DEPS)
-
+# Include various rules...
+include $(top_srcdir)/build-aux/doc-recursive.mk
+include $(top_srcdir)/build-aux/libtool.mk
 include $(top_srcdir)/build-aux/pkg-config.mk
-
-# -- Generate documentation
-.PHONY: doc html
-doc html:
-	cd doc && $(MAKE) $(AM_MAKEFLAGS) $@
-
 include $(top_srcdir)/build-aux/git-version-gen.mk

@@ -1,3 +1,17 @@
+2009-11-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Add optional dependency toward CFSQP plug-in.
+	* Makefile.am: Factorize rules.
+	* build-aux: Synchornize.
+	* configure.ac,
+	* tests/Makefile.am,
+	* tests/atlocal.in,
+	* tests/package.m4.in,
+	* tests/testsuite.at:
+	Handle optional dependency toward CFSQP plug-in.
+	Do not compile/run tests which require CFSQP plug-in if
+	not available.
+
 2009-10-27  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix variationDerivWrtParam check in test suite.
