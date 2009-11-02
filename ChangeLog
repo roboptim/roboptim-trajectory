@@ -1,5 +1,16 @@
 2009-11-02  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Regenerate test suite output.
+	* tests/free-time-trajectory.stdout,
+	* tests/spline-bicycle-optim.stdout,
+	* tests/spline-gradient.stdout,
+	* tests/spline-optimization.stdout,
+	* tests/spline.stdout: Regenerate.
+	* tests/testsuite.at: Do not tag bicycle optimization
+	as XFAIL anymore.
+
+2009-11-02  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add optional dependency toward CFSQP plug-in.
 	* Makefile.am: Factorize rules.
 	* build-aux: Synchornize.

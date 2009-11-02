@@ -177,44 +177,310 @@ Variation of the configuration w.r.t to parameters:
 
 Variation of the derivative w.r.t to parameters:
 [1,4]((0,0,0,0))                                  [1,5]((0,0,0,0,0))
+bad gradient
+  X: [1](0.1)
+  Analytical gradient: [1](0.268555)
+  Finite difference gradient: [1](0.732422)
+  Max. delta: 0.463867
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.00976562,0.00976562,0,0))               [1,5]((0.268555,-0.00976562,0.00976562,0,0))
+bad gradient
+  X: [1](0.2)
+  Analytical gradient: [1](1.17188)
+  Finite difference gradient: [1](2.92969)
+  Max. delta: 1.75781
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0390625,0.0390625,0,0))                 [1,5]((1.17188,-0.0390625,0.0390625,0,0))
+bad gradient
+  X: [1](0.3)
+  Analytical gradient: [1](2.85645)
+  Finite difference gradient: [1](6.5918)
+  Max. delta: 3.73535
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0878906,0.0878906,0,0))                 [1,5]((2.85645,-0.0878906,0.0878906,0,0))
+bad gradient
+  X: [1](0.4)
+  Analytical gradient: [1](5.46875)
+  Finite difference gradient: [1](11.7187)
+  Max. delta: 6.25
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.15625,0.15625,0,0))                     [1,5]((5.46875,-0.15625,0.15625,0,0))
+bad gradient
+  X: [1](0.5)
+  Analytical gradient: [1](9.15527)
+  Finite difference gradient: [1](18.3105)
+  Max. delta: 9.15527
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.244141,0.244141,0,0))                   [1,5]((9.15527,-0.244141,0.244141,0,0))
+bad gradient
+  X: [1](0.6)
+  Analytical gradient: [1](14.0625)
+  Finite difference gradient: [1](26.3672)
+  Max. delta: 12.3047
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.351562,0.351562,0,0))                   [1,5]((14.0625,-0.351562,0.351562,0,0))
+bad gradient
+  X: [1](0.7)
+  Analytical gradient: [1](20.3369)
+  Finite difference gradient: [1](35.8887)
+  Max. delta: 15.5518
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.478516,0.478516,0,0))                   [1,5]((20.3369,-0.478516,0.478516,0,0))
+bad gradient
+  X: [1](0.8)
+  Analytical gradient: [1](28.125)
+  Finite difference gradient: [1](46.875)
+  Max. delta: 18.75
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.625,0.625,0,0))                         [1,5]((28.125,-0.625,0.625,0,0))
+bad gradient
+  X: [1](0.9)
+  Analytical gradient: [1](37.1094)
+  Finite difference gradient: [1](54.6875)
+  Max. delta: 17.5781
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.761719,0.751953,0.00976562,0))          [1,5]((37.1094,-0.761719,0.751953,0.00976562,0))
+bad gradient
+  X: [1](1)
+  Analytical gradient: [1](46.875)
+  Finite difference gradient: [1](62.5)
+  Max. delta: 15.625
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.859375,0.820312,0.0390625,0))           [1,5]((46.875,-0.859375,0.820312,0.0390625,0))
+bad gradient
+  X: [1](1.1)
+  Analytical gradient: [1](57.4219)
+  Finite difference gradient: [1](70.3125)
+  Max. delta: 12.8906
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.917969,0.830078,0.0878906,0))           [1,5]((57.4219,-0.917969,0.830078,0.0878906,0))
+bad gradient
+  X: [1](1.2)
+  Analytical gradient: [1](68.75)
+  Finite difference gradient: [1](78.125)
+  Max. delta: 9.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.9375,0.78125,0.15625,0))                [1,5]((68.75,-0.9375,0.78125,0.15625,0))
+bad gradient
+  X: [1](1.3)
+  Analytical gradient: [1](80.8594)
+  Finite difference gradient: [1](85.9375)
+  Max. delta: 5.07812
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.917969,0.673828,0.244141,0))            [1,5]((80.8594,-0.917969,0.673828,0.244141,0))
 [1,4]((-0.859375,0.507812,0.351562,0))            [1,5]((93.75,-0.859375,0.507812,0.351562,0))
+bad gradient
+  X: [1](1.5)
+  Analytical gradient: [1](107.422)
+  Finite difference gradient: [1](101.563)
+  Max. delta: 5.85937
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.761719,0.283203,0.478516,0))            [1,5]((107.422,-0.761719,0.283203,0.478516,0))
+bad gradient
+  X: [1](1.6)
+  Analytical gradient: [1](121.875)
+  Finite difference gradient: [1](109.375)
+  Max. delta: 12.5
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.625,-1.11022e-15,0.625,-0))             [1,5]((121.875,-0.625,-1.11022e-15,0.625,-0))
+bad gradient
+  X: [1](1.7)
+  Analytical gradient: [1](135.791)
+  Finite difference gradient: [1](100.098)
+  Max. delta: 35.6934
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.478516,-0.283203,0.751953,0.00976563))  [1,5]((135.791,-0.478516,-0.283203,0.751953,0.00976563))
+bad gradient
+  X: [1](1.8)
+  Analytical gradient: [1](147.656)
+  Finite difference gradient: [1](87.8906)
+  Max. delta: 59.7656
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.351562,-0.507813,0.820313,0.0390625))   [1,5]((147.656,-0.351562,-0.507813,0.820313,0.0390625))
+bad gradient
+  X: [1](1.9)
+  Analytical gradient: [1](157.178)
+  Finite difference gradient: [1](72.7539)
+  Max. delta: 84.4238
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.244141,-0.673828,0.830078,0.0878906))   [1,5]((157.178,-0.244141,-0.673828,0.830078,0.0878906))
+bad gradient
+  X: [1](2)
+  Analytical gradient: [1](164.063)
+  Finite difference gradient: [1](54.6875)
+  Max. delta: 109.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.15625,-0.78125,0.78125,0.15625))        [1,5]((164.063,-0.15625,-0.78125,0.78125,0.15625))
+bad gradient
+  X: [1](2.1)
+  Analytical gradient: [1](168.018)
+  Finite difference gradient: [1](33.6914)
+  Max. delta: 134.326
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0878906,-0.830078,0.673828,0.244141))   [1,5]((168.018,-0.0878906,-0.830078,0.673828,0.244141))
+bad gradient
+  X: [1](2.2)
+  Analytical gradient: [1](168.75)
+  Finite difference gradient: [1](9.76563)
+  Max. delta: 158.984
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0390625,-0.820312,0.507812,0.351563))   [1,5]((168.75,-0.0390625,-0.820312,0.507812,0.351563))
+bad gradient
+  X: [1](2.3)
+  Analytical gradient: [1](165.967)
+  Finite difference gradient: [1](-17.0898)
+  Max. delta: 183.057
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.00976562,-0.751953,0.283203,0.478516))  [1,5]((165.967,-0.00976562,-0.751953,0.283203,0.478516))
+bad gradient
+  X: [1](2.4)
+  Analytical gradient: [1](159.375)
+  Finite difference gradient: [1](-46.875)
+  Max. delta: 206.25
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.625,-2.22045e-15,0.625))              [1,5]((159.375,0,-0.625,-2.22045e-15,0.625))
+bad gradient
+  X: [1](2.5)
+  Analytical gradient: [1](150.391)
+  Finite difference gradient: [1](-54.6875)
+  Max. delta: 205.078
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.478516,-0.283203,0.761719))           [1,5]((150.391,0,-0.478516,-0.283203,0.761719))
+bad gradient
+  X: [1](2.6)
+  Analytical gradient: [1](140.625)
+  Finite difference gradient: [1](-62.5)
+  Max. delta: 203.125
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.351562,-0.507813,0.859375))           [1,5]((140.625,0,-0.351562,-0.507813,0.859375))
+bad gradient
+  X: [1](2.7)
+  Analytical gradient: [1](130.078)
+  Finite difference gradient: [1](-70.3125)
+  Max. delta: 200.391
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.244141,-0.673828,0.917969))           [1,5]((130.078,0,-0.244141,-0.673828,0.917969))
+bad gradient
+  X: [1](2.8)
+  Analytical gradient: [1](118.75)
+  Finite difference gradient: [1](-78.125)
+  Max. delta: 196.875
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.15625,-0.78125,0.9375))               [1,5]((118.75,0,-0.15625,-0.78125,0.9375))
+bad gradient
+  X: [1](2.9)
+  Analytical gradient: [1](106.641)
+  Finite difference gradient: [1](-85.9375)
+  Max. delta: 192.578
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.0878906,-0.830078,0.917969))          [1,5]((106.641,0,-0.0878906,-0.830078,0.917969))
+bad gradient
+  X: [1](3)
+  Analytical gradient: [1](93.75)
+  Finite difference gradient: [1](-93.75)
+  Max. delta: 187.5
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.0390625,-0.820312,0.859375))          [1,5]((93.75,0,-0.0390625,-0.820312,0.859375))
+bad gradient
+  X: [1](3.1)
+  Analytical gradient: [1](80.0781)
+  Finite difference gradient: [1](-101.563)
+  Max. delta: 181.641
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.00976562,-0.751953,0.761719))         [1,5]((80.0781,0,-0.00976562,-0.751953,0.761719))
+bad gradient
+  X: [1](3.2)
+  Analytical gradient: [1](65.625)
+  Finite difference gradient: [1](-109.375)
+  Max. delta: 175
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.625,0.625))                         [1,5]((65.625,0,0,-0.625,0.625))
+bad gradient
+  X: [1](3.3)
+  Analytical gradient: [1](51.4404)
+  Finite difference gradient: [1](-100.83)
+  Max. delta: 152.271
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.478516,0.478516))                   [1,5]((51.4404,0,0,-0.478516,0.478516))
+bad gradient
+  X: [1](3.4)
+  Analytical gradient: [1](38.6719)
+  Finite difference gradient: [1](-90.8203)
+  Max. delta: 129.492
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.351562,0.351562))                   [1,5]((38.6719,0,0,-0.351562,0.351562))
+bad gradient
+  X: [1](3.5)
+  Analytical gradient: [1](27.4658)
+  Finite difference gradient: [1](-79.3457)
+  Max. delta: 106.812
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.244141,0.244141))                   [1,5]((27.4658,0,0,-0.244141,0.244141))
+bad gradient
+  X: [1](3.6)
+  Analytical gradient: [1](17.9687)
+  Finite difference gradient: [1](-66.4063)
+  Max. delta: 84.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.15625,0.15625))                     [1,5]((17.9687,0,0,-0.15625,0.15625))
+bad gradient
+  X: [1](3.7)
+  Analytical gradient: [1](10.3271)
+  Finite difference gradient: [1](-52.002)
+  Max. delta: 62.3291
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.0878906,0.0878906))                 [1,5]((10.3271,0,0,-0.0878906,0.0878906))
+bad gradient
+  X: [1](3.8)
+  Analytical gradient: [1](4.6875)
+  Finite difference gradient: [1](-36.1328)
+  Max. delta: 40.8203
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.0390625,0.0390625))                 [1,5]((4.6875,0,0,-0.0390625,0.0390625))
+bad gradient
+  X: [1](3.9)
+  Analytical gradient: [1](1.19629)
+  Finite difference gradient: [1](-18.7988)
+  Max. delta: 19.9951
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.00976562,0.00976562))               [1,5]((1.19629,0,0,-0.00976562,0.00976562))
 [1,4]((0,0,0,0))                                  [1,5]((-1.04083e-13,0,0,0,0))
 
@@ -557,84 +823,630 @@ N/A                                               [1,5]((7.50511e-14,0,0,-9.2699
 
 Variation of the derivative w.r.t to parameters:
 [1,4]((0,0,0,0))                                  [1,5]((0,0,0,0,0))
+bad gradient
+  X: [1](0.1)
+  Analytical gradient: [1](0.0640869)
+  Finite difference gradient: [1](0.183105)
+  Max. delta: 0.119019
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.00976562,0.00976562,0,0))               [1,5]((0.0640869,-0.0012207,0.0012207,0,0))
+bad gradient
+  X: [1](0.2)
+  Analytical gradient: [1](0.268555)
+  Finite difference gradient: [1](0.732422)
+  Max. delta: 0.463867
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0390625,0.0390625,0,0))                 [1,5]((0.268555,-0.00488281,0.00488281,0,0))
+bad gradient
+  X: [1](0.3)
+  Analytical gradient: [1](0.631714)
+  Finite difference gradient: [1](1.64795)
+  Max. delta: 1.01624
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0878906,0.0878906,0,0))                 [1,5]((0.631714,-0.0109863,0.0109863,0,0))
+bad gradient
+  X: [1](0.4)
+  Analytical gradient: [1](1.17188)
+  Finite difference gradient: [1](2.92969)
+  Max. delta: 1.75781
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.15625,0.15625,0,0))                     [1,5]((1.17188,-0.0195312,0.0195312,0,0))
+bad gradient
+  X: [1](0.5)
+  Analytical gradient: [1](1.90735)
+  Finite difference gradient: [1](4.57764)
+  Max. delta: 2.67029
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.244141,0.244141,0,0))                   [1,5]((1.90735,-0.0305176,0.0305176,0,0))
+bad gradient
+  X: [1](0.6)
+  Analytical gradient: [1](2.85645)
+  Finite difference gradient: [1](6.5918)
+  Max. delta: 3.73535
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.351562,0.351562,0,0))                   [1,5]((2.85645,-0.0439453,0.0439453,0,0))
+bad gradient
+  X: [1](0.7)
+  Analytical gradient: [1](4.03748)
+  Finite difference gradient: [1](8.97217)
+  Max. delta: 4.93469
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.478516,0.478516,0,0))                   [1,5]((4.03748,-0.0598145,0.0598145,0,0))
+bad gradient
+  X: [1](0.8)
+  Analytical gradient: [1](5.46875)
+  Finite difference gradient: [1](11.7187)
+  Max. delta: 6.25
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.625,0.625,0,0))                         [1,5]((5.46875,-0.078125,0.078125,0,0))
+bad gradient
+  X: [1](0.9)
+  Analytical gradient: [1](7.16858)
+  Finite difference gradient: [1](14.8315)
+  Max. delta: 7.66296
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.761719,0.751953,0.00976562,0))          [1,5]((7.16858,-0.098877,0.098877,0,0))
+bad gradient
+  X: [1](1)
+  Analytical gradient: [1](9.15527)
+  Finite difference gradient: [1](18.3105)
+  Max. delta: 9.15527
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.859375,0.820312,0.0390625,0))           [1,5]((9.15527,-0.12207,0.12207,0,0))
+bad gradient
+  X: [1](1.1)
+  Analytical gradient: [1](11.4471)
+  Finite difference gradient: [1](22.1558)
+  Max. delta: 10.7086
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.917969,0.830078,0.0878906,0))           [1,5]((11.4471,-0.147705,0.147705,0,0))
+bad gradient
+  X: [1](1.2)
+  Analytical gradient: [1](14.0625)
+  Finite difference gradient: [1](26.3672)
+  Max. delta: 12.3047
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.9375,0.78125,0.15625,0))                [1,5]((14.0625,-0.175781,0.175781,0,0))
+bad gradient
+  X: [1](1.3)
+  Analytical gradient: [1](17.0197)
+  Finite difference gradient: [1](30.9448)
+  Max. delta: 13.9252
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.917969,0.673828,0.244141,0))            [1,5]((17.0197,-0.206299,0.206299,0,0))
+bad gradient
+  X: [1](1.4)
+  Analytical gradient: [1](20.3369)
+  Finite difference gradient: [1](35.8887)
+  Max. delta: 15.5518
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.859375,0.507812,0.351562,0))            [1,5]((20.3369,-0.239258,0.239258,0,0))
+bad gradient
+  X: [1](1.5)
+  Analytical gradient: [1](24.0326)
+  Finite difference gradient: [1](41.1987)
+  Max. delta: 17.1661
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.761719,0.283203,0.478516,0))            [1,5]((24.0326,-0.274658,0.274658,0,0))
+bad gradient
+  X: [1](1.6)
+  Analytical gradient: [1](28.125)
+  Finite difference gradient: [1](46.875)
+  Max. delta: 18.75
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.625,-1.11022e-15,0.625,-0))             [1,5]((28.125,-0.3125,0.3125,1.54074e-32,0))
+bad gradient
+  X: [1](1.7)
+  Analytical gradient: [1](32.5195)
+  Finite difference gradient: [1](50.7813)
+  Max. delta: 18.2617
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.478516,-0.283203,0.751953,0.00976563))  [1,5]((32.5195,-0.349121,0.3479,0.0012207,0))
+bad gradient
+  X: [1](1.8)
+  Analytical gradient: [1](37.1094)
+  Finite difference gradient: [1](54.6875)
+  Max. delta: 17.5781
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.351562,-0.507813,0.820313,0.0390625))   [1,5]((37.1094,-0.380859,0.375977,0.00488281,0))
+bad gradient
+  X: [1](1.9)
+  Analytical gradient: [1](41.8945)
+  Finite difference gradient: [1](58.5938)
+  Max. delta: 16.6992
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.244141,-0.673828,0.830078,0.0878906))   [1,5]((41.8945,-0.407715,0.396729,0.0109863,0))
+bad gradient
+  X: [1](2)
+  Analytical gradient: [1](46.875)
+  Finite difference gradient: [1](62.5)
+  Max. delta: 15.625
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.15625,-0.78125,0.78125,0.15625))        [1,5]((46.875,-0.429688,0.410156,0.0195313,0))
+bad gradient
+  X: [1](2.1)
+  Analytical gradient: [1](52.0508)
+  Finite difference gradient: [1](66.4063)
+  Max. delta: 14.3555
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0878906,-0.830078,0.673828,0.244141))   [1,5]((52.0508,-0.446777,0.41626,0.0305176,0))
+bad gradient
+  X: [1](2.2)
+  Analytical gradient: [1](57.4219)
+  Finite difference gradient: [1](70.3125)
+  Max. delta: 12.8906
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0390625,-0.820312,0.507812,0.351563))   [1,5]((57.4219,-0.458984,0.415039,0.0439453,0))
+bad gradient
+  X: [1](2.3)
+  Analytical gradient: [1](62.9883)
+  Finite difference gradient: [1](74.2188)
+  Max. delta: 11.2305
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.00976562,-0.751953,0.283203,0.478516))  [1,5]((62.9883,-0.466309,0.406494,0.0598145,0))
+bad gradient
+  X: [1](2.4)
+  Analytical gradient: [1](68.75)
+  Finite difference gradient: [1](78.125)
+  Max. delta: 9.37501
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.625,-2.22045e-15,0.625))              [1,5]((68.75,-0.46875,0.390625,0.078125,0))
+bad gradient
+  X: [1](2.5)
+  Analytical gradient: [1](74.707)
+  Finite difference gradient: [1](82.0313)
+  Max. delta: 7.32423
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.478516,-0.283203,0.761719))           [1,5]((74.707,-0.466309,0.367432,0.098877,0))
+bad gradient
+  X: [1](2.6)
+  Analytical gradient: [1](80.8594)
+  Finite difference gradient: [1](85.9375)
+  Max. delta: 5.07813
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.351562,-0.507813,0.859375))           [1,5]((80.8594,-0.458984,0.336914,0.12207,0))
+bad gradient
+  X: [1](2.7)
+  Analytical gradient: [1](87.207)
+  Finite difference gradient: [1](89.8438)
+  Max. delta: 2.63673
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.244141,-0.673828,0.917969))           [1,5]((87.207,-0.446777,0.299072,0.147705,0))
 [1,4]((0,-0.15625,-0.78125,0.9375))               [1,5]((93.75,-0.429687,0.253906,0.175781,0))
+bad gradient
+  X: [1](2.9)
+  Analytical gradient: [1](100.488)
+  Finite difference gradient: [1](97.6563)
+  Max. delta: 2.83202
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.0878906,-0.830078,0.917969))          [1,5]((100.488,-0.407715,0.201416,0.206299,0))
+bad gradient
+  X: [1](3)
+  Analytical gradient: [1](107.422)
+  Finite difference gradient: [1](101.563)
+  Max. delta: 5.85936
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.0390625,-0.820312,0.859375))          [1,5]((107.422,-0.380859,0.141602,0.239258,0))
+bad gradient
+  X: [1](3.1)
+  Analytical gradient: [1](114.551)
+  Finite difference gradient: [1](105.469)
+  Max. delta: 9.08202
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,-0.00976562,-0.751953,0.761719))         [1,5]((114.551,-0.349121,0.0744629,0.274658,0))
+bad gradient
+  X: [1](3.2)
+  Analytical gradient: [1](121.875)
+  Finite difference gradient: [1](109.375)
+  Max. delta: 12.5
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.625,0.625))                         [1,5]((121.875,-0.3125,-1.11022e-15,0.3125,-0))
+bad gradient
+  X: [1](3.3)
+  Analytical gradient: [1](129.071)
+  Finite difference gradient: [1](105.103)
+  Max. delta: 23.9685
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.478516,0.478516))                   [1,5]((129.071,-0.274658,-0.0744629,0.3479,0.0012207))
+bad gradient
+  X: [1](3.4)
+  Analytical gradient: [1](135.791)
+  Finite difference gradient: [1](100.098)
+  Max. delta: 35.6933
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.351562,0.351562))                   [1,5]((135.791,-0.239258,-0.141602,0.375977,0.00488281))
+bad gradient
+  X: [1](3.5)
+  Analytical gradient: [1](141.998)
+  Finite difference gradient: [1](94.3604)
+  Max. delta: 47.6379
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.244141,0.244141))                   [1,5]((141.998,-0.206299,-0.201416,0.396729,0.0109863))
+bad gradient
+  X: [1](3.6)
+  Analytical gradient: [1](147.656)
+  Finite difference gradient: [1](87.8906)
+  Max. delta: 59.7656
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.15625,0.15625))                     [1,5]((147.656,-0.175781,-0.253906,0.410156,0.0195313))
+bad gradient
+  X: [1](3.7)
+  Analytical gradient: [1](152.728)
+  Finite difference gradient: [1](80.6885)
+  Max. delta: 72.0398
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.0878906,0.0878906))                 [1,5]((152.728,-0.147705,-0.299072,0.41626,0.0305176))
+bad gradient
+  X: [1](3.8)
+  Analytical gradient: [1](157.178)
+  Finite difference gradient: [1](72.7539)
+  Max. delta: 84.4238
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.0390625,0.0390625))                 [1,5]((157.178,-0.12207,-0.336914,0.415039,0.0439453))
+bad gradient
+  X: [1](3.9)
+  Analytical gradient: [1](160.968)
+  Finite difference gradient: [1](64.0869)
+  Max. delta: 96.8811
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((0,0,-0.00976562,0.00976562))               [1,5]((160.968,-0.098877,-0.367432,0.406494,0.0598145))
+bad gradient
+  X: [1](4)
+  Analytical gradient: [1](164.063)
+  Finite difference gradient: [1](54.6875)
+  Max. delta: 109.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((164.063,-0.078125,-0.390625,0.390625,0.078125))
+bad gradient
+  X: [1](4.1)
+  Analytical gradient: [1](166.425)
+  Finite difference gradient: [1](44.5557)
+  Max. delta: 121.869
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((166.425,-0.0598145,-0.406494,0.367432,0.098877))
+bad gradient
+  X: [1](4.2)
+  Analytical gradient: [1](168.018)
+  Finite difference gradient: [1](33.6914)
+  Max. delta: 134.326
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((168.018,-0.0439453,-0.415039,0.336914,0.12207))
+bad gradient
+  X: [1](4.3)
+  Analytical gradient: [1](168.805)
+  Finite difference gradient: [1](22.0947)
+  Max. delta: 146.71
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((168.805,-0.0305176,-0.41626,0.299072,0.147705))
+bad gradient
+  X: [1](4.4)
+  Analytical gradient: [1](168.75)
+  Finite difference gradient: [1](9.76562)
+  Max. delta: 158.984
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((168.75,-0.0195312,-0.410156,0.253906,0.175781))
+bad gradient
+  X: [1](4.5)
+  Analytical gradient: [1](167.816)
+  Finite difference gradient: [1](-3.29591)
+  Max. delta: 171.112
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((167.816,-0.0109863,-0.396729,0.201416,0.206299))
+bad gradient
+  X: [1](4.6)
+  Analytical gradient: [1](165.967)
+  Finite difference gradient: [1](-17.0898)
+  Max. delta: 183.057
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((165.967,-0.00488281,-0.375977,0.141602,0.239258))
+bad gradient
+  X: [1](4.7)
+  Analytical gradient: [1](163.165)
+  Finite difference gradient: [1](-31.6162)
+  Max. delta: 194.781
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((163.165,-0.0012207,-0.3479,0.0744629,0.274658))
+bad gradient
+  X: [1](4.8)
+  Analytical gradient: [1](159.375)
+  Finite difference gradient: [1](-46.875)
+  Max. delta: 206.25
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((159.375,0,-0.3125,1.11022e-15,0.3125))
+bad gradient
+  X: [1](4.9)
+  Analytical gradient: [1](154.98)
+  Finite difference gradient: [1](-50.7813)
+  Max. delta: 205.762
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((154.98,0,-0.274658,-0.0744629,0.349121))
+bad gradient
+  X: [1](5)
+  Analytical gradient: [1](150.391)
+  Finite difference gradient: [1](-54.6875)
+  Max. delta: 205.078
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((150.391,0,-0.239258,-0.141602,0.380859))
+bad gradient
+  X: [1](5.1)
+  Analytical gradient: [1](145.605)
+  Finite difference gradient: [1](-58.5937)
+  Max. delta: 204.199
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((145.605,0,-0.206299,-0.201416,0.407715))
+bad gradient
+  X: [1](5.2)
+  Analytical gradient: [1](140.625)
+  Finite difference gradient: [1](-62.5)
+  Max. delta: 203.125
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((140.625,0,-0.175781,-0.253906,0.429687))
+bad gradient
+  X: [1](5.3)
+  Analytical gradient: [1](135.449)
+  Finite difference gradient: [1](-66.4063)
+  Max. delta: 201.855
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((135.449,0,-0.147705,-0.299072,0.446777))
+bad gradient
+  X: [1](5.4)
+  Analytical gradient: [1](130.078)
+  Finite difference gradient: [1](-70.3125)
+  Max. delta: 200.391
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((130.078,0,-0.12207,-0.336914,0.458984))
+bad gradient
+  X: [1](5.5)
+  Analytical gradient: [1](124.512)
+  Finite difference gradient: [1](-74.2188)
+  Max. delta: 198.73
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((124.512,0,-0.098877,-0.367432,0.466309))
+bad gradient
+  X: [1](5.6)
+  Analytical gradient: [1](118.75)
+  Finite difference gradient: [1](-78.125)
+  Max. delta: 196.875
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((118.75,0,-0.078125,-0.390625,0.46875))
+bad gradient
+  X: [1](5.7)
+  Analytical gradient: [1](112.793)
+  Finite difference gradient: [1](-82.0313)
+  Max. delta: 194.824
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((112.793,0,-0.0598145,-0.406494,0.466309))
+bad gradient
+  X: [1](5.8)
+  Analytical gradient: [1](106.641)
+  Finite difference gradient: [1](-85.9375)
+  Max. delta: 192.578
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((106.641,0,-0.0439453,-0.415039,0.458984))
+bad gradient
+  X: [1](5.9)
+  Analytical gradient: [1](100.293)
+  Finite difference gradient: [1](-89.8438)
+  Max. delta: 190.137
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((100.293,0,-0.0305176,-0.41626,0.446777))
+bad gradient
+  X: [1](6)
+  Analytical gradient: [1](93.75)
+  Finite difference gradient: [1](-93.75)
+  Max. delta: 187.5
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((93.75,0,-0.0195313,-0.410156,0.429688))
+bad gradient
+  X: [1](6.1)
+  Analytical gradient: [1](87.0117)
+  Finite difference gradient: [1](-97.6563)
+  Max. delta: 184.668
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((87.0117,0,-0.0109863,-0.396729,0.407715))
+bad gradient
+  X: [1](6.2)
+  Analytical gradient: [1](80.0781)
+  Finite difference gradient: [1](-101.563)
+  Max. delta: 181.641
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((80.0781,0,-0.00488281,-0.375977,0.380859))
+bad gradient
+  X: [1](6.3)
+  Analytical gradient: [1](72.9492)
+  Finite difference gradient: [1](-105.469)
+  Max. delta: 178.418
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((72.9492,0,-0.0012207,-0.3479,0.349121))
+bad gradient
+  X: [1](6.4)
+  Analytical gradient: [1](65.625)
+  Finite difference gradient: [1](-109.375)
+  Max. delta: 175
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((65.625,0,0,-0.3125,0.3125))
+bad gradient
+  X: [1](6.5)
+  Analytical gradient: [1](58.3649)
+  Finite difference gradient: [1](-105.286)
+  Max. delta: 163.65
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((58.3649,0,0,-0.274658,0.274658))
+bad gradient
+  X: [1](6.6)
+  Analytical gradient: [1](51.4404)
+  Finite difference gradient: [1](-100.83)
+  Max. delta: 152.27
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((51.4404,0,0,-0.239258,0.239258))
+bad gradient
+  X: [1](6.7)
+  Analytical gradient: [1](44.87)
+  Finite difference gradient: [1](-96.0083)
+  Max. delta: 140.878
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((44.87,0,0,-0.206299,0.206299))
+bad gradient
+  X: [1](6.8)
+  Analytical gradient: [1](38.6719)
+  Finite difference gradient: [1](-90.8203)
+  Max. delta: 129.492
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((38.6719,0,0,-0.175781,0.175781))
+bad gradient
+  X: [1](6.9)
+  Analytical gradient: [1](32.8644)
+  Finite difference gradient: [1](-85.2661)
+  Max. delta: 118.13
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((32.8644,0,0,-0.147705,0.147705))
+bad gradient
+  X: [1](7)
+  Analytical gradient: [1](27.4658)
+  Finite difference gradient: [1](-79.3457)
+  Max. delta: 106.811
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((27.4658,0,0,-0.12207,0.12207))
+bad gradient
+  X: [1](7.1)
+  Analytical gradient: [1](22.4945)
+  Finite difference gradient: [1](-73.0591)
+  Max. delta: 95.5536
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((22.4945,0,0,-0.098877,0.098877))
+bad gradient
+  X: [1](7.2)
+  Analytical gradient: [1](17.9688)
+  Finite difference gradient: [1](-66.4063)
+  Max. delta: 84.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((17.9688,0,0,-0.078125,0.078125))
+bad gradient
+  X: [1](7.3)
+  Analytical gradient: [1](13.9069)
+  Finite difference gradient: [1](-59.3872)
+  Max. delta: 73.2941
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((13.9069,0,0,-0.0598145,0.0598145))
+bad gradient
+  X: [1](7.4)
+  Analytical gradient: [1](10.3271)
+  Finite difference gradient: [1](-52.002)
+  Max. delta: 62.3291
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((10.3271,0,0,-0.0439453,0.0439453))
+bad gradient
+  X: [1](7.5)
+  Analytical gradient: [1](7.24792)
+  Finite difference gradient: [1](-44.2505)
+  Max. delta: 51.4984
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((7.24792,0,0,-0.0305176,0.0305176))
+bad gradient
+  X: [1](7.6)
+  Analytical gradient: [1](4.6875)
+  Finite difference gradient: [1](-36.1328)
+  Max. delta: 40.8203
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((4.6875,0,0,-0.0195313,0.0195313))
+bad gradient
+  X: [1](7.7)
+  Analytical gradient: [1](2.66418)
+  Finite difference gradient: [1](-27.6489)
+  Max. delta: 30.3131
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((2.66418,0,0,-0.0109863,0.0109863))
+bad gradient
+  X: [1](7.8)
+  Analytical gradient: [1](1.19629)
+  Finite difference gradient: [1](-18.7989)
+  Max. delta: 19.9952
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((1.19629,0,0,-0.00488281,0.00488281))
+bad gradient
+  X: [1](7.9)
+  Analytical gradient: [1](0.302124)
+  Finite difference gradient: [1](-9.58258)
+  Max. delta: 9.8847
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 N/A                                               [1,5]((0.302124,0,0,-0.0012207,0.0012207))
 N/A                                               [1,5]((4.69069e-14,0,0,0,2.22045e-16))
 
@@ -737,24 +1549,150 @@ Variation of the configuration w.r.t to parameters:
 
 Variation of the derivative w.r.t to parameters:
 [1,4]((0,0,0,0))                                  [1,5]((0,0,0,0,0))
+bad gradient
+  X: [1](0.1)
+  Analytical gradient: [1](1.17188)
+  Finite difference gradient: [1](2.92969)
+  Max. delta: 1.75781
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.00976562,0.00976562,0,0))               [1,5]((1.17188,-0.078125,0.078125,0,0))
+bad gradient
+  X: [1](0.2)
+  Analytical gradient: [1](5.46875)
+  Finite difference gradient: [1](11.7188)
+  Max. delta: 6.25
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0390625,0.0390625,0,0))                 [1,5]((5.46875,-0.3125,0.3125,0,0))
+bad gradient
+  X: [1](0.3)
+  Analytical gradient: [1](14.0625)
+  Finite difference gradient: [1](26.3672)
+  Max. delta: 12.3047
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.0878906,0.0878906,0,0))                 [1,5]((14.0625,-0.703125,0.703125,0,0))
+bad gradient
+  X: [1](0.4)
+  Analytical gradient: [1](28.125)
+  Finite difference gradient: [1](46.875)
+  Max. delta: 18.75
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.15625,0.15625,0,0))                     [1,5]((28.125,-1.25,1.25,0,0))
+bad gradient
+  X: [1](0.5)
+  Analytical gradient: [1](46.875)
+  Finite difference gradient: [1](62.5)
+  Max. delta: 15.625
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.244141,0.244141,0,0))                   [1,5]((46.875,-1.71875,1.64062,0.078125,0))
+bad gradient
+  X: [1](0.6)
+  Analytical gradient: [1](68.75)
+  Finite difference gradient: [1](78.125)
+  Max. delta: 9.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.351562,0.351562,0,0))                   [1,5]((68.75,-1.875,1.5625,0.3125,0))
 [1,4]((-0.478516,0.478516,0,0))                   [1,5]((93.75,-1.71875,1.01563,0.703125,0))
+bad gradient
+  X: [1](0.8)
+  Analytical gradient: [1](121.875)
+  Finite difference gradient: [1](109.375)
+  Max. delta: 12.5
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.625,0.625,0,0))                         [1,5]((121.875,-1.25,1.11022e-15,1.25,0))
+bad gradient
+  X: [1](0.9)
+  Analytical gradient: [1](147.656)
+  Finite difference gradient: [1](87.8906)
+  Max. delta: 59.7656
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.761719,0.751953,0.00976562,0))          [1,5]((147.656,-0.703125,-1.01562,1.64062,0.078125))
+bad gradient
+  X: [1](1)
+  Analytical gradient: [1](164.062)
+  Finite difference gradient: [1](54.6875)
+  Max. delta: 109.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.859375,0.820312,0.0390625,0))           [1,5]((164.062,-0.3125,-1.5625,1.5625,0.3125))
+bad gradient
+  X: [1](1.1)
+  Analytical gradient: [1](168.75)
+  Finite difference gradient: [1](9.76562)
+  Max. delta: 158.984
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.917969,0.830078,0.0878906,0))           [1,5]((168.75,-0.078125,-1.64063,1.01563,0.703125))
+bad gradient
+  X: [1](1.2)
+  Analytical gradient: [1](159.375)
+  Finite difference gradient: [1](-46.875)
+  Max. delta: 206.25
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.9375,0.78125,0.15625,0))                [1,5]((159.375,0,-1.25,2.22045e-15,1.25))
+bad gradient
+  X: [1](1.3)
+  Analytical gradient: [1](140.625)
+  Finite difference gradient: [1](-62.5)
+  Max. delta: 203.125
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.917969,0.673828,0.244141,0))            [1,5]((140.625,0,-0.703125,-1.01562,1.71875))
+bad gradient
+  X: [1](1.4)
+  Analytical gradient: [1](118.75)
+  Finite difference gradient: [1](-78.125)
+  Max. delta: 196.875
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.859375,0.507812,0.351562,0))            [1,5]((118.75,0,-0.3125,-1.5625,1.875))
+bad gradient
+  X: [1](1.5)
+  Analytical gradient: [1](93.75)
+  Finite difference gradient: [1](-93.75)
+  Max. delta: 187.5
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.761719,0.283203,0.478516,0))            [1,5]((93.75,0,-0.078125,-1.64062,1.71875))
+bad gradient
+  X: [1](1.6)
+  Analytical gradient: [1](65.625)
+  Finite difference gradient: [1](-109.375)
+  Max. delta: 175
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.625,-1.11022e-15,0.625,-0))             [1,5]((65.625,0,0,-1.25,1.25))
+bad gradient
+  X: [1](1.7)
+  Analytical gradient: [1](38.6719)
+  Finite difference gradient: [1](-90.8203)
+  Max. delta: 129.492
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.478516,-0.283203,0.751953,0.00976563))  [1,5]((38.6719,0,0,-0.703125,0.703125))
+bad gradient
+  X: [1](1.8)
+  Analytical gradient: [1](17.9687)
+  Finite difference gradient: [1](-66.4062)
+  Max. delta: 84.375
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.351562,-0.507813,0.820313,0.0390625))   [1,5]((17.9687,0,0,-0.3125,0.3125))
+bad gradient
+  X: [1](1.9)
+  Analytical gradient: [1](4.6875)
+  Finite difference gradient: [1](-36.1328)
+  Max. delta: 40.8203
+  Max. delta in component: 0
+  Max. allowed delta: 0.0001
 [1,4]((-0.244141,-0.673828,0.830078,0.0878906))   [1,5]((4.6875,0,0,-0.078125,0.078125))
 [1,4]((-0.15625,-0.78125,0.78125,0.15625))        [1,5]((-1.04083e-13,0,0,0,0))
 
