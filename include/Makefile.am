@@ -18,8 +18,8 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/spline.hh				\
 	roboptim/trajectory/spline-length.hh			\
 	roboptim/trajectory/stable-time-point.hh		\
-	roboptim/trajectory/state-cost.hh			\
-	roboptim/trajectory/state-cost.hxx			\
+	roboptim/trajectory/state-function.hh			\
+	roboptim/trajectory/state-function.hxx			\
 	roboptim/trajectory/sys.hh				\
 	roboptim/trajectory/trajectory-cost.hh			\
 	roboptim/trajectory/trajectory-cost.hxx			\

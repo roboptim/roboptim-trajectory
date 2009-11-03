@@ -23,7 +23,7 @@
 #include <roboptim/trajectory/frontal-speed.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
 #include <roboptim/trajectory/spline.hh>
-#include <roboptim/trajectory/state-cost.hh>
+#include <roboptim/trajectory/state-function.hh>
 
 using namespace roboptim;
 

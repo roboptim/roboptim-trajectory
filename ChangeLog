@@ -1,5 +1,18 @@
 2009-11-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Rename state-cost into state-function.
+	* include/Makefile.am: Rename distributed headers.
+	* include/roboptim/trajectory/state-function.hh:
+	Rename from include/roboptim/trajectory/state-cost.hh.
+	* include/roboptim/trajectory/state-function.hxx:
+	Rename from include/roboptim/trajectory/state-cost.hxx.
+	* tests/Makefile.am: Rename distributed files.
+	* tests/state-function.cc: Rename from tests/state-cost.cc.
+	* tests/state-function.stdout: Rename from tests/state-cost.stdout.
+	* tests/testsuite.at: Rename test case.
+
+2009-11-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Synchronize.
 	* build-aux: Synchronize.
 

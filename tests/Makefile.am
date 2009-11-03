@@ -37,10 +37,10 @@ free_time_trajectory_SOURCES = free-time-trajectory.cc $(COMMON_SOURCES)
 free_time_trajectory_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
 
-# state-cost
-check_PROGRAMS += state-cost
-state_cost_SOURCES = state-cost.cc $(COMMON_SOURCES)
-state_cost_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+# state-function
+check_PROGRAMS += state-function
+state_function_SOURCES = state-function.cc $(COMMON_SOURCES)
+state_function_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
 #########################################
 # Tests which require the CFSQP solver. #
@@ -61,9 +61,6 @@ spline_bicycle_optim_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 check_PROGRAMS += spline-time-optimization
 spline_time_optimization_SOURCES = spline-time-optimization.cc $(COMMON_SOURCES)
 spline_time_optimization_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
-
-endif
-
 
 # anthropomorphic-cost-function-case-1
 check_PROGRAMS += anthropomorphic-cost-function-case-1
@@ -124,6 +121,8 @@ anthropomorphic_cost_function_case_6_SOURCES = 	\
 	$(COMMON_SOURCES)
 anthropomorphic_cost_function_case_6_LDADD = 	\
 	$(top_builddir)/src/libroboptim-trajectory.la
+
+endif
 
 
 .PHONY: generate-reference

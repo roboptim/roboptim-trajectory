@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_STATE_COST_HH
-# define ROBOPTIM_TRAJECTORY_STATE_COST_HH
+#ifndef ROBOPTIM_TRAJECTORY_STATE_FUNCTION_HH
+# define ROBOPTIM_TRAJECTORY_STATE_FUNCTION_HH
 # include <roboptim/trajectory/sys.hh>
 
 # include <boost/shared_ptr.hpp>
@@ -106,5 +106,5 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-# include <roboptim/trajectory/state-cost.hxx>
-#endif //! ROBOPTIM_TRAJECTORY_STATE_COST_HH
+# include <roboptim/trajectory/state-function.hxx>
+#endif //! ROBOPTIM_TRAJECTORY_STATE_FUNCTION_HH
