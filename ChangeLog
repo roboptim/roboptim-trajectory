@@ -1,5 +1,14 @@
 2009-11-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Implement FixedPointStateFunction.
+	* include/Makefile.am: Distribute new files.
+	* include/roboptim/trajectory/fixed-point-state-function.hh: New.
+	* include/roboptim/trajectory/fixed-point-state-function.hxx: New.
+	* include/roboptim/trajectory/free-time-trajectory.hh: Add
+	getter to allow access to interal fixed time trajectory.
+
+2009-11-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Make StateFunction only usable with fixed point trajectory.
 	* include/roboptim/trajectory/fwd.hh: Fix forward declaration.
 	* include/roboptim/trajectory/state-function.hh,

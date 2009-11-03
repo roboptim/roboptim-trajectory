@@ -104,6 +104,12 @@ namespace roboptim
     /// \param index Angles index in parameter array.
     virtual void normalizeAngles (size_type index) throw ();
 
+    const Trajectory<DerivabilityOrder>& getFixedTimeTrajectory ()
+      const throw ()
+    {
+      assert (trajectory_);
+      return *trajectory_;
+    }
   protected:
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
