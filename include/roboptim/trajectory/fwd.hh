@@ -24,8 +24,8 @@ namespace roboptim
   template <unsigned dorder>
   class Trajectory;
 
-  template <typename T>
-  class StateCost;
+  template <unsigned dorder>
+  class StateFunction;
 
   template <typename T>
   class SumCost;

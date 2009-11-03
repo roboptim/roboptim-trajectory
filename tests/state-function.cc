@@ -50,13 +50,13 @@ int run_test ()
       const double t = timePoint.getTime (spline.timeRange ());
 
       boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
-      StateFunction<Spline> stateFunction
+      StateFunction<Spline::derivabilityOrder> stateFunction
 	(spline, frontalSpeed, timePoint, orderMax);
 
       boost::shared_ptr<DerivableFunction> orthogonalSpeed
 	(new OrthogonalSpeed ());
-      StateFunction<Spline> orthoStateFunction (spline, orthogonalSpeed,
-						timePoint, orderMax);
+      StateFunction<Spline::derivabilityOrder> orthoStateFunction
+	(spline, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl
 		<< stateFunction (params) << std::endl

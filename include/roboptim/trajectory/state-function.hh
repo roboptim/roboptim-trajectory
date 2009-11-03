@@ -49,12 +49,12 @@ namespace roboptim
   ///
   /// \tparam T trajectory type
 
-  template <typename T>
+  template <unsigned DerivabilityOrder>
   class StateFunction : public DerivableFunction
   {
   public:
     /// \brief Trajectory type.
-    typedef T trajectory_t;
+    typedef Trajectory<DerivabilityOrder> trajectory_t;
 
     /// \brief Constructor.
     ///
@@ -72,7 +72,7 @@ namespace roboptim
     size_type order () const throw ();
 
     template <typename F, typename CLIST>
-    static void addToProblem (const T& trajectory,
+    static void addToProblem (const trajectory_t& trajectory,
 			      boost::shared_ptr<DerivableFunction> function,
 			      unsigned order,
 			      Problem<F, CLIST>& problem,
