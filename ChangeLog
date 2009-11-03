@@ -1,5 +1,12 @@
 2009-11-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Rename StateCost class into StateFunction.
+	* include/roboptim/trajectory/state-function.hh,
+	* include/roboptim/trajectory/state-function.hxx: Rename class.
+	* tests/state-function.cc: Update class name.
+
+2009-11-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Rename state-cost into state-function.
 	* include/Makefile.am: Rename distributed headers.
 	* include/roboptim/trajectory/state-function.hh:

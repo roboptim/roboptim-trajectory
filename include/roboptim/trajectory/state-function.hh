@@ -50,7 +50,7 @@ namespace roboptim
   /// \tparam T trajectory type
 
   template <typename T>
-  class StateCost : public DerivableFunction
+  class StateFunction : public DerivableFunction
   {
   public:
     /// \brief Trajectory type.
@@ -62,12 +62,12 @@ namespace roboptim
     /// \param cost state cost: \f$cost\f$.
     /// \param tpt parameter \f$t\f$ where the state is evaluated.
     /// \param order order \f$r\f$ of derivation.
-    StateCost (const trajectory_t& gamma,
+    StateFunction (const trajectory_t& gamma,
 	       boost::shared_ptr<DerivableFunction> cost,
 	       const StableTimePoint tpt,
 	       size_type order = 1) throw ();
 
-    virtual ~StateCost () throw ();
+    virtual ~StateFunction () throw ();
 
     size_type order () const throw ();
 
@@ -86,14 +86,15 @@ namespace roboptim
 	  const value_type t = (i + 1.) / (nConstraints + 1.);
 	  assert (t > 0. && t < 1.);
 	  shared_ptr<DerivableFunction> constraint
-	    (new StateCost (trajectory, function, t * tMax, order));
+	    (new StateFunction (trajectory, function, t * tMax, order));
 	  problem.addConstraint (constraint, bounds);
 	}
     }
 
   protected:
     void impl_compute (result_t&, const argument_t&) const throw ();
-    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw ();
+    void impl_gradient (gradient_t&, const argument_t&, size_type)
+      const throw ();
 
   private:
     const trajectory_t& trajectory_;

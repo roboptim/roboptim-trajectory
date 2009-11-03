@@ -50,15 +50,18 @@ int run_test ()
       const double t = timePoint.getTime (spline.timeRange ());
 
       boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
-      StateCost<Spline> stateCost (spline, frontalSpeed, timePoint, orderMax);
+      StateFunction<Spline> stateFunction
+	(spline, frontalSpeed, timePoint, orderMax);
 
-      boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
-      StateCost<Spline> orthoStateCost (spline, orthogonalSpeed, timePoint, orderMax);
+      boost::shared_ptr<DerivableFunction> orthogonalSpeed
+	(new OrthogonalSpeed ());
+      StateFunction<Spline> orthoStateFunction (spline, orthogonalSpeed,
+						timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl
-		<< stateCost (params) << std::endl
+		<< stateFunction (params) << std::endl
 		<< "State cost gradient:" << std::endl
-		<< stateCost.gradient (params) << std::endl
+		<< stateFunction.gradient (params) << std::endl
 		<< "Trajectory state (splitted):" << std::endl;
       for (unsigned o = 0; o <= orderMax; ++o)
 	std::cout << spline.derivative (t, o) << std::endl;
@@ -76,10 +79,11 @@ int run_test ()
 	  checkGradientAndThrow (*frontalSpeed, 0, spline.state (t, orderMax));
 
 	  std::cout << "Check orthogonal speed gradient." << std::endl;
-	  checkGradientAndThrow (*orthogonalSpeed, 0, spline.state (t, orderMax));
+	  checkGradientAndThrow (*orthogonalSpeed, 0,
+				 spline.state (t, orderMax));
 
 	  std::cout << "Check state cost gradient." << std::endl;
-	  checkGradientAndThrow (stateCost, 0, params);
+	  checkGradientAndThrow (stateFunction, 0, params);
 	}
       catch (BadGradient& bg)
 	{
