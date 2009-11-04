@@ -23,6 +23,7 @@
 
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/derivable-function.hh>
+# include <roboptim/trajectory/free-time-trajectory.hh>
 # include <roboptim/trajectory/stable-time-point.hh>
 
 namespace roboptim
@@ -54,7 +55,7 @@ namespace roboptim
   {
   public:
     /// \brief Trajectory type.
-    typedef FreeTimeTrajectory<T> trajectory_t;
+    typedef FreeTimeTrajectory<T::derivabilityOrder> trajectory_t;
 
     /// \brief Constructor.
     ///
@@ -86,7 +87,8 @@ namespace roboptim
 	  const value_type t = (i + 1.) / (nConstraints + 1.);
 	  assert (t > 0. && t < 1.);
 	  shared_ptr<DerivableFunction> constraint
-	    (new StateFunction (trajectory, function, t * tMax, order));
+	    (new FixedPointStateFunction
+	     (trajectory, function, t * tMax, order));
 	  problem.addConstraint (constraint, bounds);
 	}
     }

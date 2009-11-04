@@ -33,6 +33,7 @@ CHECK_STDOUT([spline], [Check Spline class.])
 CHECK_STDOUT([spline-gradient], [Check Spline gradient.])
 CHECK_STDOUT([free-time-trajectory], [Check free time trajectory.])
 CHECK_STDOUT([state-function], [Check state function.])
+CHECK_STDOUT([fixed-point-state-function], [Check fixed point state function.])
 
 AT_BANNER([Optimization (require solver plug-in)])
 CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.],

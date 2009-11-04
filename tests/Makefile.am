@@ -42,6 +42,13 @@ check_PROGRAMS += state-function
 state_function_SOURCES = state-function.cc $(COMMON_SOURCES)
 state_function_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# fixed-point-state-function
+check_PROGRAMS += fixed-point-state-function
+fixed_point_state_function_SOURCES = fixed-point-state-function.cc \
+				     $(COMMON_SOURCES)
+fixed_point_state_function_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
+
+
 #########################################
 # Tests which require the CFSQP solver. #
 #########################################
@@ -153,6 +160,7 @@ EXTRA_DIST +=						\
 	anthropomorphic-cost-function-case-4.stdout	\
 	anthropomorphic-cost-function-case-5.stdout	\
 	anthropomorphic-cost-function-case-6.stdout	\
+	fixed-point-state-function.stdout		\
 	free-time-trajectory.stdout			\
 	simple.stdout					\
 	spline-gradient.stdout				\
@@ -160,4 +168,4 @@ EXTRA_DIST +=						\
 	spline-bicycle-optim.stdout			\
 	spline-time-optimization.stdout			\
 	spline.stdout					\
-	state-cost.stdout
+	state-function.stdout

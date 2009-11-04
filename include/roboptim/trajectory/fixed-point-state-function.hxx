@@ -57,13 +57,14 @@ namespace roboptim
   FixedPointStateFunction<T>::impl_compute (result_t& res,
 				  const argument_t& p) const throw ()
   {
-    static boost::shared_ptr<T> updatedTrajectory =
-      boost::shared_ptr<trajectory_t>
-      (trajectory_->getFixedPointTrajectory ().clone ());
+    static boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
+      boost::shared_ptr<Trajectory<T::derivabilityOrder> >
+      (trajectory_.getFixedTimeTrajectory ().clone ());
+
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
     (*function_) (res, updatedTrajectory->state
-		  (tpt_.getTime (updatedTrajectory->timeRange ()),
-		   this->order_));
+    		  (tpt_.getTime (updatedTrajectory->timeRange ()),
+    		   this->order_));
   }
 
   template <typename T>
@@ -74,18 +75,19 @@ namespace roboptim
   {
     using namespace boost::numeric::ublas;
 
-    static boost::shared_ptr<T> updatedTrajectory =
-      boost::shared_ptr<trajectory_t>
-      (trajectory_->getFixedPointTrajectory ().clone ());
+    static boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
+      boost::shared_ptr<Trajectory<T::derivabilityOrder> >
+      (trajectory_.getFixedTimeTrajectory ().clone ());
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
 
     const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());
 
     grad[0] = 0.;
+
     subrange (grad, 1, grad.size ()) =
       prod (function_->gradient
-	    (updatedTrajectory->state (t, this->order_), i),
-	    updatedTrajectory->variationStateWrtParam (t, this->order_));
+    	    (updatedTrajectory->state (t, this->order_), i),
+    	    updatedTrajectory->variationStateWrtParam (t, this->order_));
   }
 
 } // end of namespace roboptim.
