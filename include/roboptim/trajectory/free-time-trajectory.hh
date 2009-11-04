@@ -104,11 +104,32 @@ namespace roboptim
     /// \param index Angles index in parameter array.
     virtual void normalizeAngles (size_type index) throw ();
 
-    const Trajectory<DerivabilityOrder>& getFixedTimeTrajectory ()
-      const throw ()
+    const Trajectory<DerivabilityOrder>&
+    getFixedTimeTrajectory () const throw ()
     {
       assert (trajectory_);
       return *trajectory_;
+    }
+
+    Trajectory<DerivabilityOrder>*
+    resize (interval_t timeRange) const throw ()
+    {
+      assert (trajectory_);
+      value_type tMin = getLowerBound (this->timeRange ());
+      value_type tMax = getUpperBound (this->timeRange ());
+      value_type tmin = getLowerBound (this->trajectory_->timeRange ());
+      value_type tmax = getUpperBound (this->trajectory_->timeRange ());
+      value_type scale = (tmax - tmin) / (tMax - tMin);
+
+      return new FreeTimeTrajectory<DerivabilityOrder>
+	(*trajectory_, scale);
+    }
+
+    Trajectory<DerivabilityOrder>*
+    makeFixedTimeTrajectory () const throw ()
+    {
+      assert (trajectory_);
+      return trajectory_->resize (this->timeRange ());
     }
   protected:
     void impl_compute (result_t&, double) const throw ();

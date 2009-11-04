@@ -77,6 +77,12 @@ namespace roboptim
 
     ROBOPTIM_IMPLEMENT_CLONE(Spline)
 
+    virtual Trajectory<derivabilityOrder>* resize (interval_t timeRange)
+      const throw ()
+    {
+      return new Spline (timeRange, this->outputSize (), this->parameters ());
+    }
+
     /// \brief Display the function on the specified output stream.
     ///
     /// \param o output stream used for display

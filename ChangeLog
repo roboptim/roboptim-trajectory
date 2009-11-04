@@ -1,5 +1,15 @@
 2009-11-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Implement resize in all trajectory classes.
+	* include/roboptim/trajectory/free-time-trajectory.hh:
+	Implement resize.
+	* include/roboptim/trajectory/spline.hh: Implement resize
+	and makeFixedTimeTrajectory.
+	* include/roboptim/trajectory/trajectory.hh: Add resize
+	as a virtual pure method.
+
+2009-11-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check FixedPointTrajectory class.
 	* include/roboptim/trajectory/fixed-point-state-function.hh,
 	* include/roboptim/trajectory/fixed-point-state-function.hxx:

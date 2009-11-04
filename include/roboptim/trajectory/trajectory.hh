@@ -241,6 +241,10 @@ namespace roboptim
 
     virtual Trajectory<DerivabilityOrder>* clone () const throw () = 0;
 
+    /// \brief Clone and resize a trajectory.
+    virtual Trajectory<DerivabilityOrder>* resize (interval_t timeRange)
+      const throw () = 0;
+
     virtual std::ostream& print (std::ostream&) const throw ();
   protected:
     void impl_compute (result_t&, StableTimePoint) const throw ();
