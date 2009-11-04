@@ -48,7 +48,7 @@ int run_test ()
   Spline spline (timeRange, 3, params, "before");
 
   typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTimeTraj_t;
-  freeTimeTraj_t ftt (spline, 1.);
+  freeTimeTraj_t ftt (spline, 2.);
 
   for (unsigned i = 0; i < 10; ++i)
     {

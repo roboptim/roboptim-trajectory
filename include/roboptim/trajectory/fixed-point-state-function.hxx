@@ -57,9 +57,9 @@ namespace roboptim
   FixedPointStateFunction<T>::impl_compute (result_t& res,
 				  const argument_t& p) const throw ()
   {
-    static boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
+    boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
       boost::shared_ptr<Trajectory<T::derivabilityOrder> >
-      (trajectory_.getFixedTimeTrajectory ().clone ());
+      (trajectory_.makeFixedTimeTrajectory ());
 
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
     (*function_) (res, updatedTrajectory->state
@@ -75,9 +75,9 @@ namespace roboptim
   {
     using namespace boost::numeric::ublas;
 
-    static boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
+    boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
       boost::shared_ptr<Trajectory<T::derivabilityOrder> >
-      (trajectory_.getFixedTimeTrajectory ().clone ());
+      (trajectory_.makeFixedTimeTrajectory ());
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
 
     const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());

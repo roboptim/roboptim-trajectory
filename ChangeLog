@@ -1,5 +1,14 @@
 2009-11-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix FixedPointStateFunction implementation.
+	* include/roboptim/trajectory/fixed-point-state-function.hxx:
+	Fix implementation.
+	* tests/fixed-point-state-function.cc,
+	* tests/fixed-point-state-function.stdout:
+	Set scale to 2 to really check that scaling is ok.
+
+2009-11-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement resize in all trajectory classes.
 	* include/roboptim/trajectory/free-time-trajectory.hh:
 	Implement resize.
