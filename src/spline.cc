@@ -212,7 +212,7 @@ namespace roboptim
   {
     o << "Spline" << incindent << std::endl
       << "Number of parameters per spline function: " << nbp_ << std::endl
-      << "Length: " << length ()
+      << "Length: " << length () << std::endl;
       << "Parameters: " << parameters ()
       << decindent;
     return o;
