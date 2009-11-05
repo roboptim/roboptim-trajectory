@@ -1,3 +1,9 @@
+2009-11-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Make Spline display more informative.
+	* src/spline.cc: Display spline parameters when
+	displaying the spline.
+
 2009-11-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix FixedPointStateFunction implementation.
