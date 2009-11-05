@@ -1,5 +1,10 @@
 2009-11-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add missing semi-colon in Spline class.
+	* src/spline.cc: Here.
+
+2009-11-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add missing end of line in Spline display.
 	* src/spline.cc: Add missing std::endl.
 
