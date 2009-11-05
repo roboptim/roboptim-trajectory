@@ -1,5 +1,11 @@
 2009-11-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add post-condition to resize method.
+	* include/roboptim/trajectory/free-time-trajectory.hh:
+	Make sure the scaling computation is right.
+
+2009-11-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Make Spline display more informative.
 	* src/spline.cc: Display spline parameters when
 	displaying the spline.

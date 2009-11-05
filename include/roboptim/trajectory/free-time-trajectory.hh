@@ -119,7 +119,12 @@ namespace roboptim
       value_type tMax = getUpperBound (this->timeRange ());
       value_type tmin = getLowerBound (this->trajectory_->timeRange ());
       value_type tmax = getUpperBound (this->trajectory_->timeRange ());
+      assert (tMax != tMin);
+
       value_type scale = (tmax - tmin) / (tMax - tMin);
+
+      assert (this->scaleTime (tMin) == tmin);
+      assert (this->scaleTime (tMax) == tmax);
 
       return new FreeTimeTrajectory<DerivabilityOrder>
 	(*trajectory_, scale);
