@@ -38,6 +38,12 @@ using namespace roboptim;
 
 typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
 
+template <typename T>
+bool isAlmostEqual (const T& x, const T& y, const T& epsilon = 1e10-8)
+{
+  return (x - y) * (x - y) < epsilon;
+}
+
 struct ConfigWrtParam : public DerivableFunction
 {
   ConfigWrtParam (const freeTime_t& traj, double t) throw ()
@@ -253,6 +259,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
 int run_test ()
 {
+  typedef Spline::value_type value_type;
   Spline::vector_t params (5);
 
   // Scale.
@@ -274,6 +281,61 @@ int run_test ()
   assert (freeTimeTraj.inputSize () == 1);
   assert (freeTimeTraj.outputSize () == 1);
 
+  // Check scaling and unscaling.
+  {
+    params[0] = 3.14;
+    freeTimeTraj.setParameters (params);
+    value_type t = 0.32;
+    StableTimePoint stp (t / freeTimeTraj.length ());
+
+    std::cout << "Checking StableTimePoint scaling." << std::endl;
+    assert (isAlmostEqual
+	    (stp.getTime (freeTimeTraj.timeRange ()), t));
+
+    std::cout << "Checking scale/unscale methods." << std::endl;
+    assert (isAlmostEqual
+	    (freeTimeTraj.unscaleTime (freeTimeTraj.scaleTime (t)), t));
+
+    std::cout << "Checking scale using tmin/tmax." << std::endl;
+    value_type tMin = Function::getLowerBound (freeTimeTraj.timeRange ());
+    value_type tMax = Function::getUpperBound (freeTimeTraj.timeRange ());
+
+    value_type tmin = Function::getLowerBound
+      (freeTimeTraj.getFixedTimeTrajectory ().timeRange ());
+    value_type tmax = Function::getUpperBound
+      (freeTimeTraj.getFixedTimeTrajectory ().timeRange ());
+
+    assert (tmax != tMax); // Just to be sure a real scaling is done.
+
+    assert (isAlmostEqual (freeTimeTraj.scaleTime (tMin), tmin));
+    assert (isAlmostEqual (freeTimeTraj.scaleTime (tMax), tmax));
+
+    assert (isAlmostEqual (freeTimeTraj.unscaleTime (tmin), tMin));
+    assert (isAlmostEqual (freeTimeTraj.unscaleTime (tmax), tMax));
+
+    assert (isAlmostEqual (freeTimeTraj.unscaleTime ((tmax - tmin) / 2.),
+			   (tMax - tMin) / 2.));
+    assert (isAlmostEqual (freeTimeTraj.unscaleTime ((tmax - tmin) / 4.),
+			   (tMax - tMin) / 4.));
+
+
+    std::cout << "Checking StableTimePoint scaling." << std::endl;
+    assert (isAlmostEqual
+	    ((0. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmin));
+    assert (isAlmostEqual
+	    ((1. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmax));
+    assert (isAlmostEqual
+	    ((.5 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
+	     (tmax - tmin) / 2.));
+    assert (isAlmostEqual
+	    ((.25 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
+	     (tmax - tmin) / 4.));
+
+  }
+
+
+  params[0] = 1.;
+  freeTimeTraj.setParameters (params);
   printTable (spline, freeTimeTraj);
 
   params[0] = .5;

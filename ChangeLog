@@ -1,3 +1,11 @@
+2009-11-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Check scaling functions in FreeTimeTrajectory test.
+	* include/roboptim/trajectory/free-time-trajectory.hh:
+	Make scaleTime and unscaleTime public.
+	* tests/free-time-trajectory.cc: Check scaling functions.
+	* tests/free-time-trajectory.stdout: Regenerate.
+
 2009-11-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Add missing semi-colon in Spline class.

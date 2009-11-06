@@ -1,3 +1,7 @@
+Checking StableTimePoint scaling.
+Checking scale/unscale methods.
+Checking scale using tmin/tmax.
+Checking StableTimePoint scaling.
 Spline range: [0, 4]
 FTT range: [0, 4]
 /------------------------------------------------------------------------------\
