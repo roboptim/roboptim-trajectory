@@ -27,7 +27,7 @@ namespace roboptim
   namespace detail
   {
     inline Function::value_type
-    scaleTime (Function::value_type unscaled,
+    unscaleTime (Function::value_type unscaled,
 	       Function::value_type min,
 	       Function::value_type scale)
     {
@@ -36,13 +36,13 @@ namespace roboptim
 
     template <unsigned dorder>
     Function::interval_t
-    scaleInterval (const Trajectory<dorder>& traj,
-		   typename Function::value_type scale)
+    unscaleInterval (const Trajectory<dorder>& traj,
+		     typename Function::value_type scale)
     {
       Function::value_type min =
 	Function::getLowerBound (traj.timeRange ());
       Function::value_type max =
-	scaleTime (Function::getUpperBound (traj.timeRange ()), min, scale);
+	unscaleTime (Function::getUpperBound (traj.timeRange ()), min, scale);
       return Function::makeInterval (min, max);
     }
   } // end of namespace detail
@@ -50,7 +50,7 @@ namespace roboptim
   template <unsigned dorder>
   FreeTimeTrajectory<dorder>::FreeTimeTrajectory
   (const Trajectory<dorder>& traj, value_type s) throw ()
-    : Trajectory<dorder> (detail::scaleInterval (traj, s), traj.outputSize (),
+    : Trajectory<dorder> (detail::unscaleInterval (traj, s), traj.outputSize (),
 			  addScaleToParameters (traj.parameters (), s)),
       trajectory_ (traj.clone ())
   {
@@ -182,7 +182,8 @@ namespace roboptim
       p_[0] = 1e-8;
 
     this->parameters_ = p_;
-    this->timeRange_ = detail::scaleInterval (*trajectory_, this->timeScale ());
+    this->timeRange_ =
+      detail::unscaleInterval (*trajectory_, this->timeScale ());
     this->trajectory_->setParameters (removeScaleFromParameters (p_));
   }
 

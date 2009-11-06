@@ -126,8 +126,10 @@ namespace roboptim
       assert (this->scaleTime (tMin) == tmin);
       assert (this->scaleTime (tMax) == tmax);
 
-      return new FreeTimeTrajectory<DerivabilityOrder>
-	(*trajectory_, scale);
+      Trajectory<DerivabilityOrder>* res =
+	new FreeTimeTrajectory<DerivabilityOrder> (*trajectory_, scale);
+      assert (res->timeRange () == this->timeRange ());
+      return res;
     }
 
     Trajectory<DerivabilityOrder>*

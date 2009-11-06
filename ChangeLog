@@ -1,5 +1,13 @@
 2009-11-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix function naming.
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/free-time-trajectory.hxx:
+	Rename scaleTime/scaleInterval internal free functions to
+	unscaleTime and unscaleInterval to maintain consistency.
+
+2009-11-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check scaling functions in FreeTimeTrajectory test.
 	* include/roboptim/trajectory/free-time-trajectory.hh:
 	Make scaleTime and unscaleTime public.
