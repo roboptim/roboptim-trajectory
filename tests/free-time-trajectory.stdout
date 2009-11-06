@@ -1,3 +1,9 @@
+Initial interval
+(0, 4)
+Params = 2
+(0, 2)
+Params = .5
+(0, 8)
 Checking StableTimePoint scaling.
 Checking scale/unscale methods.
 Checking scale using tmin/tmax.

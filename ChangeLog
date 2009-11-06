@@ -1,5 +1,11 @@
 2009-11-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Check interval unscaling.
+	* tests/free-time-trajectory.cc: Add checks.
+	* tests/free-time-trajectory.stdout: Regenerate.
+
+2009-11-06  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix function naming.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hxx:

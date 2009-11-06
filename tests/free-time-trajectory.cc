@@ -22,6 +22,7 @@
 
 #include <roboptim/core/finite-difference-gradient.hh>
 #include <roboptim/core/io.hh>
+#include <roboptim/core/util.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/fwd.hh>
@@ -281,10 +282,27 @@ int run_test ()
   assert (freeTimeTraj.inputSize () == 1);
   assert (freeTimeTraj.outputSize () == 1);
 
+  // Check interval scaling.
+  {
+    std::cout << "Initial interval" << std::endl;
+    std::cout << freeTimeTraj.timeRange () << std::endl;
+
+    std::cout << "Params = 2" << std::endl;
+    params[0] = 2.;
+    freeTimeTraj.setParameters (params);
+    std::cout << freeTimeTraj.timeRange () << std::endl;
+
+    std::cout << "Params = .5" << std::endl;
+    params[0] = .5;
+    freeTimeTraj.setParameters (params);
+    std::cout << freeTimeTraj.timeRange () << std::endl;
+  }
+
   // Check scaling and unscaling.
   {
     params[0] = 3.14;
     freeTimeTraj.setParameters (params);
+
     value_type t = 0.32;
     StableTimePoint stp (t / freeTimeTraj.length ());
 
