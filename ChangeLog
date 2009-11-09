@@ -1,3 +1,20 @@
+2009-11-09  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix free time trajectory and stable time point implementatation.
+	* include/roboptim/trajectory/fixed-point-state-function.hxx,
+	* include/roboptim/trajectory/free-time-trajectory.hh,
+	* include/roboptim/trajectory/free-time-trajectory.hxx,
+	* include/roboptim/trajectory/spline.hh,
+	* include/roboptim/trajectory/state-function.hxx,
+	* include/roboptim/trajectory/trajectory.hh,
+	* include/roboptim/trajectory/trajectory.hxx,
+	* src/spline.cc: Split totally double/StableTimePoint gradient
+	computations (and associated methods).
+	Fix FreeTimeTrajectory::variationDerivWrtParam computation.
+	* tests/free-time-trajectory.cc: Check all components of
+	variationDerivWrtParam. Test now succeed.
+	* tests/free-time-trajectory.stdout: Regenerate.
+
 2009-11-06  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Check interval unscaling.

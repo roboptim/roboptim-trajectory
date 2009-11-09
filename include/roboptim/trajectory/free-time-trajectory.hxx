@@ -94,6 +94,17 @@ namespace roboptim
   }
 
   template <unsigned dorder>
+  void
+  FreeTimeTrajectory<dorder>::impl_derivative (gradient_t& derivative,
+					       StableTimePoint stp,
+					       size_type order) const throw ()
+  {
+    assert (order >= 0);
+    trajectory_->derivative (derivative, stp, order);
+    derivative *= std::pow (this->timeScale (), 0. + order);
+  }
+
+  template <unsigned dorder>
   typename FreeTimeTrajectory<dorder>::jacobian_t
   FreeTimeTrajectory<dorder>::variationConfigWrtParam (double t) const throw ()
   {
@@ -126,21 +137,55 @@ namespace roboptim
 
     using namespace boost::numeric::ublas;
     value_type scaled = this->scaleTime (t);
-
-    double tMin = this->getLowerBound (this->trajectory_->timeRange ());
+    value_type tmin = getLowerBound (this->trajectory_->timeRange ());
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
     result.clear ();
 
     // Compute variation w.r.t time scale (p_0)
-    column (result, 0) = trajectory_->derivative (scaled, order)
-      * std::pow (this->timeScale (), order - 1.);
-    column (result, 0) *= order + (this->timeScale () * (t - tMin));
+    column (result, 0) = trajectory_->derivative (scaled, order) * order;
+    column (result, 0)
+      += trajectory_->derivative (scaled, order + 1)
+      * (this->timeScale () * (t - tmin));
+    column (result, 0) *= std::pow (this->timeScale (), order - 1.);
 
     // Fill 1..(n-1) lines with original jacobian.
     project (result, range (0, result.size1 ()), range (1, result.size2 ()))
-      = trajectory_->variationDerivWrtParam (scaled, order)
+      = trajectory_->variationDerivWrtParam(scaled, order)
+      * std::pow (this->timeScale (), 0. + order);
+
+    return result;
+  }
+
+  template <unsigned dorder>
+  typename FreeTimeTrajectory<dorder>::jacobian_t
+  FreeTimeTrajectory<dorder>::variationConfigWrtParam
+  (StableTimePoint stp) const throw ()
+  {
+    return this->variationDerivWrtParam (stp, 0);
+  }
+
+
+  template <unsigned dorder>
+  typename FreeTimeTrajectory<dorder>::jacobian_t
+  FreeTimeTrajectory<dorder>::variationDerivWrtParam
+  (StableTimePoint stp, size_type order) const throw ()
+  {
+    using namespace boost::numeric::ublas;
+
+    jacobian_t result (this->outputSize (),
+		       this->parameters ().size ());
+    result.clear ();
+
+    // Compute variation w.r.t time scale (p_0)
+    column (result, 0) =
+      std::pow (this->timeScale (), 0. + order)
+      * trajectory_->derivative (stp, order);
+
+    // Fill 1..(n-1) lines with original jacobian.
+    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+      = trajectory_->variationDerivWrtParam (stp, order)
       * std::pow (this->timeScale (), 0. + order);
 
     return result;

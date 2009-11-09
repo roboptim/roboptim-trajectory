@@ -1,4 +1,3 @@
-
 // Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
@@ -124,6 +123,16 @@ namespace roboptim
       }
   }
 
+  void
+  Spline::impl_derivative (gradient_t& derivative,
+			   StableTimePoint stp,
+			   size_type order) const throw ()
+  {
+    this->impl_derivative (derivative,
+			   stp.getTime (this->timeRange ()),
+			   order);
+  }
+
   Spline::jacobian_t
   Spline::variationConfigWrtParam (double t) const throw ()
   {
@@ -177,6 +186,23 @@ namespace roboptim
 
     return jac;
   }
+
+  Spline::jacobian_t
+  Spline::variationConfigWrtParam (StableTimePoint stp)
+    const throw ()
+  {
+    return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
+  }
+
+
+  Spline::jacobian_t
+  Spline::variationDerivWrtParam (StableTimePoint stp, size_type order)
+    const throw ()
+  {
+    return this->variationDerivWrtParam
+      (stp.getTime (this->timeRange ()), order);
+  }
+
 
   Spline::value_type
   Spline::singularPointAtRank (size_type rank) const

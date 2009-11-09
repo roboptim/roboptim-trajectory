@@ -156,6 +156,11 @@ namespace roboptim
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
       const throw ();
+    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+      const throw ();
+    jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
+      const throw ();
 
   private:
     /// \brief Input fixed time trajectory.

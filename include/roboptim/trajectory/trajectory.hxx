@@ -89,6 +89,21 @@ namespace roboptim
     return result;
   }
 
+  template <unsigned dorder>
+  typename Trajectory<dorder>::vector_t
+  Trajectory<dorder>::state
+  (StableTimePoint stp, size_type order) const throw ()
+  {
+    using namespace boost::numeric::ublas;
+    const value_type dimension = this->outputSize ();
+    vector_t result ((order + 1) * dimension);
+
+    for (size_type o = 0; o <= order; ++o)
+      subrange (result, o * dimension, (o + 1) * dimension) =
+	this->derivative (stp, o);
+    return result;
+  }
+
 
   template <unsigned dorder>
   typename Trajectory<dorder>::jacobian_t
@@ -109,6 +124,27 @@ namespace roboptim
     return result;
   }
 
+  template <unsigned dorder>
+  typename Trajectory<dorder>::jacobian_t
+  Trajectory<dorder>::variationStateWrtParam
+  (StableTimePoint stp, size_type order)
+    const throw ()
+  {
+    using namespace boost::numeric::ublas;
+    const size_type dimension = this->outputSize ();
+    const size_type parameterSize = parameters ().size ();
+    jacobian_t result (dimension * (order + 1), parameterSize);
+
+    for (size_type o = 0; o <= order; ++o)
+      {
+	range xrange (o * dimension, (o + 1) * dimension);
+	range yrange (0, parameterSize);
+	project (result, xrange, yrange) =
+	  this->variationDerivWrtParam (stp, o);
+      }
+    return result;
+  }
+
 
   template <unsigned dorder>
   typename Trajectory<dorder>::size_type
@@ -124,36 +160,6 @@ namespace roboptim
     const throw ()
   {
     (*this) (res, stp.getTime (this->timeRange ()));
-  }
-
-  template <unsigned dorder>
-  void
-  Trajectory<dorder>::impl_derivative (gradient_t& derivative,
-				       StableTimePoint stp,
-				       size_type order) const throw ()
-  {
-    return this->impl_derivative (derivative,
-				  stp.getTime (this->timeRange ()),
-				  order);
-  }
-
-  template <unsigned dorder>
-  typename Trajectory<dorder>::jacobian_t
-  Trajectory<dorder>::variationConfigWrtParam (StableTimePoint stp)
-    const throw ()
-  {
-    return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
-  }
-
-
-  template <unsigned dorder>
-  typename Trajectory<dorder>::jacobian_t
-  Trajectory<dorder>::variationDerivWrtParam (StableTimePoint stp,
-					      size_type order)
-    const throw ()
-  {
-    return this->variationDerivWrtParam
-      (stp.getTime (this->timeRange ()), order);
   }
 
   template <unsigned dorder>

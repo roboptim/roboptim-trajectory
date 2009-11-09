@@ -240,17 +240,19 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	freeTimeTraj.variationDerivWrtParam (t, 1);
       fmterDeriv % fttVarDeriv;
 
-      try
-	{
-	  Spline::vector_t t_ (1);
-	  t_[0] = t;
-	  DerivWrtParam derivWrtParam (freeTimeTraj);
-	  checkGradientAndThrow (derivWrtParam, 0, t_);
-	}
-      catch (BadGradient& bg)
-	{
-	  std::cout << bg << std::endl;
-	}
+      for (unsigned gradientId = 0;
+	   gradientId < freeTimeTraj.parameters ().size (); ++gradientId)
+	try
+	  {
+	    Spline::vector_t t_ (1);
+	    t_[0] = t;
+	    DerivWrtParam derivWrtParam (freeTimeTraj);
+	    checkGradientAndThrow (derivWrtParam, gradientId, t_);
+	  }
+	catch (BadGradient& bg)
+	  {
+	    std::cout << bg << std::endl;
+	  }
 
       std::cout << fmterDeriv << std::endl;
     }

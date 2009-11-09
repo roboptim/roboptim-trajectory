@@ -58,9 +58,7 @@ namespace roboptim
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
-    (*function_) (res, updatedTrajectory->state
-		  (tpt_.getTime (updatedTrajectory->timeRange ()),
-		   this->order_));
+    (*function_) (res, updatedTrajectory->state (tpt_, this->order_));
   }
 
   template <unsigned N>
@@ -73,10 +71,9 @@ namespace roboptim
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
-    const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());
     grad = prod (function_->gradient
-		 (updatedTrajectory->state (t, this->order_), i),
-		 updatedTrajectory->variationStateWrtParam (t, this->order_));
+		 (updatedTrajectory->state (tpt_, this->order_), i),
+		 updatedTrajectory->variationStateWrtParam (tpt_, this->order_));
   }
 
 } // end of namespace roboptim.

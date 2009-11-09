@@ -62,9 +62,7 @@ namespace roboptim
       (trajectory_.makeFixedTimeTrajectory ());
 
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
-    (*function_) (res, updatedTrajectory->state
-    		  (tpt_.getTime (updatedTrajectory->timeRange ()),
-    		   this->order_));
+    (*function_) (res, updatedTrajectory->state (tpt_, this->order_));
   }
 
   template <typename T>
@@ -80,14 +78,12 @@ namespace roboptim
       (trajectory_.makeFixedTimeTrajectory ());
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
 
-    const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());
-
     grad[0] = 0.;
 
     subrange (grad, 1, grad.size ()) =
       prod (function_->gradient
-    	    (updatedTrajectory->state (t, this->order_), i),
-    	    updatedTrajectory->variationStateWrtParam (t, this->order_));
+    	    (updatedTrajectory->state (tpt_, this->order_), i),
+    	    updatedTrajectory->variationStateWrtParam (tpt_, this->order_));
   }
 
 } // end of namespace roboptim.

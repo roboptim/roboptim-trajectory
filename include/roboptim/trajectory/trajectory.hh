@@ -120,6 +120,7 @@ namespace roboptim
     \f]*/
     /// The configuration and derivatives are concatenated in one vector.
     virtual vector_t state (double t, size_type order) const throw ();
+    virtual vector_t state (StableTimePoint t, size_type order) const throw ();
 
     /// \}
 
@@ -160,6 +161,8 @@ namespace roboptim
         \f]**/
 
     jacobian_t variationStateWrtParam (double t, size_type order) const throw ();
+    jacobian_t variationStateWrtParam
+    (StableTimePoint stp, size_type order) const throw ();
 
     /// \}
 
@@ -227,9 +230,12 @@ namespace roboptim
       assert (this->isValidDerivative (derivative));
     }
 
-    virtual jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
-    virtual jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw ();
+    virtual jacobian_t
+    variationConfigWrtParam (StableTimePoint tp)
+      const throw () = 0;
+    virtual jacobian_t
+    variationDerivWrtParam (StableTimePoint tp, size_type order)
+      const throw () = 0;
 
     bool isValidTime (value_type t) const throw ();
 
@@ -248,8 +254,9 @@ namespace roboptim
     virtual std::ostream& print (std::ostream&) const throw ();
   protected:
     void impl_compute (result_t&, StableTimePoint) const throw ();
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw ();
+    virtual void
+    impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+      const throw () = 0;
 
     Trajectory (interval_t, size_type, const vector_t&,
 		std::string name = std::string ()) throw ();
