@@ -163,7 +163,20 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::variationConfigWrtParam
   (StableTimePoint stp) const throw ()
   {
-    return this->variationDerivWrtParam (stp, 0);
+    using namespace boost::numeric::ublas;
+
+    jacobian_t result (this->outputSize (),
+		       this->parameters ().size ());
+    result.clear ();
+
+    // Compute variation w.r.t time scale (p_0)
+    // ...is null do not do anything.
+
+    // Fill 1..(n-1) lines with original jacobian.
+    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+      = trajectory_->variationConfigWrtParam (stp);
+
+    return result;
   }
 
 
@@ -172,6 +185,9 @@ namespace roboptim
   FreeTimeTrajectory<dorder>::variationDerivWrtParam
   (StableTimePoint stp, size_type order) const throw ()
   {
+    if (order == 0)
+      return this->variationConfigWrtParam (stp);
+
     using namespace boost::numeric::ublas;
 
     jacobian_t result (this->outputSize (),

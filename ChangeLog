@@ -1,5 +1,10 @@
 2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix FreeTimeTrajectory variationConfigWrtParam.
+	* include/roboptim/trajectory/free-time-trajectory.hxx: Here.
+
+2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check free time trajectory and stable time points.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/spline.hh: Make derivatives
