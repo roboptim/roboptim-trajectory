@@ -195,14 +195,12 @@ namespace roboptim
     result.clear ();
 
     // Compute variation w.r.t time scale (p_0)
-    column (result, 0) =
-      std::pow (this->timeScale (), 0. + order)
-      * trajectory_->derivative (stp, order);
+    // ...is null do not do anything.
 
     // Fill 1..(n-1) lines with original jacobian.
     project (result, range (0, result.size1 ()), range (1, result.size2 ()))
       = trajectory_->variationDerivWrtParam (stp, order)
-      * std::pow (this->timeScale (), 0. + order);
+      * (order + 1) * (order + 1);
 
     return result;
   }
