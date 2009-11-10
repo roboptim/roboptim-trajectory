@@ -1,5 +1,11 @@
 2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix implementation.
+	* include/roboptim/trajectory/fixed-point-state-function.hxx: Here.
+	* tests/fixed-point-state-function.stdout: Regenerate.
+
+2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Check all components in FixedPointStateFunction.
 	* tests/fixed-point-state-function.cc: Check all components.
 
