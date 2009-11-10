@@ -1,5 +1,10 @@
 2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Check all components in FixedPointStateFunction.
+	* tests/fixed-point-state-function.cc: Check all components.
+
+2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Simplify FixedPointStateFunction implementation.
 	* include/roboptim/trajectory/fixed-point-state-function.hxx: Here.
 

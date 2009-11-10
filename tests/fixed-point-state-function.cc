@@ -89,7 +89,9 @@ int run_test ()
 				 ftt.state (t, orderMax));
 
 	  std::cout << "Check state cost gradient." << std::endl;
-	  checkGradientAndThrow (stateFunction, 0, fttParams);
+	  for (unsigned gradientId = 0;
+	       gradientId < stateFunction.outputSize (); ++gradientId)
+	    checkGradientAndThrow (stateFunction, gradientId, fttParams);
 	}
       catch (BadGradient& bg)
 	{
