@@ -36,6 +36,14 @@ check_PROGRAMS += free-time-trajectory
 free_time_trajectory_SOURCES = free-time-trajectory.cc $(COMMON_SOURCES)
 free_time_trajectory_LDADD = $(top_builddir)/src/libroboptim-trajectory.la
 
+# free-time-trajectory-stable-time-point
+check_PROGRAMS += free-time-trajectory-stable-time-point
+free_time_trajectory_stable_time_point_SOURCES =	\
+	free-time-trajectory-stable-time-point.cc 	\
+	$(COMMON_SOURCES)
+free_time_trajectory_stable_time_point_LDADD = 		\
+	$(top_builddir)/src/libroboptim-trajectory.la
+
 
 # state-function
 check_PROGRAMS += state-function
@@ -162,6 +170,7 @@ EXTRA_DIST +=						\
 	anthropomorphic-cost-function-case-6.stdout	\
 	fixed-point-state-function.stdout		\
 	free-time-trajectory.stdout			\
+	free-time-trajectory-stable-time-point.stdout	\
 	simple.stdout					\
 	spline-gradient.stdout				\
 	spline-optimization.stdout			\

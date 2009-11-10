@@ -32,6 +32,8 @@ CHECK_STDOUT([simple], [Check basic features.])
 CHECK_STDOUT([spline], [Check Spline class.])
 CHECK_STDOUT([spline-gradient], [Check Spline gradient.])
 CHECK_STDOUT([free-time-trajectory], [Check free time trajectory.])
+CHECK_STDOUT([free-time-trajectory-stable-time-point],
+	     [Check free time trajectory (using stable time points).])
 CHECK_STDOUT([state-function], [Check state function.])
 CHECK_STDOUT([fixed-point-state-function], [Check fixed point state function.])
 

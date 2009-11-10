@@ -89,14 +89,15 @@ namespace roboptim
     /// \return output stream
     virtual std::ostream& print (std::ostream& o) const throw ();
 
+    jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
+      const throw ();
+
   protected:
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
       const throw ();
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw ();
-    jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
-    jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
       const throw ();
 
   private:
