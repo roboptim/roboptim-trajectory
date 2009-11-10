@@ -71,6 +71,7 @@ namespace roboptim
 				   const argument_t& p,
 				   size_type i) const throw ()
   {
+    assert (i == 0);
     using namespace boost::numeric::ublas;
 
     boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
@@ -79,14 +80,12 @@ namespace roboptim
     updatedTrajectory->setParameters (removeScaleFromParameters (p));
 
     grad[0] = 0.;
-
     subrange (grad, 1, grad.size ()) =
       prod (function_->gradient
-    	    (updatedTrajectory->state (tpt_, this->order_), i),
+    	    (updatedTrajectory->state (tpt_, this->order_), 0),
     	    updatedTrajectory->variationStateWrtParam (tpt_, this->order_));
   }
 
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_COST_HXX
-

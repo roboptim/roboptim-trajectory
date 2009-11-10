@@ -1,5 +1,10 @@
 2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Simplify FixedPointStateFunction implementation.
+	* include/roboptim/trajectory/fixed-point-state-function.hxx: Here.
+
+2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix free time trajectory variationDerivWrtParam computation.
 	* include/roboptim/trajectory/free-time-trajectory.hxx:
 	Fix variationDerivWrtParam.
