@@ -1,5 +1,10 @@
 2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Display more information test case.
+	* tests/free-time-trajectory-stable-time-point.cc: Here.
+
+2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix FreeTimeTrajectory variationConfigWrtParam.
 	* include/roboptim/trajectory/free-time-trajectory.hxx: Here.
 

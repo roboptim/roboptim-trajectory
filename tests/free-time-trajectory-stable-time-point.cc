@@ -133,7 +133,8 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
   double fttTmax = Function::getUpperBound (freeTimeTraj.timeRange ());
 
   std::cout << format ("Spline range: [%1%, %2%]") % tmin % tmax << std::endl
-	    << format ("FTT range: [%1%, %2%]") % fttTmin % fttTmax << std::endl;
+	    << format ("FTT range: [%1%, %2%]") % fttTmin % fttTmax << std::endl
+	    << format ("FTT scale: %1%") % freeTimeTraj.timeScale () << std::endl;
 
   format fmter ("| %1% %|6t||| %2% %|20t|| %3% %|35t||| %4% %|55t|| %5% %|79t||");
   std::cout << "/---------------------------------------"
@@ -245,6 +246,9 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	  }
 	catch (BadGradient& bg)
 	  {
+	    std::cout << "Component "
+		      << gradientId
+		      << " of the gradient is wrong:" << std::endl;
 	    std::cout << bg << std::endl;
 	  }
 
