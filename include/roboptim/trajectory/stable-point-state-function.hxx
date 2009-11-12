@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_COST_HXX
-# define ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_COST_HXX
+#ifndef ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_COST_HXX
+# define ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_COST_HXX
 # include <boost/format.hpp>
 
 namespace roboptim
 {
   template <typename T>
-  FixedPointStateFunction<T>::FixedPointStateFunction
+  StablePointStateFunction<T>::StablePointStateFunction
   (const trajectory_t& trajectory,
    boost::shared_ptr<DerivableFunction> function,
    const StableTimePoint tpt,
@@ -30,7 +30,7 @@ namespace roboptim
     : DerivableFunction (trajectory.parameters ().size (),
 			 function->outputSize (),
 			 (boost::format
-			  ("fixed point state cost using function ``%1%''")
+			  ("stable point state cost using function ``%1%''")
 			  % function->getName ()).str ()),
       trajectory_ (trajectory),
       function_ (function),
@@ -41,20 +41,20 @@ namespace roboptim
   }
 
   template <typename T>
-  FixedPointStateFunction<T>::~FixedPointStateFunction() throw ()
+  StablePointStateFunction<T>::~StablePointStateFunction() throw ()
   {
   }
 
   template <typename T>
-  typename FixedPointStateFunction<T>::size_type
-  FixedPointStateFunction<T>::order () const throw ()
+  typename StablePointStateFunction<T>::size_type
+  StablePointStateFunction<T>::order () const throw ()
   {
     return order_;
   }
 
   template <typename T>
   void
-  FixedPointStateFunction<T>::impl_compute (result_t& res,
+  StablePointStateFunction<T>::impl_compute (result_t& res,
 				  const argument_t& p) const throw ()
   {
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
@@ -65,7 +65,7 @@ namespace roboptim
 
   template <typename T>
   void
-  FixedPointStateFunction<T>::impl_gradient (gradient_t& grad,
+  StablePointStateFunction<T>::impl_gradient (gradient_t& grad,
 				   const argument_t& p,
 				   size_type i) const throw ()
   {
@@ -93,4 +93,4 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-#endif //! ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_COST_HXX
+#endif //! ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_COST_HXX

@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_FUNCTION_HH
-# define ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_FUNCTION_HH
+#ifndef ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_FUNCTION_HH
+# define ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_FUNCTION_HH
 # include <roboptim/trajectory/sys.hh>
 
 # include <boost/shared_ptr.hpp>
@@ -51,7 +51,7 @@ namespace roboptim
   /// \tparam T trajectory type
 
   template <typename T>
-  class FixedPointStateFunction : public DerivableFunction
+  class StablePointStateFunction : public DerivableFunction
   {
   public:
     /// \brief Trajectory type.
@@ -63,12 +63,12 @@ namespace roboptim
     /// \param cost state cost: \f$cost\f$.
     /// \param tpt parameter \f$t\f$ where the state is evaluated.
     /// \param order order \f$r\f$ of derivation.
-    FixedPointStateFunction (const trajectory_t& gamma,
-	       boost::shared_ptr<DerivableFunction> cost,
-	       const StableTimePoint tpt,
-	       size_type order = 1) throw ();
+    StablePointStateFunction (const trajectory_t& gamma,
+			      boost::shared_ptr<DerivableFunction> cost,
+			      const StableTimePoint tpt,
+			      size_type order = 1) throw ();
 
-    virtual ~FixedPointStateFunction () throw ();
+    virtual ~StablePointStateFunction () throw ();
 
     size_type order () const throw ();
 
@@ -87,7 +87,7 @@ namespace roboptim
 	  const value_type t = (i + 1.) / (nConstraints + 1.);
 	  assert (t > 0. && t < 1.);
 	  shared_ptr<DerivableFunction> constraint
-	    (new FixedPointStateFunction
+	    (new StablePointStateFunction
 	     (trajectory, function, t * tMax, order));
 	  problem.addConstraint (constraint, bounds);
 	}
@@ -109,5 +109,5 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-# include <roboptim/trajectory/fixed-point-state-function.hxx>
-#endif //! ROBOPTIM_TRAJECTORY_FIXED_POINT_STATE_FUNCTION_HH
+# include <roboptim/trajectory/stable-point-state-function.hxx>
+#endif //! ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_FUNCTION_HH

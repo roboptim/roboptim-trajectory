@@ -24,7 +24,7 @@
 #include <roboptim/trajectory/frontal-speed.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
 #include <roboptim/trajectory/spline.hh>
-#include <roboptim/trajectory/fixed-point-state-function.hh>
+#include <roboptim/trajectory/stable-point-state-function.hh>
 
 using namespace roboptim;
 
@@ -56,12 +56,12 @@ int run_test ()
       const double t = timePoint.getTime (ftt.timeRange ());
 
       boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
-      FixedPointStateFunction<Spline> stateFunction
+      StablePointStateFunction<Spline> stateFunction
 	(ftt, frontalSpeed, timePoint, orderMax);
 
       boost::shared_ptr<DerivableFunction> orthogonalSpeed
 	(new OrthogonalSpeed ());
-      FixedPointStateFunction<Spline> orthoStateFunction
+      StablePointStateFunction<Spline> orthoStateFunction
 	(ftt, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl

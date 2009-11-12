@@ -4,8 +4,6 @@ include $(top_srcdir)/build-aux/init.mk
 nobase_include_HEADERS =					\
 	roboptim/trajectory/anthropomorphic-cost-function.hh	\
 	roboptim/trajectory/anthropomorphic-cost-function.hxx	\
-	roboptim/trajectory/fixed-point-state-function.hh	\
-	roboptim/trajectory/fixed-point-state-function.hxx	\
 	roboptim/trajectory/free-time-trajectory.hh		\
 	roboptim/trajectory/free-time-trajectory.hxx		\
 	roboptim/trajectory/freeze.hh				\
@@ -19,6 +17,8 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/orthogonal-speed.hh			\
 	roboptim/trajectory/spline.hh				\
 	roboptim/trajectory/spline-length.hh			\
+	roboptim/trajectory/stable-point-state-function.hh	\
+	roboptim/trajectory/stable-point-state-function.hxx	\
 	roboptim/trajectory/stable-time-point.hh		\
 	roboptim/trajectory/state-function.hh			\
 	roboptim/trajectory/state-function.hxx			\

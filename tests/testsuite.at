@@ -35,7 +35,8 @@ CHECK_STDOUT([free-time-trajectory], [Check free time trajectory.])
 CHECK_STDOUT([free-time-trajectory-stable-time-point],
 	     [Check free time trajectory (using stable time points).])
 CHECK_STDOUT([state-function], [Check state function.])
-CHECK_STDOUT([fixed-point-state-function], [Check fixed point state function.])
+CHECK_STDOUT([stable-point-state-function],
+	     [Check stable point state function.])
 
 AT_BANNER([Optimization (require solver plug-in)])
 CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.],

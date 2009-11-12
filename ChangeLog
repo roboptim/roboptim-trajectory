@@ -1,5 +1,20 @@
 2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Rename FixedPointStateFunction into StablePointStateFunction.
+	* include/Makefile.am: Fix header list.
+	* include/roboptim/trajectory/stable-point-state-function.hh:
+	Rename from include/roboptim/trajectory/fixed-point-state-function.hh.
+	* include/roboptim/trajectory/stable-point-state-function.hxx:
+	Rename from include/roboptim/trajectory/fixed-point-state-function.hxx.
+	* tests/Makefile.am: Fix test-case name.
+	* tests/stable-point-state-function.cc:
+	Rename from tests/fixed-point-state-function.cc.
+	* tests/stable-point-state-function.stdout:
+	Rename from tests/fixed-point-state-function.stdout.
+	* tests/testsuite.at: Fix test-case name.
+
+2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Implement gradient for FixedPointStateFunction.
 	* include/roboptim/trajectory/fixed-point-state-function.hxx:
 	Implement gradient.
