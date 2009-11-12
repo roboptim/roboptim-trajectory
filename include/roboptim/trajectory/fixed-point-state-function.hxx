@@ -72,29 +72,23 @@ namespace roboptim
     assert (i == 0);
     using namespace boost::numeric::ublas;
 
-#ifdef GRADIENT_WITH_BUGS
-    boost::shared_ptr<Trajectory<T::derivabilityOrder> > updatedTrajectory =
-      boost::shared_ptr<Trajectory<T::derivabilityOrder> >
-      (trajectory_.makeFixedTimeTrajectory ());
-    updatedTrajectory->setParameters (removeScaleFromParameters (p));
+    static boost::shared_ptr<trajectory_t> updatedTrajectory =
+      boost::shared_ptr<trajectory_t> (trajectory_.clone ());
+    updatedTrajectory->setParameters (p);
 
-    const vector_t df_dq = function_->gradient
-      (updatedTrajectory->state (tpt_, this->order_), 0);
-    const vector_t dgamma_dp0 =
-      column (updatedTrajectory->variationStateWrtParam (tpt_, this->order_), 0);
+    // Compute derivatives w.r.t parameters.
+    // Derivative w.r.t p_0 is wrong here.
+    const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());
+    grad = prod (function_->gradient
+		 (updatedTrajectory->state (t, this->order_), i),
+		 updatedTrajectory->variationStateWrtParam (t, this->order_));
 
-
-    grad[0] = inner_prod (df_dq, dgamma_dp0);
-
-
-    subrange (grad, 1, grad.size ()) =
-      prod (function_->gradient
-    	    (updatedTrajectory->state (tpt_, this->order_), 0),
-    	    updatedTrajectory->variationStateWrtParam (tpt_, this->order_));
-#else
-    FiniteDifferenceGradient<> fd (*this);
-    fd.gradient (grad, p, i);
-#endif
+    // Compute derivatives w.r.t p_0.
+    const vector_t df_dstate =
+      function_->gradient (updatedTrajectory->state (tpt_, this->order_), i);
+    const vector_t dgamma_dt =
+      updatedTrajectory->getFixedTimeTrajectory ().state (tpt_, this->order_);
+    grad[0] = inner_prod (df_dstate, dgamma_dt);
   }
 
 } // end of namespace roboptim.

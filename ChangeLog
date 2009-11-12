@@ -1,3 +1,10 @@
+2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Implement gradient for FixedPointStateFunction.
+	* include/roboptim/trajectory/fixed-point-state-function.hxx:
+	Implement gradient.
+	* tests/fixed-point-state-function.stdout: Regenerate.
+
 2009-11-10  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix implementation.
