@@ -37,7 +37,7 @@
 #include <roboptim/trajectory/limit-omega.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
 #include <roboptim/trajectory/spline.hh>
-#include <roboptim/trajectory/state-cost.hh>
+#include <roboptim/trajectory/stable-point-state-function.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include <roboptim/trajectory/visualization/trajectory.hh>
@@ -129,14 +129,14 @@ int optimize (double initialX,
   // Frontal
   boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
   Function::interval_t vRangeFrontal = Function::makeInterval (0., vMax);
-  StateCost<freeTime_t>::addToProblem
+  StablePointStateFunction<freeTime_t>::addToProblem
     (freeTimeTraj, frontalSpeed, 1, problem, vRangeFrontal,
      nControlPoints * nConstraintsPerCtrlPts);
 
   // Orthogonal
   boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
   Function::interval_t vRangeOrthogonal = Function::makeInterval (-vMax, vMax);
-  StateCost<freeTime_t>::addToProblem
+  StablePointStateFunction<freeTime_t>::addToProblem
     (freeTimeTraj, orthogonalSpeed, 1, problem, vRangeOrthogonal,
      nControlPoints * nConstraintsPerCtrlPts);
 

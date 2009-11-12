@@ -1,5 +1,10 @@
 2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix test case.
+	* tests/anthropomorphic-cost-function.cc: Update to new interface.
+
+2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add RPM support.
 	* Makefile.am: Add RPM support.
 	* build-aux: Synchronize.
