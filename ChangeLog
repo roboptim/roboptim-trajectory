@@ -1,5 +1,12 @@
 2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add RPM support.
+	* Makefile.am: Add RPM support.
+	* build-aux: Synchronize.
+	* roboptim-trajectory.spec.in: New.
+
+2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Rename FixedPointStateFunction into StablePointStateFunction.
 	* include/Makefile.am: Fix header list.
 	* include/roboptim/trajectory/stable-point-state-function.hh:
