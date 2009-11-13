@@ -1,6 +1,12 @@
 2009-11-13  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix spec file.
+	* roboptim-trajectory.spec.in: Distribute development
+	libraries in development package.
+
+2009-11-13  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix spec file.
 	* roboptim-trajectory.spec.in: Fix description.
 
 2009-11-12  Thomas Moulard  <thomas.moulard@gmail.com>
