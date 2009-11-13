@@ -1,7 +1,7 @@
 Name: @PACKAGE_TARNAME@
 Version: @PACKAGE_VERSION@
 Release: 1%{?dist}
-Summary: Generic optimization library
+Summary: The RobOptim trajectory C++ library
 
 Group: Development/Libraries
 License: LGPLv3+
@@ -13,26 +13,25 @@ BuildRequires: roboptim-core-devel
 
 
 %description
-The generic optimization library allows user to independently solve
-numerical problems with one of the many available solvers
+RobOptim provide C++ numerical optimization libraries for robotics.
+RobOptim trajectory focuses on providing trajectory computation classes
+and tools to define trajectory optimization problems.
 
 
 %package devel
-Summary: Static libraries and headers
+Summary: The Roboptim trajectory headers and development-related files
 Group: Development/Libraries
 Requires: @PACKAGE_TARNAME@ = %{version}-%{release}, pkgconfig
 %description devel
-The generic optimization library allows user to independently solve
-numerical problems with one of the many available solvers
+Headers and shared object symlinks for the RobOptim trajectory C++ library
 
 
 %package doc
-Summary: API documentation
+Summary: The RobOptim trajectory documentation
 Group: Documentation
 Requires: @PACKAGE_TARNAME@ = %{version}-%{release}
 %description doc
-The generic optimization library allows user to independently solve
-numerical problems with one of the many available solvers
+Documentation for the RobOptim trajectory library
 
 
 
