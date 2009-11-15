@@ -19,6 +19,7 @@
 
 #include <roboptim/core/io.hh>
 #include <roboptim/core/finite-difference-gradient.hh>
+#include <roboptim/core/visualization/gnuplot.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/frontal-speed.hh>
@@ -27,6 +28,7 @@
 #include <roboptim/trajectory/stable-point-state-function.hh>
 
 using namespace roboptim;
+using namespace roboptim::visualization;
 
 int run_test ()
 {
@@ -65,19 +67,21 @@ int run_test ()
 	(ftt, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl
-		<< stateFunction (fttParams) << std::endl
+		<< normalize (stateFunction (fttParams)) << std::endl
 		<< "State cost gradient:" << std::endl
-		<< stateFunction.gradient (fttParams) << std::endl
+		<< normalize (stateFunction.gradient (fttParams)) << std::endl
 		<< "Trajectory state (splitted):" << std::endl;
       for (unsigned o = 0; o <= orderMax; ++o)
-	std::cout << ftt.derivative (t, o) << std::endl;
+	std::cout << normalize (ftt.derivative (t, o)) << std::endl;
       std::cout << "Trajectory state (one call):" << std::endl
-		<< ftt.state (t, orderMax) << std::endl
+		<< normalize (ftt.state (t, orderMax)) << std::endl
 		<< "Trajectory state variation (splitted):" << std::endl;
       for (unsigned o = 0; o <= orderMax; ++o)
-	std::cout << ftt.variationDerivWrtParam (t, o) << std::endl;
+	std::cout << normalize (ftt.variationDerivWrtParam (t, o))
+		  << std::endl;
       std::cout << "Trajectory state (one call):" << std::endl
-		<< ftt.variationStateWrtParam (t, orderMax) << std::endl;
+		<< normalize (ftt.variationStateWrtParam (t, orderMax))
+		<< std::endl;
 
       try
 	{

@@ -19,6 +19,7 @@
 
 #include <roboptim/core/io.hh>
 #include <roboptim/core/finite-difference-gradient.hh>
+#include <roboptim/core/visualization/gnuplot.hh>
 
 #include <roboptim/trajectory/frontal-speed.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
@@ -26,6 +27,7 @@
 #include <roboptim/trajectory/state-function.hh>
 
 using namespace roboptim;
+using namespace roboptim::visualization;
 
 int run_test ()
 {
@@ -59,19 +61,21 @@ int run_test ()
 	(spline, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl
-		<< stateFunction (params) << std::endl
+		<< normalize (stateFunction (params)) << std::endl
 		<< "State cost gradient:" << std::endl
-		<< stateFunction.gradient (params) << std::endl
+		<< normalize (stateFunction.gradient (params)) << std::endl
 		<< "Trajectory state (splitted):" << std::endl;
       for (unsigned o = 0; o <= orderMax; ++o)
-	std::cout << spline.derivative (t, o) << std::endl;
+	std::cout << normalize (spline.derivative (t, o)) << std::endl;
       std::cout << "Trajectory state (one call):" << std::endl
-		<< spline.state (t, orderMax) << std::endl
+		<< normalize (spline.state (t, orderMax)) << std::endl
 		<< "Trajectory state variation (splitted):" << std::endl;
       for (unsigned o = 0; o <= orderMax; ++o)
-	std::cout << spline.variationDerivWrtParam (t, o) << std::endl;
+	std::cout << normalize (spline.variationDerivWrtParam (t, o))
+		  << std::endl;
       std::cout << "Trajectory state (one call):" << std::endl
-		<< spline.variationStateWrtParam (t, orderMax) << std::endl;
+		<< normalize (spline.variationStateWrtParam (t, orderMax))
+		<< std::endl;
 
       try
 	{

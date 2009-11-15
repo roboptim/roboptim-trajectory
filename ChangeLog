@@ -1,5 +1,11 @@
 2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Normalize test output.
+	* tests/stable-point-state-function.cc,
+	* tests/state-function.cc: Here.
+
+2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Aesthetic change.
 	* tests/free-time-trajectory-stable-time-point.cc:
 	Remove trailing whitespace.
