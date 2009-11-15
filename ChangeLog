@@ -1,5 +1,11 @@
 2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Aesthetic change.
+	* tests/free-time-trajectory-stable-time-point.cc:
+	Remove trailing whitespace.
+
+2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Make test suite more robust.
 	This patch introduce the use of tests/shared-test submodule
 	to factorize testing efforts. It displays floating point numbers

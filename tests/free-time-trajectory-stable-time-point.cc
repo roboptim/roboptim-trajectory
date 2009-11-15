@@ -136,7 +136,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	    << std::endl
 	    << format ("FTT range: [%1%, %2%]") % fttTmin % fttTmax
 	    << std::endl
-	    << format ("FTT scale: %1%") % freeTimeTraj.timeScale () 
+	    << format ("FTT scale: %1%") % freeTimeTraj.timeScale ()
 	    << std::endl;
 
   format fmterTitle ("| %1% %|6t||| %2% %|20t|| %3% %|35t|||"
