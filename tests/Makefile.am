@@ -4,6 +4,9 @@ include $(top_srcdir)/build-aux/autotest.mk
 # Add RobOptim flags.
 AM_CPPFLAGS += $(ROBOPTIMCORE_CFLAGS)
 
+# Add shared headers to include path.
+AM_CPPFLAGS += -I$(srcdir)/shared-tests
+
 # Add available warnings flags.
 AM_CXXFLAGS += $(WARNING_CXXFLAGS)
 
@@ -14,7 +17,7 @@ EXTRA_DIST += package.m4.in
 CLEANFILES += atconfig
 
 # Source which are shared by all tests.
-COMMON_SOURCES = common.hh
+COMMON_SOURCES = shared-tests/common.hh
 
 # simple
 check_PROGRAMS = simple

@@ -9,6 +9,7 @@ AM_CXXFLAGS += $(WARNING_CXXFLAGS)
 lib_LTLIBRARIES = libroboptim-trajectory.la
 
 libroboptim_trajectory_la_SOURCES = 	\
+	debug.hh			\
 	doc.hh				\
 	frontal-speed.cc		\
 	orthogonal-speed.cc		\

@@ -1,3 +1,32 @@
+2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Make test suite more robust.
+	This patch introduce the use of tests/shared-test submodule
+	to factorize testing efforts. It displays floating point numbers
+	with a reduced precision and using fixed point display.
+
+	* .gitmodules: Add shared-tests submodule.
+	* src/Makefile.am: Distribute ``debug.hh''.
+	* src/debug.hh: New.
+	* tests/Makefile.am: Use new submodule.
+	* tests/common.hh: Remove.
+	* tests/anthropomorphic-cost-function-case-3.stdout,
+	* tests/anthropomorphic-cost-function-case-4.stdout,
+	* tests/free-time-trajectory-stable-time-point.stdout,
+	* tests/spline-bicycle-optim.stdout,
+	* tests/free-time-trajectory.stdout,
+	* tests/spline-gradient.stdout,
+	* tests/spline-optimization.stdout,
+	* tests/spline-time-optimization.stdout,
+	* tests/spline.stdout,
+	* tests/stable-point-state-function.stdout,
+	* tests/state-function.stdout: Regenerate.
+	* tests/free-time-trajectory-stable-time-point.cc,
+	* tests/free-time-trajectory.cc,
+	* tests/spline-gradient.cc: Fix floating point number display.
+	* tests/shared-tests: New.
+	* tests/testsuite.at: Fix long test switch condition.
+
 2009-11-13  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix spec file.

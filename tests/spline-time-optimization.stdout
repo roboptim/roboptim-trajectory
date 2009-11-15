@@ -1,672 +1,672 @@
 Problem:
   Numeric linear function
-    A = [1,12]((-1,0,0,0,0,0,0,0,0,0,0,0))
-    B = [1](0)
-  Argument's bounds: (0, inf), (0, 0), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (200, 200)
-  Argument's scales: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    A = [1,12]((-1.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00))
+    B = [1](0.00)
+  Argument's bounds: (0.00, inf), (0.00, 0.00), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (200.00, 200.00)
+  Argument's scales: 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00
   Number of constraints: 110
   Constraint 0
       speed limit (0.00900901) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](0.0614675)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](0.06)
       
   Constraint 1
       speed limit (0.018018) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](0.98348)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](0.98)
       
   Constraint 2
       speed limit (0.027027) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](4.97887)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](4.98)
       
   Constraint 3
       speed limit (0.036036) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](15.7357)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](15.74)
       
   Constraint 4
       speed limit (0.045045) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](38.4172)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](38.42)
       
   Constraint 5
       speed limit (0.0540541) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](79.6619)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](79.66)
       
   Constraint 6
       speed limit (0.0630631) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](147.583)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](147.58)
       
   Constraint 7
       speed limit (0.0720721) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](251.771)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](251.77)
       
   Constraint 8
       speed limit (0.0810811) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](403.288)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](403.29)
       
   Constraint 9
       speed limit (0.0900901) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](600.923)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](600.92)
       
   Constraint 10
       speed limit (0.0990991) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](811.142)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](811.14)
       
   Constraint 11
       speed limit (0.108108) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1020.9)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1020.90)
       
   Constraint 12
       speed limit (0.117117) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1219.87)
       
   Constraint 13
       speed limit (0.126126) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1399.2)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1399.20)
       
   Constraint 14
       speed limit (0.135135) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1551.52)
       
   Constraint 15
       speed limit (0.144144) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1670.92)
       
   Constraint 16
       speed limit (0.153153) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1752.98)
       
   Constraint 17
       speed limit (0.162162) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1794.74)
       
   Constraint 18
       speed limit (0.171171) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 19
       speed limit (0.18018) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 20
       speed limit (0.189189) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 21
       speed limit (0.198198) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 22
       speed limit (0.207207) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 23
       speed limit (0.216216) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 24
       speed limit (0.225225) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 25
       speed limit (0.234234) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 26
       speed limit (0.243243) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 27
       speed limit (0.252252) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 28
       speed limit (0.261261) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 29
       speed limit (0.27027) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 30
       speed limit (0.279279) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 31
       speed limit (0.288288) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 32
       speed limit (0.297297) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 33
       speed limit (0.306306) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 34
       speed limit (0.315315) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 35
       speed limit (0.324324) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 36
       speed limit (0.333333) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 37
       speed limit (0.342342) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 38
       speed limit (0.351351) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 39
       speed limit (0.36036) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 40
       speed limit (0.369369) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 41
       speed limit (0.378378) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 42
       speed limit (0.387387) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 43
       speed limit (0.396396) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 44
       speed limit (0.405405) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 45
       speed limit (0.414414) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 46
       speed limit (0.423423) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 47
       speed limit (0.432432) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 48
       speed limit (0.441441) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 49
       speed limit (0.45045) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 50
       speed limit (0.459459) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 51
       speed limit (0.468468) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 52
       speed limit (0.477477) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 53
       speed limit (0.486486) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 54
       speed limit (0.495495) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 55
       speed limit (0.504505) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 56
       speed limit (0.513514) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 57
       speed limit (0.522523) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 58
       speed limit (0.531532) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 59
       speed limit (0.540541) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 60
       speed limit (0.54955) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 61
       speed limit (0.558559) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 62
       speed limit (0.567568) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 63
       speed limit (0.576577) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 64
       speed limit (0.585586) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 65
       speed limit (0.594595) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 66
       speed limit (0.603604) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 67
       speed limit (0.612613) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 68
       speed limit (0.621622) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 69
       speed limit (0.630631) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 70
       speed limit (0.63964) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 71
       speed limit (0.648649) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 72
       speed limit (0.657658) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 73
       speed limit (0.666667) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 74
       speed limit (0.675676) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 75
       speed limit (0.684685) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 76
       speed limit (0.693694) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 77
       speed limit (0.702703) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 78
       speed limit (0.711712) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 79
       speed limit (0.720721) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 80
       speed limit (0.72973) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 81
       speed limit (0.738739) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 82
       speed limit (0.747748) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 83
       speed limit (0.756757) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 84
       speed limit (0.765766) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 85
       speed limit (0.774775) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 86
       speed limit (0.783784) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 87
       speed limit (0.792793) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 88
       speed limit (0.801802) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 89
       speed limit (0.810811) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 90
       speed limit (0.81982) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 91
       speed limit (0.828829) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1800)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1800.00)
       
   Constraint 92
       speed limit (0.837838) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1794.74)
       
   Constraint 93
       speed limit (0.846847) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1752.98)
       
   Constraint 94
       speed limit (0.855856) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1670.92)
       
   Constraint 95
       speed limit (0.864865) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1551.52)
       
   Constraint 96
       speed limit (0.873874) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1399.2)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1399.20)
       
   Constraint 97
       speed limit (0.882883) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
       Initial value: [1](1219.87)
       
   Constraint 98
       speed limit (0.891892) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](1020.9)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](1020.90)
       
   Constraint 99
       speed limit (0.900901) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](811.142)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](811.14)
       
   Constraint 100
       speed limit (0.90991) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](600.923)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](600.92)
       
   Constraint 101
       speed limit (0.918919) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](403.288)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](403.29)
       
   Constraint 102
       speed limit (0.927928) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](251.771)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](251.77)
       
   Constraint 103
       speed limit (0.936937) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](147.583)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](147.58)
       
   Constraint 104
       speed limit (0.945946) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](79.6619)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](79.66)
       
   Constraint 105
       speed limit (0.954955) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](38.4172)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](38.42)
       
   Constraint 106
       speed limit (0.963964) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](15.7357)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](15.74)
       
   Constraint 107
       speed limit (0.972973) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](4.97887)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](4.98)
       
   Constraint 108
       speed limit (0.981982) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](0.98348)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](0.98)
       
   Constraint 109
       speed limit (0.990991) (derivable function)
-      Bounds: (-inf, 3612.5)
-      Scales: 1
-      Initial value: [1](0.0614675)
+      Bounds: (-inf, 3612.50)
+      Scales: 1.00
+      Initial value: [1](0.06)
       
-  Starting point: [12](1,0,20,40,60,80,100,120,140,160,180,200)
-  Starting value: [1](-1)
+  Starting point: [12](1.00,0.00,20.00,40.00,60.00,80.00,100.00,120.00,140.00,160.00,180.00,200.00)
+  Starting value: [1](-1.00)
   Infinity value (for all functions): inf
 CFSQP specific variables: 
   Nineq: 110
@@ -676,8 +676,8 @@ CFSQP specific variables:
   Mode: 100
   Iprint: 0
   Miter: 50
-  Bigbnd: 1e+10
-  Eps: 1e-08
-  Epseqn: 1e-08
-  Udelta: 1e-08
+  Bigbnd: 10000000000.00
+  Eps: 0.00
+  Epseqn: 0.00
+  Udelta: 0.00
   CFSQP constraints: (0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 0), (9, 0), (10, 0), (11, 0), (12, 0), (13, 0), (14, 0), (15, 0), (16, 0), (17, 0), (18, 0), (19, 0), (20, 0), (21, 0), (22, 0), (23, 0), (24, 0), (25, 0), (26, 0), (27, 0), (28, 0), (29, 0), (30, 0), (31, 0), (32, 0), (33, 0), (34, 0), (35, 0), (36, 0), (37, 0), (38, 0), (39, 0), (40, 0), (41, 0), (42, 0), (43, 0), (44, 0), (45, 0), (46, 0), (47, 0), (48, 0), (49, 0), (50, 0), (51, 0), (52, 0), (53, 0), (54, 0), (55, 0), (56, 0), (57, 0), (58, 0), (59, 0), (60, 0), (61, 0), (62, 0), (63, 0), (64, 0), (65, 0), (66, 0), (67, 0), (68, 0), (69, 0), (70, 0), (71, 0), (72, 0), (73, 0), (74, 0), (75, 0), (76, 0), (77, 0), (78, 0), (79, 0), (80, 0), (81, 0), (82, 0), (83, 0), (84, 0), (85, 0), (86, 0), (87, 0), (88, 0), (89, 0), (90, 0), (91, 0), (92, 0), (93, 0), (94, 0), (95, 0), (96, 0), (97, 0), (98, 0), (99, 0), (100, 0), (101, 0), (102, 0), (103, 0), (104, 0), (105, 0), (106, 0), (107, 0), (108, 0), (109, 0)

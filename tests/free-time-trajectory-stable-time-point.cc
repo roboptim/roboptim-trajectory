@@ -132,14 +132,22 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
   double fttTmin = Function::getLowerBound (freeTimeTraj.timeRange ());
   double fttTmax = Function::getUpperBound (freeTimeTraj.timeRange ());
 
-  std::cout << format ("Spline range: [%1%, %2%]") % tmin % tmax << std::endl
-	    << format ("FTT range: [%1%, %2%]") % fttTmin % fttTmax << std::endl
-	    << format ("FTT scale: %1%") % freeTimeTraj.timeScale () << std::endl;
+  std::cout << format ("Spline range: [%1%, %2%]") % tmin % tmax
+	    << std::endl
+	    << format ("FTT range: [%1%, %2%]") % fttTmin % fttTmax
+	    << std::endl
+	    << format ("FTT scale: %1%") % freeTimeTraj.timeScale () 
+	    << std::endl;
 
-  format fmter ("| %1% %|6t||| %2% %|20t|| %3% %|35t||| %4% %|55t|| %5% %|79t||");
+  format fmterTitle ("| %1% %|6t||| %2% %|20t|| %3% %|35t|||"
+		     " %4% %|55t|| %5% %|79t||");
+
+  format fmter ("| %1.2f %|6t||| %2.2f %|20t|| %3.2f %|35t|||"
+		" %4.2f %|55t|| %5.2f %|79t||");
+
   std::cout << "/---------------------------------------"
 	    << "---------------------------------------\\" << std::endl
-	    << fmter
+	    << fmterTitle
     % "T" % "Value" % "Value (ftt)"
     % "Derivative" % "Derivative (ftt)"
 	    << std::endl
@@ -189,7 +197,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
 
   std::cout << "Variation of the configuration w.r.t to parameters:" << std::endl;
-  format fmterConfig ("%1% %|50t|%2%");
+  format fmterConfig ("%1.2f %|50t|%2.2f");
   for (double alpha = 0.; alpha <= 1.; alpha += .1)
     {
       if (alpha >= 1.)
@@ -219,7 +227,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
   std::cout << std::endl << std::endl;
 
   std::cout << "Variation of the derivative w.r.t to parameters:" << std::endl;
-  format fmterDeriv ("%1% %|50t|%2%");
+  format fmterDeriv ("%1.2f %|50t|%2.2f");
   for (double alpha = 0.; alpha <= 1.; alpha += .1)
     {
       if (alpha >= 1.)
