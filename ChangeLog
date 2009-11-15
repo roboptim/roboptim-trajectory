@@ -1,3 +1,15 @@
+2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Regenerate tests.
+	* tests/free-time-trajectory-stable-time-point.stdout,
+	* tests/free-time-trajectory.stdout,
+	* tests/spline-bicycle-optim.stdout,
+	* tests/spline-gradient.stdout,
+	* tests/spline-optimization.stdout,
+	* tests/spline.stdout,
+	* tests/stable-point-state-function.stdout:
+	Regenerate.
+
 2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Normalize Gnuplot output and tests output.
