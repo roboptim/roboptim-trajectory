@@ -21,6 +21,7 @@
 
 # include <boost/format.hpp>
 
+# include <roboptim/core/visualization/gnuplot.hh>
 # include <roboptim/core/visualization/gnuplot-commands.hh>
 # include <roboptim/trajectory/trajectory.hh>
 # include <roboptim/trajectory/stable-time-point.hh>
@@ -85,7 +86,9 @@ namespace roboptim
 	for (double i = step; i < 1. - step; i += step)
 	  {
 	    Function::vector_t res = traj (i * tMax);
-	    str += (format ("%1f %2f\n") % res[0] % res [1]).str ();
+	    str += (format ("%1f %2f\n")
+		    % normalize (res[0])
+		    % normalize (res [1])).str ();
 	  }
 
 	str += "e\n";
@@ -131,9 +134,9 @@ namespace roboptim
 	      {
 		StableTimePoint timePoint = i * tMax;
 		Function::vector_t res = traj (timePoint);
-		str += (format ("%1f %2f\n")
-			% timePoint.getTime (traj.timeRange ())
-			% res [component]).str ();
+		str += (format ("%1.2f %2.2f\n")
+			% normalize (timePoint.getTime (traj.timeRange ()))
+			% normalize (res [component])).str ();
 	      }
 	    str += "e\n";
 	  }

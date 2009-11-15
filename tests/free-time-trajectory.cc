@@ -23,6 +23,7 @@
 #include <roboptim/core/finite-difference-gradient.hh>
 #include <roboptim/core/io.hh>
 #include <roboptim/core/util.hh>
+#include <roboptim/core/visualization/gnuplot.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/fwd.hh>
@@ -35,6 +36,7 @@ using boost::format;
 using boost::io::group;
 
 using namespace roboptim;
+using namespace roboptim::visualization;
 
 
 typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
@@ -154,15 +156,15 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
       fmter % t;
       if (tmin <= t && t <= tmax)
-	fmter % spline (t)[0];
+	fmter % normalize (spline (t)[0]);
       else
 	fmter % "N/A";
       fmter % freeTimeTraj (t)[0];
       if (tmin <= t && t <= tmax)
-	fmter % spline.derivative (t, 1)[0];
+	fmter % normalize (spline.derivative (t, 1)[0]);
       else
 	fmter % "N/A";
-      fmter % freeTimeTraj.derivative (t, 1)[0];
+      fmter % normalize (freeTimeTraj.derivative (t, 1)[0]);
 
       std:: cout << fmter << std::endl;
     }
@@ -207,14 +209,14 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	{
 	  Spline::jacobian_t splineVarConfig =
 	    spline.variationConfigWrtParam (t);
-	  fmterConfig % splineVarConfig;
+	  fmterConfig % normalize (splineVarConfig);
 	}
       else
 	fmterConfig % "N/A";
 
       freeTime_t::jacobian_t fttVarConfig =
 	freeTimeTraj.variationConfigWrtParam (t);
-      fmterConfig % fttVarConfig;
+      fmterConfig % normalize (fttVarConfig);
 
       try
 	{
@@ -242,14 +244,14 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	{
 	  Spline::jacobian_t splineVarDeriv =
 	    spline.variationDerivWrtParam (t, 1);
-	  fmterDeriv % splineVarDeriv;
+	  fmterDeriv % normalize (splineVarDeriv);
 	}
       else
 	fmterDeriv % "N/A";
 
       freeTime_t::jacobian_t fttVarDeriv =
 	freeTimeTraj.variationDerivWrtParam (t, 1);
-      fmterDeriv % fttVarDeriv;
+      fmterDeriv % normalize (fttVarDeriv);
 
       for (unsigned gradientId = 0;
 	   gradientId < freeTimeTraj.parameters ().size (); ++gradientId)

@@ -21,6 +21,7 @@
 
 # include <boost/format.hpp>
 
+# include <roboptim/core/visualization/gnuplot.hh>
 # include <roboptim/core/visualization/gnuplot-commands.hh>
 # include <roboptim/trajectory/trajectory.hh>
 # include <roboptim/trajectory/stable-time-point.hh>
@@ -64,9 +65,9 @@ namespace roboptim
 	      StableTimePoint timePoint = i * tMax;
 	      double t = timePoint.getTime (traj.timeRange ());
 
-	      str += (format ("%1f %2f\n")
-		      % t
-		      % frontalSpeed (traj.state (t, 1))[0]).str ();
+	      str += (format ("%1.2f %2.2f\n")
+		      % normalize (t)
+		      % normalize (frontalSpeed (traj.state (t, 1))[0])).str ();
 	    }
 	  str += "e\n";
 	}
@@ -78,9 +79,10 @@ namespace roboptim
 	      StableTimePoint timePoint = i * tMax;
 	      double t = timePoint.getTime (traj.timeRange ());
 
-	      str += (format ("%1f %2f\n")
-		      % t
-		      % orthogonalSpeed (traj.state(t, 1))[0]).str ();
+	      str += (format ("%1.2f %2.2f\n")
+		      % normalize (t)
+		      % normalize
+		      (orthogonalSpeed (traj.state (t, 1))[0])).str ();
 	    }
 	  str += "e\n";
 	}
@@ -91,9 +93,9 @@ namespace roboptim
 	      StableTimePoint timePoint = i * tMax;
 	      double t = timePoint.getTime (traj.timeRange ());
 
-	      str += (format ("%1f %2f\n")
-		      % t
-		      % traj.derivative (timePoint, 1)[2]).str ();
+	      str += (format ("%1.2f %2.2f\n")
+		      % normalize (t)
+		      % normalize (traj.derivative (timePoint, 1)[2])).str ();
 	    }
 	  str += "e\n";
 	}

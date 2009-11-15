@@ -1,5 +1,20 @@
 2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Normalize Gnuplot output and tests output.
+	* include/roboptim/trajectory/visualization/limit-speed.hh,
+	* include/roboptim/trajectory/visualization/speed.hh,
+	* include/roboptim/trajectory/visualization/trajectory.hh:
+	Normalize output.
+	* tests/free-time-trajectory-stable-time-point.cc,
+	* tests/free-time-trajectory.cc,
+	* tests/spline-gradient.cc: Normalize test output.
+	* tests/free-time-trajectory.stdout,
+	* tests/spline-gradient.stdout,
+	* tests/stable-point-state-function.stdout,
+	* tests/state-function.stdout: Regenerate.
+
+2009-11-15  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Normalize test output.
 	* tests/stable-point-state-function.cc,
 	* tests/state-function.cc: Here.

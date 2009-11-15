@@ -2993,7 +2993,7 @@ plot '-' title 'derivative (1)' with line
 1.57 0.09
 1.58 0.06
 1.59 0.03
-1.60 -0.00
+1.60 0.00
 1.61 -0.03
 1.62 -0.06
 1.63 -0.09
@@ -5417,7 +5417,7 @@ plot '-' title 'derivative (3)' with line
 1.57 0.00
 1.58 0.00
 1.59 0.00
-1.60 -0.00
+1.60 0.00
 1.61 0.00
 1.62 0.00
 1.63 0.00
@@ -6061,7 +6061,7 @@ plot '-' title '2nd derivative (3)' with line
 3.97 -0.06
 3.98 -0.04
 3.99 -0.02
-4.00 -0.00
+4.00 0.00
 e
 unset multiplot
 set term wxt persist title 'Spline: base functions' 1 font ',5'
@@ -6635,7 +6635,7 @@ plot '-' title 'spline derivative' with line
 1.57 0.09
 1.58 0.06
 1.59 0.03
-1.60 -0.00
+1.60 0.00
 1.61 -0.03
 1.62 -0.06
 1.63 -0.09
@@ -9059,7 +9059,7 @@ plot '-' title 'derivative (1)' with line
 1.57 0.09
 1.58 0.06
 1.59 0.03
-1.60 -0.00
+1.60 0.00
 1.61 -0.03
 1.62 -0.06
 1.63 -0.09
@@ -11483,7 +11483,7 @@ plot '-' title 'derivative (3)' with line
 1.57 0.00
 1.58 0.00
 1.59 0.00
-1.60 -0.00
+1.60 0.00
 1.61 0.00
 1.62 0.00
 1.63 0.00
@@ -12127,7 +12127,7 @@ plot '-' title '2nd derivative (3)' with line
 3.97 -0.06
 3.98 -0.04
 3.99 -0.02
-4.00 -0.00
+4.00 0.00
 e
 unset multiplot
 set term wxt persist title 'Spline: base functions' 2 font ',5'
@@ -15125,7 +15125,7 @@ plot '-' title 'derivative (1)' with line
 1.57 0.09
 1.58 0.06
 1.59 0.03
-1.60 -0.00
+1.60 0.00
 1.61 -0.03
 1.62 -0.06
 1.63 -0.09
@@ -17549,7 +17549,7 @@ plot '-' title 'derivative (3)' with line
 1.57 0.00
 1.58 0.00
 1.59 0.00
-1.60 -0.00
+1.60 0.00
 1.61 0.00
 1.62 0.00
 1.63 0.00
@@ -18193,7 +18193,7 @@ plot '-' title '2nd derivative (3)' with line
 3.97 -0.06
 3.98 -0.04
 3.99 -0.02
-4.00 -0.00
+4.00 0.00
 e
 unset multiplot
 set term wxt persist title 'Spline: base functions' 3 font ',5'
@@ -19411,7 +19411,7 @@ plot '-' title 'spline 2nd derivative' with line
 3.97 -0.06
 3.98 -0.04
 3.99 -0.02
-4.00 -0.00
+4.00 0.00
 e
 plot '-' title 'configuration (0)' with line
 
@@ -21191,7 +21191,7 @@ plot '-' title 'derivative (1)' with line
 1.57 0.09
 1.58 0.06
 1.59 0.03
-1.60 -0.00
+1.60 0.00
 1.61 -0.03
 1.62 -0.06
 1.63 -0.09
@@ -23615,7 +23615,7 @@ plot '-' title 'derivative (3)' with line
 1.57 0.00
 1.58 0.00
 1.59 0.00
-1.60 -0.00
+1.60 0.00
 1.61 0.00
 1.62 0.00
 1.63 0.00
@@ -24259,6 +24259,6 @@ plot '-' title '2nd derivative (3)' with line
 3.97 -0.06
 3.98 -0.04
 3.99 -0.02
-4.00 -0.00
+4.00 0.00
 e
 unset multiplot

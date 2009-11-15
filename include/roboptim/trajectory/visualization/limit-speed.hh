@@ -22,6 +22,7 @@
 # include <boost/format.hpp>
 # include <boost/optional.hpp>
 
+# include <roboptim/core/visualization/gnuplot.hh>
 # include <roboptim/core/visualization/gnuplot-commands.hh>
 # include <roboptim/trajectory/limit-speed.hh>
 
@@ -59,7 +60,9 @@ namespace roboptim
 
 	    LimitSpeed<T> speedLimit (t / tmax * tMax, trajectory_);
 	    Function::vector_t res = speedLimit (trajectory_.parameters ());
-	    str_ += (format ("%1% %2%\n") % t % res[0]).str ();
+	    str_ += (format ("%1.2f %2.2f\n")
+		     % normalize (t)
+		     % normalize (res[0])).str ();
 	  }
 
 	private:
