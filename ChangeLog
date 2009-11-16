@@ -1,5 +1,10 @@
 2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Update NEWS.
+	* NEWS: Fill release v0.4 information.
+
+2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add release related Makefile rules.
 	* Makefile.am: Here.
 	* build-aux: Synchronize.
