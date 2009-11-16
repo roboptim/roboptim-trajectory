@@ -21,10 +21,13 @@
 
 namespace roboptim
 {
+  template <typename T>
+  class FreeTimeTrajectory;
+
   template <unsigned dorder>
   class Trajectory;
 
-  template <unsigned dorder>
+  template <typename T>
   class StateFunction;
 
   template <typename T>

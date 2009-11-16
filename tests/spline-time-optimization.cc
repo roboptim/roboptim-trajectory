@@ -52,7 +52,7 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
-typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
+typedef FreeTimeTrajectory<Spline> freeTime_t;
 
 
 // Problem parameters.
@@ -99,7 +99,7 @@ int run_test ()
   makeFreeze (problem) (indices, freeTimeParams);
 
   Function::interval_t vRange = Function::makeUpperInterval (.5 * vMax * vMax);
-  LimitSpeed<FreeTimeTrajectory<Spline::derivabilityOrder> >::addToProblem
+  LimitSpeed<FreeTimeTrajectory<Spline> >::addToProblem
     (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
 
   std::ofstream limitSpeedStream ("limit-speed.gp");
@@ -120,7 +120,7 @@ int run_test ()
   solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
 
-  FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
+  FreeTimeTrajectory<Spline> optimizedTrajectory =
     freeTimeTraj;
 
   switch (solver.minimumType ())

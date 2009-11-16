@@ -18,7 +18,10 @@
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # include <roboptim/trajectory/sys.hh>
+
 # include <boost/numeric/ublas/vector_proxy.hpp>
+# include <boost/static_assert.hpp>
+# include <boost/type_traits/is_base_of.hpp>
 
 # include <roboptim/trajectory/trajectory.hh>
 
@@ -31,12 +34,21 @@ namespace roboptim
   ///
   /// Build a trajectory from an input trajectory and a time scale
   /// factor.
-  template <unsigned DerivabilityOrder>
-  class FreeTimeTrajectory : public Trajectory<DerivabilityOrder>
+  template <typename T>
+  class FreeTimeTrajectory : public Trajectory<T::derivabilityOrder>
   {
+    /// Check that T is a trajectory type.
+    BOOST_STATIC_ASSERT((boost::is_base_of
+			 <Trajectory<T::derivabilityOrder>, T>::value));
+
   public:
     /// \brief Parent type.
-    typedef Trajectory<DerivabilityOrder> parent_t;
+    typedef Trajectory<T::derivabilityOrder> parent_t;
+    /// \brief Fixed point trajectory type.
+    typedef T fixedTimeTrajectory_t;
+    /// \brief Self type.
+    typedef FreeTimeTrajectory<T> self_t;
+
 
     /// \brief Import value type.
     typedef typename parent_t::value_type value_type;
@@ -61,10 +73,10 @@ namespace roboptim
     ///
     /// \param traj trajectory defining this one by reparameterization
     /// \param s time scale
-    FreeTimeTrajectory (const Trajectory<DerivabilityOrder>& traj, value_type s)
+    FreeTimeTrajectory (const fixedTimeTrajectory_t& traj, value_type s)
       throw ();
 
-    FreeTimeTrajectory (const FreeTimeTrajectory<DerivabilityOrder>& traj) throw ();
+    FreeTimeTrajectory (const self_t& traj) throw ();
 
     virtual ~FreeTimeTrajectory () throw ();
 
@@ -90,7 +102,7 @@ namespace roboptim
       return 0;
     }
 
-    ROBOPTIM_IMPLEMENT_CLONE (FreeTimeTrajectory<DerivabilityOrder>)
+    ROBOPTIM_IMPLEMENT_CLONE (self_t)
 
     /// \brief Display the function on the specified output stream.
     ///
@@ -104,14 +116,14 @@ namespace roboptim
     /// \param index Angles index in parameter array.
     virtual void normalizeAngles (size_type index) throw ();
 
-    const Trajectory<DerivabilityOrder>&
+    const fixedTimeTrajectory_t&
     getFixedTimeTrajectory () const throw ()
     {
       assert (trajectory_);
       return *trajectory_;
     }
 
-    Trajectory<DerivabilityOrder>*
+    self_t*
     resize (interval_t timeRange) const throw ()
     {
       assert (trajectory_);
@@ -126,13 +138,13 @@ namespace roboptim
       assert (this->scaleTime (tMin) == tmin);
       assert (this->scaleTime (tMax) == tmax);
 
-      Trajectory<DerivabilityOrder>* res =
-	new FreeTimeTrajectory<DerivabilityOrder> (*trajectory_, scale);
+      self_t* res =
+	new self_t (*trajectory_, scale);
       assert (res->timeRange () == this->timeRange ());
       return res;
     }
 
-    Trajectory<DerivabilityOrder>*
+    fixedTimeTrajectory_t*
     makeFixedTimeTrajectory () const throw ()
     {
       assert (trajectory_);
@@ -164,7 +176,7 @@ namespace roboptim
       const throw ();
   private:
     /// \brief Input fixed time trajectory.
-    Trajectory<DerivabilityOrder>* trajectory_;
+    fixedTimeTrajectory_t* trajectory_;
   };
 
   /// Example shows FreeTimeTrajectory use.

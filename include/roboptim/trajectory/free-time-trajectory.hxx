@@ -47,43 +47,43 @@ namespace roboptim
     }
   } // end of namespace detail
 
-  template <unsigned dorder>
-  FreeTimeTrajectory<dorder>::FreeTimeTrajectory
-  (const Trajectory<dorder>& traj, value_type s) throw ()
-    : Trajectory<dorder> (detail::unscaleInterval (traj, s), traj.outputSize (),
-			  addScaleToParameters (traj.parameters (), s)),
+  template <typename T>
+  FreeTimeTrajectory<T>::FreeTimeTrajectory
+  (const fixedTimeTrajectory_t& traj, value_type s) throw ()
+    : parent_t (detail::unscaleInterval (traj, s), traj.outputSize (),
+		addScaleToParameters (traj.parameters (), s)),
       trajectory_ (traj.clone ())
   {
     assert (s != 0. && !std::isinf (s) && !std::isnan (s));
   }
 
-  template <unsigned dorder>
-  FreeTimeTrajectory<dorder>::FreeTimeTrajectory
-  (const FreeTimeTrajectory<dorder>& traj)
+  template <typename T>
+  FreeTimeTrajectory<T>::FreeTimeTrajectory
+  (const self_t& traj)
     throw ()
-    : Trajectory<dorder> (traj.timeRange (), traj.outputSize (),
-			  traj.parameters ()),
+    : parent_t (traj.timeRange (), traj.outputSize (),
+		traj.parameters ()),
       trajectory_ (traj.trajectory_->clone ())
   {
   }
 
-  template <unsigned dorder>
-  FreeTimeTrajectory<dorder>::~FreeTimeTrajectory () throw ()
+  template <typename T>
+  FreeTimeTrajectory<T>::~FreeTimeTrajectory () throw ()
   {
     delete trajectory_;
   }
 
-  template <unsigned dorder>
+  template <typename T>
   void
-  FreeTimeTrajectory<dorder>::impl_compute (result_t& res , double t)
+  FreeTimeTrajectory<T>::impl_compute (result_t& res , double t)
     const throw ()
   {
     (*trajectory_) (res, this->scaleTime (t));
   }
 
-  template <unsigned dorder>
+  template <typename T>
   void
-  FreeTimeTrajectory<dorder>::impl_derivative (gradient_t& derivative,
+  FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
 					       double t,
 					       size_type order) const throw ()
   {
@@ -93,9 +93,9 @@ namespace roboptim
     derivative *= std::pow (this->timeScale (), 0. + order);
   }
 
-  template <unsigned dorder>
+  template <typename T>
   void
-  FreeTimeTrajectory<dorder>::impl_derivative (gradient_t& derivative,
+  FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
 					       StableTimePoint stp,
 					       size_type order) const throw ()
   {
@@ -104,9 +104,9 @@ namespace roboptim
     derivative *= std::pow (this->timeScale (), 0. + order);
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationConfigWrtParam (double t) const throw ()
+  template <typename T>
+  typename FreeTimeTrajectory<T>::jacobian_t
+  FreeTimeTrajectory<T>::variationConfigWrtParam (double t) const throw ()
   {
     using namespace boost::numeric::ublas;
     value_type scaled = this->scaleTime (t);
@@ -127,9 +127,9 @@ namespace roboptim
     return result;
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationDerivWrtParam (double t, size_type order)
+  template <typename T>
+  typename FreeTimeTrajectory<T>::jacobian_t
+  FreeTimeTrajectory<T>::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
     if (order == 0)
@@ -158,9 +158,9 @@ namespace roboptim
     return result;
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationConfigWrtParam
+  template <typename T>
+  typename FreeTimeTrajectory<T>::jacobian_t
+  FreeTimeTrajectory<T>::variationConfigWrtParam
   (StableTimePoint stp) const throw ()
   {
     using namespace boost::numeric::ublas;
@@ -180,9 +180,9 @@ namespace roboptim
   }
 
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::jacobian_t
-  FreeTimeTrajectory<dorder>::variationDerivWrtParam
+  template <typename T>
+  typename FreeTimeTrajectory<T>::jacobian_t
+  FreeTimeTrajectory<T>::variationDerivWrtParam
   (StableTimePoint stp, size_type order) const throw ()
   {
     if (order == 0)
@@ -205,35 +205,35 @@ namespace roboptim
     return result;
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::value_type
-  FreeTimeTrajectory<dorder>::singularPointAtRank (size_type rank) const
+  template <typename T>
+  typename FreeTimeTrajectory<T>::value_type
+  FreeTimeTrajectory<T>::singularPointAtRank (size_type rank) const
   {
     double tMin = this->getLowerBound (this->timeRange ());
     return tMin + (trajectory_->singularPointAtRank (rank) - tMin)
       * this->timeScale ();
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::vector_t
-  FreeTimeTrajectory<dorder>::derivBeforeSingularPoint (size_type rank,
+  template <typename T>
+  typename FreeTimeTrajectory<T>::vector_t
+  FreeTimeTrajectory<T>::derivBeforeSingularPoint (size_type rank,
 							size_type order)
     const
   {
     return trajectory_->derivBeforeSingularPoint (rank, order);
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::vector_t
-  FreeTimeTrajectory<dorder>::derivAfterSingularPoint (size_type rank, size_type order)
+  template <typename T>
+  typename FreeTimeTrajectory<T>::vector_t
+  FreeTimeTrajectory<T>::derivAfterSingularPoint (size_type rank, size_type order)
     const
   {
     return trajectory_->derivAfterSingularPoint (rank, order);
   }
 
-  template <unsigned dorder>
+  template <typename T>
   void
-  FreeTimeTrajectory<dorder>::setParameters (const vector_t& p) throw ()
+  FreeTimeTrajectory<T>::setParameters (const vector_t& p) throw ()
   {
     //FIXME: is this ok?
     vector_t p_ = p;
@@ -246,16 +246,16 @@ namespace roboptim
     this->trajectory_->setParameters (removeScaleFromParameters (p_));
   }
 
-  template <unsigned dorder>
-  typename FreeTimeTrajectory<dorder>::value_type
-  FreeTimeTrajectory<dorder>::timeScale () const throw ()
+  template <typename T>
+  typename FreeTimeTrajectory<T>::value_type
+  FreeTimeTrajectory<T>::timeScale () const throw ()
   {
     return this->parameters_[0];
   }
 
-  template <unsigned dorder>
+  template <typename T>
   double
-  FreeTimeTrajectory<dorder>::scaleTime (double unscaled) const throw ()
+  FreeTimeTrajectory<T>::scaleTime (double unscaled) const throw ()
   {
     value_type tMin = getLowerBound (this->timeRange ());
     value_type tmin = getLowerBound (this->trajectory_->timeRange ());
@@ -273,9 +273,9 @@ namespace roboptim
     return res;
   }
 
-  template <unsigned dorder>
+  template <typename T>
   double
-  FreeTimeTrajectory<dorder>::unscaleTime (double scaled) const throw ()
+  FreeTimeTrajectory<T>::unscaleTime (double scaled) const throw ()
   {
     value_type tMin = getLowerBound (this->timeRange ());
     value_type tMax = getUpperBound (this->timeRange ());
@@ -293,17 +293,17 @@ namespace roboptim
     return res;
   }
 
-  template <unsigned dorder>
+  template <typename T>
   std::ostream&
-  FreeTimeTrajectory<dorder>::print (std::ostream& o) const throw ()
+  FreeTimeTrajectory<T>::print (std::ostream& o) const throw ()
   {
     o << "Free time trajectory." << std::endl;
     return o;
   }
 
-  template <unsigned dorder>
+  template <typename T>
   void
-  FreeTimeTrajectory<dorder>::normalizeAngles (size_type index) throw ()
+  FreeTimeTrajectory<T>::normalizeAngles (size_type index) throw ()
   {
     this->normalizeAngles (index, 1.);
   }

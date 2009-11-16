@@ -39,7 +39,7 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 
 
-typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
+typedef FreeTimeTrajectory<Spline> freeTime_t;
 
 template <typename T>
 bool isAlmostEqual (const T& x, const T& y, const T& epsilon = 1e10-8)
@@ -287,7 +287,7 @@ int run_test ()
   // Make trajectories.
   Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
   Spline spline (timeRange, 1, removeScaleFromParameters (params), "before");
-  FreeTimeTrajectory<Spline::derivabilityOrder> freeTimeTraj (spline, 1.);
+  FreeTimeTrajectory<Spline> freeTimeTraj (spline, 1.);
 
   assert (freeTimeTraj.inputSize () == 1);
   assert (freeTimeTraj.outputSize () == 1);

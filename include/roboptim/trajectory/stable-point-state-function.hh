@@ -20,6 +20,8 @@
 # include <roboptim/trajectory/sys.hh>
 
 # include <boost/shared_ptr.hpp>
+# include <boost/static_assert.hpp>
+# include <boost/type_traits/is_base_of.hpp>
 
 # include <roboptim/trajectory/fwd.hh>
 # include <roboptim/core/derivable-function.hh>
@@ -53,9 +55,12 @@ namespace roboptim
   template <typename T>
   class StablePointStateFunction : public DerivableFunction
   {
+    /// Check that T is a trajectory type.
+    BOOST_STATIC_ASSERT((boost::is_base_of
+			 <Trajectory<T::derivabilityOrder>, T>::value));
   public:
     /// \brief Trajectory type.
-    typedef FreeTimeTrajectory<T::derivabilityOrder> trajectory_t;
+    typedef T trajectory_t;
 
     /// \brief Constructor.
     ///

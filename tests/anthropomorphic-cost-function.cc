@@ -51,7 +51,7 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
-typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTime_t;
+typedef FreeTimeTrajectory<Spline> freeTime_t;
 
 // Problem parameters.
 const unsigned configurationSpaceSize = 3;
@@ -133,12 +133,12 @@ int optimize (double initialX,
     (freeTimeTraj, frontalSpeed, 1, problem, vRangeFrontal,
      nControlPoints * nConstraintsPerCtrlPts);
 
-  // Orthogonal
-  boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
-  Function::interval_t vRangeOrthogonal = Function::makeInterval (-vMax, vMax);
-  StablePointStateFunction<freeTime_t>::addToProblem
-    (freeTimeTraj, orthogonalSpeed, 1, problem, vRangeOrthogonal,
-     nControlPoints * nConstraintsPerCtrlPts);
+  // // Orthogonal
+  // boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
+  // Function::interval_t vRangeOrthogonal = Function::makeInterval (-vMax, vMax);
+  // StablePointStateFunction<freeTime_t>::addToProblem
+  //   (freeTimeTraj, orthogonalSpeed, 1, problem, vRangeOrthogonal,
+  //    nControlPoints * nConstraintsPerCtrlPts);
 
   // Omega (theta dot)
   Function::interval_t vRangeOmega = Function::makeInterval (-.5, .5);
@@ -164,8 +164,7 @@ int optimize (double initialX,
   solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
 
-  FreeTimeTrajectory<Spline::derivabilityOrder> optimizedTrajectory =
-    freeTimeTraj;
+  FreeTimeTrajectory<Spline> optimizedTrajectory = freeTimeTraj;
 
   switch (solver.minimumType ())
     {

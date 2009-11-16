@@ -21,8 +21,8 @@
 
 namespace roboptim
 {
-  template <unsigned N>
-  StateFunction<N>::StateFunction (const trajectory_t& trajectory,
+  template <typename T>
+  StateFunction<T>::StateFunction (const trajectory_t& trajectory,
 				   boost::shared_ptr<DerivableFunction> function,
 				   const StableTimePoint tpt,
 				   size_type order) throw ()
@@ -38,21 +38,21 @@ namespace roboptim
     assert (function_->inputSize () == trajectory_.outputSize () * (order + 1));
   }
 
-  template <unsigned N>
-  StateFunction<N>::~StateFunction() throw ()
+  template <typename T>
+  StateFunction<T>::~StateFunction() throw ()
   {
   }
 
-  template <unsigned N>
-  typename StateFunction<N>::size_type
-  StateFunction<N>::order () const throw ()
+  template <typename T>
+  typename StateFunction<T>::size_type
+  StateFunction<T>::order () const throw ()
   {
     return order_;
   }
 
-  template <unsigned N>
+  template <typename T>
   void
-  StateFunction<N>::impl_compute (result_t& res,
+  StateFunction<T>::impl_compute (result_t& res,
 				  const argument_t& p) const throw ()
   {
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
@@ -61,9 +61,9 @@ namespace roboptim
     (*function_) (res, updatedTrajectory->state (tpt_, this->order_));
   }
 
-  template <unsigned N>
+  template <typename T>
   void
-  StateFunction<N>::impl_gradient (gradient_t& grad,
+  StateFunction<T>::impl_gradient (gradient_t& grad,
 				   const argument_t& p,
 				   size_type i) const throw ()
   {

@@ -49,7 +49,7 @@ int run_test ()
   Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
   Spline spline (timeRange, 3, params, "before");
 
-  typedef FreeTimeTrajectory<Spline::derivabilityOrder> freeTimeTraj_t;
+  typedef FreeTimeTrajectory<Spline> freeTimeTraj_t;
   freeTimeTraj_t ftt (spline, 2.);
 
   for (unsigned i = 0; i < 10; ++i)
@@ -58,12 +58,12 @@ int run_test ()
       const double t = timePoint.getTime (ftt.timeRange ());
 
       boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
-      StablePointStateFunction<Spline> stateFunction
+      StablePointStateFunction<FreeTimeTrajectory<Spline> > stateFunction
 	(ftt, frontalSpeed, timePoint, orderMax);
 
       boost::shared_ptr<DerivableFunction> orthogonalSpeed
 	(new OrthogonalSpeed ());
-      StablePointStateFunction<Spline> orthoStateFunction
+      StablePointStateFunction<FreeTimeTrajectory<Spline> > orthoStateFunction
 	(ftt, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl
