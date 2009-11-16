@@ -69,24 +69,24 @@ int run_test ()
 
   std::cout
     << "# Values:" << std::endl
-    << "# " << spline (0.) << std::endl
-    << "# " << spline (2.5) << std::endl
-    << "# " << spline (4.) << std::endl
+    << "# " << normalize (spline (0.)) << std::endl
+    << "# " << normalize (spline (2.5)) << std::endl
+    << "# " << normalize (spline (4.)) << std::endl
 
     << "# 1st derivative:" << std::endl
-    << "# " << spline.derivative (0., 1) << std::endl
-    << "# " << spline.derivative (2.5, 1) << std::endl
-    << "# " << spline.derivative (4., 1) << std::endl
+    << "# " << normalize (spline.derivative (0., 1)) << std::endl
+    << "# " << normalize (spline.derivative (2.5, 1)) << std::endl
+    << "# " << normalize (spline.derivative (4., 1)) << std::endl
 
     << "# 2nd derivative:" << std::endl
-    << "# " << spline.derivative (0., 2) << std::endl
-    << "# " << spline.derivative (2.5, 2) << std::endl
-    << "# " << spline.derivative (4., 2) << std::endl
+    << "# " << normalize (spline.derivative (0., 2)) << std::endl
+    << "# " << normalize (spline.derivative (2.5, 2)) << std::endl
+    << "# " << normalize (spline.derivative (4., 2)) << std::endl
 
     << "# variationConfigWrtParam:" << std::endl
-    << "# " << spline.variationConfigWrtParam (0.) << std::endl
-    << "# " << spline.variationConfigWrtParam (2.5) << std::endl
-    << "# " << spline.variationConfigWrtParam (4.) << std::endl;
+    << "# " << normalize (spline.variationConfigWrtParam (0.)) << std::endl
+    << "# " << normalize (spline.variationConfigWrtParam (2.5)) << std::endl
+    << "# " << normalize (spline.variationConfigWrtParam (4.)) << std::endl;
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   gnuplot

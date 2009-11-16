@@ -1,5 +1,10 @@
 2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Normalize test output.
+	* tests/spline-optimization.cc: Here.
+
+2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Regenerate tests.
 	* tests/free-time-trajectory-stable-time-point.stdout,
 	* tests/free-time-trajectory.stdout,
