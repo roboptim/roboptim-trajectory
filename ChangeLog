@@ -1,5 +1,12 @@
 2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add release related Makefile rules.
+	* Makefile.am: Here.
+	* build-aux: Synchronize.
+	* doc/Makefile.am: Fix include path.
+
+2009-11-16  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Clean interface.
 	* include/roboptim/trajectory/free-time-trajectory.hh,
 	* include/roboptim/trajectory/free-time-trajectory.hxx,
