@@ -1,0 +1,94 @@
+\documentclass{article}
+
+\usepackage{graphics}
+\usepackage{color}
+
+\title{B-splines in Roboptim}
+\author{Florent Lamiraux, CNRS-LAAS}
+
+\begin{document}
+\maketitle
+\section{Definition}
+\begin{figure}[h]
+\centerline{
+  \input{pictures/basis-functions.pdf_t}
+}
+\caption{A cubic B spline is defined over interval $[t_3,t_m]$ by $m$ control points.}
+\end{figure}
+B-splines in \textsf{roboptim} are defined as follows. Given
+\begin{itemize}
+      \item a number $m\geq 4$ of control points, 
+      \item regularly spaced time points: $t_0 < t_1 < \cdots < t_{m}$, $\forall i\in\{0,...,m-1\}$, $t_{i+1}-t_i = \Delta t$
+      \item $m$ control points $ \textbf{P}_0,\cdots, \textbf{P}_{m-1}$ in $\textbf{R}^n$ ,
+\end{itemize}
+
+      the cubic B-spline of control points $\textbf{P}_0,\cdots, \textbf{P}_{m-1}$ is defined over $[t_3,t_{m}]$ by
+      \begin{equation}\label{eq:def-spline}
+        B(t) = \sum_{i=0}^{m-1} \textbf{P}_i b_{i,3}(t) 
+      \end{equation}
+      where basis functions $b_{i,3}$ are defined by:
+      \begin{eqnarray*}
+      b_{i,3}(t)=& \frac{(t-t_i)^3}{6\ \Delta t^3} & \mbox{ if } t_{i} \leq t < t_{i+1} \\
+      & \frac{(t-t_i)^2(t_{i+2}-t)+(t-t_i)(t_{i+3}-t)(t-t_{i+1})+(t_{i+4}-t)(t-t_{i+1})^2}{6\ \Delta t^3}& \mbox{ if } t_{i+1} \leq t < t_{i+2} \\  
+      & \frac{(t-t_i)(t_{i+3}-t)^2+(t_{i+4}-t)(t-t_{i+1})(t_{i+3}-t)+(t_{i+4}-t)^2(t-t_{i+2})}{6\ \Delta t^3}& \mbox{ if } t_{i+2} \leq t < t_{i+3} \\  
+      & \frac{(t_{i+4}-t)^3}{6\ \Delta t^3}& \mbox{ if } t_{i+3} \leq t < t_{i+4} 
+      \end{eqnarray*}
+
+\section{Evaluation and derivatives}
+
+By denoting $\tau_i=t-t_i$, we can rewrite the above expressions as:
+      \begin{eqnarray*}
+      b_{i,3}(t)=& \frac{\tau_i^3}{6\ \Delta t^3} & \mbox{ if } t_{i} \leq t < t_{i+1} \\
+      & \frac{-3\ \tau_{i+1}^3 + 3\ \Delta t\ \tau_{i+1}^2 + 3\ \Delta t^2\ \tau_{i+1}+\Delta t^3}{6\ \Delta t^3}& \mbox{ if } t_{i+1} \leq t < t_{i+2} \\  
+      & \frac{3\ \tau_{i+2}^3-6\ \Delta t\ \tau_{i+2}^2 + 4\ \Delta t^3}{6\ \Delta t^3}& \mbox{ if } t_{i+2} \leq t < t_{i+3} \\  
+      & \frac{-\tau_{i+3}^3 + 3\ \Delta t\ \tau_{i+3}^2 - 3\ \Delta t^2\ \tau_{i+3} + \Delta t^3 }{6\ \Delta t^3}& \mbox{ if } t_{i+3} \leq t < t_{i+4} 
+      \end{eqnarray*}
+
+To evaluate the value and derivatives of $B$ for a given value $t\in [t_3,t_m]$, we need first to determine which terms of Equation~(\ref{eq:def-spline}) are not equal to 0.
+
+Let us assume that we only know
+\begin{itemize}
+  \item the interval of definition $[t_3,t_m]$ of the spline,
+  \item the number $m$ of control points,
+  \item the value $t\in[t_3,t_m]$
+\end{itemize}
+and we want to evaluate the value of the spline at $t$.
+
+\subsubsection*{Algorithm}
+
+First we compute $\Delta t$:
+$$
+\Delta t = \frac{t_m - t_3}{m-3}
+$$
+Then, we determine $i\in\{3,\cdots,m-1\}$ such that $t_i \leq t < t_{i+1}$:
+\begin{eqnarray*}
+&t_i \leq t < t_{i+1} & \mbox{if and only if} \\
+&t_3+(i-3)\Delta t \leq t < t_3+(i-2)\Delta t & \mbox{if and only if}\\
+&(i-3) \leq \frac{t-t_3}{\Delta t} < (i-2) & \mbox{if and only if}\\
+& i = \lfloor 3+\frac{t-t_3}{\Delta t} \rfloor
+\end{eqnarray*}
+The only non-zero basis functions in $t$ are thus: $b_{i-3,3}$, $b_{i-2,3}$, $b_{i-1,3}$, $b_{i,3}$ and~(\ref{eq:def-spline}) becomes
+\begin{eqnarray*}
+  B(t) &=& \sum_{j=i-3}^{i} \textbf{P}_j b_{j,3}(t) \\
+&=& \begin{array}{ll}\frac{-\tau_{i}^3 + 3\ \Delta t\ \tau_{i}^2 - 3\ \Delta t^2\ \tau_{i} + \Delta t^3 }{6\ \Delta t^3} & \textbf{P}_{i-3} \\
++ \frac{3\ \tau_{i}^3-6\ \Delta t\ \tau_{i}^2 + 4\ \Delta t^3}{6\ \Delta t^3} & \textbf{P}_{i-2} \\
++ \frac{-3\ \tau_{i}^3 + 3\ \Delta t\ \tau_{i}^2 + 3\ \Delta t^2\ \tau_{i}+\Delta t^3}{6\ \Delta t^3} & \textbf{P}_{i-1}\\
++ \frac{\tau_i^3}{6\ \Delta t^3} & \textbf{P}_{i} \end{array}
+\end{eqnarray*}
+It follows that:
+\begin{eqnarray*}
+  \dot{B}(t) &=& \sum_{j=i-3}^{i} \textbf{P}_j \dot{b}_{j,3}(t) \\
+&=& \begin{array}{ll}\frac{-3\ \tau_{i}^2 + 6\ \Delta t\ \tau_{i} - 3\ \Delta t^2}{6\ \Delta t^3} & \textbf{P}_{i-3} \\
++ \frac{9\ \tau_{i}^2-12\ \Delta t\ \tau_{i}}{6\ \Delta t^3} & \textbf{P}_{i-2} \\
++ \frac{-9\ \tau_{i}^2 + 6\ \Delta t\ \tau_{i} + 3\ \Delta t^2}{6\ \Delta t^3} & \textbf{P}_{i-1}\\
++ \frac{3\ \tau_i^2}{6\ \Delta t^3} & \textbf{P}_{i} \end{array}
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+  \ddot{B}(t) &=& \sum_{j=i-3}^{i} \textbf{P}_j \ddot{b}_{j,3}(t) \\
+&=& \frac{-\ \tau_{i} + \ \Delta t}{\Delta t^3} \textbf{P}_{i-3} 
++ \frac{3\ \tau_{i}-2\ \Delta t}{\Delta t^3} \textbf{P}_{i-2}
++ \frac{-3\ \tau_{i} + \ \Delta t}{\Delta t^3} \textbf{P}_{i-1}
++ \frac{\tau_i}{\Delta t^3} \textbf{P}_{i}
+\end{eqnarray*}
+\end{document}

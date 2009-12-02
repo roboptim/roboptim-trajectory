@@ -1,3 +1,15 @@
+2009-12-02  Florent Lamiraux  <florent@laas.fr>
+
+	Reimplement B-splines.
+	* doc/Makefile.am: Add documentation about  B-spline definition
+	* doc/bspline.tex: New.
+	* doc/pictures/basis-functions.fig: New.
+	* include/Makefile.am: Add documentation about B-spline definition
+	* include/roboptim/trajectory/cubic-b-spline.hh: Rename from include/roboptim/trajectory/spline.hh.
+	* src/Makefile.am: change filename
+	* src/cubic-b-spline.cc: New.
+	* src/spline.cc: Remove.
+
 2009-11-19  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Synchronize.

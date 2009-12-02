@@ -15,53 +15,56 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_SPLINE_HH
-# define ROBOPTIM_TRAJECTORY_SPLINE_HH
+#ifndef ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HH
+# define ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HH
 # include <roboptim/trajectory/sys.hh>
 
 # include <roboptim/trajectory/trajectory.hh>
 # include <roboptim/trajectory/fwd.hh>
 
-/// \internal
-class bspline;
 
 namespace roboptim
 {
   /// \addtogroup roboptim_function
   /// @{
 
-  /// \brief Spline trajectory.
-  ///
-  /// Implement B-Spline.
-  class Spline : public Trajectory<4>
+  /** \brief Cubic B-Spline trajectory.
+  
+      Implement a B-Spline as a trajectory as described below: given 
+      \li a number \f$m\geq 4\f$ of control points, 
+      \li regularly spaced time points: \f$t_0 < t_1 < \cdots < t_{m}\f$, \f$\forall i\in\{0,...,m-1\}\f$, \f$t_{i+1}-t_i = \Delta t\f$
+      \li \f$m\f$ control points \f$ P_0,\cdots, P_{m-1}\f$ in \f$\textbf{R}^n\f$ ,
+      the cubic B-spline of control points \f$P_0,\cdots, P_{m-1}\f$ is defined over \f$[t_3,t_{m}]\f$ by
+      \f[ B(t) = \sum_{i=0}^{m-1} P_i b_{i,3}(t) \f]
+      where basis functions \f$b_{i,3}\f$ are defined by:
+      \f{eqnarray*}{
+      b_{i,3}(t)=& \frac{(t-t_i)^3}{6\Delta t^3} & \mbox{ if } t_{i} \leq t < t_{i+1} \\
+      & \frac{(t-t_i)^2(t_{i+2}-t)+(t-t_i)(t_{i+3}-t)(t-t_{i+1})+(t_{i+4}-t)(t-t_{i+1})^2}{6\Delta t^3}& \mbox{ if } t_{i+1} \leq t < t_{i+2} \\  
+      & \frac{(t-t_i)(t_{i+3}-t)^2+(t_{i+4}-t)(t-t_{i+1})(t_{i+3}-t)+(t_{i+4}-t)^2(t-t_{i+2})}{6\Delta t^3}& \mbox{ if } t_{i+2} \leq t < t_{i+3} \\  
+      & \frac{(t_{i+4}-t)^3}{6\Delta t^3}& \mbox{ if } t_{i+3} \leq t < t_{i+4} 
+      \f}
+  */
+  class CubicBSpline : public Trajectory<3>
   {
   public:
-    /// \brief Instantiate a Spline from its definition.
+    /// \brief Instantiate a cubic B-Spline from its definition.
     ///
-    /// Instantiate a Spline from its triplet definition:
-    /// - time range (\f$t \in [f_min, t_max]\f$): interval on
-    ///   which the spline is defined,
-    /// - dimension: output space dimension,
-    /// - parameters: vector containing concatenated control points.
-    ///
-    /// The vector parameters has to satisfy the following conditions:
-    /// - size should be at least 4,
-    /// - there should be at least two control points,
-    /// - the vector has to be valid (it has to contain complete control
-    ///   points so its size has to be a multiple of the dimension size).
-    ///
-    /// \param timeRange spline time range
-    /// \param dimension spline dimension
+    /// \param timeRange spline time range: $\f$[t_3,t_n]\f$
+    /// \param dimension spline dimension: \f$n\f$
     /// \param parameters vector of parameters defining control points
     /// \param name function title
-    Spline (interval_t timeRange, size_type dimension,
-	    const vector_t& parameters, std::string name = "spline") throw ();
+    ///
+    /// Number of control points is inferred from dimension of dimenion of 
+    /// parameter vector.
+    CubicBSpline (interval_t timeRange, size_type dimension,
+		  const vector_t& parameters, 
+		  const std::string name = "cubic B-Spline") throw ();
 
     /// \brief Copy constructor.
     /// \param spline spline that will be copied
-    Spline (const Spline& spline) throw ();
+    CubicBSpline (const CubicBSpline& spline) throw ();
 
-    virtual ~Spline () throw ();
+    virtual ~CubicBSpline () throw ();
 
     /// \brief Modify spline parameters.
     virtual void setParameters (const vector_t&) throw ();
@@ -75,12 +78,12 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    ROBOPTIM_IMPLEMENT_CLONE(Spline)
+    ROBOPTIM_IMPLEMENT_CLONE(CubicBSpline)
 
     virtual Trajectory<derivabilityOrder>* resize (interval_t timeRange)
       const throw ()
     {
-      return new Spline (timeRange, this->outputSize (), this->parameters ());
+      return new CubicBSpline (timeRange, this->outputSize (), this->parameters ());
     }
 
     /// \brief Display the function on the specified output stream.
@@ -101,18 +104,9 @@ namespace roboptim
       const throw ();
 
   private:
-    /// \brief Convert parameters to internal representation.
-    /// \return internal parameter representation
-    vector_t makeBSplineVector ();
-
     /// \brief Number of control points.
-    int nbp_;
-    /// \brief Pointer to internal spline implementation.
-    bspline* spline_;
+    unsigned int nbp_;
   };
-
-  /// Example shows Spline use.
-  /// \example spline-gradient.cc
 
   /// @}
 

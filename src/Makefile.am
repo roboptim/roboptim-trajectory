@@ -13,15 +13,8 @@ libroboptim_trajectory_la_SOURCES = 	\
 	doc.hh				\
 	frontal-speed.cc		\
 	orthogonal-speed.cc		\
-	spline.cc			\
+	cubic-b-spline.cc			\
 	spline-length.cc
-
-libroboptim_trajectory_la_SOURCES += 	\
-	spline/basis_function.cpp	\
-	spline/basis_function.h		\
-	spline/bspline.cpp		\
-	spline/bspline.h
-
 
 libroboptim_trajectory_la_LIBADD = 	\
 	$(ROBOPTIMCORE_LIBS)
