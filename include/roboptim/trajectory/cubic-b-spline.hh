@@ -29,9 +29,9 @@ namespace roboptim
   /// @{
 
   /** \brief Cubic B-Spline trajectory.
-  
-      Implement a B-Spline as a trajectory as described below: given 
-      \li a number \f$m\geq 4\f$ of control points, 
+
+      Implement a B-Spline as a trajectory as described below: given
+      \li a number \f$m\geq 4\f$ of control points,
       \li regularly spaced time points: \f$t_0 < t_1 < \cdots < t_{m}\f$, \f$\forall i\in\{0,...,m-1\}\f$, \f$t_{i+1}-t_i = \Delta t\f$
       \li \f$m\f$ control points \f$ P_0,\cdots, P_{m-1}\f$ in \f$\textbf{R}^n\f$ ,
       the cubic B-spline of control points \f$P_0,\cdots, P_{m-1}\f$ is defined over \f$[t_3,t_{m}]\f$ by
@@ -39,9 +39,9 @@ namespace roboptim
       where basis functions \f$b_{i,3}\f$ are defined by:
       \f{eqnarray*}{
       b_{i,3}(t)=& \frac{(t-t_i)^3}{6\Delta t^3} & \mbox{ if } t_{i} \leq t < t_{i+1} \\
-      & \frac{(t-t_i)^2(t_{i+2}-t)+(t-t_i)(t_{i+3}-t)(t-t_{i+1})+(t_{i+4}-t)(t-t_{i+1})^2}{6\Delta t^3}& \mbox{ if } t_{i+1} \leq t < t_{i+2} \\  
-      & \frac{(t-t_i)(t_{i+3}-t)^2+(t_{i+4}-t)(t-t_{i+1})(t_{i+3}-t)+(t_{i+4}-t)^2(t-t_{i+2})}{6\Delta t^3}& \mbox{ if } t_{i+2} \leq t < t_{i+3} \\  
-      & \frac{(t_{i+4}-t)^3}{6\Delta t^3}& \mbox{ if } t_{i+3} \leq t < t_{i+4} 
+      & \frac{(t-t_i)^2(t_{i+2}-t)+(t-t_i)(t_{i+3}-t)(t-t_{i+1})+(t_{i+4}-t)(t-t_{i+1})^2}{6\Delta t^3}& \mbox{ if } t_{i+1} \leq t < t_{i+2} \\
+      & \frac{(t-t_i)(t_{i+3}-t)^2+(t_{i+4}-t)(t-t_{i+1})(t_{i+3}-t)+(t_{i+4}-t)^2(t-t_{i+2})}{6\Delta t^3}& \mbox{ if } t_{i+2} \leq t < t_{i+3} \\
+      & \frac{(t_{i+4}-t)^3}{6\Delta t^3}& \mbox{ if } t_{i+3} \leq t < t_{i+4}
       \f}
   */
   class CubicBSpline : public Trajectory<3>
@@ -54,10 +54,10 @@ namespace roboptim
     /// \param parameters vector of parameters defining control points
     /// \param name function title
     ///
-    /// Number of control points is inferred from dimension of dimenion of 
+    /// Number of control points is inferred from dimension of dimenion of
     /// parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
-		  const vector_t& parameters, 
+		  const vector_t& parameters,
 		  const std::string name = "cubic B-Spline") throw ();
 
     /// \brief Copy constructor.

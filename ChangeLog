@@ -1,5 +1,11 @@
 2009-12-02  Florent Lamiraux  <florent@laas.fr>
 
+	Remove trailing whitespaces.
+	* doc/bspline.tex,
+	* include/roboptim/trajectory/cubic-b-spline.hh: here.
+
+2009-12-02  Florent Lamiraux  <florent@laas.fr>
+
 	Reimplement B-splines.
 	* doc/Makefile.am: Add documentation about  B-spline definition
 	* doc/bspline.tex: New.
