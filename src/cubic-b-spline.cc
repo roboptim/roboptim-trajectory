@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <boost/numeric/ublas/io.hpp>
 #include <roboptim/trajectory/sys.hh>
 
 #include <roboptim/core/indent.hh>
@@ -45,7 +46,7 @@ namespace roboptim
       nbp_ (spline.parameters ().size () / spline.outputSize ())
   {
     //Parameter size should be a multiple of spline dimension
-    assert (parameters_.size () % outputSize == 0);
+    assert (parameters_.size () % outputSize () == 0);
     // number of control points should be at least 4.
     assert (nbp_ >= 5);
 
@@ -208,7 +209,7 @@ namespace roboptim
       boost::numeric::ublas::subrange(parameters(),
 				      (i)*n,
 				      (i+1)*n);
-    jacobian_t jac ublas::zero_matrix(n, nbp_ * n);
+    jacobian_t jac = ublas::zero_matrix<double>(n, nbp_ * n);
     ublas::identity_matrix<double> In(n);
     double b_i=0, b_i_1=0, b_i_2=0, b_i_3=0;
 
@@ -274,7 +275,7 @@ namespace roboptim
   CubicBSpline::value_type
   CubicBSpline::singularPointAtRank (size_type rank) const
   {
-    return rank * length () / spline_->get_Nint ();
+    return rank * length () / (nbp_- 3);
   }
 
   CubicBSpline::vector_t
@@ -287,17 +288,6 @@ namespace roboptim
   CubicBSpline::derivAfterSingularPoint (size_type rank, size_type order) const
   {
     return derivative (singularPointAtRank (rank), order);
-  }
-
-  CubicBSpline::vector_t
-  CubicBSpline::makeBSplineVector ()
-  {
-    vector_t res (parameters_.size () + 1);
-
-    for (size_type i = 0; i < parameters_.size (); ++i)
-      res[i] = parameters_[i];
-    res[parameters_.size ()] = length ();
-    return res;
   }
 
   std::ostream&

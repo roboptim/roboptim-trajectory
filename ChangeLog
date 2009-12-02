@@ -1,5 +1,10 @@
 2009-12-02  Florent Lamiraux  <florent@laas.fr>
 
+	Fix compilation errors.
+	* src/cubic-b-spline.cc: here.
+
+2009-12-02  Florent Lamiraux  <florent@laas.fr>
+
 	Remove trailing whitespaces.
 	* doc/bspline.tex,
 	* include/roboptim/trajectory/cubic-b-spline.hh: here.
