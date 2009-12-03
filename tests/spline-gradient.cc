@@ -57,10 +57,12 @@ int run_test ()
       params.clear ();
       params[x] = 1.;
 
+      // Build a cubic spline of dimension 1
       CubicBSpline spline (std::make_pair (0., 4.), 1, params);
       discreteInterval_t window (0., 4., 0.01);
       std::cerr << spline << std::endl;
 
+      // Loop over the order of derivation
       for (unsigned i = 0; i < 3; ++i)
 	{
 	  std::string title;
@@ -79,7 +81,9 @@ int run_test ()
 	      assert (0);
 	    }
 
-	  std::cout << "plot '-' title '"<< title <<"' with line\n" << std::endl;
+	  std::cout << "plot '-' title '"<< title <<"' with line\n"
+		    << std::endl;
+	  // Loop over the interval of definition
 	  for (double t = boost::get<0> (window); t < boost::get<1> (window);
 	       t += boost::get<2> (window))
 	    {
@@ -93,17 +97,23 @@ int run_test ()
 		// Check gradient
 		Function::vector_t x (1);
 		x[0] = t;
-		checkGradientAndThrow (spline, 0, x);
+		if ((t < boost::get<1> (window)-boost::get<2> (window))
+		    && (t>boost::get<0> (window))) {
+		  checkGradientAndThrow (spline, 0, x);
+		}
 	      }
 	      catch (BadGradient& bg)
 		{
 		  std::cerr << bg << std::endl;
+		  std::cerr << "t=" << t << ", spline=" << spline << std::endl;
 		}
 	    }
 	  std::cout << "e" << std::endl;
 	}
 
+      // Loop over control points
       for (unsigned j = 0; j < 7; ++j)
+	// Loop over order of derivation
 	for (unsigned i = 0; i < 3; ++i)
 	  {
 	    std::string title;
@@ -124,6 +134,7 @@ int run_test ()
 	    title.append ((boost::format (" (%1%)") % j).str ());
 
 	    std::cout << "plot '-' title '"<< title <<"' with line\n" << std::endl;
+	  // Loop over the interval of definition
 	    for (double t = boost::get<0> (window); t < boost::get<1> (window);
 		 t += boost::get<2> (window))
 	      {
