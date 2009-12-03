@@ -31,7 +31,7 @@
 #include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/spline-length.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 #include <roboptim/trajectory/visualization/trajectory.hh>
 
@@ -51,20 +51,24 @@ typedef CFSQPSolver solver_t;
 int run_test ()
 {
   using namespace boost::assign;
-  Spline::vector_t params (8);
+  CubicBSpline::vector_t params (16);
 
   // Initial position.
   params[0] = 0.,  params[1] = 0.;
-  // Control point 1.
-  params[2] = 25.,  params[3] = 100.;
-  // Control point 2.
-  params[4] = 75.,  params[5] = 0.;
+  params[2] = 0.,  params[3] = 0.;
+  params[4] = 0.,  params[5] = 0.;
+  // Control point 3.
+  params[6] = 25.,  params[7] = 100.;
+  // Control point 4.
+  params[8] = 75.,  params[9] = 0.;
   // Final position.
-  params[6] = 100., params[7] = 100.;
+  params[10] = 100., params[11] = 100.;
+  params[12] = 100., params[13] = 100.;
+  params[14] = 100., params[15] = 100.;
 
-  Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
+  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 4.);
 
-  Spline spline (timeRange, 2, params, "before");
+  CubicBSpline spline (timeRange, 2, params, "before");
   discreteInterval_t interval (0., 4., 0.01);
 
   std::cout
@@ -119,6 +123,14 @@ int run_test ()
   std::vector<Function::size_type> indices;
   indices.push_back (0);
   indices.push_back (1);
+  indices.push_back (2);
+  indices.push_back (3);
+  indices.push_back (4);
+  indices.push_back (5);
+  indices.push_back (params.size () - 6);
+  indices.push_back (params.size () - 5);
+  indices.push_back (params.size () - 4);
+  indices.push_back (params.size () - 3);
   indices.push_back (params.size () - 2);
   indices.push_back (params.size () - 1);
   makeFreeze (problem) (indices, params);
@@ -138,7 +150,7 @@ int run_test ()
     case GenericSolver::SOLVER_VALUE:
       {
 	Result& result = boost::get<Result> (res);
-	Spline optimizedSpline (timeRange, 2, result.x, "after");
+	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
 	params = result.x;
 	gnuplot << plot_xy (optimizedSpline);
 	break;
@@ -152,7 +164,7 @@ int run_test ()
     case GenericSolver::SOLVER_VALUE_WARNINGS:
       {
 	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
-	Spline optimizedSpline (timeRange, 2, result.x, "after");
+	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
 	params = result.x;
 	std::cerr << result << std::endl;
 	gnuplot << plot_xy (optimizedSpline);

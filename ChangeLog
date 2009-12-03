@@ -1,3 +1,21 @@
+2009-12-03  Florent Lamiraux  <florent@laas.fr>
+
+	Replace Spline by CubicBSPline everywhere.
+	* include/roboptim/trajectory/spline-length.hh,
+	* src/cubic-b-spline.cc,
+	* src/spline-length.cc,
+	* tests/Makefile.am,
+	* tests/anthropomorphic-cost-function.cc,
+	* tests/free-time-trajectory-stable-time-point.cc,
+	* tests/free-time-trajectory.cc,
+	* tests/spline-gradient.cc,
+	* tests/spline-optimization.cc,
+	* tests/spline-time-optimization.cc,
+	* tests/spline.cc,
+	* tests/stable-point-state-function.cc,
+	* tests/state-function.cc,
+	* tests/testsuite.at: everywhere.
+
 2009-12-02  Florent Lamiraux  <florent@laas.fr>
 
 	Fix compilation errors.

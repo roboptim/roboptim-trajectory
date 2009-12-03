@@ -41,8 +41,6 @@ CHECK_STDOUT([stable-point-state-function],
 AT_BANNER([Optimization (require solver plug-in)])
 CHECK_STDOUT([spline-optimization], [Optimize a Spline with Cfsqp.],
 	     [! test x$HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN = xyes])
-CHECK_STDOUT([spline-bicycle-optim], [Optimize a Spline with Cfsqp (2).],
-	     [! test x$HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN = xyes])
 CHECK_STDOUT([spline-time-optimization], [Optimize a free time trajectory.],
 	     [! test x$HAVE_ROBOPTIM_CORE_CFSQP_PLUGIN = xyes])
 

@@ -36,7 +36,7 @@
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/limit-omega.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/stable-point-state-function.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
@@ -79,7 +79,7 @@ int optimize (double initialX,
   using namespace boost;
   using namespace boost::assign;
 
-  Spline::vector_t params (nControlPoints * configurationSpaceSize);
+  CubicBSpline::vector_t params (nControlPoints * configurationSpaceSize);
 
   const double dx = finalX - initialX;
   const double dy = finalY - initialY;
@@ -100,8 +100,8 @@ int optimize (double initialX,
     }
 
   // Make trajectories.
-  Spline::interval_t timeRange = Spline::makeInterval (0., 16.);
-  Spline spline (timeRange, configurationSpaceSize, params, "before");
+  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 16.);
+  CubicBSpline spline (timeRange, configurationSpaceSize, params, "before");
   freeTime_t freeTimeTraj (spline, 1.);
 
   // Define cost.
@@ -164,7 +164,7 @@ int optimize (double initialX,
   solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
 
-  FreeTimeTrajectory<Spline> optimizedTrajectory = freeTimeTraj;
+  FreeTimeTrajectory<CubicBSpline> optimizedTrajectory = freeTimeTraj;
 
   switch (solver.minimumType ())
     {
@@ -188,11 +188,10 @@ int optimize (double initialX,
       return 1;
     }
 
-  Spline updatedSpline
-    (optimizedTrajectory.timeRange (),
-     configurationSpaceSize,
-     removeScaleFromParameters (optimizedTrajectory.parameters ()),
-     "after");
+  CubicBSpline updatedSpline(optimizedTrajectory().timeRange (),
+			     optimizedTrajectory().outputSize (),
+			     optimizedTrajectory().paramters (),
+			     "after");
 
   std::cerr
     << "Final time range: " << updatedSpline.timeRange () << std::endl

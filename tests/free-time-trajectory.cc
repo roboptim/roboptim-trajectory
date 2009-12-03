@@ -27,7 +27,7 @@
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/fwd.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include "common.hh"
@@ -39,7 +39,7 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 
 
-typedef FreeTimeTrajectory<Spline> freeTime_t;
+typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
 
 template <typename T>
 bool isAlmostEqual (const T& x, const T& y, const T& epsilon = 1e10-8)
@@ -115,9 +115,9 @@ struct DerivWrtParam : public DerivableFunction
 };
 
 
-void printTable (const Spline& spline, const freeTime_t& freeTimeTraj);
+void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj);
 
-void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
+void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 {
   double tmin = Function::getLowerBound (spline.timeRange ());
   double tmax = Function::getUpperBound (spline.timeRange ());
@@ -179,7 +179,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
       if (t > fttTmax)
 	t = fttTmax;
 
-      Spline::vector_t x (1);
+      CubicBSpline::vector_t x (1);
       x[0] = t;
 
       try
@@ -207,7 +207,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
       if (tmin <= t && t <= tmax)
 	{
-	  Spline::jacobian_t splineVarConfig =
+	  CubicBSpline::jacobian_t splineVarConfig =
 	    spline.variationConfigWrtParam (t);
 	  fmterConfig % normalize (splineVarConfig);
 	}
@@ -242,7 +242,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
       if (tmin <= t && t <= tmax)
 	{
-	  Spline::jacobian_t splineVarDeriv =
+	  CubicBSpline::jacobian_t splineVarDeriv =
 	    spline.variationDerivWrtParam (t, 1);
 	  fmterDeriv % normalize (splineVarDeriv);
 	}
@@ -257,7 +257,7 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 	   gradientId < freeTimeTraj.parameters ().size (); ++gradientId)
 	try
 	  {
-	    Spline::vector_t t_ (1);
+	    CubicBSpline::vector_t t_ (1);
 	    t_[0] = t;
 	    DerivWrtParam derivWrtParam (freeTimeTraj);
 	    checkGradientAndThrow (derivWrtParam, gradientId, t_);
@@ -275,24 +275,29 @@ void printTable (const Spline& spline, const freeTime_t& freeTimeTraj)
 
 int run_test ()
 {
-  typedef Spline::value_type value_type;
-  Spline::vector_t params (5);
+  typedef CubicBSpline::value_type value_type;
+  CubicBSpline::vector_t params (9);
 
   // Scale.
   params[0] = 1.;
   // Initial position.
   params[1] = 0.;
+  params[2] = 0.;
+  params[3] = 0.;
   // Control point 1.
-  params[2] = 25.;
+  params[4] = 25.;
   // Control point 2.
-  params[3] = 75.;
+  params[5] = 75.;
   // Final position.
-  params[4] = 100.;
+  params[6] = 100.;
+  params[7] = 100.;
+  params[8] = 100.;
 
   // Make trajectories.
-  Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
-  Spline spline (timeRange, 1, removeScaleFromParameters (params), "before");
-  FreeTimeTrajectory<Spline> freeTimeTraj (spline, 1.);
+  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 4.);
+  CubicBSpline spline (timeRange, 1, removeScaleFromParameters (params),
+		       "before");
+  FreeTimeTrajectory<CubicBSpline> freeTimeTraj (spline, 1.);
 
   assert (freeTimeTraj.inputSize () == 1);
   assert (freeTimeTraj.outputSize () == 1);

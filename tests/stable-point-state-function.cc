@@ -24,7 +24,7 @@
 #include <roboptim/trajectory/free-time-trajectory.hh>
 #include <roboptim/trajectory/frontal-speed.hh>
 #include <roboptim/trajectory/orthogonal-speed.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/stable-point-state-function.hh>
 
 using namespace roboptim;
@@ -33,23 +33,27 @@ using namespace roboptim::visualization;
 int run_test ()
 {
   const unsigned orderMax = 1;
-  Spline::vector_t params (12);
+  CubicBSpline::vector_t params (24);
 
   // Initial position.
   params[0] = 0.,  params[1] = 0., params[2] = 0.;
-  // Control point 1.
-  params[3] = 25.,  params[4] = 100., params[5] = 0.;
-  // Control point 2.
-  params[6] = 75.,  params[7] = 0., params[8] = 0.;
+  params[3] = 0.,  params[4] = 0., params[5] = 0.;
+  params[6] = 0.,  params[7] = 0., params[8] = 0.;
+  // Control point 3.
+  params[9] = 25.,  params[10] = 100., params[11] = 0.;
+  // Control point 4.
+  params[12] = 75.,  params[13] = 0., params[14] = 0.;
   // Final position.
-  params[9] = 100., params[10] = 100., params[11] = 0.;
+  params[15] = 100., params[16] = 100., params[17] = 0.;
+  params[18] = 100., params[19] = 100., params[20] = 0.;
+  params[21] = 100., params[22] = 100., params[23] = 0.;
 
-  Spline::vector_t fttParams = addScaleToParameters (params, 1.5);
+  CubicBSpline::vector_t fttParams = addScaleToParameters (params, 1.5);
 
-  Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
-  Spline spline (timeRange, 3, params, "before");
+  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 4.);
+  CubicBSpline spline (timeRange, 3, params, "before");
 
-  typedef FreeTimeTrajectory<Spline> freeTimeTraj_t;
+  typedef FreeTimeTrajectory<CubicBSpline> freeTimeTraj_t;
   freeTimeTraj_t ftt (spline, 2.);
 
   for (unsigned i = 0; i < 10; ++i)
@@ -58,12 +62,13 @@ int run_test ()
       const double t = timePoint.getTime (ftt.timeRange ());
 
       boost::shared_ptr<DerivableFunction> frontalSpeed (new FrontalSpeed ());
-      StablePointStateFunction<FreeTimeTrajectory<Spline> > stateFunction
+      StablePointStateFunction<FreeTimeTrajectory<CubicBSpline> > stateFunction
 	(ftt, frontalSpeed, timePoint, orderMax);
 
       boost::shared_ptr<DerivableFunction> orthogonalSpeed
 	(new OrthogonalSpeed ());
-      StablePointStateFunction<FreeTimeTrajectory<Spline> > orthoStateFunction
+      StablePointStateFunction<FreeTimeTrajectory<CubicBSpline> > 
+	orthoStateFunction
 	(ftt, orthogonalSpeed, timePoint, orderMax);
 
       std::cout << "State cost evaluation:" << std::endl

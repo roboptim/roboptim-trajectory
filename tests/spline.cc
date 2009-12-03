@@ -24,7 +24,7 @@
 #include <roboptim/core/visualization/gnuplot-function.hh>
 
 #include <roboptim/trajectory/fwd.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 
 using namespace roboptim;
 using namespace roboptim::visualization;
@@ -32,18 +32,22 @@ using namespace roboptim::visualization::gnuplot;
 
 int run_test ()
 {
-  Spline::vector_t params (8);
+  CubicBSpline::vector_t params (16);
 
   // Initial position.
   params[0] = 0.,  params[1] = 0.;
-  // Control point 1.
-  params[2] = 25.,  params[3] = 50.;
-  // Control point 2.
-  params[4] = 50.,  params[5] = 25.;
+  params[2] = 0.,  params[3] = 0.;
+  params[4] = 0.,  params[5] = 0.;
+  // Control point 3.
+  params[6] = 25.,  params[7] = 50.;
+  // Control point 4.
+  params[8] = 50.,  params[9] = 25.;
   // Final position.
-  params[6] = 100., params[7] = 100.;
+  params[10] = 100., params[11] = 100.;
+  params[12] = 100., params[13] = 100.;
+  params[14] = 100., params[15] = 100.;
 
-  Spline spline (std::make_pair (0., 5.), 2, params);
+  CubicBSpline spline (std::make_pair (0., 5.), 2, params, "spline");
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t interval (0., 5., 0.01);
@@ -66,7 +70,7 @@ int run_test ()
     << (gnuplot << plot_xy (spline, interval));
 
   // Reset parameters and recompute some values.
-  params[2] = 50.,  params[3] = 25.;
+  params[6] = 50.,  params[7] = 25.;
   spline.setParameters (params);
 
   std::cout

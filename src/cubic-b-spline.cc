@@ -86,16 +86,19 @@ namespace roboptim
     double Dt = (tm-t3)/(nbp_-3);
     unsigned int i=(unsigned int) floor(3+(t-t3)/Dt);
     assert(i>=3);
+    assert(i<=nbp_);
+    if (i == nbp_) i--;
     // Non zero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
     // b_{i,3}(t).
     double t_i = t3 + (i-3)*Dt;
     double tau_i = t - t_i;
-    assert (tau_i < Dt);
+    assert (tau_i <= Dt);
     double tau_i_2 = tau_i*tau_i;
     double tau_i_3 = tau_i*tau_i_2;
     double Dt_2 = Dt*Dt;
     double Dt_3 = Dt*Dt_2;
     unsigned int n = outputSize();
+    try {
     ublas::vector<double> P_i_3 =
       boost::numeric::ublas::subrange(parameters(),
 				      (i-3)*n,
@@ -153,6 +156,9 @@ namespace roboptim
       default:
 	assert (0);
       }
+    } catch (...) {
+      assert(0);
+    }
   }
 
   void

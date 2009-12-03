@@ -27,7 +27,7 @@
 #include <roboptim/core/visualization/gnuplot-function.hh>
 
 #include <roboptim/trajectory/fwd.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include "common.hh"
@@ -38,9 +38,9 @@ using namespace roboptim::visualization::gnuplot;
 
 int run_test ()
 {
-  Spline::vector_t params (4);
+  CubicBSpline::vector_t params (7);
 
-  for (unsigned x = 0; x < 4; ++x)
+  for (unsigned x = 0; x < 7; ++x)
     {
       std::cout
 	<<
@@ -57,7 +57,7 @@ int run_test ()
       params.clear ();
       params[x] = 1.;
 
-      Spline spline (std::make_pair (0., 4.), 1, params);
+      CubicBSpline spline (std::make_pair (0., 4.), 1, params);
       discreteInterval_t window (0., 4., 0.01);
       std::cerr << spline << std::endl;
 
@@ -83,7 +83,7 @@ int run_test ()
 	  for (double t = boost::get<0> (window); t < boost::get<1> (window);
 	       t += boost::get<2> (window))
 	    {
-	      Spline::vector_t grad = spline.derivative (t, i);
+	      CubicBSpline::vector_t grad = spline.derivative (t, i);
 	      std::cout << (boost::format ("%1.2f %2.2f\n")
 			    % normalize (t)
 			    % normalize (grad (0))).str ();
@@ -103,7 +103,7 @@ int run_test ()
 	  std::cout << "e" << std::endl;
 	}
 
-      for (unsigned j = 0; j < 4; ++j)
+      for (unsigned j = 0; j < 7; ++j)
 	for (unsigned i = 0; i < 3; ++i)
 	  {
 	    std::string title;
@@ -127,7 +127,8 @@ int run_test ()
 	    for (double t = boost::get<0> (window); t < boost::get<1> (window);
 		 t += boost::get<2> (window))
 	      {
-		Spline::matrix_t jac = spline.variationDerivWrtParam (t, i);
+		CubicBSpline::matrix_t jac =
+		  spline.variationDerivWrtParam (t, i);
 		std::cout << (boost::format ("%1.2f %2.2f\n")
 			      % normalize (t)
 			      % normalize (jac (0, j))).str ();

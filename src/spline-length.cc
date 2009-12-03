@@ -28,7 +28,7 @@ namespace roboptim
   {
     struct SumLength
     {
-      SumLength (const Spline& traj, double& res)
+      SumLength (const CubicBSpline& traj, double& res)
 	: traj_ (traj),
 	  res_ (res)
       {}
@@ -41,13 +41,13 @@ namespace roboptim
       }
 
     private:
-      const Spline& traj_;
+      const CubicBSpline& traj_;
       double& res_;
     };
 
     struct SumLengthGrad
     {
-      SumLengthGrad (const Spline& traj,
+      SumLengthGrad (const CubicBSpline& traj,
 		     SplineLength::gradient_t& grad)
 	: traj_ (traj),
 	  grad_ (grad)
@@ -61,17 +61,17 @@ namespace roboptim
       }
 
     private:
-      const Spline& traj_;
+      const CubicBSpline& traj_;
       SplineLength::gradient_t& grad_;
     };
 
   }
 
-  SplineLength::SplineLength (const Spline& spline,
+  SplineLength::SplineLength (const CubicBSpline& spline,
 			      size_type nDiscretizationPoints,
 			      boost::optional<interval_t> interval)
     throw ()
-    : TrajectoryCost<Spline> (spline, "spline length"),
+    : TrajectoryCost<CubicBSpline> (spline, "spline length"),
       interval_ (interval ? *interval : spline.timeRange ()),
       nDiscretizationPoints_ (nDiscretizationPoints)
   {

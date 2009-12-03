@@ -35,7 +35,7 @@
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/limit-speed.hh>
 #include <roboptim/trajectory/spline-length.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include <roboptim/trajectory/visualization/limit-speed.hh>
@@ -52,11 +52,11 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
-typedef FreeTimeTrajectory<Spline> freeTime_t;
+typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
 
 
 // Problem parameters.
-const unsigned nControlPoints = 11;
+const unsigned nControlPoints = 15;
 const unsigned nConstraintsPerCtrlPts = 10;
 const double vMax = 85.;
 
@@ -66,14 +66,18 @@ int run_test ()
   using namespace boost::assign;
 
   const double finalPos = 200.;
-  Spline::vector_t params (nControlPoints);
+  CubicBSpline::vector_t params (nControlPoints);
 
-  for (unsigned i = 0; i < nControlPoints; ++i)
-    params[i] = finalPos / (nControlPoints - 1) * i;
+  params[0] = 0;
+  params[1] = 0;
+  for (unsigned i = 0; i < nControlPoints-4; ++i)
+    params[i+2] = finalPos / (nControlPoints - 1) * i;
+  params[nControlPoints-2] = finalPos;
+  params[nControlPoints-1] = finalPos;
 
   // Make trajectories.
-  Spline::interval_t timeRange = Spline::makeInterval (0., 4.);
-  Spline spline (timeRange, 1, params, "before");
+  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 4.);
+  CubicBSpline spline (timeRange, 1, params, "before");
   freeTime_t freeTimeTraj (spline, 1.);
 
   // Define cost.
@@ -95,11 +99,15 @@ int run_test ()
 
   std::vector<Function::size_type> indices;
   indices.push_back (1);
+  indices.push_back (2);
+  indices.push_back (3);
+  indices.push_back (freeTimeParams.size () - 3);
+  indices.push_back (freeTimeParams.size () - 2);
   indices.push_back (freeTimeParams.size () - 1);
   makeFreeze (problem) (indices, freeTimeParams);
 
   Function::interval_t vRange = Function::makeUpperInterval (.5 * vMax * vMax);
-  LimitSpeed<FreeTimeTrajectory<Spline> >::addToProblem
+  LimitSpeed<FreeTimeTrajectory<CubicBSpline> >::addToProblem
     (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
 
   std::ofstream limitSpeedStream ("limit-speed.gp");
@@ -120,7 +128,7 @@ int run_test ()
   solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
 
-  FreeTimeTrajectory<Spline> optimizedTrajectory =
+  FreeTimeTrajectory<CubicBSpline> optimizedTrajectory =
     freeTimeTraj;
 
   switch (solver.minimumType ())
