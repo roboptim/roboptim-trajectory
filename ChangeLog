@@ -1,5 +1,10 @@
 2009-12-03  Florent Lamiraux  <florent@laas.fr>
 
+	Remove remaining Spline.
+	* include/roboptim/trajectory/fwd.hh: here.
+
+2009-12-03  Florent Lamiraux  <florent@laas.fr>
+
 	Adapt test output to new spline implementation.
 	* tests/spline-gradient.stdout: Basis functions have changed at
 	beginning and end of interval of definition.

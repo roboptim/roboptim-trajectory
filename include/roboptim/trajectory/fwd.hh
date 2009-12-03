@@ -36,7 +36,7 @@ namespace roboptim
   template <typename T>
   class TrajectoryCost;
 
-  class Spline;
+  class CubicBSpline;
   class SplineLength;
 } // end of namespace roboptim.
 
