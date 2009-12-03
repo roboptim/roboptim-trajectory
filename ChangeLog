@@ -1,5 +1,11 @@
 2009-12-03  Florent Lamiraux  <florent@laas.fr>
 
+	Adapt test output to new spline implementation.
+	* tests/spline-gradient.stdout: Basis functions have changed at
+	beginning and end of interval of definition.
+
+2009-12-03  Florent Lamiraux  <florent@laas.fr>
+
 	Add comments and fix bad gradients.
 	* tests/spline-gradient.cc: Do not check derivative by
 	* finite-difference at beginning and end of interval of definition.
