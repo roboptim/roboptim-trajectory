@@ -51,7 +51,7 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
-typedef FreeTimeTrajectory<Spline> freeTime_t;
+typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
 
 // Problem parameters.
 const unsigned configurationSpaceSize = 3;
@@ -188,10 +188,11 @@ int optimize (double initialX,
       return 1;
     }
 
-  CubicBSpline updatedSpline(optimizedTrajectory().timeRange (),
-			     optimizedTrajectory().outputSize (),
-			     optimizedTrajectory().paramters (),
-			     "after");
+  CubicBSpline updatedSpline
+    (optimizedTrajectory.timeRange (),
+     optimizedTrajectory.outputSize (),
+     optimizedTrajectory.parameters (),
+     "after");
 
   std::cerr
     << "Final time range: " << updatedSpline.timeRange () << std::endl

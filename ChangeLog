@@ -1,3 +1,8 @@
+2009-12-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Fix test case.
+	* tests/anthropomorphic-cost-function.cc: Fix syntax error.
+
 2009-12-03  Florent Lamiraux  <florent@laas.fr>
 
 	Remove remaining Spline.
