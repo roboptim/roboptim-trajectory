@@ -1,5 +1,10 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Add documentation.
+	* src/doc.hh: Add content to main page.
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Update build-aux and roboptim-core dependency.
 	* build-aux: Synchronize.
 	* configure.ac: Require roboptim-core >= 0.5.

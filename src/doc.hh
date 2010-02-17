@@ -21,10 +21,11 @@
 
    \section intro Introduction
 
-   FIXME
+   RobOptim trajectory is a toolbox for trajectory optimization.
 
-   Table of content:
-   - FIXME
+   It defines cost functions and constraints to simplify problem
+   definition. Abstraction for trajectory definition are provided and
+   an implementation of cubic splines can be used.
 
 
    \section reporting Reporting bugs
