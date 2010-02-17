@@ -71,7 +71,7 @@ int run_test ()
   params[0] = 0;
   params[1] = 0;
   for (unsigned i = 0; i < nControlPoints-4; ++i)
-    params[i+2] = finalPos / (nControlPoints - 1) * i;
+    params[i+2] = finalPos / (nControlPoints - 5) * i;
   params[nControlPoints-2] = finalPos;
   params[nControlPoints-1] = finalPos;
 

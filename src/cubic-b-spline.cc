@@ -254,10 +254,10 @@ namespace roboptim
       default:
 	assert (0);
       }
-    noalias(subrange(jac, 0, n, (i-3)*n, (i-2)*n)) = b_i_3*In;
-    noalias(subrange(jac, 0, n, (i-2)*n, (i-1)*n)) = b_i_2*In;
-    noalias(subrange(jac, 0, n, (i-1)*n, i*n))   = b_i_1*In;
-    noalias(subrange(jac, 0, n, i*n, (i+1)*n)) = b_i*In;
+    noalias(subrange(jac, 0, n, (i-3)*n, (i-2)*n)) = (b_i_3)/(6*Dt_3)*In;
+    noalias(subrange(jac, 0, n, (i-2)*n, (i-1)*n)) = (b_i_2)/(6*Dt_3)*In;
+    noalias(subrange(jac, 0, n, (i-1)*n, i*n))   = (b_i_1)/(6*Dt_3)*In;
+    noalias(subrange(jac, 0, n, i*n, (i+1)*n)) = (b_i)/(6*Dt_3)*In;
     return jac;
   }
 

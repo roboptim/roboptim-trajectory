@@ -1,5 +1,20 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix spline gradient computation.
+	* src/cubic-b-spline.cc: Fix bug in gradient computation.
+	* tests/free-time-trajectory.cc,
+	* tests/spline-gradient.stdout,
+	* tests/spline-optimization.cc,
+	* tests/spline-optimization.stdout,
+	* tests/spline-time-optimization.cc,
+	* tests/spline-time-optimization.stdout,
+	* tests/spline.cc,
+	* tests/stable-point-state-function.stdout,
+	* tests/state-function.stdout: Update and regenerate tests to
+	match new implementation.
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Update SPEC file.
 	* roboptim-trajectory.spec.in: Here.
 

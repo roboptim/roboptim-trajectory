@@ -113,7 +113,7 @@ int run_test ()
   }
   catch (BadGradient& bg)
     {
-      std::cout << bg << std::endl;
+      std::cerr << bg << std::endl;
       return 1;
     }
 
@@ -188,7 +188,7 @@ int run_test ()
     }
   catch (BadGradient& bg)
     {
-      std::cout << bg << std::endl;
+      std::cerr << bg << std::endl;
       return 1;
     }
 

@@ -19,6 +19,8 @@
 
 #include <boost/numeric/ublas/io.hpp>
 
+#include <roboptim/core/finite-difference-gradient.hh>
+
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
 #include <roboptim/core/visualization/gnuplot-function.hh>
@@ -30,8 +32,44 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
+struct SplineDerivWrtParameters : public DerivableFunction
+{
+  SplineDerivWrtParameters (const CubicBSpline& spline, value_type t)
+    : DerivableFunction (spline.parameters ().size (), spline.outputSize (),
+			 "spline derivable w.r.t parameters"),
+      spline_ (spline),
+      t_ (t)
+  {}
+
+  virtual void
+  impl_compute (result_t& result, const argument_t& x)
+    const throw ()
+  {
+    CubicBSpline spline (spline_);
+    spline.setParameters (x);
+    result = spline (t_);
+  }
+
+  virtual void
+  impl_gradient (gradient_t& gradient,
+		 const argument_t& x,
+		 size_type functionId = 0)
+    const throw ()
+  {
+    CubicBSpline spline (spline_);
+    spline.setParameters (x);
+    gradient = row (spline.variationConfigWrtParam (t_), functionId);
+  }
+
+private:
+  const CubicBSpline& spline_;
+  value_type t_;
+};
+
 int run_test ()
 {
+  int status = 0;
+
   CubicBSpline::vector_t params (16);
 
   // Initial position.
@@ -47,7 +85,7 @@ int run_test ()
   params[12] = 100., params[13] = 100.;
   params[14] = 100., params[15] = 100.;
 
-  CubicBSpline spline (std::make_pair (0., 5.), 2, params, "spline");
+  CubicBSpline spline (std::make_pair (0., 5.), 2, params, "spline");//FIXME: change interval.
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t interval (0., 5., 0.01);
@@ -84,7 +122,24 @@ int run_test ()
     << "# " << spline.derivative (2.5, 2) << std::endl
     << "# " << spline.derivative (5., 2) << std::endl;
 
-  return 0;
+  for (double t = 0.; t < 5.; t += 0.5)
+    {
+      try
+	{
+	  Function::vector_t x (1);
+	  x[0] = t;
+	  checkGradientAndThrow (spline, 0, x);
+
+	  SplineDerivWrtParameters splineDerivWrtParams (spline, t);
+	  checkGradientAndThrow (splineDerivWrtParams, 0, spline.parameters ());
+	}
+      catch (BadGradient& bg)
+	{
+	  std::cerr << bg << std::endl;
+	  status = 1;
+	}
+    }
+  return status;
 }
 
 GENERATE_TEST ()
