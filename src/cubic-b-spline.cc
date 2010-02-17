@@ -73,92 +73,104 @@ namespace roboptim
     this->derivative (derivative, t, 0);
   }
 
-  void
-  CubicBSpline::impl_derivative (gradient_t& derivative, double t,
-				 size_type order)
-    const throw ()
+  CubicBSpline::value_type
+  CubicBSpline::Dt () const
+  {
+    return length () / (nbp_ - 3.);
+  }
+
+  CubicBSpline::size_type
+  CubicBSpline::interval (value_type t) const
+  {
+    size_type i = std::floor (3 + (t - getLowerBound (timeRange ())) / Dt ());
+    if (i == nbp_)
+      i--;
+    return i;
+  }
+
+  CubicBSpline::vector_t
+  CubicBSpline::basisFunctions (value_type t, size_type order) const
   {
     t = detail::fixTime (t, *this);
-    double t3 = timeRange ().first;
-    double tm = timeRange ().second;
-    assert (t3 <= t && t <= tm);
-    // determine on which interval t lies
-    double Dt = (tm-t3)/(nbp_-3);
-    unsigned int i=(unsigned int) floor(3+(t-t3)/Dt);
-    assert(i>=3);
-    assert(i<=nbp_);
-    if (i == nbp_) i--;
+
+    const double Dt = this->Dt ();
+    const double t3 = getLowerBound (timeRange ());
+    const double tm = getUpperBound (timeRange ());
+
+    const size_type i = interval (t);
+    const size_type n = outputSize ();
+
     // Non zero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
     // b_{i,3}(t).
-    double t_i = t3 + (i-3)*Dt;
-    double tau_i = t - t_i;
+    const value_type t_i = t3 + (i - 3) * Dt;
+
+    const value_type tau_i = t - t_i;
+    const value_type tau_i_2 = tau_i * tau_i;
+    const value_type tau_i_3 = tau_i * tau_i_2;
     assert (tau_i <= Dt);
-    double tau_i_2 = tau_i*tau_i;
-    double tau_i_3 = tau_i*tau_i_2;
-    double Dt_2 = Dt*Dt;
-    double Dt_3 = Dt*Dt_2;
-    unsigned int n = outputSize();
-    try {
-    ublas::vector<double> P_i_3 =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i-3)*n,
-				      (i-2)*n);
-    ublas::vector<double> P_i_2 =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i-2)*n,
-				      (i-1)*n);
-    ublas::vector<double> P_i_1 =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i-1)*n,
-				      (i)*n);
-    ublas::vector<double> P_i =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i)*n,
-				      (i+1)*n);
+
+    const value_type Dt_2 = Dt * Dt;
+    const value_type Dt_3 = Dt * Dt_2;
+
+    // Evaluate basis functions, up to division by 6 Dt_3 that will
+    // be performed at the end.
+    vector_t b_i (4);
     switch (order)
       {
       case 0:
 	{
-	  // Evaluate basis functions, up to division by 6 Dt_3 that will
-	  // be performed at the end.
-	  double b_i_3 = (  -tau_i_3 + 3*Dt*tau_i_2 - 3*Dt_2*tau_i +   Dt_3);
-	  double b_i_2 = ( 3*tau_i_3 - 6*Dt*tau_i_2                + 4*Dt_3);
-	  double b_i_1 = (-3*tau_i_3 + 3*Dt*tau_i_2 + 3*Dt_2*tau_i +   Dt_3);
-	  double b_i   = (   tau_i_3                                       );
-	  derivative =
-	    (b_i_3*P_i_3 + b_i_2*P_i_2 + b_i_1*P_i_1 + b_i*P_i)/(6*Dt_3);
+	  b_i[3] = (  -tau_i_3 + 3*Dt*tau_i_2 - 3*Dt_2*tau_i +   Dt_3);
+	  b_i[2] = ( 3*tau_i_3 - 6*Dt*tau_i_2                + 4*Dt_3);
+	  b_i[1] = (-3*tau_i_3 + 3*Dt*tau_i_2 + 3*Dt_2*tau_i +   Dt_3);
+	  b_i[0] = (   tau_i_3                                       );
+	  b_i /= 6.;
 	}
 	break;
       case 1:
 	{
-	  // Evaluate basis function derivatives, up to division by
-	  // 6 Dt_3 that will be performed at the end.
-	  double b_i_3 = (-3*tau_i_2 +  6*Dt*tau_i - 3*Dt_2);
-	  double b_i_2 = ( 9*tau_i_2 - 12*Dt*tau_i         );
-	  double b_i_1 = (-9*tau_i_2 +  6*Dt*tau_i + 3*Dt_2);
-	  double b_i   = ( 3*tau_i_2                       );
-	  derivative =
-	    (b_i_3*P_i_3 + b_i_2*P_i_2 + b_i_1*P_i_1 + b_i*P_i)/(6*Dt_3);
+	  b_i[3] = (-3*tau_i_2 +  6*Dt*tau_i - 3*Dt_2);
+	  b_i[2] = ( 9*tau_i_2 - 12*Dt*tau_i         );
+	  b_i[1] = (-9*tau_i_2 +  6*Dt*tau_i + 3*Dt_2);
+	  b_i[0] = ( 3*tau_i_2                       );
+	  b_i /= 6.;
 	}
 	break;
       case 2:
 	{
-	  // Evaluate basis function second derivatives, up to division by
-	  // 6 Dt_3 that will be performed at the end.
-	  double b_i_3 = (  -tau_i +  Dt);
-	  double b_i_2 = ( 3*tau_i - 2*Dt);
-	  double b_i_1 = (-3*tau_i +   Dt);
-	  double b_i   = (   tau_i       );
-	  derivative =
-	    (b_i_3*P_i_3 + b_i_2*P_i_2 + b_i_1*P_i_1 + b_i*P_i)/(Dt_3);
+	  b_i[3] = (  -tau_i +  Dt);
+	  b_i[2] = ( 3*tau_i - 2*Dt);
+	  b_i[1] = (-3*tau_i +   Dt);
+	  b_i[0] = (   tau_i       );
+	  // division by six not needed here.
 	}
 	break;
       default:
 	assert (0);
       }
-    } catch (...) {
-      assert(0);
-    }
+    return b_i;
+  }
+
+  void
+  CubicBSpline::impl_derivative (gradient_t& derivative, double t,
+				 size_type order)
+    const throw ()
+  {
+    using boost::numeric::ublas::subrange;
+
+    t = detail::fixTime (t, *this);
+    const size_type i = interval (t);
+    const size_type n = outputSize ();
+    const value_type Dt_3 = Dt () * Dt () * Dt ();
+
+    const vector_t& P_i_3 = subrange (parameters (), (i - 3) * n, (i - 2) * n);
+    const vector_t& P_i_2 = subrange (parameters (), (i - 2) * n, (i - 1) * n);
+    const vector_t& P_i_1 = subrange (parameters (), (i - 1) * n, (i + 0) * n);
+    const vector_t& P_i   = subrange (parameters (), (i - 0) * n, (i + 1) * n);
+
+    const vector_t b_i = basisFunctions (t, order);
+
+    derivative = b_i[3] * P_i_3 + b_i[2] * P_i_2 + b_i[1] * P_i_1 + b_i[0] * P_i;
+    derivative /= Dt_3;
   }
 
   void
@@ -181,83 +193,22 @@ namespace roboptim
   CubicBSpline::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
-    t = detail::fixTime (t, *this);
-    double t3 = timeRange ().first;
-    double tm = timeRange ().second;
-    assert (t3 <= t && t <= tm);
-    // determine on which interval t lies
-    double Dt = (tm-t3)/(nbp_-3);
-    unsigned int i=(unsigned int) floor(3+(t-t3)/Dt);
-    assert(i>=3);
-    // Non zero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
-    // b_{i,3}(t).
-    double t_i = t3 + (i-3)*Dt;
-    double tau_i = t - t_i;
-    assert (tau_i < Dt);
-    double tau_i_2 = tau_i*tau_i;
-    double tau_i_3 = tau_i*tau_i_2;
-    double Dt_2 = Dt*Dt;
-    double Dt_3 = Dt*Dt_2;
-    unsigned int n = outputSize();
-    ublas::vector<double> P_i_3 =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i-3)*n,
-				      (i-2)*n);
-    ublas::vector<double> P_i_2 =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i-2)*n,
-				      (i-1)*n);
-    ublas::vector<double> P_i_1 =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i-1)*n,
-				      (i)*n);
-    ublas::vector<double> P_i =
-      boost::numeric::ublas::subrange(parameters(),
-				      (i)*n,
-				      (i+1)*n);
-    jacobian_t jac = ublas::zero_matrix<double>(n, nbp_ * n);
-    ublas::identity_matrix<double> In(n);
-    double b_i=0, b_i_1=0, b_i_2=0, b_i_3=0;
+    using boost::numeric::ublas::noalias;
+    using boost::numeric::ublas::subrange;
 
-    switch (order)
-      {
-      case 0:
-	{
-	  // Evaluate basis functions, up to division by 6 Dt_3 that will
-	  // be performed at the end.
-	  b_i_3 = (  -tau_i_3 + 3*Dt*tau_i_2 - 3*Dt_2*tau_i +   Dt_3);
-	  b_i_2 = ( 3*tau_i_3 - 6*Dt*tau_i_2                + 4*Dt_3);
-	  b_i_1 = (-3*tau_i_3 + 3*Dt*tau_i_2 + 3*Dt_2*tau_i +   Dt_3);
-	  b_i   = (   tau_i_3                                       );
-	}
-	break;
-      case 1:
-	{
-	  // Evaluate basis function derivatives, up to division by
-	  // 6 Dt_3 that will be performed at the end.
-	  b_i_3 = (-3*tau_i_2 +  6*Dt*tau_i - 3*Dt_2);
-	  b_i_2 = ( 9*tau_i_2 - 12*Dt*tau_i         );
-	  b_i_1 = (-9*tau_i_2 +  6*Dt*tau_i + 3*Dt_2);
-	  b_i   = ( 3*tau_i_2                       );
-	}
-	break;
-      case 2:
-	{
-	  // Evaluate basis function second derivatives, up to division by
-	  // 6 Dt_3 that will be performed at the end.
-	  b_i_3 = (  -tau_i +  Dt);
-	  b_i_2 = ( 3*tau_i - 2*Dt);
-	  b_i_1 = (-3*tau_i +   Dt);
-	  b_i   = (   tau_i       );
-	}
-	break;
-      default:
-	assert (0);
-      }
-    noalias(subrange(jac, 0, n, (i-3)*n, (i-2)*n)) = (b_i_3)/(6*Dt_3)*In;
-    noalias(subrange(jac, 0, n, (i-2)*n, (i-1)*n)) = (b_i_2)/(6*Dt_3)*In;
-    noalias(subrange(jac, 0, n, (i-1)*n, i*n))   = (b_i_1)/(6*Dt_3)*In;
-    noalias(subrange(jac, 0, n, i*n, (i+1)*n)) = (b_i)/(6*Dt_3)*In;
+    const size_type i = interval (t);
+    const size_type n = outputSize ();
+    const vector_t b_i = basisFunctions (t, order);
+    const value_type Dt_3 = Dt () * Dt () * Dt ();
+
+    jacobian_t jac = ublas::zero_matrix<double> (n, nbp_ * n);
+    const ublas::identity_matrix<double> In (n);
+
+    noalias (subrange (jac, 0, n, (i - 3) * n, (i - 2) * n)) = b_i[3] * In;
+    noalias (subrange (jac, 0, n, (i - 2) * n, (i - 1) * n)) = b_i[2] * In;
+    noalias (subrange (jac, 0, n, (i - 1) * n,       i * n)) = b_i[1] * In;
+    noalias (subrange (jac, 0, n,       i * n, (i + 1) * n)) = b_i[0] * In;
+    jac  /= Dt_3;
     return jac;
   }
 

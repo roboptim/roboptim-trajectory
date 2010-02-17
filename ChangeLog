@@ -1,5 +1,18 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Clean and debug cubic spline.
+	* include/roboptim/trajectory/cubic-b-spline.hh:
+	Add new private methods to factorize code.
+	* src/cubic-b-spline.cc: Factorize, clean, debug.
+	* tests/free-time-trajectory-stable-time-point.stdout,
+	* tests/free-time-trajectory.stdout,
+	* tests/spline-gradient.stdout,
+	* tests/spline.stdout,
+	* tests/stable-point-state-function.stdout,
+	* tests/state-function.stdout: Regenerate.
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix test cases.
 	* tests/free-time-trajectory-stable-time-point.cc,
 	* tests/free-time-trajectory-stable-time-point.stdout,

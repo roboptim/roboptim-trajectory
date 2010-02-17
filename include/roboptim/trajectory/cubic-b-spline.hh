@@ -103,6 +103,10 @@ namespace roboptim
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const throw ();
 
+    value_type Dt () const;
+    size_type interval (value_type t) const;
+    vector_t basisFunctions (value_type t, size_type order) const;
+
   private:
     /// \brief Number of control points.
     unsigned int nbp_;
