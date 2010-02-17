@@ -1,5 +1,10 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Do not distribute bspline.pdf.
+	* doc/Makefile.am: Here.
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fill NEWS file.
 	* NEWS: Here.
 
