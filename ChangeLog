@@ -1,6 +1,13 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Update SPEC file.
+	* roboptim-trajectory.spec.in: Update SPEC file and
+	submit it to Fedora for inclusion, see:
+	https://bugzilla.redhat.com/show_bug.cgi?id=566281.
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Update SPEC file.
 	* roboptim-trajectory.spec.in: Here.
 
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>

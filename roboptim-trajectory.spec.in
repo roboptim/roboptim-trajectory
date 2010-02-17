@@ -64,6 +64,9 @@ install -cpm 644 AUTHORS COPYING README NEWS \
 # Get rid of Libtool files as they should not be installed.
 rm $RPM_BUILD_ROOT/%{_libdir}/*.la
 
+# Get rid of Doxygen's installdox.
+rm $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version}/doxygen-html/installdox
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -92,7 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %changelog
-* Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.5
+* Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.5-1
 - Fix source0.
 
 * Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.4.10
