@@ -1,5 +1,10 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Update SPEC file.
+	* roboptim-trajectory.spec.in: Here.
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Do not distribute non-existing files.
 	* doc/Makefile.am: Here.
 

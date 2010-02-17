@@ -6,7 +6,7 @@ Summary: The RobOptim trajectory C++ library
 Group: Development/Libraries
 License: LGPLv3+
 URL: http://roboptim.sourceforge.net/
-Source0: http://dl.sf.net/sourceforge/%{name}/%{name}-%{version}.tar.gz
+Source0: http://downloads.sourceforge.net/roboptim/%{name}-%{version}.tar.gz
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -58,12 +58,11 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR="$RPM_BUILD_ROOT" INSTALL="install -p"
 
 # Install
-install -cpm 644 AUTHORS COPYING THANKS README NEWS \
+install -cpm 644 AUTHORS COPYING README NEWS \
  $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/
 
 # Get rid of Libtool files as they should not be installed.
 rm $RPM_BUILD_ROOT/%{_libdir}/*.la
-rm $RPM_BUILD_ROOT/%{_libdir}/%{name}/*.la
 
 
 %clean
@@ -93,6 +92,9 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %changelog
+* Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.5
+- Fix source0.
+
 * Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.4.10
 - Clean spec file to match Fedora policies.
 
