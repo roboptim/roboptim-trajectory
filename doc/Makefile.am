@@ -4,6 +4,4 @@ include $(top_srcdir)/build-aux/sf-doc.mk
 
 EXTRA_DIST+=				\
 	bspline.tex			\
-	pictures/basis-functions.fig	\
-	pictures/basis-functions.pdf	\
-	pictures/basis-functions.pdf_t
+	pictures/basis-functions.fig
