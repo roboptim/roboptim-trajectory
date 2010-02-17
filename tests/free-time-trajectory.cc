@@ -200,7 +200,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 
   std::cout << "Variation of the configuration w.r.t to parameters:" << std::endl;
   format fmterConfig ("%1.2f %|50t|%2.2f");
-  for (double t = fttTmin + 1e-3; t <= fttTmax + 1e-3; t += .1)
+  for (double t = fttTmin; t <= fttTmax + 1e-3; t += .1)
     {
       std::cout << "t = " <<  t << std::endl;
       if (t > fttTmax)
@@ -236,7 +236,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 
   std::cout << "Variation of the derivative w.r.t to parameters:" << std::endl;
   format fmterDeriv ("%1.2f %|50t|%2.2f");
-  for (double t = fttTmin + 1e-3; t <= fttTmax + 1e-3; t += .1)
+  for (double t = fttTmin + .1; t <= fttTmax - .1; t += .1)
     {
       if (t > fttTmax)
 	t = fttTmax;
@@ -265,7 +265,9 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 	  }
 	catch (BadGradient& bg)
 	  {
-	    std::cout << bg << std::endl;
+	    std::cout
+	      << "component " << gradientId << " is wrong:" << std::endl
+	      << bg << std::endl;
 	  }
 
       std::cout << fmterDeriv << std::endl;

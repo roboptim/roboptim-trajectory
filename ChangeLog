@@ -1,5 +1,15 @@
 2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix test cases.
+	* tests/free-time-trajectory-stable-time-point.cc,
+	* tests/free-time-trajectory-stable-time-point.stdout,
+	* tests/free-time-trajectory.cc,
+	* tests/free-time-trajectory.stdout: Update test cases for new
+	spline class (finite difference gradients seems wrong on bounds,
+	disable it for now).
+
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix spline gradient computation.
 	* src/cubic-b-spline.cc: Fix bug in gradient computation.
 	* tests/free-time-trajectory.cc,

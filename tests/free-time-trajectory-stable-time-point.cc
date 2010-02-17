@@ -230,7 +230,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 
   std::cout << "Variation of the derivative w.r.t to parameters:" << std::endl;
   format fmterDeriv ("%1.2f %|50t|%2.2f");
-  for (double alpha = 0.; alpha <= 1.; alpha += .1)
+  for (double alpha = 0. + .1; alpha <= 1. - .1; alpha += .1)
     {
       if (alpha >= 1.)
 	alpha = 1.;
