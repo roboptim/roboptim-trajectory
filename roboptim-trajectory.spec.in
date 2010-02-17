@@ -7,9 +7,12 @@ Group: Development/Libraries
 License: LGPLv3+
 URL: http://roboptim.sourceforge.net/
 Source0: http://dl.sf.net/sourceforge/%{name}/%{name}-%{version}.tar.gz
+
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: roboptim-core-devel, boost-devel, libtool-ltdl-devel, doxygen
+BuildRequires: roboptim-core-devel, boost-devel
+# Require Doxygen and its dependencies.
+BuildRequires: doxygen, tex(latex), tex(dvips)
 
 
 %description
@@ -21,7 +24,8 @@ and tools to define trajectory optimization problems.
 %package devel
 Summary: The Roboptim trajectory headers and development-related files
 Group: Development/Libraries
-Requires: @PACKAGE_TARNAME@ = %{version}-%{release}, pkgconfig
+Requires: %{name} = %{version}-%{release}, roboptim-core-devel, boost-devel
+# pkg-config dependency is detected automatically on Fedora.
 %description devel
 Headers and shared object symlinks for the RobOptim trajectory C++ library
 
@@ -29,7 +33,7 @@ Headers and shared object symlinks for the RobOptim trajectory C++ library
 %package doc
 Summary: The RobOptim trajectory documentation
 Group: Documentation
-Requires: @PACKAGE_TARNAME@ = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}, roboptim-core-doc
 %description doc
 Documentation for the RobOptim trajectory library
 
@@ -41,7 +45,7 @@ Documentation for the RobOptim trajectory library
 %setup -q
 
 %build
-%configure --docdir=%{_datadir}/doc/%{name}-%{version} --disable-static
+%configure --docdir=%{_docdir}/%{name}-%{version} --disable-static
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
@@ -51,10 +55,15 @@ make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR="$RPM_BUILD_ROOT" INSTALL="install -p"
+
+# Install
+install -cpm 644 AUTHORS COPYING THANKS README NEWS \
+ $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}/
 
 # Get rid of Libtool files as they should not be installed.
 rm $RPM_BUILD_ROOT/%{_libdir}/*.la
+rm $RPM_BUILD_ROOT/%{_libdir}/%{name}/*.la
 
 
 %clean
@@ -62,6 +71,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%dir %{_docdir}/%{name}-%{version}/
+
+# for COPYING, INSTALL, AUTHORS, etc.
+%{_docdir}/%{name}-%{version}/[A-Z]*
+
+# versioned shared library
 %{_libdir}/*.so.*
 
 %files devel
@@ -72,12 +87,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files doc
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING README NEWS
-%{_datadir}/doc/%{name}-%{version}/*
+%{_docdir}/%{name}-%{version}/doxygen-html/
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %changelog
+* Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.4.10
+- Clean spec file to match Fedora policies.
+
 * Thu Nov 12 2009 Thomas Moulard <thomas.moulard@gmail.com> - 0.2.34
 - initial work.

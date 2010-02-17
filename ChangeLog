@@ -1,3 +1,8 @@
+2010-02-17  Thomas Moulard  <thomas.moulard@gmail.com>
+
+	Update SPEC file.
+	* roboptim-trajectory.spec.in: Here.
+
 2009-12-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
 	Fix test case.
