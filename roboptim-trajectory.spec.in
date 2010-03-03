@@ -83,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(-,root,root,-)
-%{_includedir}/*
+%{_includedir}/roboptim/trajectory
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*
 
@@ -95,6 +95,9 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %changelog
+* Mon Feb 22 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.5-2
+- Fix include directory owning issue.
+
 * Wed Feb 17 2010 Thomas Moulard <thomas.moulard@gmail.com> - 0.5-1
 - Fix source0.
 

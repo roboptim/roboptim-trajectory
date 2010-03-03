@@ -1,5 +1,10 @@
 2010-03-03  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Fix SPEC file.
+	* roboptim-trajectory.spec.in: Here.
+
+2010-03-03  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Add constraint to freeze start/end of the cubic spline.
 	* configure.ac: Update requirements.
 	* include/Makefile.am: Distribute new header.
