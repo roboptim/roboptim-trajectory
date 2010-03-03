@@ -2,6 +2,9 @@ include $(top_srcdir)/build-aux/init.mk
 
 # --- Distribute and install headers.
 nobase_include_HEADERS =					\
+	roboptim/trajectory.hh
+
+nobase_include_HEADERS +=					\
 	roboptim/trajectory/anthropomorphic-cost-function.hh	\
 	roboptim/trajectory/anthropomorphic-cost-function.hxx	\
 	roboptim/trajectory/free-time-trajectory.hh		\
@@ -16,6 +19,7 @@ nobase_include_HEADERS =					\
 	roboptim/trajectory/limit-speed.hxx			\
 	roboptim/trajectory/orthogonal-speed.hh			\
 	roboptim/trajectory/cubic-b-spline.hh			\
+	roboptim/trajectory/cubic-b-spline.hxx			\
 	roboptim/trajectory/spline-length.hh			\
 	roboptim/trajectory/stable-point-state-function.hh	\
 	roboptim/trajectory/stable-point-state-function.hxx	\

@@ -61,7 +61,7 @@ JRL_PROG_DOXYGEN
 LT_INIT([dlopen])
 
 # Search for RobOptim core.
-ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.5])
+ROBOPTIM_CORE_PKG_CONFIG([roboptim-core >= 0.5.12])
 
 # Search for Roboptim core CFSQP plug-in.
 AC_CHECK_HEADERS([roboptim/core/plugin/cfsqp.hh],

@@ -1,4 +1,4 @@
-// Copyright (C) 2009 by Thomas Moulard, AIST, CNRS, INRIA.
+// Copyright (C) 2009, 2010 by Thomas Moulard, AIST, CNRS, INRIA.
 //
 // This file is part of the roboptim.
 //
@@ -95,6 +95,11 @@ namespace roboptim
     jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
     jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
       const throw ();
+
+    template <typename P>
+    void freezeCurveStart (P& problem);
+    template <typename P>
+    void freezeCurveEnd (P& problem);
 
   protected:
     void impl_compute (result_t&, double) const throw ();
