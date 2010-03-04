@@ -97,9 +97,9 @@ namespace roboptim
       const throw ();
 
     template <typename P>
-    void freezeCurveStart (P& problem);
+    void freezeCurveStart (P& problem, size_type offset = 0) const throw ();
     template <typename P>
-    void freezeCurveEnd (P& problem);
+    void freezeCurveEnd (P& problem, size_type offset = 0) const throw ();
 
   protected:
     void impl_compute (result_t&, double) const throw ();
@@ -121,4 +121,5 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
+# include <roboptim/trajectory/cubic-b-spline.hxx>
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HH

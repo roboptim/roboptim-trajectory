@@ -17,81 +17,61 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HXX
 # define ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HXX
+# include <roboptim/core/numeric-linear-function.hh>
 
 namespace roboptim
 {
   template <typename P>
   void
-  CubicBSpline::frezzeCurveStart (P& problem)
+  CubicBSpline::freezeCurveStart (P& problem, size_type offset) const throw ()
   {
-    using boost::numeric::ublas::zero_matrix;
-    using boost::numeric::ublas::zero_vector;
+    using boost::shared_ptr;
+    const size_type paramSize = parameters ().size ();
+    const Function::interval_t interval = Function::makeInterval (0, 0);
+    assert (paramSize >= offset + 3 * outputSize ());
 
-    Function::matrix_t A[3];
-    Function::vector_t b[3];
+    for (size_type i = 0; i < outputSize (); ++i)
+      {
+	Function::matrix_t A (1, offset + paramSize);
+	Function::vector_t b (1);
+	A.clear ();
+	b.clear ();
 
-    A[0] = zero_matrix<double>(1, paramSize);
-    A[1] = zero_matrix<double>(1, paramSize);
-    A[2] = zero_matrix<double>(1, paramSize);
-
-    b[0] = zero_vector<double>(1);
-    b[1] = zero_vector<double>(1);
-    b[2] = zero_vector<double>(1);
-    A[0](0,1) = A[1](0,2) = A[2](0,3)=1./6.;
-    A[0](0,4) = A[1](0,5) = A[2](0,6)=2./3.;
-    A[0](0,7) = A[1](0,8) = A[2](0,9)=1./6.;
-    b[0](0) = -freeTimeTraj_.parameters ()[1+0];
-    b[1](0) = -freeTimeTraj_.parameters ()[1+1];
-    b[2](0) = -freeTimeTraj_.parameters ()[1+2];
-    NumericLinearFunction* boundaryCond;
-    boundaryCond = new NumericLinearFunction(A[0], b[0]);
-    boost::shared_ptr<LinearFunction>	boundaryCond0ShPtr(boundaryCond);
-    boundaryCond = new NumericLinearFunction(A[1], b[1]);
-    boost::shared_ptr<LinearFunction>	boundaryCond1ShPtr(boundaryCond);
-    boundaryCond = new NumericLinearFunction(A[2], b[2]);
-    boost::shared_ptr<LinearFunction>	boundaryCond2ShPtr(boundaryCond);
-
-    problem.addConstraint(boundaryCond0ShPtr, interval);
-    problem.addConstraint(boundaryCond1ShPtr, interval);
-    problem.addConstraint(boundaryCond2ShPtr, interval);
+	A (0, offset + i + 0. * outputSize ()) = 1. / 6.;
+	A (0, offset + i + 1. * outputSize ()) = 2. / 3.;
+	A (0, offset + i + 2. * outputSize ()) = 1. / 6.;
+	b (0) = -parameters ()[offset + i];
+	NumericLinearFunction* boundaryCond = new NumericLinearFunction (A, b);
+	shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
+	problem.addConstraint (boundaryCondShPtr, interval);
+      }
   }
 
   template <typename P>
   void
-  CubicBSpline::frezzeCurveEnd (P& problem)
+  CubicBSpline::freezeCurveEnd (P& problem, size_type offset) const throw ()
   {
-    using boost::numeric::ublas::zero_matrix;
-    using boost::numeric::ublas::zero_vector;
+    using boost::shared_ptr;
+    const size_type paramSize = parameters ().size ();
+    const Function::interval_t interval = Function::makeInterval (0, 0);
+    assert (paramSize >= offset + 3 * outputSize ());
 
-    Function::matrix_t A[3];
-    Function::vector_t b[3];
+    for (size_type i = 0; i < outputSize (); ++i)
+      {
+	Function::matrix_t A (1, offset + paramSize);
+	Function::vector_t b (1);
+	A.clear ();
+	b.clear ();
 
-    A[0] = zero_matrix<double>(1, paramSize);
-    A[1] = zero_matrix<double>(1, paramSize);
-    A[2] = zero_matrix<double>(1, paramSize);
-    b[0] = zero_vector<double>(1);
-    b[1] = zero_vector<double>(1);
-    b[2] = zero_vector<double>(1);
-
-    A[0](0,paramSize-9) = A[1](0,paramSize-8) = A[2](0,paramSize-7)=1./6.;
-    A[0](0,paramSize-6) = A[1](0,paramSize-5) = A[2](0,paramSize-4)=2./3.;
-    A[0](0,paramSize-3) = A[1](0,paramSize-2) = A[2](0,paramSize-1)=1./6.;
-    b[0](0) = -freeTimeTraj_.parameters ()[paramSize-3];
-    b[1](0) = -freeTimeTraj_.parameters ()[paramSize-2];
-    b[2](0) = -freeTimeTraj_.parameters ()[paramSize-1];
-    boundaryCond = new NumericLinearFunction(A[0], b[0]);
-    boost::shared_ptr<LinearFunction>	boundaryCond3ShPtr(boundaryCond);
-    boundaryCond = new NumericLinearFunction(A[1], b[1]);
-    boost::shared_ptr<LinearFunction>	boundaryCond4ShPtr(boundaryCond);
-    boundaryCond = new NumericLinearFunction(A[2], b[2]);
-    boost::shared_ptr<LinearFunction>	boundaryCond5ShPtr(boundaryCond);
-
-    Function::interval_t interval = Function::makeInterval(0., 0.);
-    problem.addConstraint(boundaryCond3ShPtr, interval);
-    problem.addConstraint(boundaryCond4ShPtr, interval);
-    problem.addConstraint(boundaryCond5ShPtr, interval);
+	A (0, paramSize - 1 - i - 0. * outputSize ()) = 1. / 6.;
+	A (0, paramSize - 1 - i - 1. * outputSize ()) = 2. / 3.;
+	A (0, paramSize - 1 - i - 2. * outputSize ()) = 1. / 6.;
+	b (0) = -parameters ()[paramSize - 1 - i];
+	NumericLinearFunction* boundaryCond = new NumericLinearFunction (A, b);
+	shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
+	problem.addConstraint (boundaryCondShPtr, interval);
+      }
   }
-
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX

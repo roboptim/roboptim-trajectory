@@ -31,7 +31,6 @@
 #include <roboptim/core/visualization/gnuplot-function.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
-#include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/limit-speed.hh>
 #include <roboptim/trajectory/spline-length.hh>
@@ -97,14 +96,8 @@ int run_test ()
 
   const freeTime_t::vector_t freeTimeParams = freeTimeTraj.parameters ();
 
-  std::vector<Function::size_type> indices;
-  indices.push_back (1);
-  indices.push_back (2);
-  indices.push_back (3);
-  indices.push_back (freeTimeParams.size () - 3);
-  indices.push_back (freeTimeParams.size () - 2);
-  indices.push_back (freeTimeParams.size () - 1);
-  makeFreeze (problem) (indices, freeTimeParams);
+  spline.freezeCurveStart (problem, 1);
+  spline.freezeCurveEnd (problem, 1);
 
   Function::interval_t vRange = Function::makeUpperInterval (.5 * vMax * vMax);
   LimitSpeed<FreeTimeTrajectory<CubicBSpline> >::addToProblem

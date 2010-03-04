@@ -28,7 +28,6 @@
 #include <roboptim/core/visualization/gnuplot-commands.hh>
 #include <roboptim/core/visualization/gnuplot-function.hh>
 
-#include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/spline-length.hh>
 #include <roboptim/trajectory/cubic-b-spline.hh>
@@ -47,6 +46,32 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
+
+void showSpline (const CubicBSpline& spline);
+
+void showSpline (const CubicBSpline& spline)
+{
+  std::cout
+    << "# Values:" << std::endl
+    << "# " << normalize (spline (0.)) << std::endl
+    << "# " << normalize (spline (2.5)) << std::endl
+    << "# " << normalize (spline (4.)) << std::endl
+
+    << "# 1st derivative:" << std::endl
+    << "# " << normalize (spline.derivative (0., 1)) << std::endl
+    << "# " << normalize (spline.derivative (2.5, 1)) << std::endl
+    << "# " << normalize (spline.derivative (4., 1)) << std::endl
+
+    << "# 2nd derivative:" << std::endl
+    << "# " << normalize (spline.derivative (0., 2)) << std::endl
+    << "# " << normalize (spline.derivative (2.5, 2)) << std::endl
+    << "# " << normalize (spline.derivative (4., 2)) << std::endl
+
+    << "# variationConfigWrtParam:" << std::endl
+    << "# " << normalize (spline.variationConfigWrtParam (0.)) << std::endl
+    << "# " << normalize (spline.variationConfigWrtParam (2.5)) << std::endl
+    << "# " << normalize (spline.variationConfigWrtParam (4.)) << std::endl;
+}
 
 int run_test ()
 {
@@ -71,26 +96,7 @@ int run_test ()
   CubicBSpline spline (timeRange, 2, params, "before");
   discreteInterval_t interval (0., 4., 0.01);
 
-  std::cout
-    << "# Values:" << std::endl
-    << "# " << normalize (spline (0.)) << std::endl
-    << "# " << normalize (spline (2.5)) << std::endl
-    << "# " << normalize (spline (4.)) << std::endl
-
-    << "# 1st derivative:" << std::endl
-    << "# " << normalize (spline.derivative (0., 1)) << std::endl
-    << "# " << normalize (spline.derivative (2.5, 1)) << std::endl
-    << "# " << normalize (spline.derivative (4., 1)) << std::endl
-
-    << "# 2nd derivative:" << std::endl
-    << "# " << normalize (spline.derivative (0., 2)) << std::endl
-    << "# " << normalize (spline.derivative (2.5, 2)) << std::endl
-    << "# " << normalize (spline.derivative (4., 2)) << std::endl
-
-    << "# variationConfigWrtParam:" << std::endl
-    << "# " << normalize (spline.variationConfigWrtParam (0.)) << std::endl
-    << "# " << normalize (spline.variationConfigWrtParam (2.5)) << std::endl
-    << "# " << normalize (spline.variationConfigWrtParam (4.)) << std::endl;
+  showSpline (spline);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   gnuplot
@@ -120,20 +126,8 @@ int run_test ()
   solver_t::problem_t problem (cost);
   problem.startingPoint () = params;
 
-  std::vector<Function::size_type> indices;
-  indices.push_back (0);
-  indices.push_back (1);
-  indices.push_back (2);
-  indices.push_back (3);
-  indices.push_back (4);
-  indices.push_back (5);
-  indices.push_back (params.size () - 6);
-  indices.push_back (params.size () - 5);
-  indices.push_back (params.size () - 4);
-  indices.push_back (params.size () - 3);
-  indices.push_back (params.size () - 2);
-  indices.push_back (params.size () - 1);
-  makeFreeze (problem) (indices, params);
+  spline.freezeCurveStart (problem);
+  spline.freezeCurveEnd (problem);
 
   SolverFactory<solver_t> factory ("cfsqp", problem);
   solver_t& solver = factory ();
@@ -151,6 +145,7 @@ int run_test ()
       {
 	Result& result = boost::get<Result> (res);
 	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
+	showSpline (optimizedSpline);
 	params = result.x;
 	gnuplot << plot_xy (optimizedSpline);
 	break;
@@ -165,6 +160,7 @@ int run_test ()
       {
 	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
 	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
+	showSpline (optimizedSpline);
 	params = result.x;
 	std::cerr << result << std::endl;
 	gnuplot << plot_xy (optimizedSpline);
