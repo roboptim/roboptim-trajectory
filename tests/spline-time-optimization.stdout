@@ -16,11 +16,11 @@ Solver:
         
     Constraint 1
         Numeric linear function
-          A = [1,16]((0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.17,0.67,0.17,0.00))
+          A = [1,16]((0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.17,0.67,0.17))
           B = [1](-200.00)
         Bounds: (0.00, 0.00)
         Scales: 1.00
-        Initial value: [1](-3.33) (constraint not satisfied)
+        Initial value: [1](-0.00) (constraint not satisfied)
         
     Constraint 2
         speed limit (0.00662252) (derivable function)

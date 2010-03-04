@@ -1,5 +1,11 @@
 2010-03-04  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Debug CubicBSpline start/end points freezing.
+	* include/roboptim/trajectory/cubic-b-spline.hxx: Debug.
+	* tests/spline-time-optimization.stdout: Regenerate.
+
+2010-03-04  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Fix start/end freezing constriant for CubicBSpline.
 	* include/roboptim/trajectory/cubic-b-spline.hh,
 	* include/roboptim/trajectory/cubic-b-spline.hxx: Fix constraint
