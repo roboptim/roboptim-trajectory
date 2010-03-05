@@ -122,7 +122,7 @@ int run_test ()
     << "# " << spline.derivative (2.5, 2) << std::endl
     << "# " << spline.derivative (5., 2) << std::endl;
 
-  for (double t = 0.; t < 5.; t += 0.5)
+  for (double t = 0.5; t < 5.; t += 0.5)
     {
       try
 	{
@@ -139,6 +139,23 @@ int run_test ()
 	  status = 1;
 	}
     }
+
+  for (double x = 0.; x < 10.; x += 0.25)
+    {
+      Function::vector_t params = spline.parameters ();
+      params[0 * 2] = 321;
+      params[1 * 2] = 123;
+      params[2 * 2] = 6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
+
+      assert (1. / 6. * params[0 * 2]
+	      + 2. / 3. * params[1 * 2]
+	      + 1. / 6. * params[2 * 2] - x < 1e-8);
+
+      spline.setParameters (params);
+      if (std::fabs (spline (0.)[0] - x) >= 1e-8)
+	std::cout << "# " << spline (0.)[0] << " != " << x << std::endl;
+    }
+
   return status;
 }
 

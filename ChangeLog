@@ -1,5 +1,10 @@
 2010-03-05  Thomas Moulard  <thomas.moulard@gmail.com>
 
+	Check value at spline start.
+	* tests/spline.cc: Here.
+
+2010-03-05  Thomas Moulard  <thomas.moulard@gmail.com>
+
 	Debug frezze constraints on spline.
 	* include/roboptim/trajectory/cubic-b-spline.hxx: Here.
 
