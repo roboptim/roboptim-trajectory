@@ -40,7 +40,7 @@ namespace roboptim
 	A (0, offset + i + 0. * outputSize ()) = 1. / 6.;
 	A (0, offset + i + 1. * outputSize ()) = 2. / 3.;
 	A (0, offset + i + 2. * outputSize ()) = 1. / 6.;
-	b (0) = -parameters ()[offset + i];
+	b (0) = -parameters ()[i];
 	NumericLinearFunction* boundaryCond = new NumericLinearFunction (A, b);
 	shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
 	problem.addConstraint (boundaryCondShPtr, interval);
