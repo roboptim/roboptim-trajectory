@@ -74,7 +74,7 @@ int optimize (double initialX,
 	      double finalX,
 	      double finalY,
 	      double finalTheta,
-	      bool setStartingPoint)
+	      bool)
 {
   using namespace boost;
   using namespace boost::assign;

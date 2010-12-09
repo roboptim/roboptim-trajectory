@@ -30,7 +30,7 @@
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
-#include "common.hh"
+#include "shared-tests/common.hh"
 
 using boost::format;
 using boost::io::group;
@@ -71,7 +71,7 @@ struct ConfigWrtParam : public DerivableFunction
   }
 
   void
-  impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+  impl_gradient (gradient_t& grad, const argument_t& p, size_type)
     const throw ()
   {
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());

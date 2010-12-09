@@ -80,7 +80,7 @@ namespace roboptim
   Trajectory<dorder>::state (double t, size_type order) const throw ()
   {
     using namespace boost::numeric::ublas;
-    const value_type dimension = this->outputSize ();
+    const size_type dimension = this->outputSize ();
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)
@@ -95,7 +95,7 @@ namespace roboptim
   (StableTimePoint stp, size_type order) const throw ()
   {
     using namespace boost::numeric::ublas;
-    const value_type dimension = this->outputSize ();
+    const size_type dimension = this->outputSize ();
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)

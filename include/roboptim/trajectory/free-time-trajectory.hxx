@@ -84,10 +84,9 @@ namespace roboptim
   template <typename T>
   void
   FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
-					       double t,
-					       size_type order) const throw ()
+					  double t,
+					  size_type order) const throw ()
   {
-    assert (order >= 0);
     double scaled = this->scaleTime (t);
     trajectory_->derivative (derivative, scaled, order);
     derivative *= std::pow (this->timeScale (), 0. + order);
@@ -99,7 +98,6 @@ namespace roboptim
 					       StableTimePoint stp,
 					       size_type order) const throw ()
   {
-    assert (order >= 0);
     trajectory_->derivative (derivative, stp, order);
     derivative *= std::pow (this->timeScale (), 0. + order);
   }

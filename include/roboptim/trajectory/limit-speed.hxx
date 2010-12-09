@@ -71,8 +71,8 @@ namespace roboptim
     boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
 
-    res[0] = prec_inner_prod (updatedTrajectory->derivative (timePoint_, 1),
-			      updatedTrajectory->derivative (timePoint_, 1));
+    res[0] = inner_prod (updatedTrajectory->derivative (timePoint_, 1),
+			 updatedTrajectory->derivative (timePoint_, 1));
     res[0] /= 2;
   }
 

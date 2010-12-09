@@ -41,16 +41,16 @@ namespace roboptim
 
 
   void
-  OrthogonalSpeed::impl_gradient (gradient_t& grad, const argument_t& arg, size_type i)
+  OrthogonalSpeed::impl_gradient (gradient_t& grad, const argument_t& arg, size_type)
     const throw ()
   {
-    const value_type& x = arg[0];
-    const value_type& y = arg[1];
+    //const value_type& x = arg[0];
+    //const value_type& y = arg[1];
     const value_type& theta = arg[2];
 
     const value_type& dx = arg[3 + 0];
     const value_type& dy = arg[3 + 1];
-    const value_type& dtheta = arg[3 + 2];
+    //const value_type& dtheta = arg[3 + 2];
 
     grad.clear ();
     // 0, 1, 5 components are null.

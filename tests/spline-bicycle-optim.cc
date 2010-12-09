@@ -31,7 +31,7 @@
 #include <roboptim/trajectory/freeze.hh>
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/spline-length.hh>
-#include <roboptim/trajectory/spline.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-sum-cost.hh>
 #include <roboptim/trajectory/visualization/trajectory.hh>
 
@@ -39,7 +39,7 @@
 #include <roboptim/core/plugin/cfsqp.hh>
 
 
-#include "common.hh"
+#include "shared-tests/common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
@@ -48,7 +48,8 @@ using namespace roboptim::visualization::gnuplot;
 typedef CFSQPSolver::problem_t::constraints_t constraint_t;
 typedef CFSQPSolver solver_t;
 
-typedef TrajectorySumCost<Spline>::discreteStableTimePointInterval_t discreteStableTimePointInterval_t;
+typedef TrajectorySumCost<CubicBSpline>::discreteStableTimePointInterval_t
+discreteStableTimePointInterval_t;
 
 /*
   Parameter of the cost function
@@ -104,7 +105,7 @@ public:
 int run_test ()
 {
   using namespace boost::assign;
-  Spline::vector_t params (22);
+  CubicBSpline::vector_t params (22);
 
   // Initial position.
   params[0] = 0.,  params[1] = 0.;
@@ -129,7 +130,7 @@ int run_test ()
   // Final position.
   params[20] = 1.,  params[21] = .1;
 
-  Spline::interval_t timeRange = Spline::makeInterval (0., 1.);
+  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 1.);
   std::vector<roboptim::Function::interval_t> defDomain;
 
   for (unsigned int i=0; i<11; i++) {
@@ -137,7 +138,7 @@ int run_test ()
     defDomain.push_back(Function::makeInterval(-2.0, 10.0));
   }
 
-  Spline spline (timeRange, 2, params, "before");
+  CubicBSpline spline (timeRange, 2, params, "before");
   discreteStableTimePointInterval_t interval
     (0. * tMax, 1. * tMax, 0.01 * tMax);
 
@@ -151,7 +152,7 @@ int run_test ()
   boost::shared_ptr<PositiveCostVar>
     positiveCostVarShPtr(new PositiveCostVar()) ;
 
-  TrajectorySumCost < Spline > sumCost(spline, positiveCostVarShPtr,
+  TrajectorySumCost < CubicBSpline > sumCost(spline, positiveCostVarShPtr,
 				       interval, 1);
   // Check cost gradient.
   try
@@ -195,7 +196,7 @@ int run_test ()
     case GenericSolver::SOLVER_VALUE:
       {
 	Result& result = boost::get<Result> (res);
-	Spline optimizedSpline (timeRange, 2, result.x, "after");
+	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
 	params = result.x;
 	gnuplot << plot_xy (optimizedSpline);
 	break;
@@ -209,7 +210,7 @@ int run_test ()
     case GenericSolver::SOLVER_VALUE_WARNINGS:
       {
 	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
-	Spline optimizedSpline (timeRange, 2, result.x, "after");
+	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
 	params = result.x;
 	std::cerr << result << std::endl;
 	gnuplot << plot_xy (optimizedSpline);

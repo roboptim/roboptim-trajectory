@@ -43,7 +43,7 @@
 #include <roboptim/core/plugin/cfsqp.hh>
 
 
-#include "common.hh"
+#include "shared-tests/common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;

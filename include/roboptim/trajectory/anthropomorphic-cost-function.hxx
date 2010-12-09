@@ -115,7 +115,7 @@ namespace roboptim
   void
   AnthropomorphicCostFunction<T>::impl_gradient (gradient_t& grad,
 						 const argument_t& p,
-						 size_type i)
+						 size_type)
     const throw ()
   {
     FiniteDifferenceGradient<> fdfunction (*this);

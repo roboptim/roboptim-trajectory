@@ -124,7 +124,7 @@ namespace roboptim
     }
 
     self_t*
-    resize (interval_t timeRange) const throw ()
+    resize (interval_t) const throw ()
     {
       assert (trajectory_);
       value_type tMin = getLowerBound (this->timeRange ());

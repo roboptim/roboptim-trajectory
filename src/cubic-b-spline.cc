@@ -82,7 +82,9 @@ namespace roboptim
   CubicBSpline::size_type
   CubicBSpline::interval (value_type t) const
   {
-    size_type i = std::floor (3 + (t - getLowerBound (timeRange ())) / Dt ());
+    size_type i =
+      static_cast<int>(std::floor
+		       (3 + (t - getLowerBound (timeRange ())) / Dt ()));
     if (i == nbp_)
       i--;
     return i;
@@ -95,10 +97,10 @@ namespace roboptim
 
     const double Dt = this->Dt ();
     const double t3 = getLowerBound (timeRange ());
-    const double tm = getUpperBound (timeRange ());
+    //const double tm = getUpperBound (timeRange ());
 
     const size_type i = interval (t);
-    const size_type n = outputSize ();
+    //const size_type n = outputSize ();
 
     // Non zero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
     // b_{i,3}(t).

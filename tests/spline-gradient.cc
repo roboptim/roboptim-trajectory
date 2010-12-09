@@ -30,7 +30,7 @@
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
-#include "common.hh"
+#include "shared-tests/common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
