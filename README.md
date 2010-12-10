@@ -1,4 +1,2 @@
-                                                                -*- outline -*-
-
-For general information about the project, please refer to its homepage:
-http://roboptim.sourceforge.net
+For general information about the project, please refer to its
+homepage: https://github.com/laas/roboptim-trajectory
