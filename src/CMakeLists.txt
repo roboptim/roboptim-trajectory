@@ -18,6 +18,7 @@ SET(PLUGINDIR lib/${PROJECT_NAME})
 
 # Main library.
 ADD_LIBRARY(roboptim-trajectory SHARED
+  ${HEADERS}
   doc.hh
   orthogonal-speed.cc
   CMakeLists.txt

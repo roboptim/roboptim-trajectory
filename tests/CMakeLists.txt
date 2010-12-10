@@ -26,6 +26,11 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 # Make Boost.Test generates the main function in test cases.
 ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
 
+SET(COMMON_HEADERS
+  ${HEADERS}
+  shared-tests/common.hh
+  shared-tests/hs071.hh
+  )
 
 # ROBOPTIM_TRAJECTORY_TEST(NAME)
 # ------------------------
@@ -36,7 +41,7 @@ ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
 # Boost and add it to the test suite.
 #
 MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
-  ADD_EXECUTABLE(${NAME} ${NAME}.cc)
+  ADD_EXECUTABLE(${NAME} ${NAME}.cc ${COMMON_HEADERS})
   ADD_TEST(${NAME} ${RUNTIME_OUTPUT_DIRECTORY}/${NAME})
 
   TARGET_LINK_LIBRARIES(${NAME} roboptim-trajectory)
@@ -55,7 +60,8 @@ ENDMACRO(ROBOPTIM_TRAJECTORY_TEST)
 # Boost and add it to the test suite.
 #
 MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
-  ADD_EXECUTABLE(${NAME} ${NAME}.cc anthropomorphic-cost-function.cc)
+  ADD_EXECUTABLE(${NAME} ${NAME}.cc
+    ${COMMON_HEADERS} anthropomorphic-cost-function.cc)
   ADD_TEST(${NAME} ${RUNTIME_OUTPUT_DIRECTORY}/${NAME})
 
   TARGET_LINK_LIBRARIES(${NAME} roboptim-trajectory)

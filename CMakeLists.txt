@@ -24,40 +24,40 @@ SET(PROJECT_NAME roboptim-trajectory)
 SET(PROJECT_DESCRIPTION "RobOptim trajectory")
 SET(PROJECT_URL "http://github.com/laas/roboptim-trajectory")
 
+SET(CSD ${CMAKE_SOURCE_DIR})
 SET(HEADERS
-  include/roboptim/trajectory/anthropomorphic-cost-function.hh
-  include/roboptim/trajectory/cubic-b-spline.hxx
-  include/roboptim/trajectory/limit-speed.hxx
-  include/roboptim/trajectory/cubic-b-spline.hh
-  include/roboptim/trajectory/limit-speed.hh
-  include/roboptim/trajectory/sys.hh
-  include/roboptim/trajectory/limit-omega.hh
-  include/roboptim/trajectory/stable-time-point.hh
-  include/roboptim/trajectory/spline-length.hh
-  include/roboptim/trajectory/limit-omega.hxx
-  include/roboptim/trajectory/free-time-trajectory.hh
-  include/roboptim/trajectory/fwd.hh
-  include/roboptim/trajectory/anthropomorphic-cost-function.hxx
-  include/roboptim/trajectory/state-function.hxx
-  include/roboptim/trajectory/trajectory-sum-cost.hxx
-  include/roboptim/trajectory/free-time-trajectory.hxx
-  include/roboptim/trajectory/freeze.hh
-  include/roboptim/trajectory/state-function.hh
-  include/roboptim/trajectory/trajectory.hxx
-  include/roboptim/trajectory/trajectory-sum-cost.hh
-  include/roboptim/trajectory/orthogonal-speed.hh
-  include/roboptim/trajectory/visualization/limit-speed.hh
-  include/roboptim/trajectory/visualization/speed.hh
-  include/roboptim/trajectory/visualization/trajectory.hh
-  include/roboptim/trajectory/trajectory-cost.hh
-  include/roboptim/trajectory/trajectory.hh
-  include/roboptim/trajectory/stable-point-state-function.hxx
-  include/roboptim/trajectory/frontal-speed.hh
-  include/roboptim/trajectory/trajectory-cost.hxx
-  include/roboptim/trajectory/freeze.hxx
-  include/roboptim/trajectory/stable-point-state-function.hh
-  include/roboptim/trajectory.hh
-  )
+  ${CSD}/include/roboptim/trajectory/anthropomorphic-cost-function.hh
+  ${CSD}/include/roboptim/trajectory/cubic-b-spline.hxx
+  ${CSD}/include/roboptim/trajectory/limit-speed.hxx
+  ${CSD}/include/roboptim/trajectory/cubic-b-spline.hh
+  ${CSD}/include/roboptim/trajectory/limit-speed.hh
+  ${CSD}/include/roboptim/trajectory/sys.hh
+  ${CSD}/include/roboptim/trajectory/limit-omega.hh
+  ${CSD}/include/roboptim/trajectory/stable-time-point.hh
+  ${CSD}/include/roboptim/trajectory/spline-length.hh
+  ${CSD}/include/roboptim/trajectory/limit-omega.hxx
+  ${CSD}/include/roboptim/trajectory/free-time-trajectory.hh
+  ${CSD}/include/roboptim/trajectory/fwd.hh
+  ${CSD}/include/roboptim/trajectory/anthropomorphic-cost-function.hxx
+  ${CSD}/include/roboptim/trajectory/state-function.hxx
+  ${CSD}/include/roboptim/trajectory/trajectory-sum-cost.hxx
+  ${CSD}/include/roboptim/trajectory/free-time-trajectory.hxx
+  ${CSD}/include/roboptim/trajectory/freeze.hh
+  ${CSD}/include/roboptim/trajectory/state-function.hh
+  ${CSD}/include/roboptim/trajectory/trajectory.hxx
+  ${CSD}/include/roboptim/trajectory/trajectory-sum-cost.hh
+  ${CSD}/include/roboptim/trajectory/orthogonal-speed.hh
+  ${CSD}/include/roboptim/trajectory/visualization/limit-speed.hh
+  ${CSD}/include/roboptim/trajectory/visualization/speed.hh
+  ${CSD}/include/roboptim/trajectory/visualization/trajectory.hh
+  ${CSD}/include/roboptim/trajectory/trajectory-cost.hh
+  ${CSD}/include/roboptim/trajectory/trajectory.hh
+  ${CSD}/include/roboptim/trajectory/stable-point-state-function.hxx
+  ${CSD}/include/roboptim/trajectory/frontal-speed.hh
+  ${CSD}/include/roboptim/trajectory/trajectory-cost.hxx
+  ${CSD}/include/roboptim/trajectory/freeze.hxx
+  ${CSD}/include/roboptim/trajectory/stable-point-state-function.hh
+  ${CSD}/include/roboptim/trajectory.hh )
 
 SETUP_PROJECT()
 
