@@ -99,9 +99,10 @@ namespace roboptim
     makeDiscreteInterval (interval_t interval,
 			  StableTimePoint step)
     {
-      return discreteStableTimePointInterval_t (getLowerBound (interval),
-						getUpperBound (interval),
-						step);
+      return discreteStableTimePointInterval_t
+	(StableTimePoint (Function::getLowerBound (interval)),
+	 StableTimePoint (Function::getUpperBound (interval)),
+	 StableTimePoint (step));
     }
 
     /// \brief Get the lower bound of a discrete interval

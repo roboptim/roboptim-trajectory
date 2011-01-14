@@ -166,8 +166,8 @@ namespace roboptim
   bool
   Trajectory<dorder>::isValidTime (value_type t) const throw ()
   {
-    value_type tmin = getLowerBound (this->timeRange ());
-    value_type tmax = getUpperBound (this->timeRange ());
+    value_type tmin = this->getLowerBound (this->timeRange ());
+    value_type tmax = this->getUpperBound (this->timeRange ());
     return (tmin <= t && t <= tmax);
   }
 
@@ -175,7 +175,7 @@ namespace roboptim
   void
   Trajectory<dorder>::normalizeAngles (size_type index) throw ()
   {
-    this->normalizeAngles (index, 0.);
+    this->normalizeAngles (index, 0);
   }
 
   template <unsigned dorder>

@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HXX
 # define ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HXX
+# include <boost/shared_ptr.hpp>
 # include <roboptim/core/numeric-linear-function.hh>
 
 namespace roboptim
@@ -42,7 +43,7 @@ namespace roboptim
 	A (0, offset + i + 2 * outputSize ()) = 1. / 6.;
 	b (0) = -parameters ()[i];
 	NumericLinearFunction* boundaryCond = new NumericLinearFunction (A, b);
-	shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
+	boost::shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
 	problem.addConstraint (boundaryCondShPtr, interval);
       }
   }

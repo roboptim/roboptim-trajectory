@@ -63,6 +63,7 @@ public:
   PositiveCostVar() : DerivableFunction(4, 1, "positive variation of height")
   {
   }
+
   void impl_compute(result_t& res, const argument_t& x) const throw ()
   {
 #ifdef BICYCLE_COST_FUNCTION
@@ -74,7 +75,7 @@ public:
     double v = 1+m*y0;
     res[0] = .5*v*(x1*x1+y1*y1);
 #endif
-  };
+  }
 
   void impl_gradient(gradient_t& grad, const argument_t& x,
 		     size_type functionId = 0) const throw ()
@@ -99,7 +100,7 @@ public:
     grad[2] = v*x1;
     grad[3] = v*y1;
 #endif
-  };
+  }
 };
 
 int run_test ()

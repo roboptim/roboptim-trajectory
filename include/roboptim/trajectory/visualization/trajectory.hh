@@ -56,9 +56,8 @@ namespace roboptim
 	      str_ (str)
 	  {}
 
-	  void operator () (const typename T::value_type t) const
-	  {
-	  }
+	  void operator () (const typename T::value_type) const
+	  {}
 
 	private:
 	  const T& traj_;

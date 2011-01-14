@@ -76,10 +76,10 @@ namespace roboptim
     /// \brief Parent type.
     typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
 
-    using typename parent_t::operator ();
-    using typename parent_t::derivative;
-    using typename parent_t::impl_compute;
-    using typename parent_t::impl_derivative;
+    using parent_t::operator ();
+    using parent_t::derivative;
+    using parent_t::impl_compute;
+    using parent_t::impl_derivative;
 
     /// \brief Import value type.
     typedef typename parent_t::value_type value_type;

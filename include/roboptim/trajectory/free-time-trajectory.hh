@@ -65,9 +65,9 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
-    using typename parent_t::normalizeAngles;
-    using typename parent_t::variationConfigWrtParam;
-    using typename parent_t::variationDerivWrtParam;
+    using parent_t::normalizeAngles;
+    using parent_t::variationConfigWrtParam;
+    using parent_t::variationDerivWrtParam;
 
     /// Constructor with fixed definition interval trajectory
     ///
@@ -127,10 +127,10 @@ namespace roboptim
     resize (interval_t) const throw ()
     {
       assert (trajectory_);
-      value_type tMin = getLowerBound (this->timeRange ());
-      value_type tMax = getUpperBound (this->timeRange ());
-      value_type tmin = getLowerBound (this->trajectory_->timeRange ());
-      value_type tmax = getUpperBound (this->trajectory_->timeRange ());
+      value_type tMin = this->getLowerBound (this->timeRange ());
+      value_type tMax = this->getUpperBound (this->timeRange ());
+      value_type tmin = this->getLowerBound (this->trajectory_->timeRange ());
+      value_type tmax = this->getUpperBound (this->trajectory_->timeRange ());
       assert (tMax != tMin);
 
       value_type scale = (tmax - tmin) / (tMax - tMin);

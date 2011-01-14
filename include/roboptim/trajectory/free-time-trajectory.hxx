@@ -135,7 +135,7 @@ namespace roboptim
 
     using namespace boost::numeric::ublas;
     value_type scaled = this->scaleTime (t);
-    value_type tmin = getLowerBound (this->trajectory_->timeRange ());
+    value_type tmin = this->getLowerBound (this->trajectory_->timeRange ());
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
@@ -255,9 +255,9 @@ namespace roboptim
   double
   FreeTimeTrajectory<T>::scaleTime (double unscaled) const throw ()
   {
-    value_type tMin = getLowerBound (this->timeRange ());
-    value_type tmin = getLowerBound (this->trajectory_->timeRange ());
-    value_type tmax = getUpperBound (this->trajectory_->timeRange ());
+    value_type tMin = this->getLowerBound (this->timeRange ());
+    value_type tmin = this->getLowerBound (this->trajectory_->timeRange ());
+    value_type tmax = this->getUpperBound (this->trajectory_->timeRange ());
 
     unscaled = detail::fixTime (unscaled, *this);
     assert (this->isValidTime (unscaled));
@@ -275,9 +275,9 @@ namespace roboptim
   double
   FreeTimeTrajectory<T>::unscaleTime (double scaled) const throw ()
   {
-    value_type tMin = getLowerBound (this->timeRange ());
-    value_type tMax = getUpperBound (this->timeRange ());
-    value_type tmin = getLowerBound (this->trajectory_->timeRange ());
+    value_type tMin = this->getLowerBound (this->timeRange ());
+    value_type tMax = this->getUpperBound (this->timeRange ());
+    value_type tmin = this->getLowerBound (this->trajectory_->timeRange ());
 
     scaled = detail::fixTime (scaled, *this);
     assert (trajectory_->isValidTime (scaled));
@@ -303,7 +303,7 @@ namespace roboptim
   void
   FreeTimeTrajectory<T>::normalizeAngles (size_type index) throw ()
   {
-    this->normalizeAngles (index, 1.);
+    this->normalizeAngles (index, 1);
   }
 } // end of namespace roboptim.
 

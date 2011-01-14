@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <boost/numeric/conversion/converter.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <roboptim/trajectory/sys.hh>
 
@@ -82,9 +83,10 @@ namespace roboptim
   CubicBSpline::size_type
   CubicBSpline::interval (value_type t) const
   {
-    size_type i =
-      static_cast<int>(std::floor
-		       (3 + (t - getLowerBound (timeRange ())) / Dt ()));
+    typedef boost::numeric::converter<size_type, double> Double2SizeType;
+    size_type i = Double2SizeType::convert
+      (std::floor
+       (3 + (t - getLowerBound (timeRange ())) / Dt ()));
     if (i == nbp_)
       i--;
     return i;
@@ -188,7 +190,7 @@ namespace roboptim
   CubicBSpline::jacobian_t
   CubicBSpline::variationConfigWrtParam (double t) const throw ()
   {
-    return variationDerivWrtParam (t, 0.);
+    return variationDerivWrtParam (t, 0);
   }
 
   CubicBSpline::jacobian_t
