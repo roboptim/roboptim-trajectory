@@ -18,4 +18,11 @@
 #ifndef DEBUG_HH
 # define DEBUG_HH
 # include <roboptim/trajectory/sys.hh>
+
+# ifdef NDEBUG
+#  define ONLY_DEBUG(x)
+# else
+#  define ONLY_DEBUG(x) x
+# endif // NDEBUG
+
 #endif // !DEBUG_HH

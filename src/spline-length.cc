@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "debug.hh"
 #include <roboptim/trajectory/sys.hh>
 
 #include <boost/numeric/ublas/vector_expression.hpp>
@@ -99,7 +100,7 @@ namespace roboptim
 
   void
   SplineLength::impl_gradient (gradient_t& grad, const argument_t& p,
-			       size_type i)
+			       size_type ONLY_DEBUG (i))
     const throw ()
   {
     assert (i == 0);

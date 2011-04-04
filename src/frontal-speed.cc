@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "debug.hh"
 #include <roboptim/trajectory/sys.hh>
 
 #include <cmath>
@@ -43,7 +44,9 @@ namespace roboptim
 
 
   void
-  FrontalSpeed::impl_gradient (gradient_t& grad, const argument_t& arg, size_type i)
+  FrontalSpeed::impl_gradient (gradient_t& grad,
+			       const argument_t& arg,
+			       size_type ONLY_DEBUG (i))
     const throw ()
   {
     assert (i == 0);
