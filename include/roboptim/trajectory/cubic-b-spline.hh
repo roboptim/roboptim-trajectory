@@ -101,6 +101,8 @@ namespace roboptim
     template <typename P>
     void freezeCurveEnd (P& problem, size_type offset = 0) const throw ();
 
+    value_type Dt () const;
+
   protected:
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
@@ -108,7 +110,6 @@ namespace roboptim
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const throw ();
 
-    value_type Dt () const;
     size_type interval (value_type t) const;
     vector_t basisFunctions (value_type t, size_type order) const;
 
