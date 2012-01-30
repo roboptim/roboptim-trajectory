@@ -33,8 +33,6 @@ namespace roboptim
     : Trajectory<3> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize)
   {
-    //Parameter size should be a multiple of spline dimension
-    assert (parameters_.size () % outputSize == 0);
     // number of control points should be at least 4.
     assert (nbp_ >= 4);
 
