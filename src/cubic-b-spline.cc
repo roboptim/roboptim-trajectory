@@ -111,7 +111,7 @@ namespace roboptim
     const value_type tau_i = t - t_i;
     const value_type tau_i_2 = tau_i * tau_i;
     const value_type tau_i_3 = tau_i * tau_i_2;
-    assert (tau_i <= Dt);
+    assert (tau_i <= Dt + tolerance ());
 
     const value_type Dt_2 = Dt * Dt;
     const value_type Dt_3 = Dt * Dt_2;
