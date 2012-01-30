@@ -1,5 +1,11 @@
                                                                 -*- outline -*-
 
+New in 1.0, 2012-01-30
+* Add a tolerance parameter to check whether a parameter is within interval
+  of definition.
+* Make getter of regular interval between knots public.
+* Add Freeze constraints at beginning and end of cubic B spline.
+
 New in 0.5, 2010-02-17:
 * New generic cubic spline implementation.
 
