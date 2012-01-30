@@ -41,7 +41,7 @@ namespace roboptim
     template <typename T>
     double fixTime (double t, const T& trajectory)
     {
-      static const double epsilon = 1e-5;
+      double epsilon = trajectory.tolerance ();
       const double tmin = Function::getLowerBound (trajectory.timeRange ());
       const double tmax = Function::getUpperBound (trajectory.timeRange ());
       if (t < tmin && (t + epsilon) >= tmin)
@@ -251,6 +251,14 @@ namespace roboptim
     virtual Trajectory<DerivabilityOrder>* resize (interval_t timeRange)
       const throw () = 0;
 
+    /// \name Tolerance for inclusion of parameter in interval of definition.
+    /// \{
+    /// Set tolerance for inclusion of parameter in interval of definition.
+    void tolerance (const double& tolerance);
+    /// Get tolerance for inclusion of parameter in interval of definition.
+    double tolerance () const;
+    /// \}
+
     virtual std::ostream& print (std::ostream&) const throw ();
   protected:
     void impl_compute (result_t&, StableTimePoint) const throw ();
@@ -271,6 +279,8 @@ namespace roboptim
     interval_t timeRange_;
     vector_t parameters_;
     size_type singularPoints_;
+  private:
+    double tolerance_;
   };
 
   /// @}

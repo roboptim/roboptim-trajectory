@@ -31,7 +31,8 @@ namespace roboptim
     : parent_t (outputSize, name),
       timeRange_ (tr),
       parameters_ (p),
-      singularPoints_ ()
+      singularPoints_ (),
+      tolerance_ (1e-5)
   {
     //FIXME: can a trajectory be a single point?
     assert (tr.first <= tr.second);
@@ -193,6 +194,18 @@ namespace roboptim
 	  theta += M_PI * 2;
 	thetaPrev = theta;
       }
+  }
+
+  template <unsigned dorder>
+  void Trajectory<dorder>::tolerance (const double& tolerance)
+  {
+    tolerance_ = tolerance;
+  }
+
+  template <unsigned dorder>
+  double Trajectory<dorder>::tolerance () const
+  {
+    return tolerance_;
   }
 
   template <unsigned dorder>
