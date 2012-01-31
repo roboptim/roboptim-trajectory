@@ -193,7 +193,7 @@ int optimize (double initialX,
   CubicBSpline updatedSpline
     (optimizedTrajectory.timeRange (),
      optimizedTrajectory.outputSize (),
-     optimizedTrajectory.parameters (),
+     removeScaleFromParameters (optimizedTrajectory.parameters ()),
      "after");
 
   std::cerr
