@@ -94,7 +94,7 @@ namespace roboptim
 
     const value_type delta =
       getUpperBound (interval_) - getLowerBound (interval_);
-    res[0] *= delta / nDiscretizationPoints_;
+    res[0] *= delta / (value_type)nDiscretizationPoints_;
     res[0] /= 2.;
   }
 
@@ -113,6 +113,6 @@ namespace roboptim
     foreach (interval_, nDiscretizationPoints_, sumlengthgrad);
     const value_type delta =
       getUpperBound (interval_) - getLowerBound (interval_);
-    grad *= delta / nDiscretizationPoints_;
+    grad *= delta / (value_type)nDiscretizationPoints_;
   }
 } // end of namespace roboptim.

@@ -77,7 +77,7 @@ namespace roboptim
   CubicBSpline::value_type
   CubicBSpline::Dt () const
   {
-    return length () / (nbp_ - 3.);
+    return length () / ((value_type)nbp_ - 3.);
   }
 
   CubicBSpline::size_type
@@ -106,7 +106,7 @@ namespace roboptim
 
     // Non zero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
     // b_{i,3}(t).
-    const value_type t_i = t3 + (i - 3) * Dt;
+    const value_type t_i = t3 + ((value_type)i - 3) * Dt;
 
     const value_type tau_i = t - t_i;
     const value_type tau_i_2 = tau_i * tau_i;
@@ -236,7 +236,7 @@ namespace roboptim
   CubicBSpline::value_type
   CubicBSpline::singularPointAtRank (size_type rank) const
   {
-    return rank * length () / (nbp_- 3);
+    return (value_type)rank * length () / ((value_type)nbp_- 3);
   }
 
   CubicBSpline::vector_t

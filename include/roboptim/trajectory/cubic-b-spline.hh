@@ -104,6 +104,7 @@ namespace roboptim
     value_type Dt () const;
 
   protected:
+    using Trajectory<3>::impl_compute;
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
       const throw ();
@@ -115,7 +116,7 @@ namespace roboptim
 
   private:
     /// \brief Number of control points.
-    unsigned int nbp_;
+    size_type nbp_;
   };
 
   /// @}
