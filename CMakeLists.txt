@@ -30,6 +30,7 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/cubic-b-spline.hxx
   ${CSD}/include/roboptim/trajectory/limit-speed.hxx
   ${CSD}/include/roboptim/trajectory/cubic-b-spline.hh
+  ${CSD}/include/roboptim/trajectory/polynomial-3.hh
   ${CSD}/include/roboptim/trajectory/limit-speed.hh
   ${CSD}/include/roboptim/trajectory/sys.hh
   ${CSD}/include/roboptim/trajectory/limit-omega.hh

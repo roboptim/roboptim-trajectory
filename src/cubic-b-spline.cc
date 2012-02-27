@@ -31,20 +31,30 @@ namespace roboptim
 			      std::string name)
     throw ()
     : Trajectory<3> (tr, outputSize, p, name),
-      nbp_ (p.size () / outputSize)
+      nbp_ (p.size () / outputSize), uniform_ (true)
   {
     //Parameter size should be a multiple of spline dimension
     assert (parameters_.size () % outputSize == 0);
     // number of control points should be at least 4.
     assert (nbp_ >= 4);
-
+    // Fill vector of regularly spaced knots
+    size_type m = nbp_ + 4;
+    double delta_t = (tr.second - tr.first)/(m-7);
+    double ti = tr.first - 3*delta_t;
+    for (size_type i=0; i<m; i++) {
+      knots_.push_back (ti);
+      ti += delta_t;
+    }
     setParameters (p);
+    computeBasisPolynomials ();
   }
 
   CubicBSpline::CubicBSpline (const CubicBSpline& spline) throw ()
     : Trajectory<3> (spline.timeRange (), spline.outputSize (),
 		     spline.parameters ()),
-      nbp_ (spline.parameters ().size () / spline.outputSize ())
+      nbp_ (spline.parameters ().size () / spline.outputSize ()),
+      knots_ (spline.knots_), basisPolynomials_ (spline.basisPolynomials_),
+      uniform_ (spline.uniform_)
   {
     //Parameter size should be a multiple of spline dimension
     assert (parameters_.size () % outputSize () == 0);
@@ -54,6 +64,45 @@ namespace roboptim
     setParameters (spline.parameters ());
   }
 
+
+  void CubicBSpline::computeBasisPolynomials ()
+  {
+    basisPolynomials_.clear ();
+    for (size_type j=0; j<nbp_; j++) {
+      basisPolynomials_.push_back (std::vector <Polynomial3> ());
+      // t_j
+      double t0 = knots_[j];
+      // t_{j+1}
+      double t1 = knots_[j+1];
+      // t_{j+2}
+      double t2 = knots_[j+2];
+      // t_{j+3}
+      double t3 = knots_[j+3];
+      // t_{j+4}
+      double t4 = knots_[j+4];
+
+      Polynomial3 B0 = 1./((t3-t0)*(t2-t0)*(t1-t0))*Monomial(t0)*Monomial(t0)*
+	Monomial(t0);
+
+      Polynomial3 B1 = -1./((t3-t0)*(t2-t1)*(t2-t0))*Monomial (t0)*Monomial (t0)
+	*Monomial (t2)
+	-1./((t3-t0)*(t3-t1)*(t2-t1))*Monomial (t0)*Monomial (t3)*Monomial (t1)
+	-1./((t4-t1)*(t3-t1)*(t2-t1))*Monomial (t4)*Monomial (t1)*Monomial (t1);
+
+      Polynomial3 B2 = 1./((t3-t0)*(t3-t1)*(t2-t1))*Monomial (t0)*Monomial (t3)
+	*Monomial (t3)
+	+1./((t4-t1)*(t3-t1)*(t3-t2))*Monomial (t4)*Monomial (t1)*Monomial (t3)
+	+1./((t4-t1)*(t4-t2)*(t3-t2))*Monomial (t4)*Monomial (t4)*Monomial (t2);
+
+      Polynomial3 B3 = -1./((t4-t1)*(t4-t2)*(t4-t3))*Monomial (t4)*Monomial (t4)
+	*Monomial (t4);
+
+      basisPolynomials_.back ().push_back (B0);
+      basisPolynomials_.back ().push_back (B1);
+      basisPolynomials_.back ().push_back (B2);
+      basisPolynomials_.back ().push_back (B3);
+    }
+  }
 
   CubicBSpline::~CubicBSpline () throw ()
   {
@@ -77,27 +126,58 @@ namespace roboptim
   CubicBSpline::value_type
   CubicBSpline::Dt () const
   {
+    assert (uniform_);
     return length () / ((value_type)nbp_ - 3.);
   }
 
   CubicBSpline::size_type
   CubicBSpline::interval (value_type t) const
   {
+    t = detail::fixTime (t, *this);
     typedef boost::numeric::converter<size_type, double> Double2SizeType;
-    size_type i = Double2SizeType::convert
-      (std::floor
-       (3 + (t - getLowerBound (timeRange ())) / Dt ()));
-    if (i == nbp_)
-      i--;
+    // t_3
+    double tmin = timeRange ().first;
+    size_type imin = 3;
+    // t_{m-4}
+    double tmax = timeRange ().second;
+    size_type imax = nbp_;
+
+    unsigned int count = 0;
+    bool found = false;
+    size_type i;
+    size_type iPrev = 0;
+    while (!found && iPrev != i) {
+      i = Double2SizeType::convert
+      (std::floor (imin + (t-tmin)/(tmax-tmin)*(imax - imin)));
+      if (t < knots_ [i]) {
+	tmax = knots_ [i-1];
+	imax = i-1;
+      } else if (t >= knots_ [i+1]) {
+	if (t < knots_ [i+2]) {
+	  i = i+1;
+	  found = true;
+	}
+	imin = i+1;
+	tmin = knots_ [i+1];
+      } else {
+	found = true;
+      }
+      count++;
+      assert (count < 10000);
+      iPrev = i;
+    }
+    if (i > nbp_-1) i=nbp_-1;
+    if (i < 3) i = 3;
     return i;
   }
 
   CubicBSpline::vector_t
   CubicBSpline::basisFunctions (value_type t, size_type order) const
   {
+    assert (uniform_);
     t = detail::fixTime (t, *this);
 
-    const double Dt = this->Dt ();
+    const double Dt = length () / ((value_type)nbp_ - 3.);
     const double t3 = getLowerBound (timeRange ());
     //const double tm = getUpperBound (timeRange ());
 
@@ -162,19 +242,23 @@ namespace roboptim
     using boost::numeric::ublas::subrange;
 
     t = detail::fixTime (t, *this);
-    const size_type i = interval (t);
+    const size_type k = interval (t);
     const size_type n = outputSize ();
-    const value_type Dt_3 = Dt () * Dt () * Dt ();
 
-    const vector_t& P_i_3 = subrange (parameters (), (i - 3) * n, (i - 2) * n);
-    const vector_t& P_i_2 = subrange (parameters (), (i - 2) * n, (i - 1) * n);
-    const vector_t& P_i_1 = subrange (parameters (), (i - 1) * n, (i + 0) * n);
-    const vector_t& P_i   = subrange (parameters (), (i - 0) * n, (i + 1) * n);
+    const vector_t& P_k_3 = subrange (parameters (), (k - 3) * n, (k - 2) * n);
+    const vector_t& P_k_2 = subrange (parameters (), (k - 2) * n, (k - 1) * n);
+    const vector_t& P_k_1 = subrange (parameters (), (k - 1) * n, (k + 0) * n);
+    const vector_t& P_k   = subrange (parameters (), (k - 0) * n, (k + 1) * n);
 
-    const vector_t b_i = basisFunctions (t, order);
+    const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
+    const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
+    const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
+    const Polynomial3& B_k_k = basisPolynomials_[k][0];
 
-    derivative = b_i[3] * P_i_3 + b_i[2] * P_i_2 + b_i[1] * P_i_1 + b_i[0] * P_i;
-    derivative /= Dt_3;
+    derivative = B_k_3_k.derivative(t, order) * P_k_3 +
+      B_k_2_k.derivative(t, order) * P_k_2 +
+      B_k_1_k.derivative(t, order) * P_k_1 +
+      B_k_k.derivative(t, order) * P_k;
   }
 
   void
@@ -197,22 +281,29 @@ namespace roboptim
   CubicBSpline::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
-    using boost::numeric::ublas::noalias;
     using boost::numeric::ublas::subrange;
 
-    const size_type i = interval (t);
+    t = detail::fixTime (t, *this);
+    const size_type k = interval (t);
     const size_type n = outputSize ();
-    const vector_t b_i = basisFunctions (t, order);
-    const value_type Dt_3 = Dt () * Dt () * Dt ();
+
+    const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
+    const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
+    const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
+    const Polynomial3& B_k_k = basisPolynomials_[k][0];
 
     jacobian_t jac = ublas::zero_matrix<double> (n, nbp_ * n);
     const ublas::identity_matrix<double> In (n);
 
-    noalias (subrange (jac, 0, n, (i - 3) * n, (i - 2) * n)) = b_i[3] * In;
-    noalias (subrange (jac, 0, n, (i - 2) * n, (i - 1) * n)) = b_i[2] * In;
-    noalias (subrange (jac, 0, n, (i - 1) * n,       i * n)) = b_i[1] * In;
-    noalias (subrange (jac, 0, n,       i * n, (i + 1) * n)) = b_i[0] * In;
-    jac  /= Dt_3;
+    noalias (subrange (jac, 0, n, (k - 3) * n, (k - 2) * n)) =
+      B_k_3_k.derivative(t, order) * In;
+    noalias (subrange (jac, 0, n, (k - 2) * n, (k - 1) * n)) =
+      B_k_2_k.derivative(t, order) * In;
+    noalias (subrange (jac, 0, n, (k - 1) * n, (k + 0) * n)) =
+      B_k_1_k.derivative(t, order) * In;
+    noalias (subrange (jac, 0, n, (k + 0) * n, (k + 1) * n)) =
+      B_k_k.derivative(t, order) * In;
+
     return jac;
   }
 

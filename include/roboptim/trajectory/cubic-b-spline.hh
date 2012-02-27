@@ -18,8 +18,10 @@
 #ifndef ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HH
 # define ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HH
 # include <roboptim/trajectory/sys.hh>
+# include <roboptim/trajectory/deprecated.hh>
 
 # include <roboptim/trajectory/trajectory.hh>
+# include <roboptim/trajectory/polynomial-3.hh>
 # include <roboptim/trajectory/fwd.hh>
 
 
@@ -28,22 +30,9 @@ namespace roboptim
   /// \addtogroup roboptim_function
   /// @{
 
-  /** \brief Cubic B-Spline trajectory.
+  /// Cubic B-Spline trajectory.
 
-      Implement a B-Spline as a trajectory as described below: given
-      \li a number \f$m\geq 4\f$ of control points,
-      \li regularly spaced time points: \f$t_0 < t_1 < \cdots < t_{m}\f$, \f$\forall i\in\{0,...,m-1\}\f$, \f$t_{i+1}-t_i = \Delta t\f$
-      \li \f$m\f$ control points \f$ P_0,\cdots, P_{m-1}\f$ in \f$\textbf{R}^n\f$ ,
-      the cubic B-spline of control points \f$P_0,\cdots, P_{m-1}\f$ is defined over \f$[t_3,t_{m}]\f$ by
-      \f[ B(t) = \sum_{i=0}^{m-1} P_i b_{i,3}(t) \f]
-      where basis functions \f$b_{i,3}\f$ are defined by:
-      \f{eqnarray*}{
-      b_{i,3}(t)=& \frac{(t-t_i)^3}{6\Delta t^3} & \mbox{ if } t_{i} \leq t < t_{i+1} \\
-      & \frac{(t-t_i)^2(t_{i+2}-t)+(t-t_i)(t_{i+3}-t)(t-t_{i+1})+(t_{i+4}-t)(t-t_{i+1})^2}{6\Delta t^3}& \mbox{ if } t_{i+1} \leq t < t_{i+2} \\
-      & \frac{(t-t_i)(t_{i+3}-t)^2+(t_{i+4}-t)(t-t_{i+1})(t_{i+3}-t)+(t_{i+4}-t)^2(t-t_{i+2})}{6\Delta t^3}& \mbox{ if } t_{i+2} \leq t < t_{i+3} \\
-      & \frac{(t_{i+4}-t)^3}{6\Delta t^3}& \mbox{ if } t_{i+3} \leq t < t_{i+4}
-      \f}
-  */
+  /// Implement a B-Spline as a trajectory as described in doc/cubic-b-spline.tex
   class CubicBSpline : public Trajectory<3>
   {
   public:
@@ -101,7 +90,7 @@ namespace roboptim
     template <typename P>
     void freezeCurveEnd (P& problem, size_type offset = 0) const throw ();
 
-    value_type Dt () const;
+    value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
 
   protected:
     using Trajectory<3>::impl_compute;
@@ -112,11 +101,19 @@ namespace roboptim
       const throw ();
 
     size_type interval (value_type t) const;
-    vector_t basisFunctions (value_type t, size_type order) const;
+    vector_t basisFunctions (value_type t, size_type order) const
+      ROBOPTIM_TRAJECTORY_DEPRECATED;
+    void computeBasisPolynomials ();
 
   private:
     /// \brief Number of control points.
     size_type nbp_;
+    /// Vector of knots
+    std::vector <value_type> knots_;
+    /// basisPolynomials_[i][j] = B_{i,i+j}
+    std::vector <std::vector <Polynomial3> > basisPolynomials_;
+    /// For backward compatibility only
+    bool uniform_;
   };
 
   /// @}

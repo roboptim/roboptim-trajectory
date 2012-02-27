@@ -1,0 +1,126 @@
+\documentclass {article}
+
+\usepackage {amsmath}
+\usepackage {amsfonts} % pour les lettres maths creuses \mathbb
+\newcommand\real{\mathbb{R}}
+
+\title {Computation of non uniform cubic B splines}
+\author {Florent Lamiraux, LAAS-CNRS}
+
+\begin{document}
+\maketitle
+\section {Definition}
+
+\paragraph {Knots} $m \leq 4$ increasing real values:
+$$
+t_0 \leq t_1 \leq \cdots \leq t_{m-1} 
+$$
+\paragraph {Control points} $m-4$ points:
+$$
+\mathbf{P}_{i} \in \mathbb{R}^d, 0\leq i \leq m-5.
+$$
+\paragraph {Cubic B spline} parametric curve defined by
+\begin{equation}\label{eq:spline-definition}
+B(t) = \sum_{i=0}^{m-5} b_{i,3} (t) P_i,\ \ t\in [t_3,t_{m-4}]
+\end{equation}
+
+\section {Computation of basis functions}
+
+\subsubsection* {Basis functions of order 0}
+
+\begin{equation}\label {eq:basis-0}
+b_{j,0}(t) = \mathbb{I}_{[t_j, t_{j+1}]}(t) = \left\{ \begin{matrix} 1 & \mathrm{if} \quad t_j \leq t < t_{j+1} \\ 0 & \mathrm{otherwise} \end{matrix} \right.,\qquad j=0,\ldots, m-2
+\end{equation}
+
+\subsubsection* {Recursion formula}
+
+\begin{equation}\label {eq:recursion}
+b_{j,n}(t) := \frac{t - t_j}{t_{j+n} - t_j} b_{j,n-1}(t) + \frac{t_{j+n+1} - t}{t_{j+n+1} - t_{j+1}} b_{j+1,n-1}(t) ,\qquad j=0,\ldots, m-n-2. 
+\end{equation}
+
+\subsubsection* {Basis functions of order 1}
+
+\begin{equation}\label {eq:basis-1}
+b_{j,1}(t) = \frac{t - t_j}{t_{j+1} - t_j} \mathbb{I}_{[t_j, t_{j+1}]}(t) + \frac{t_{j+2} - t}{t_{j+2} - t_{j+1}} \mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) ,\qquad j=0,\ldots, m-3
+\end{equation}
+
+\subsubsection* {Basis functions of order 2}
+
+\begin{eqnarray*}
+b_{j,2}(t) &=& \frac{t - t_j}{t_{j+2} - t_j} \left(\frac{t - t_j}{t_{j+1} - t_j} \mathbb{I}_{[t_j, t_{j+1}]}(t) + \frac{t_{j+2} - t}{t_{j+2} - t_{j+1}} \mathbb{I}_{[t_{j+1}, t_{j+2}]}(t)\right)\\
+&&+ \frac{t_{j+3} - t}{t_{j+3} - t_{j+1}}\left(\frac{t - t_{j+1}}{t_{j+2} - t_{j+1}} \mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) + \frac{t_{j+3} - t}{t_{j+3} - t_{j+2}} \mathbb{I}_{[t_{j+2}, t_{j+3}]}(t)\right)\\
+&=&\frac{(t - t_j)^2}{(t_{j+2} - t_j)(t_{j+1} - t_j)}\mathbb{I}_{[t_j, t_{j+1}]}(t) \\
+&& + \left(\frac{t - t_j}{t_{j+2} - t_j}\frac{t_{j+2} - t}{t_{j+2} - t_{j+1}}+
+\frac{t_{j+3} - t}{t_{j+3} - t_{j+1}}\frac{t - t_{j+1}}{t_{j+2} - t_{j+1}}\right)
+\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
+&&+\frac{(t_{j+3} - t)^2}{(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})} \mathbb{I}_{[t_{j+2}, t_{j+3}]}(t)\\
+&& j=0,\ldots, m-4. 
+\end{eqnarray*}
+
+\subsubsection* {Basis functions of order 3}
+
+\begin{eqnarray*}
+b_{j,3}(t) &=& \frac{t - t_j}{t_{j+3} - t_j} 
+\left(\begin{array}{l}
+\frac{(t - t_j)^2}{(t_{j+2} - t_j)(t_{j+1} - t_j)}\mathbb{I}_{[t_j, t_{j+1}]}(t) \\
++ (\frac{t - t_j}{t_{j+2} - t_j}\frac{t_{j+2} - t}{t_{j+2} - t_{j+1}}+
+\frac{t_{j+3} - t}{t_{j+3} - t_{j+1}}\frac{t - t_{j+1}}{t_{j+2} - t_{j+1}})
+\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
++\frac{(t_{j+3} - t)^2}{(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})} \mathbb{I}_{[t_{j+2}, t_{j+3}]}(t)
+\end{array}\right) \\
+&&+ \frac{t_{j+4} - t}{t_{j+4} - t_{j+1}}
+\left(\begin{array}{l}\frac{(t - t_{j+1})^2}{(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})}\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
++ (\frac{t - t_{j+1}}{t_{j+3} - t_{j+1}}\frac{t_{j+3} - t}{t_{j+3} - t_{j+2}}+
+\frac{t_{j+4} - t}{t_{j+4} - t_{j+2}}\frac{t - t_{j+2}}{t_{j+3} - t_{j+2}})
+\mathbb{I}_{[t_{j+2}, t_{j+3}]}(t) \\
++\frac{(t_{j+4} - t)^2}{(t_{j+4} - t_{j+2})(t_{j+4} - t_{j+3})} \mathbb{I}_{[t_{j+3}, t_{j+4}]}(t)
+\end{array}\right)\\
+&=& \frac{(t - t_j)^3}{(t_{j+3} - t_j)(t_{j+2} - t_j)(t_{j+1} - t_j)}\mathbb{I}_{[t_j, t_{j+1}]}(t) \\
+&&+ (\frac{t - t_j}{t_{j+3} - t_j})(\frac{(t - t_j)(t_{j+2} - t)}{(t_{j+2} - t_{j+1})(t_{j+2} - t_j)}+
+\frac{(t_{j+3} - t)(t - t_{j+1})}{(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})})
+\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
+&&+\frac{(t - t_j)(t_{j+3} - t)^2}{(t_{j+3} - t_j)(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})} \mathbb{I}_{[t_{j+2}, t_{j+3}]}(t)\\
+&&+\frac{(t_{j+4} - t)(t - t_{j+1})^2}{(t_{j+4} - t_{j+1})(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})}\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
+&&+(\frac{t_{j+4} - t}{t_{j+4} - t_{j+1}})(\frac{(t - t_{j+1})(t_{j+3} - t)}{(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})}+
+\frac{(t_{j+4} - t)(t - t_{j+2})}{(t_{j+4} - t_{j+2})(t_{j+3} - t_{j+2})})
+\mathbb{I}_{[t_{j+2}, t_{j+3}]}(t) \\
+&&+\frac{(t_{j+4} - t)^3}{(t_{j+4} - t_{j+1})(t_{j+4} - t_{j+2})(t_{j+4} - t_{j+3})} \mathbb{I}_{[t_{j+3}, t_{j+4}]}(t)\\
+&&j=0,\ldots, m-5
+\end{eqnarray*}
+\begin{eqnarray*}
+b_{j,3}(t) &=& \frac{(t - t_j)^3}{(t_{j+3} - t_j)(t_{j+2} - t_j)(t_{j+1} - t_j)}\mathbb{I}_{[t_j, t_{j+1}]}(t) \\
+&&+(\frac{(t - t_j)^2(t_{j+2} - t)}{(t_{j+3} - t_j)(t_{j+2} - t_{j+1})(t_{j+2} - t_j)}+
+\frac{(t - t_j)(t_{j+3} - t)(t - t_{j+1})}{(t_{j+3} - t_j)(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})})
+\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
+&&+\frac{(t - t_j)(t_{j+3} - t)^2}{(t_{j+3} - t_j)(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})} \mathbb{I}_{[t_{j+2}, t_{j+3}]}(t)\\
+&&+\frac{(t_{j+4} - t)(t - t_{j+1})^2}{(t_{j+4} - t_{j+1})(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})}\mathbb{I}_{[t_{j+1}, t_{j+2}]}(t) \\
+&&+(\frac{(t_{j+4} - t)(t - t_{j+1})(t_{j+3} - t)}{(t_{j+4} - t_{j+1})(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})}+
+\frac{(t_{j+4} - t)^2(t - t_{j+2})}{(t_{j+4} - t_{j+1})(t_{j+4} - t_{j+2})(t_{j+3} - t_{j+2})})
+\mathbb{I}_{[t_{j+2}, t_{j+3}]}(t) \\
+&&+\frac{(t_{j+4} - t)^3}{(t_{j+4} - t_{j+1})(t_{j+4} - t_{j+2})(t_{j+4} - t_{j+3})} \mathbb{I}_{[t_{j+3}, t_{j+4}]}(t)\\
+&=& (B_{j, j} \mathbb{I}_{[t_j, t_{j+1}]} + B_{j,j+1} \mathbb{I}_{[t_{j+1}, t_{j+2}]} +B_{j,j+2} \mathbb{I}_{[t_{j+2}, t_{j+3}]}+B_{j,j+3} \mathbb{I}_{[t_{j+3}, t_{j+4}]})(t)\\
+&&j=0,\ldots, m-5
+\end{eqnarray*}
+with
+\begin{eqnarray*}
+B_{j, j} (t) &=& \frac{(t - t_j)^3}{(t_{j+3} - t_j)(t_{j+2} - t_j)(t_{j+1} - t_j)} \\
+B_{j,j+1} (t) &=& \frac{(t - t_j)^2(t_{j+2} - t)}{(t_{j+3} - t_j)(t_{j+2} - t_{j+1})(t_{j+2} - t_j)}+\frac{(t - t_j)(t_{j+3} - t)(t - t_{j+1})}{(t_{j+3} - t_j)(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})}\\
+&&+\frac{(t_{j+4} - t)(t - t_{j+1})^2}{(t_{j+4} - t_{j+1})(t_{j+3} - t_{j+1})(t_{j+2} - t_{j+1})} \\
+B_{j,j+2} (t) &=& \frac{(t - t_j)(t_{j+3} - t)^2}{(t_{j+3} - t_j)(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})}+\frac{(t_{j+4} - t)(t - t_{j+1})(t_{j+3} - t)}{(t_{j+4} - t_{j+1})(t_{j+3} - t_{j+1})(t_{j+3} - t_{j+2})}\\
+&&+\frac{(t_{j+4} - t)^2(t - t_{j+2})}{(t_{j+4} - t_{j+1})(t_{j+4} - t_{j+2})(t_{j+3} - t_{j+2})}\\
+B_{j,j+3} (t) &=& \frac{(t_{j+4} - t)^3}{(t_{j+4} - t_{j+1})(t_{j+4} - t_{j+2})(t_{j+4} - t_{j+3})}
+\end{eqnarray*}
+
+\section {Evaluation of cubic B-spline}
+
+By substituting the expression of $b_{j,3}$ obtained in the previous section in Equation~(\ref{eq:spline-definition}), we get for $t\in [t_3,t_{m-4}]$
+\begin{eqnarray*}
+B(t) &=& \sum_{i=0}^{m-5} (B_{i, i} \mathbb{I}_{[t_i, t_{i+1}]} + B_{i,i+1} \mathbb{I}_{[t_{i+1}, t_{i+2}]} +B_{i,i+2} \mathbb{I}_{[t_{i+2}, t_{i+3}]}+B_{i,i+3} \mathbb{I}_{[t_{i+3}, t_{i+4}]})(t) P_i.\\
+&=& \sum_{i=0}^{m-5} \sum_{j=i}^{i+3} B_{i, j} \mathbb{I}_{[t_{j}, t_{j+1}]} (t) P_i\\
+&=& \sum_{j=0}^{m-2} \sum_{i=\max(0,j-3)}^{\min(j,m-5)} B_{i, j} \mathbb{I}_{[t_{j}, t_{j+1}]} (t) P_i
+\end{eqnarray*}
+Let $k$ be such that $t\in[t_{k},t_{k+1})$. For $t\in[t_3,t_{m-4})$, $3\leq k \leq m-5$ and
+\begin{eqnarray}\label{eq:spline-evaluation}
+B(t) &=& \sum_{i=k-3}^{k} B_{i, k}(t)  P_i
+\end{eqnarray}
+\end{document}
