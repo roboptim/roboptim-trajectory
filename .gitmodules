@@ -3,4 +3,4 @@
 	url = git://github.com/jrl-umi3218/jrl-cmakemodules.git
 [submodule "tests/shared-tests"]
 	path = tests/shared-tests
-	url = git://github.com/laas/roboptim-shared-tests.git
+	url = git://github.com/roboptim/roboptim-shared-tests.git
