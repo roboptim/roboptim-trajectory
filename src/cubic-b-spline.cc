@@ -67,7 +67,7 @@ namespace roboptim
 
   void CubicBSpline::computeBasisPolynomials ()
   {
-    basisPolynomials_.clear ();
+    basisPolynomials_.clear();
     for (size_type j=0; j<nbp_; j++) {
       basisPolynomials_.push_back (std::vector <Polynomial3> ());
       // t_j
@@ -239,16 +239,15 @@ namespace roboptim
 				 size_type order)
     const throw ()
   {
-    using boost::numeric::ublas::subrange;
 
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
     const size_type n = outputSize ();
 
-    const vector_t& P_k_3 = subrange (parameters (), (k - 3) * n, (k - 2) * n);
-    const vector_t& P_k_2 = subrange (parameters (), (k - 2) * n, (k - 1) * n);
-    const vector_t& P_k_1 = subrange (parameters (), (k - 1) * n, (k + 0) * n);
-    const vector_t& P_k   = subrange (parameters (), (k - 0) * n, (k + 1) * n);
+    const vector_t& P_k_3 = parameters().segment((k - 3) * n,n);
+    const vector_t& P_k_2 = parameters().segment((k - 2) * n,n);
+    const vector_t& P_k_1 = parameters().segment((k - 1) * n,n);
+    const vector_t& P_k   = parameters().segment((k - 0) * n,n);
 
     const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
     const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
@@ -292,16 +291,18 @@ namespace roboptim
     const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
     const Polynomial3& B_k_k = basisPolynomials_[k][0];
 
-    jacobian_t jac = ublas::zero_matrix<double> (n, nbp_ * n);
-    const ublas::identity_matrix<double> In (n);
+    jacobian_t jac(n, nbp_ * n);
+    jac.setZero();
+    matrix_t In(n,n);
+    In.setIdentity();
 
-    noalias (subrange (jac, 0, n, (k - 3) * n, (k - 2) * n)) =
+    jac.middleCols((k - 3) * n, n) =
       B_k_3_k.derivative(t, order) * In;
-    noalias (subrange (jac, 0, n, (k - 2) * n, (k - 1) * n)) =
+    jac.middleCols((k - 2) * n, n) =
       B_k_2_k.derivative(t, order) * In;
-    noalias (subrange (jac, 0, n, (k - 1) * n, (k + 0) * n)) =
+    jac.middleCols((k - 1) * n, n) =
       B_k_1_k.derivative(t, order) * In;
-    noalias (subrange (jac, 0, n, (k + 0) * n, (k + 1) * n)) =
+    jac.middleCols((k + 0) * n, n) =
       B_k_k.derivative(t, order) * In;
 
     return jac;

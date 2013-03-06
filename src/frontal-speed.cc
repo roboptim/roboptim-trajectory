@@ -58,7 +58,7 @@ namespace roboptim
     //const value_type& dtheta = arg[3 + 2];
 
     // 0, 1, 5 components are null.
-    grad.clear ();
+    grad.setZero();
 
     grad[2] = std::cos (theta) * dy - std::sin (theta) * dx;
     grad[3] = std::cos (theta);

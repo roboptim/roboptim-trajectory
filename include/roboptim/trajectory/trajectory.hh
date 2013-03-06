@@ -198,7 +198,7 @@ namespace roboptim
     result_t operator () (StableTimePoint argument) const throw ()
     {
       result_t result (this->outputSize ());
-      result.clear ();
+      result.setZero();
       (*this) (result, argument);
       return result;
     }
@@ -214,7 +214,7 @@ namespace roboptim
       throw ()
     {
       gradient_t derivative (this->derivativeSize ());
-      derivative.clear ();
+      derivative.setZero ();
       this->derivative (derivative, argument, order);
       return derivative;
     }

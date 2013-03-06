@@ -36,9 +36,7 @@ namespace roboptim
 
       void operator () (const double& t)
       {
-	using namespace boost::numeric::ublas;
-	res_ += inner_prod (traj_.derivative (t, 1),
-			    traj_.derivative (t, 1));
+	res_ += traj_.derivative (t, 1).dot(traj_.derivative (t, 1));
       }
 
     private:
@@ -56,9 +54,7 @@ namespace roboptim
 
       void operator () (const double& t)
       {
-	using namespace boost::numeric::ublas;
-	noalias (grad_) += prod (traj_.derivative (t, 1),
-				 traj_.variationDerivWrtParam (t, 1));
+	grad_ += traj_.derivative (t, 1) * traj_.variationDerivWrtParam (t, 1);
       }
 
     private:
@@ -104,7 +100,7 @@ namespace roboptim
     const throw ()
   {
     assert (i == 0);
-    grad.clear ();
+    grad.setZero ();
 
     trajectory_t traj = trajectory_;
     traj.setParameters (p);

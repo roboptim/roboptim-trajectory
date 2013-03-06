@@ -113,13 +113,13 @@ namespace roboptim
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
-    result.clear ();
+    result.setZero();
 
     // Compute variation w.r.t time scale (p_0)
-    column (result, 0) = (t - tMin) * trajectory_->derivative (scaled, 1);
+    result.leftCols(1) = (t - tMin) * trajectory_->derivative (scaled, 1);
 
     // Fill 1..(n-1) lines with original jacobian.
-    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+    result.rightCols(result.cols()-1)
       = trajectory_->variationConfigWrtParam (scaled);
 
     return result;
@@ -139,17 +139,17 @@ namespace roboptim
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
-    result.clear ();
+    result.setZero();
 
     // Compute variation w.r.t time scale (p_0)
-    column (result, 0) = trajectory_->derivative (scaled, order) * order;
-    column (result, 0)
+    result.leftCols(1) = trajectory_->derivative (scaled, order) * order;
+    result.leftCols(1)
       += trajectory_->derivative (scaled, order + 1)
       * (this->timeScale () * (t - tmin));
-    column (result, 0) *= std::pow (this->timeScale (), order - 1.);
+    result.leftCols(1) *= std::pow (this->timeScale (), order - 1.);
 
     // Fill 1..(n-1) lines with original jacobian.
-    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+    result.rightCols(result.cols()-1)
       = trajectory_->variationDerivWrtParam(scaled, order)
       * std::pow (this->timeScale (), 0. + order);
 
@@ -165,13 +165,13 @@ namespace roboptim
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
-    result.clear ();
+    result.setZero();
 
     // Compute variation w.r.t time scale (p_0)
     // ...is null do not do anything.
 
     // Fill 1..(n-1) lines with original jacobian.
-    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+    result.rightCols(result.cols()-1)
       = trajectory_->variationConfigWrtParam (stp);
 
     return result;
@@ -190,13 +190,13 @@ namespace roboptim
 
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
-    result.clear ();
+    result.setZero();
 
     // Compute variation w.r.t time scale (p_0)
     // ...is null do not do anything.
 
     // Fill 1..(n-1) lines with original jacobian.
-    project (result, range (0, result.size1 ()), range (1, result.size2 ()))
+    result.rightCols(result.cols()-1)
       = trajectory_->variationDerivWrtParam (stp, order)
       * (order + 1) * (order + 1);
 

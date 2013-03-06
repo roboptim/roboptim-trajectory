@@ -35,8 +35,8 @@ namespace roboptim
       {
 	Function::matrix_t A (1, offset + paramSize);
 	Function::vector_t b (1);
-	A.clear ();
-	b.clear ();
+	A.setZero ();
+	b.setZero ();
 
 	A (0, offset + i + 0 * outputSize ()) = 1. / 6.;
 	A (0, offset + i + 1 * outputSize ()) = 2. / 3.;
@@ -61,8 +61,8 @@ namespace roboptim
       {
 	Function::matrix_t A (1, offset + paramSize);
 	Function::vector_t b (1);
-	A.clear ();
-	b.clear ();
+	A.setZero ();
+	b.setZero ();
 
 	A (0, offset + paramSize - 1 - i - 0 * outputSize ()) = 1. / 6.;
 	A (0, offset + paramSize - 1 - i - 1 * outputSize ()) = 2. / 3.;

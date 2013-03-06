@@ -194,11 +194,10 @@ namespace roboptim
   addScaleToParameters (const Function::vector_t& p,
 			Function::value_type t)
   {
-    using namespace boost::numeric::ublas;
 
     Function::vector_t res (p.size () + 1);
     res[0] = t;
-    subrange (res, 1, p.size () + 1) = p;
+    res.segment( 1, p.size () ) = p;
     return res;
   }
 
@@ -206,7 +205,7 @@ namespace roboptim
   removeScaleFromParameters (const Function::vector_t& p)
   {
     Function::vector_t res (p.size () - 1);
-    res = subrange (p, 1, p.size ());
+    res = p.segment( 1, p.size () - 1);
     return res;
   }
 

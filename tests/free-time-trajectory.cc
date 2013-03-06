@@ -79,7 +79,7 @@ struct ConfigWrtParam : public DerivableFunction
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     matrix_t tmp = updatedTrajectory->variationDerivWrtParam (t_, 0);
-    grad = row (tmp, 0);
+    grad = tmp.topRows(1);
   }
 
   const freeTime_t& traj_;
@@ -102,7 +102,7 @@ struct DerivWrtParam : public DerivableFunction
   impl_compute (result_t& res, const argument_t& t) const throw ()
   {
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 0);
-    res = row (tmp, 0);
+    res = tmp.topRows(1);
   }
 
   void
@@ -110,7 +110,7 @@ struct DerivWrtParam : public DerivableFunction
     const throw ()
   {
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 1);
-    grad[0] = row (tmp, 0)[i];
+    grad[0] = tmp(0,i);
   }
 
   const boost::scoped_ptr<const freeTime_t> traj_;

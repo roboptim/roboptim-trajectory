@@ -99,7 +99,7 @@ namespace roboptim
 						const argument_t& p)
     const throw ()
   {
-    res.clear ();
+    res.setZero();
 
     static T updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);

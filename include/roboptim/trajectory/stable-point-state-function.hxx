@@ -88,7 +88,7 @@ namespace roboptim
       function_->gradient (updatedTrajectory->state (tpt_, this->order_), i);
     const vector_t dgamma_dt =
       updatedTrajectory->getFixedTimeTrajectory ().state (tpt_, this->order_);
-    grad[0] = inner_prod (df_dstate, dgamma_dt);
+    grad[0] = df_dstate.dot(dgamma_dt);
   }
 
 } // end of namespace roboptim.

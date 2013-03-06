@@ -85,7 +85,7 @@ namespace roboptim
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)
-      subrange (result, o * dimension, (o + 1) * dimension) =
+      result.segment(o * dimension,dimension) =
 	this->derivative (t, o);
     return result;
   }
@@ -100,7 +100,7 @@ namespace roboptim
     vector_t result ((order + 1) * dimension);
 
     for (size_type o = 0; o <= order; ++o)
-      subrange (result, o * dimension, (o + 1) * dimension) =
+      result.segment(o * dimension, dimension) =
 	this->derivative (stp, o);
     return result;
   }
@@ -185,7 +185,7 @@ namespace roboptim
     throw ()
   {
     value_type thetaPrev = 0.;
-    for (unsigned i = 0; i < (parameters_.size () - offset) / this->outputSize (); ++i)
+    for (int i = 0; i < (parameters_.size () - offset) / this->outputSize (); ++i)
       {
 	value_type& theta = this->parameters_[offset + i * this->outputSize () + index];
 	if (theta - thetaPrev > M_PI)
