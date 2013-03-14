@@ -135,13 +135,6 @@ int optimize (double initialX,
     (freeTimeTraj, frontalSpeed, 1, problem, vRangeFrontal,
      nControlPoints * nConstraintsPerCtrlPts);
 
-  // // Orthogonal
-  // boost::shared_ptr<DerivableFunction> orthogonalSpeed (new OrthogonalSpeed ());
-  // Function::interval_t vRangeOrthogonal = Function::makeInterval (-vMax, vMax);
-  // StablePointStateFunction<freeTime_t>::addToProblem
-  //   (freeTimeTraj, orthogonalSpeed, 1, problem, vRangeOrthogonal,
-  //    nControlPoints * nConstraintsPerCtrlPts);
-
   // Omega (theta dot)
   Function::interval_t vRangeOmega = Function::makeInterval (-.5, .5);
   LimitOmega<freeTime_t>::addToProblem

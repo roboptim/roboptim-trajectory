@@ -53,7 +53,6 @@ namespace roboptim
 
 	  void operator () (const Function::value_type& t)
 	  {
-	    using namespace boost::numeric::ublas;
 	    using boost::format;
 
 	    double tmax = Function::getUpperBound (trajectory_.timeRange ());

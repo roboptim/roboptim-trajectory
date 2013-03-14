@@ -54,9 +54,7 @@ int run_test ()
 	<< "set ylabel 'spline value'" << std::endl
 	<< "set multiplot layout 5,3" << std::endl;
 
-
-
-      params.clear ();
+      params.setZero ();
       params[x] = 1.;
 
       // Build a cubic spline of dimension 1
@@ -135,7 +133,9 @@ int run_test ()
 	      }
 	    title.append ((boost::format (" (%1%)") % j).str ());
 
-	    std::cout << "plot '-' title '"<< title <<"' with line\n" << std::endl;
+	    std::cout
+	      << "plot '-' title '"<< title
+	      << "' with line\n" << std::endl;
 	  // Loop over the interval of definition
 	    for (double t = boost::get<0> (window); t < boost::get<1> (window);
 		 t += boost::get<2> (window))

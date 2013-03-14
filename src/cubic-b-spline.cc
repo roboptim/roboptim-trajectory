@@ -39,7 +39,9 @@ namespace roboptim
     assert (nbp_ >= 4);
     // Fill vector of regularly spaced knots
     size_type m = nbp_ + 4;
-    double delta_t = (tr.second - tr.first)/(m-7);
+
+    double delta_t = (tr.second - tr.first) / (static_cast<double> (m) - 7.);
+
     double ti = tr.first - 3*delta_t;
     for (size_type i=0; i<m; i++) {
       knots_.push_back (ti);
@@ -118,6 +120,10 @@ namespace roboptim
   void
   CubicBSpline::impl_compute (result_t& derivative, double t) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     t = detail::fixTime (t, *this);
     assert (timeRange ().first <= t && t <= timeRange ().second);
     this->derivative (derivative, t, 0);
@@ -148,7 +154,8 @@ namespace roboptim
     size_type iPrev = 0;
     while (!found && iPrev != i) {
       i = Double2SizeType::convert
-      (std::floor (imin + (t-tmin)/(tmax-tmin)*(imax - imin)));
+	(std::floor (static_cast<double> (imin) + (t - tmin)
+		     / (tmax - tmin) * static_cast<double> (imax - imin)));
       if (t < knots_ [i]) {
 	tmax = knots_ [i-1];
 	imax = i-1;
@@ -239,6 +246,9 @@ namespace roboptim
 				 size_type order)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
@@ -265,6 +275,10 @@ namespace roboptim
 				 StableTimePoint stp,
 				 size_type order) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     this->impl_derivative (derivative,
 			   stp.getTime (this->timeRange ()),
 			   order);
@@ -280,8 +294,6 @@ namespace roboptim
   CubicBSpline::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
-    using boost::numeric::ublas::subrange;
-
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
     const size_type n = outputSize ();

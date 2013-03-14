@@ -42,7 +42,8 @@ namespace roboptim
   {
   public:
     /// \brief Pair representing an argument index and a value.
-    typedef std::pair<size_t, Function::value_type> frozenArgument_t;
+    typedef std::pair<Function::size_type,
+		      Function::value_type> frozenArgument_t;
 
     /// \brief Problem type.
     typedef P problem_t;

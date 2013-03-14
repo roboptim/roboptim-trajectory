@@ -78,6 +78,10 @@ namespace roboptim
   FreeTimeTrajectory<T>::impl_compute (result_t& res , double t)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     (*trajectory_) (res, this->scaleTime (t));
   }
 
@@ -87,19 +91,28 @@ namespace roboptim
 					  double t,
 					  size_type order) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     double scaled = this->scaleTime (t);
     trajectory_->derivative (derivative, scaled, order);
-    derivative *= std::pow (this->timeScale (), 0. + order);
+    derivative *= std::pow (this->timeScale (), static_cast<double> (order));
   }
 
   template <typename T>
   void
   FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
-					       StableTimePoint stp,
-					       size_type order) const throw ()
+					  StableTimePoint stp,
+					  size_type order) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     trajectory_->derivative (derivative, stp, order);
-    derivative *= std::pow (this->timeScale (), 0. + order);
+    const double order_ = static_cast<double> (order);
+    derivative *= std::pow (this->timeScale (), 0. + order_);
   }
 
   template <typename T>
@@ -141,17 +154,19 @@ namespace roboptim
 		       this->parameters ().size ());
     result.setZero();
 
+    const double order_ = static_cast<double> (order);
+
     // Compute variation w.r.t time scale (p_0)
-    result.leftCols(1) = trajectory_->derivative (scaled, order) * order;
+    result.leftCols(1) = trajectory_->derivative (scaled, order) * order_;
     result.leftCols(1)
       += trajectory_->derivative (scaled, order + 1)
       * (this->timeScale () * (t - tmin));
-    result.leftCols(1) *= std::pow (this->timeScale (), order - 1.);
+    result.leftCols(1) *= std::pow (this->timeScale (), order_ - 1.);
 
     // Fill 1..(n-1) lines with original jacobian.
     result.rightCols(result.cols()-1)
       = trajectory_->variationDerivWrtParam(scaled, order)
-      * std::pow (this->timeScale (), 0. + order);
+      * std::pow (this->timeScale (), order_);
 
     return result;
   }
@@ -192,13 +207,15 @@ namespace roboptim
 		       this->parameters ().size ());
     result.setZero();
 
+    const double order_ = static_cast<double> (order);
+
     // Compute variation w.r.t time scale (p_0)
     // ...is null do not do anything.
 
     // Fill 1..(n-1) lines with original jacobian.
-    result.rightCols(result.cols()-1)
+    result.rightCols (result.cols () - 1)
       = trajectory_->variationDerivWrtParam (stp, order)
-      * (order + 1) * (order + 1);
+      * (order_ + 1.) * (order_ + 1.);
 
     return result;
   }

@@ -82,8 +82,8 @@ public:
   void impl_gradient(gradient_t& grad, const argument_t& x,
 		     size_type functionId = 0) const throw ()
   {
-    assert(functionId==0);
-    grad.clear();
+    assert (functionId == 0);
+    grad.setZero ();
 #ifdef BICYCLE_COST_FUNCTION
     if (x[3] > 0) {
       grad[3] =  m;
@@ -155,13 +155,13 @@ int run_test ()
   boost::shared_ptr<PositiveCostVar>
     positiveCostVarShPtr(new PositiveCostVar()) ;
 
-  TrajectorySumCost < CubicBSpline > sumCost(spline, positiveCostVarShPtr,
-				       interval, 1);
+  TrajectorySumCost < CubicBSpline > sumCost (spline, positiveCostVarShPtr,
+					      interval, 1);
   // Check cost gradient.
   try
   {
     Function::vector_t x (params.size ());
-    x.clear ();
+    x.setZero ();
     checkGradientAndThrow (sumCost, 0, x, 2e-3);
 
     x = params;

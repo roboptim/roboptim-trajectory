@@ -67,6 +67,10 @@ struct ConfigWrtParam : public DerivableFunction
   void
   impl_compute (result_t& res, const argument_t& p) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     res = (*updatedTrajectory) (stp_);
@@ -76,10 +80,14 @@ struct ConfigWrtParam : public DerivableFunction
   impl_gradient (gradient_t& grad, const argument_t& p, size_type)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     matrix_t tmp = updatedTrajectory->variationDerivWrtParam (stp_, 0);
-    grad = row (tmp, 0);
+    grad = tmp.row (0);
   }
 
   const freeTime_t& traj_;
@@ -101,6 +109,10 @@ struct DerivWrtParam : public DerivableFunction
   void
   impl_compute (result_t& res, const argument_t& stp) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     // Make sure one never evaluates under zero.
     // This case happens because of the finite difference gradient
     // checking!
@@ -112,15 +124,19 @@ struct DerivWrtParam : public DerivableFunction
 
 
     matrix_t tmp = traj_->variationDerivWrtParam (alpha * tMax, 0);
-    res = row (tmp, 0);
+    res = tmp.row (0);
   }
 
   void
   impl_gradient (gradient_t& grad, const argument_t& stp, size_type i)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     matrix_t tmp = traj_->variationDerivWrtParam (stp[0] * tMax, 1);
-    grad[0] = row (tmp, 0)[i];
+    grad[0] = tmp.row (0)[i];
   }
 
   const boost::scoped_ptr<const freeTime_t> traj_;
@@ -200,7 +216,8 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
   std::cout << std::endl << std::endl;
 
 
-  std::cout << "Variation of the configuration w.r.t to parameters:" << std::endl;
+  std::cout << "Variation of the configuration w.r.t to parameters:"
+	    << std::endl;
   format fmterConfig ("%1.2f %|50t|%2.2f");
   for (double alpha = 0.; alpha <= 1.; alpha += .1)
     {

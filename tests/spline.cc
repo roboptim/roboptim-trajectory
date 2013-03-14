@@ -34,11 +34,12 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-struct SplineDerivWrtParameters : public DerivableFunction
+struct SplineDerivWrtParameters : public DifferentiableFunction
 {
   SplineDerivWrtParameters (const CubicBSpline& spline, value_type t)
-    : DerivableFunction (spline.parameters ().size (), spline.outputSize (),
-			 "spline derivable w.r.t parameters"),
+    : DifferentiableFunction
+      (spline.parameters ().size (), spline.outputSize (),
+       "spline differentiable w.r.t parameters"),
       spline_ (spline),
       t_ (t)
   {}
@@ -47,6 +48,10 @@ struct SplineDerivWrtParameters : public DerivableFunction
   impl_compute (result_t& result, const argument_t& x)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     CubicBSpline spline (spline_);
     spline.setParameters (x);
     result = spline (t_);
@@ -58,9 +63,13 @@ struct SplineDerivWrtParameters : public DerivableFunction
 		 size_type functionId = 0)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     CubicBSpline spline (spline_);
     spline.setParameters (x);
-    gradient = row (spline.variationConfigWrtParam (t_), functionId);
+    gradient = spline.variationConfigWrtParam (t_).row (functionId);
   }
 
 private:
@@ -87,7 +96,8 @@ int run_test ()
   params[12] = 100., params[13] = 100.;
   params[14] = 100., params[15] = 100.;
 
-  CubicBSpline spline (std::make_pair (0., 5.), 2, params, "spline");//FIXME: change interval.
+  //FIXME: change interval.
+  CubicBSpline spline (std::make_pair (0., 5.), 2, params, "spline");
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t interval (0., 5., 0.01);
@@ -133,7 +143,8 @@ int run_test ()
 	  checkGradientAndThrow (spline, 0, x);
 
 	  SplineDerivWrtParameters splineDerivWrtParams (spline, t);
-	  checkGradientAndThrow (splineDerivWrtParams, 0, spline.parameters ());
+	  checkGradientAndThrow
+	    (splineDerivWrtParams, 0, spline.parameters ());
 	}
       catch (BadGradient& bg)
 	{
@@ -147,7 +158,8 @@ int run_test ()
       Function::vector_t params = spline.parameters ();
       params[0 * 2] = 321;
       params[1 * 2] = 123;
-      params[2 * 2] = 6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
+      params[2 * 2] =
+	6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
 
       assert (1. / 6. * params[0 * 2]
 	      + 2. / 3. * params[1 * 2]

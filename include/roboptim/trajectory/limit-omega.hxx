@@ -70,6 +70,10 @@ namespace roboptim
   void
   LimitOmega<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     static T updatedTrajectory  = trajectory_;
     updatedTrajectory.setParameters (p);
     res[0] = updatedTrajectory.derivative (timePoint_, 1)[2];
@@ -77,9 +81,14 @@ namespace roboptim
 
   template <typename T>
   void
-  LimitOmega<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+  LimitOmega<T>::impl_gradient
+  (gradient_t& grad, const argument_t& p, size_type i)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     FiniteDifferenceGradient<> fd (*this);
     fd.gradient (grad, p, i);
   }

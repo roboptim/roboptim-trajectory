@@ -19,7 +19,6 @@
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HH
 # include <roboptim/trajectory/sys.hh>
 
-# include <boost/numeric/ublas/vector_proxy.hpp>
 # include <boost/static_assert.hpp>
 # include <boost/type_traits/is_base_of.hpp>
 

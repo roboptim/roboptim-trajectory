@@ -113,7 +113,7 @@ int run_test ()
   try
   {
     Function::vector_t x (params.size ());
-    x.clear ();
+    x.setZero ();
     checkGradientAndThrow (cost, 0, x, 2e-3);
 
     x = params;

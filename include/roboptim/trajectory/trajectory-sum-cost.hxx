@@ -56,12 +56,16 @@ namespace roboptim
   TrajectorySumCost<T>::impl_compute (result_t& res,
 				      const argument_t& p) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
 
     // Loop over sample points.
     vector_t cost (1);
-    cost.clear ();
+    cost.setZero ();
 
     value_type min =
       this->getLowerBound (interval_).getTime (updatedTrajectory.timeRange ());
@@ -82,10 +86,14 @@ namespace roboptim
   TrajectorySumCost<T>::impl_gradient (gradient_t& grad, const argument_t& p,
 				       size_type i) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     using namespace boost::numeric::ublas;
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
-    grad.clear ();
+    grad.setZero ();
 
     // Loop over sample points.
     gradient_t gr (grad.size ());
@@ -99,9 +107,9 @@ namespace roboptim
 
     for (value_type t = min; t < max; t += step)
       {
-	gr = prod (function_->gradient
-		   (updatedTrajectory.state (t, this->order_), i),
-		   updatedTrajectory.variationStateWrtParam (t, this->order_));
+	gr = function_->gradient
+	  (updatedTrajectory.state (t, this->order_), i).adjoint () *
+	  updatedTrajectory.variationStateWrtParam (t, this->order_);
 	grad += gr;
       }
   }

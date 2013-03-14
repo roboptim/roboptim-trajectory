@@ -20,7 +20,6 @@
 # include <roboptim/trajectory/sys.hh>
 
 # include <boost/format.hpp>
-# include <boost/numeric/ublas/vector.hpp>
 # include <boost/scoped_ptr.hpp>
 
 # include <roboptim/core/finite-difference-gradient.hh>
@@ -65,24 +64,31 @@ namespace roboptim
   void
   LimitSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
   {
-    using namespace boost::numeric::ublas;
-    res.clear ();
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+    res.setZero ();
 
     boost::scoped_ptr<T> updatedTrajectory (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
 
-    res[0] = inner_prod (updatedTrajectory->derivative (timePoint_, 1),
-			 updatedTrajectory->derivative (timePoint_, 1));
+    res[0] = updatedTrajectory->derivative (timePoint_, 1).adjoint ()
+      * updatedTrajectory->derivative (timePoint_, 1);
     res[0] /= 2;
   }
 
   template <typename T>
   void
-  LimitSpeed<T>::impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-    const throw ()
+  LimitSpeed<T>::impl_gradient
+  (gradient_t& grad, const argument_t& p, size_type i) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     assert (i == 0);
-    grad.clear ();
+    grad.setZero ();
 
     //FIXME: compute gradient analytically.
     FiniteDifferenceGradient<> fdfunction (*this);

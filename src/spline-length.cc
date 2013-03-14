@@ -54,7 +54,8 @@ namespace roboptim
 
       void operator () (const double& t)
       {
-	grad_ += traj_.derivative (t, 1) * traj_.variationDerivWrtParam (t, 1);
+	grad_ += traj_.derivative (t, 1).adjoint ()
+	  * traj_.variationDerivWrtParam (t, 1);
       }
 
     private:
@@ -82,6 +83,10 @@ namespace roboptim
   SplineLength::impl_compute (result_t& res, const argument_t& p)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     trajectory_t traj = trajectory_;
     traj.setParameters (p);
 
@@ -99,6 +104,10 @@ namespace roboptim
 			       size_type ONLY_DEBUG (i))
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     assert (i == 0);
     grad.setZero ();
 

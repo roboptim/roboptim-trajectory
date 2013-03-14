@@ -83,10 +83,10 @@ int run_test ()
 
   // Define cost.
   Function::matrix_t a (1, freeTimeTraj.parameters ().size ());
-  a.clear ();
+  a.setZero ();
   a (0, 0) = -1.;
   Function::vector_t b (1);
-  b.clear ();
+  b.setZero ();
   roboptim::NumericLinearFunction cost (a, b);
 
   // Create problem.

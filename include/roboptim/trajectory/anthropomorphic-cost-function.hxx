@@ -99,6 +99,10 @@ namespace roboptim
 						const argument_t& p)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     res.setZero();
 
     static T updatedTrajectory = trajectory_;
@@ -118,6 +122,10 @@ namespace roboptim
 						 size_type)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     FiniteDifferenceGradient<> fdfunction (*this);
     fdfunction.gradient (grad, p, 0);
   }

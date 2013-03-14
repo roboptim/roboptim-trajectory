@@ -67,6 +67,10 @@ struct ConfigWrtParam : public DerivableFunction
   void
   impl_compute (result_t& res, const argument_t& p) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     res = (*updatedTrajectory) (t_);
@@ -76,10 +80,14 @@ struct ConfigWrtParam : public DerivableFunction
   impl_gradient (gradient_t& grad, const argument_t& p, size_type)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     matrix_t tmp = updatedTrajectory->variationDerivWrtParam (t_, 0);
-    grad = tmp.topRows(1);
+    grad = tmp.row (0);
   }
 
   const freeTime_t& traj_;
@@ -101,14 +109,22 @@ struct DerivWrtParam : public DerivableFunction
   void
   impl_compute (result_t& res, const argument_t& t) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 0);
-    res = tmp.topRows(1);
+    res = tmp.row (0);
   }
 
   void
   impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
     const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 1);
     grad[0] = tmp(0,i);
   }

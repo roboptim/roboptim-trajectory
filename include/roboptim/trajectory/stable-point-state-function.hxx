@@ -57,6 +57,10 @@ namespace roboptim
   StablePointStateFunction<T>::impl_compute (result_t& res,
 				  const argument_t& p) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
@@ -69,6 +73,10 @@ namespace roboptim
 				   const argument_t& p,
 				   size_type i) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     assert (i == 0);
     using namespace boost::numeric::ublas;
 
@@ -79,16 +87,17 @@ namespace roboptim
     // Compute derivatives w.r.t parameters.
     // Derivative w.r.t p_0 is wrong here.
     const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());
-    grad = prod (function_->gradient
-		 (updatedTrajectory->state (t, this->order_), i),
-		 updatedTrajectory->variationStateWrtParam (t, this->order_));
+    grad =
+      function_->gradient
+      (updatedTrajectory->state (t, this->order_), i).adjoint ()
+      * updatedTrajectory->variationStateWrtParam (t, this->order_);
 
     // Compute derivatives w.r.t p_0.
     const vector_t df_dstate =
       function_->gradient (updatedTrajectory->state (tpt_, this->order_), i);
     const vector_t dgamma_dt =
       updatedTrajectory->getFixedTimeTrajectory ().state (tpt_, this->order_);
-    grad[0] = df_dstate.dot(dgamma_dt);
+    grad[0] = df_dstate.dot (dgamma_dt);
   }
 
 } // end of namespace roboptim.

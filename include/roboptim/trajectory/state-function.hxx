@@ -55,6 +55,10 @@ namespace roboptim
   StateFunction<T>::impl_compute (result_t& res,
 				  const argument_t& p) const throw ()
   {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
@@ -67,16 +71,18 @@ namespace roboptim
 				   const argument_t& p,
 				   size_type i) const throw ()
   {
-    using namespace boost::numeric::ublas;
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
-    grad = prod (function_->gradient
-		 (updatedTrajectory->state (tpt_, this->order_), i),
-		 updatedTrajectory->variationStateWrtParam (tpt_, this->order_));
+    grad = function_->gradient
+      (updatedTrajectory->state (tpt_, this->order_), i).adjoint () *
+      updatedTrajectory->variationStateWrtParam (tpt_, this->order_);
   }
 
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_STATE_COST_HXX
-
