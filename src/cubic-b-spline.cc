@@ -150,7 +150,7 @@ namespace roboptim
 
     unsigned int count = 0;
     bool found = false;
-    size_type i;
+    size_type i = 0;
     size_type iPrev = 0;
     while (!found && iPrev != i) {
       i = Double2SizeType::convert
