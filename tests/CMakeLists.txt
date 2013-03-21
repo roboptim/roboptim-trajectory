@@ -89,6 +89,7 @@ ROBOPTIM_TRAJECTORY_TEST(spline-optimization)
 ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)
 ROBOPTIM_TRAJECTORY_TEST(polynomial)
 ROBOPTIM_TRAJECTORY_TEST(b-spline)
+ROBOPTIM_TRAJECTORY_TEST(constraint-b-spline)
 
 
 # Anthropomorphic cost function.
