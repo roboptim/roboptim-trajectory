@@ -23,6 +23,9 @@ INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/tests)
 # Add Boost path to include directories.
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+# add roboptim core to include directories
+INCLUDE_DIRECTORIES(${ROBOPTIM_CORE_INCLUDE_DIRS})
+
 # Make Boost.Test generates the main function in test cases.
 ADD_DEFINITIONS(-DBOOST_TEST_DYN_LINK -DBOOST_TEST_MAIN)
 
@@ -61,7 +64,7 @@ ENDMACRO(ROBOPTIM_TRAJECTORY_TEST)
 # This macro will create a binary from `NAME.cc', link it against
 # Boost and add it to the test suite.
 #
-MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
+MACRO(ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_TEST NAME)
   ADD_EXECUTABLE(${NAME} ${NAME}.cc
     ${COMMON_HEADERS} anthropomorphic-cost-function.cc)
   ADD_TEST(${NAME} ${RUNTIME_OUTPUT_DIRECTORY}/${NAME})
@@ -72,7 +75,7 @@ MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
   TARGET_LINK_LIBRARIES(${NAME} ${Boost_LIBRARIES})
 
   PKG_CONFIG_USE_DEPENDENCY(${NAME} roboptim-core)
-ENDMACRO(ROBOPTIM_TRAJECTORY_TEST)
+ENDMACRO(ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_TEST)
 
 # Tools.
 ROBOPTIM_TRAJECTORY_TEST(simple)
@@ -87,6 +90,9 @@ ROBOPTIM_TRAJECTORY_TEST(spline)
 ROBOPTIM_TRAJECTORY_TEST(spline-gradient)
 ROBOPTIM_TRAJECTORY_TEST(spline-optimization)
 ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)
+ROBOPTIM_TRAJECTORY_TEST(polynomial)
+ROBOPTIM_TRAJECTORY_TEST(b-spline)
+ROBOPTIM_TRAJECTORY_TEST(constraint-b-spline)
 
 
 # Anthropomorphic cost function.
