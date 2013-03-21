@@ -83,21 +83,22 @@ namespace roboptim
       // t_{j+4}
       double t4 = knots_[j+4];
 
-      Polynomial3 B0 = 1./((t3-t0)*(t2-t0)*(t1-t0))*Monomial(t0)*Monomial(t0)*
-	Monomial(t0);
+      Polynomial3 B0 = 1./((t3-t0)*(t2-t0)*(t1-t0))*Monomial3(t0)*Monomial3(t0)*
+	Monomial3(t0);
 
-      Polynomial3 B1 = -1./((t3-t0)*(t2-t1)*(t2-t0))*Monomial (t0)*Monomial (t0)
-	*Monomial (t2)
-	-1./((t3-t0)*(t3-t1)*(t2-t1))*Monomial (t0)*Monomial (t3)*Monomial (t1)
-	-1./((t4-t1)*(t3-t1)*(t2-t1))*Monomial (t4)*Monomial (t1)*Monomial (t1);
+      Polynomial3 B1 = -1./((t3-t0)*(t2-t1)*(t2-t0))*Monomial3 (t0)*Monomial3 (t0)
+	*Monomial3 (t2)
+	-1./((t3-t0)*(t3-t1)*(t2-t1))*Monomial3 (t0)*Monomial3 (t3)*Monomial3 (t1)
+	-1./((t4-t1)*(t3-t1)*(t2-t1))*Monomial3 (t4)*Monomial3 (t1)*Monomial3 (t1);
 
-      Polynomial3 B2 = 1./((t3-t0)*(t3-t1)*(t2-t1))*Monomial (t0)*Monomial (t3)
-	*Monomial (t3)
-	+1./((t4-t1)*(t3-t1)*(t3-t2))*Monomial (t4)*Monomial (t1)*Monomial (t3)
-	+1./((t4-t1)*(t4-t2)*(t3-t2))*Monomial (t4)*Monomial (t4)*Monomial (t2);
+      Polynomial3 B2 = 1./((t3-t0)*(t3-t1)*(t2-t1))*Monomial3 (t0)*Monomial3 (t3)
+	*Monomial3 (t3)
+	+1./((t4-t1)*(t3-t1)*(t3-t2))*Monomial3 (t4)*Monomial3 (t1)*Monomial3 (t3)
+	+1./((t4-t1)*(t4-t2)*(t3-t2))*Monomial3 (t4)*Monomial3 (t4)*Monomial3 (t2);
 
-      Polynomial3 B3 = -1./((t4-t1)*(t4-t2)*(t4-t3))*Monomial (t4)*Monomial (t4)
-	*Monomial (t4);
+      Polynomial3 B3 = -1./((t4-t1)*(t4-t2)*(t4-t3))*Monomial3 (t4)*Monomial3 (t4)
+	*Monomial3 (t4);
+
 
       basisPolynomials_.back ().push_back (B0);
       basisPolynomials_.back ().push_back (B1);

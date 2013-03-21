@@ -50,9 +50,9 @@ namespace roboptim {
   /// \f[
   /// M (t) = t-t_0
   /// \f]
-  struct Monomial : public Polynomial3
+  struct Monomial3 : public Polynomial3
   {
-    Monomial (double t0) : Polynomial3 (t0, 0., 1., 0., 0.) {}
+    Monomial3 (double t0) : Polynomial3 (t0, 0., 1., 0., 0.) {}
   }; // class Monomial
 } // namespace roboptim
 #endif // ROBOPTIM_TRAJECTORY_POLYNOMIAL_3_HH
