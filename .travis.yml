@@ -13,3 +13,6 @@ notifications:
 branches:
   only:
     - master
+matrix:
+  allow_failures:
+    - clang
