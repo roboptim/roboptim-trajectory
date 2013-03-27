@@ -40,7 +40,8 @@ cd "$build_dir/Ipopt-3.10.3"
 cd ThirdParty/Mumps
 ./get.Mumps
 cd "$build_dir/Ipopt-3.10.3"
-./configure --prefix="$install_dir"
+# Force GCC for Ipopt, clang will not work.
+CC=gcc CXX=g++ ./configure --prefix="$install_dir"
 make
 make install
 
