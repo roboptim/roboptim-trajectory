@@ -13,6 +13,11 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with roboptim-core.  If not, see <http://www.gnu.org/licenses/>.
 
+# Which solver should be used?
+SET(TESTSUITE_SOLVER ""
+  CACHE STRING "Which solver should be used during tests?")
+ADD_DEFINITIONS(-DTESTSUITE_SOLVER="${TESTSUITE_SOLVER}")
+
 # Generate local-libdir.hh.
 CONFIG_FILES(shared-tests/local-libdir.hh)
 
@@ -82,17 +87,22 @@ ROBOPTIM_TRAJECTORY_TEST(stable-point-state-function)
 ROBOPTIM_TRAJECTORY_TEST(state-function)
 
 # Spline.
-ROBOPTIM_TRAJECTORY_TEST(spline-bicycle-optim)
 ROBOPTIM_TRAJECTORY_TEST(spline)
 ROBOPTIM_TRAJECTORY_TEST(spline-gradient)
-ROBOPTIM_TRAJECTORY_TEST(spline-optimization)
-ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)
+
+IF(TESTSUITE_SOLVER)
+  ROBOPTIM_TRAJECTORY_TEST(spline-bicycle-optim)
+  ROBOPTIM_TRAJECTORY_TEST(spline-optimization)
+  ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)
+ENDIF()
 
 
 # Anthropomorphic cost function.
-ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-1)
-ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-2)
-ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-3)
-ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-4)
-ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-5)
-ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-6)
+IF(TESTSUITE_SOLVER)
+  ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-1)
+  ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-2)
+  ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-3)
+  ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-4)
+  ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-5)
+  ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-6)
+ENDIF()

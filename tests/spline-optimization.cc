@@ -36,18 +36,17 @@
 #include <roboptim/trajectory/trajectory-cost.hh>
 #include <roboptim/trajectory/visualization/trajectory.hh>
 
-
-#include <roboptim/core/plugin/cfsqp.hh>
-
-
 #include "shared-tests/common.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-typedef CFSQPSolver::problem_t::constraints_t constraint_t;
-typedef CFSQPSolver solver_t;
+typedef Solver<DifferentiableFunction,
+	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
+solver_t;
+
+typedef solver_t::problem_t::constraints_t constraint_t;
 
 void showSpline (const CubicBSpline& spline);
 
@@ -131,7 +130,7 @@ int run_test ()
   spline.freezeCurveStart (problem);
   spline.freezeCurveEnd (problem);
 
-  SolverFactory<solver_t> factory ("cfsqp", problem);
+  SolverFactory<solver_t> factory (TESTSUITE_SOLVER, problem);
   solver_t& solver = factory ();
 
   std::cerr << "Cost function (before): " << cost (params) << std::endl;
