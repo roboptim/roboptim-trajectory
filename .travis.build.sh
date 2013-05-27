@@ -6,6 +6,7 @@ root_dir=`pwd`
 build_dir="$root_dir/_travis/build"
 install_dir="$root_dir/_travis/install"
 core_dir="$build_dir/roboptim-core"
+plugin_dir="$build_dir/roboptim-core-plugin-ipopt"
 
 # Shortcuts.
 git_clone="git clone --quiet --recursive"
@@ -17,8 +18,8 @@ mkdir -p "$install_dir"
 
 # Setup environment variables.
 export LD_LIBRARY_PATH="$install_dir/lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$install_dir/lib/roboptim-core:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="$install_dir/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="$install_dir/lib/roboptim-core:$install_dir/lib/x86_64-linux-gnu/roboptim-core:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$install_dir/lib/pkgconfig:$install_dir/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
 
 # Checkout Eigen.
 cd "$build_dir"
@@ -45,18 +46,19 @@ CC=gcc CXX=g++ ./configure --prefix="$install_dir"
 make
 make install
 
-# Checkout roboptim-core
 echo "Installing dependencies..."
 
+# Checkout roboptim-core.
 cd "$build_dir"
 $git_clone "git://github.com/roboptim/roboptim-core.git"
 cd "$core_dir"
 cmake . -DCMAKE_INSTALL_PREFIX:STRING="$install_dir"
 make install
 
+# Checkout roboptim-core-plugin-ipopt.
 cd "$build_dir"
 $git_clone "git://github.com/roboptim/roboptim-core-plugin-ipopt.git"
-cd "$core_dir"
+cd "$plugin_dir"
 cmake . -DCMAKE_INSTALL_PREFIX:STRING="$install_dir"
 make install
 
