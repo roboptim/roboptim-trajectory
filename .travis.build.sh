@@ -63,7 +63,7 @@ make install
 # Build package
 echo "Building package..."
 cd "$build_dir"
-cmake "$root_dir" -DCMAKE_INSTALL_PREFIX="$install_dir"
+cmake "$root_dir" -DTESTSUITE_SOLVER=ipopt -DCMAKE_INSTALL_PREFIX="$install_dir"
 make
 make install
-#make test
+make test
