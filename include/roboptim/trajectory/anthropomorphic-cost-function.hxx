@@ -126,7 +126,7 @@ namespace roboptim
       Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
-    FiniteDifferenceGradient<> fdfunction (*this);
+    GenericFiniteDifferenceGradient<EigenMatrixDense> fdfunction (*this);
     fdfunction.gradient (grad, p, 0);
   }
 

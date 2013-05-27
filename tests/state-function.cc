@@ -95,7 +95,7 @@ int run_test ()
 	  std::cout << "Check state cost gradient." << std::endl;
 	  checkGradientAndThrow (stateFunction, 0, params);
 	}
-      catch (BadGradient& bg)
+      catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cout << bg << std::endl;
 	}

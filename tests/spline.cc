@@ -146,7 +146,7 @@ int run_test ()
 	  checkGradientAndThrow
 	    (splineDerivWrtParams, 0, spline.parameters ());
 	}
-      catch (BadGradient& bg)
+      catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cerr << bg << std::endl;
 	  status = 1;

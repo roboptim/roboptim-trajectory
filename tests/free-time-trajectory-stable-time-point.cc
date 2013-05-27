@@ -208,7 +208,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 	  std::cout << "Free time trajectory gradient." << std::endl;
 	  checkGradientAndThrow (freeTimeTraj, 0, x);
 	}
-      catch (BadGradient& bg)
+      catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cout << bg << std::endl;
 	}
@@ -238,7 +238,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 	  checkGradientAndThrow (configWrtParam, 0,
 				 freeTimeTraj.parameters ());
 	}
-      catch (BadGradient& bg)
+      catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cout << bg << std::endl;
 	}
@@ -273,7 +273,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 	    DerivWrtParam derivWrtParam (freeTimeTraj);
 	    checkGradientAndThrow (derivWrtParam, gradientId, t_);
 	  }
-	catch (BadGradient& bg)
+	catch (BadGradient<EigenMatrixDense>& bg)
 	  {
 	    std::cout << "Component "
 		      << gradientId
