@@ -165,7 +165,7 @@ int run_test ()
     x = params;
     checkGradientAndThrow (sumCost, 0, x, 2e-3);
   }
-  catch (BadGradient& bg)
+  catch (BadGradient<EigenMatrixDense>& bg)
     {
       std::cout << bg << std::endl;
       //      return 1;
@@ -233,7 +233,7 @@ int run_test ()
     {
       checkGradientAndThrow (sumCost, 0, params, 2e-3);
     }
-  catch (BadGradient& bg)
+  catch (BadGradient<EigenMatrixDense>& bg)
     {
       std::cout << bg << std::endl;
     }

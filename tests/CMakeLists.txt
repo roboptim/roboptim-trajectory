@@ -18,6 +18,15 @@ SET(TESTSUITE_SOLVER ""
   CACHE STRING "Which solver should be used during tests?")
 ADD_DEFINITIONS(-DTESTSUITE_SOLVER="${TESTSUITE_SOLVER}")
 
+# Which linear solver should Ipopt use?
+SET(IPOPT_LINEAR_SOLVER "mumps"
+  CACHE STRING "Which linear solver should be used by Ipopt during tests?")
+ADD_DEFINITIONS(-DIPOPT_LINEAR_SOLVER="${IPOPT_LINEAR_SOLVER}")
+
+# Whether to run all the (potentially slow) tests or not
+SET(FULL_TEST "OFF"
+  CACHE STRING "Whether to run all the (potentially slow) tests or not")
+
 # Generate local-libdir.hh.
 CONFIG_FILES(shared-tests/local-libdir.hh)
 
@@ -96,9 +105,8 @@ IF(TESTSUITE_SOLVER)
   ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)
 ENDIF()
 
-
 # Anthropomorphic cost function.
-IF(TESTSUITE_SOLVER)
+IF(TESTSUITE_SOLVER AND FULL_TEST)
   ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-1)
   ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-2)
   ROBOPTIM_TRAJECTORY_TEST(anthropomorphic-cost-function-case-3)

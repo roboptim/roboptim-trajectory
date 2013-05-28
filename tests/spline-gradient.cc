@@ -102,7 +102,7 @@ int run_test ()
 		  checkGradientAndThrow (spline, 0, x);
 		}
 	      }
-	      catch (BadGradient& bg)
+	      catch (BadGradient<EigenMatrixDense>& bg)
 		{
 		  std::cerr << bg << std::endl;
 		  std::cerr << "t=" << t << ", spline=" << spline << std::endl;

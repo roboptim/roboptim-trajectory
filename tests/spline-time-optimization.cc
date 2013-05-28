@@ -56,8 +56,8 @@ typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
 
 
 // Problem parameters.
-const unsigned nControlPoints = 15;
-const unsigned nConstraintsPerCtrlPts = 10;
+const unsigned nControlPoints = 6;
+const unsigned nConstraintsPerCtrlPts = 5;
 const double vMax = 85.;
 
 int run_test ()
@@ -116,6 +116,12 @@ int run_test ()
 
   SolverFactory<solver_t> factory (TESTSUITE_SOLVER, problem);
   solver_t& solver = factory ();
+
+  // Ipopt-specific parameters
+  solver.parameters()["ipopt.linear_solver"].value = IPOPT_LINEAR_SOLVER;
+  solver.parameters()["ipopt.tol"].value = 1e-4;
+  solver.parameters()["ipopt.acceptable_tol"].value = 5e-3;
+  solver.parameters()["ipopt.mu_strategy"].value = "adaptive";
 
   std::cout << solver << std::endl;
 

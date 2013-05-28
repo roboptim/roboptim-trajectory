@@ -89,7 +89,7 @@ namespace roboptim
       Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
-    FiniteDifferenceGradient<> fd (*this);
+    GenericFiniteDifferenceGradient<EigenMatrixDense> fd (*this);
     fd.gradient (grad, p, i);
   }
 
