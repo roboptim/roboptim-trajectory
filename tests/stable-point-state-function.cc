@@ -104,7 +104,7 @@ int run_test ()
 	       gradientId < stateFunction.outputSize (); ++gradientId)
 	    checkGradientAndThrow (stateFunction, gradientId, fttParams);
 	}
-      catch (BadGradient& bg)
+      catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cout << bg << std::endl;
 	}

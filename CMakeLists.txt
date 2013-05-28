@@ -22,7 +22,10 @@ INCLUDE(cmake/cpack.cmake)
 
 SET(PROJECT_NAME roboptim-trajectory)
 SET(PROJECT_DESCRIPTION "RobOptim trajectory")
-SET(PROJECT_URL "http://github.com/laas/roboptim-trajectory")
+SET(PROJECT_URL "http://github.com/roboptim/roboptim-trajectory")
+
+# FIXME: disable for now.
+SET(CXX_DISABLE_WERROR 1)
 
 SET(CSD ${CMAKE_SOURCE_DIR})
 SET(HEADERS
