@@ -20,7 +20,9 @@
 #include "shared-tests/common.hh"
 #include "anthropomorphic-cost-function.hh"
 
-int run_test ()
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_anthropomorphic_cost_function_case4)
 {
   const double initialX = 0.;
   const double initialY = 0.;
@@ -30,15 +32,15 @@ int run_test ()
   const double finalY = 0.;
   const double finalTheta = M_PI/2.;
 
-  return optimize (initialX,
-		   initialY,
-		   initialTheta,
-		   finalX,
-		   finalY,
-		   finalTheta,
-		   false);
+  int res = optimize (initialX,
+		      initialY,
+		      initialTheta,
+		      finalX,
+		      finalY,
+		      finalTheta,
+		      false);
+
+  BOOST_CHECK (res == 0);
 }
 
-GENERATE_TEST ()
-
-
+BOOST_AUTO_TEST_SUITE_END ()

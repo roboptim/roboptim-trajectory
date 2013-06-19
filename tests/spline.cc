@@ -49,7 +49,7 @@ struct SplineDerivWrtParameters : public DifferentiableFunction
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     CubicBSpline spline (spline_);
@@ -64,7 +64,7 @@ struct SplineDerivWrtParameters : public DifferentiableFunction
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     CubicBSpline spline (spline_);
@@ -77,10 +77,10 @@ private:
   value_type t_;
 };
 
-int run_test ()
-{
-  int status = 0;
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
+BOOST_AUTO_TEST_CASE (trajectory_spline)
+{
   CubicBSpline::vector_t params (16);
 
   // Initial position.
@@ -149,7 +149,7 @@ int run_test ()
       catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cerr << bg << std::endl;
-	  status = 1;
+	  BOOST_CHECK(false);
 	}
     }
 
@@ -169,8 +169,6 @@ int run_test ()
       if (std::fabs (spline (0.)[0] - x) >= 1e-8)
 	std::cout << "# " << spline (0.)[0] << " != " << x << std::endl;
     }
-
-  return status;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()

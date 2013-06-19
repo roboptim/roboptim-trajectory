@@ -68,7 +68,7 @@ struct ConfigWrtParam : public DerivableFunction
   impl_compute (result_t& res, const argument_t& p) const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
@@ -81,7 +81,7 @@ struct ConfigWrtParam : public DerivableFunction
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
@@ -110,7 +110,7 @@ struct DerivWrtParam : public DerivableFunction
   impl_compute (result_t& res, const argument_t& stp) const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     // Make sure one never evaluates under zero.
@@ -132,7 +132,7 @@ struct DerivWrtParam : public DerivableFunction
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     matrix_t tmp = traj_->variationDerivWrtParam (stp[0] * tMax, 1);
@@ -287,7 +287,9 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
   std::cout << std::endl;
 }
 
-int run_test ()
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_free_time_trajectory_stable_time_point)
 {
   typedef CubicBSpline::value_type value_type;
   CubicBSpline::vector_t params (9);
@@ -327,8 +329,6 @@ int run_test ()
   params[0] = 2.;
   freeTimeTraj.setParameters (params);
   printTable (spline, freeTimeTraj);
-
-  return 0;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()
