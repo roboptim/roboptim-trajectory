@@ -21,6 +21,10 @@ export LD_LIBRARY_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIAR
 export LD_LIBRARY_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/roboptim-core:$LD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/pkgconfig:$install_dir/lib/pkgconfig:$PKG_CONFIG_PATH"
 
+# Print paths for debugging
+echo "Printing environment variables..."
+env
+
 # Checkout Eigen.
 cd "$build_dir"
 wget "http://bitbucket.org/eigen/eigen/get/3.1.2.tar.gz"
@@ -45,6 +49,7 @@ cd "$build_dir/Ipopt-3.10.3"
 CC=gcc CXX=g++ ./configure --prefix="$install_dir"
 make
 make install
+make test
 
 echo "Installing dependencies..."
 
