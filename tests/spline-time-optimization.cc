@@ -47,11 +47,12 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
+// Solver type different from the test suite's solver_t
 typedef Solver<DifferentiableFunction,
 	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
-solver_t;
+test_solver_t;
 
-typedef solver_t::problem_t::constraints_t constraint_t;
+typedef test_solver_t::problem_t::constraints_t constraint_t;
 typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
 
 
@@ -60,7 +61,9 @@ const unsigned nControlPoints = 6;
 const unsigned nConstraintsPerCtrlPts = 5;
 const double vMax = 85.;
 
-int run_test ()
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
 {
   using namespace boost;
   using namespace boost::assign;
@@ -89,7 +92,7 @@ int run_test ()
   roboptim::NumericLinearFunction cost (a, b);
 
   // Create problem.
-  solver_t::problem_t problem (cost);
+  test_solver_t::problem_t problem (cost);
   problem.startingPoint () = freeTimeTraj.parameters ();
 
   // Scale has to remain positive.
@@ -114,18 +117,23 @@ int run_test ()
   gnuplot << plot_limitSpeed (freeTimeTraj, vMax);
 
 
-  SolverFactory<solver_t> factory (TESTSUITE_SOLVER, problem);
-  solver_t& solver = factory ();
+  SolverFactory<test_solver_t> factory (TESTSUITE_SOLVER, problem);
+  test_solver_t& solver = factory ();
+
+  // Set optional log file for debugging
+  SET_LOG_FILE(solver);
 
   // Ipopt-specific parameters
+  // WARNING: these parameters may not be relevant! These are only set to
+  // prevent hour-long unit testing...
   solver.parameters()["ipopt.linear_solver"].value = IPOPT_LINEAR_SOLVER;
-  solver.parameters()["ipopt.tol"].value = 1e-4;
-  solver.parameters()["ipopt.acceptable_tol"].value = 5e-3;
+  solver.parameters()["ipopt.tol"].value = 1e-3;
+  solver.parameters()["ipopt.acceptable_tol"].value = 5e-2;
   solver.parameters()["ipopt.mu_strategy"].value = "adaptive";
 
   std::cout << solver << std::endl;
 
-  solver_t::result_t res = solver.minimum ();
+  test_solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
 
   FreeTimeTrajectory<CubicBSpline> optimizedTrajectory =
@@ -150,12 +158,11 @@ int run_test ()
 
     case GenericSolver::SOLVER_NO_SOLUTION:
     case GenericSolver::SOLVER_ERROR:
-      return 1;
+      BOOST_CHECK(false);
     }
 
   gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
   limitSpeedStream << (gnuplot << unset ("multiplot"));
-  return 0;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()

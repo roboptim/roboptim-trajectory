@@ -38,7 +38,9 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
-int run_test ()
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
 {
   CubicBSpline::vector_t params (7);
 
@@ -93,15 +95,15 @@ int run_test ()
 			    % normalize (grad (0))).str ();
 
 	      try
-	      {
-		// Check gradient
-		Function::vector_t x (1);
-		x[0] = t;
-		if ((t < boost::get<1> (window)-boost::get<2> (window))
-		    && (t>boost::get<0> (window))) {
-		  checkGradientAndThrow (spline, 0, x);
+		{
+		  // Check gradient
+		  Function::vector_t x (1);
+		  x[0] = t;
+		  if ((t < boost::get<1> (window)-boost::get<2> (window))
+		      && (t>boost::get<0> (window))) {
+		    checkGradientAndThrow (spline, 0, x);
+		  }
 		}
-	      }
 	      catch (BadGradient<EigenMatrixDense>& bg)
 		{
 		  std::cerr << bg << std::endl;
@@ -136,7 +138,7 @@ int run_test ()
 	    std::cout
 	      << "plot '-' title '"<< title
 	      << "' with line\n" << std::endl;
-	  // Loop over the interval of definition
+	    // Loop over the interval of definition
 	    for (double t = boost::get<0> (window); t < boost::get<1> (window);
 		 t += boost::get<2> (window))
 	      {
@@ -146,12 +148,10 @@ int run_test ()
 			      % normalize (t)
 			      % normalize (jac (0, j))).str ();
 	      }
-	std::cout << "e" << std::endl;
+	    std::cout << "e" << std::endl;
 	  }
       std::cout << "unset multiplot" << std::endl;
     }
-
-  return 0;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()
