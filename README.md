@@ -1,10 +1,10 @@
-roboptim-core
-=============
+roboptim-trajectory
+===================
 
 [![Build Status](https://travis-ci.org/roboptim/roboptim-trajectory.png?branch=master)](https://travis-ci.org/roboptim/roboptim-trajectory)
 
 For general information about the project, please refer to its
-homepage: https://github.com/laas/roboptim-trajectory
+homepage: https://github.com/roboptim/roboptim-trajectory
 
 Optimization problems in test suite
 -----------------------------------
