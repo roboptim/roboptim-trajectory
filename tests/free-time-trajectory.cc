@@ -68,7 +68,7 @@ struct ConfigWrtParam : public DerivableFunction
   impl_compute (result_t& res, const argument_t& p) const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
@@ -81,7 +81,7 @@ struct ConfigWrtParam : public DerivableFunction
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
@@ -110,7 +110,7 @@ struct DerivWrtParam : public DerivableFunction
   impl_compute (result_t& res, const argument_t& t) const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 0);
@@ -122,7 +122,7 @@ struct DerivWrtParam : public DerivableFunction
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 1);
@@ -294,7 +294,9 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
   std::cout << std::endl;
 }
 
-int run_test ()
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_free_time_trajectory)
 {
   typedef CubicBSpline::value_type value_type;
   CubicBSpline::vector_t params (9);
@@ -320,8 +322,8 @@ int run_test ()
 		       "before");
   FreeTimeTrajectory<CubicBSpline> freeTimeTraj (spline, 1.);
 
-  assert (freeTimeTraj.inputSize () == 1);
-  assert (freeTimeTraj.outputSize () == 1);
+  BOOST_CHECK (freeTimeTraj.inputSize () == 1);
+  BOOST_CHECK (freeTimeTraj.outputSize () == 1);
 
   // Check interval scaling.
   {
@@ -348,12 +350,12 @@ int run_test ()
     StableTimePoint stp (t / freeTimeTraj.length ());
 
     std::cout << "Checking StableTimePoint scaling." << std::endl;
-    assert (isAlmostEqual
-	    (stp.getTime (freeTimeTraj.timeRange ()), t));
+    BOOST_CHECK (isAlmostEqual
+		 (stp.getTime (freeTimeTraj.timeRange ()), t));
 
     std::cout << "Checking scale/unscale methods." << std::endl;
-    assert (isAlmostEqual
-	    (freeTimeTraj.unscaleTime (freeTimeTraj.scaleTime (t)), t));
+    BOOST_CHECK (isAlmostEqual
+		 (freeTimeTraj.unscaleTime (freeTimeTraj.scaleTime (t)), t));
 
     std::cout << "Checking scale using tmin/tmax." << std::endl;
     value_type tMin = Function::getLowerBound (freeTimeTraj.timeRange ());
@@ -364,31 +366,31 @@ int run_test ()
     value_type tmax = Function::getUpperBound
       (freeTimeTraj.getFixedTimeTrajectory ().timeRange ());
 
-    assert (tmax != tMax); // Just to be sure a real scaling is done.
+    BOOST_CHECK (tmax != tMax); // Just to be sure a real scaling is done.
 
-    assert (isAlmostEqual (freeTimeTraj.scaleTime (tMin), tmin));
-    assert (isAlmostEqual (freeTimeTraj.scaleTime (tMax), tmax));
+    BOOST_CHECK (isAlmostEqual (freeTimeTraj.scaleTime (tMin), tmin));
+    BOOST_CHECK (isAlmostEqual (freeTimeTraj.scaleTime (tMax), tmax));
 
-    assert (isAlmostEqual (freeTimeTraj.unscaleTime (tmin), tMin));
-    assert (isAlmostEqual (freeTimeTraj.unscaleTime (tmax), tMax));
+    BOOST_CHECK (isAlmostEqual (freeTimeTraj.unscaleTime (tmin), tMin));
+    BOOST_CHECK (isAlmostEqual (freeTimeTraj.unscaleTime (tmax), tMax));
 
-    assert (isAlmostEqual (freeTimeTraj.unscaleTime ((tmax - tmin) / 2.),
-			   (tMax - tMin) / 2.));
-    assert (isAlmostEqual (freeTimeTraj.unscaleTime ((tmax - tmin) / 4.),
-			   (tMax - tMin) / 4.));
+    BOOST_CHECK (isAlmostEqual (freeTimeTraj.unscaleTime ((tmax - tmin) / 2.),
+				(tMax - tMin) / 2.));
+    BOOST_CHECK (isAlmostEqual (freeTimeTraj.unscaleTime ((tmax - tmin) / 4.),
+				(tMax - tMin) / 4.));
 
 
     std::cout << "Checking StableTimePoint scaling." << std::endl;
-    assert (isAlmostEqual
-	    ((0. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmin));
-    assert (isAlmostEqual
-	    ((1. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmax));
-    assert (isAlmostEqual
-	    ((.5 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
-	     (tmax - tmin) / 2.));
-    assert (isAlmostEqual
-	    ((.25 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
-	     (tmax - tmin) / 4.));
+    BOOST_CHECK (isAlmostEqual
+		 ((0. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmin));
+    BOOST_CHECK (isAlmostEqual
+		 ((1. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmax));
+    BOOST_CHECK (isAlmostEqual
+		 ((.5 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
+		  (tmax - tmin) / 2.));
+    BOOST_CHECK (isAlmostEqual
+		 ((.25 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
+		  (tmax - tmin) / 4.));
 
   }
 
@@ -404,8 +406,6 @@ int run_test ()
   params[0] = 2.;
   freeTimeTraj.setParameters (params);
   printTable (spline, freeTimeTraj);
-
-  return 0;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()

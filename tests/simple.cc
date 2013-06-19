@@ -21,9 +21,11 @@
 
 using namespace roboptim;
 
-int run_test ()
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_simple)
 {
-  return 0;
+  BOOST_CHECK(true);
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()

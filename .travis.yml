@@ -7,6 +7,7 @@ before_install:
   - git submodule update --init --recursive
   - sudo apt-get update -qq
   - sudo apt-get install -qq doxygen doxygen-latex libltdl-dev libboost-all-dev liblog4cxx10-dev gfortran libatlas3gf-base libblas-dev liblapack-dev
+after_failure: "cat `pwd`/_travis/build/tests/*.log"
 notifications:
   email:
     - roboptim@googlegroups.com

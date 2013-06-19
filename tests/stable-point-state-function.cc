@@ -32,7 +32,10 @@
 using namespace roboptim;
 using namespace roboptim::visualization;
 
-int run_test ()
+
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_stable_point_state_function)
 {
   const unsigned orderMax = 1;
   CubicBSpline::vector_t params (24);
@@ -69,7 +72,7 @@ int run_test ()
 
       boost::shared_ptr<DerivableFunction> orthogonalSpeed
 	(new OrthogonalSpeed ());
-      StablePointStateFunction<FreeTimeTrajectory<CubicBSpline> > 
+      StablePointStateFunction<FreeTimeTrajectory<CubicBSpline> >
 	orthoStateFunction
 	(ftt, orthogonalSpeed, timePoint, orderMax);
 
@@ -107,11 +110,10 @@ int run_test ()
       catch (BadGradient<EigenMatrixDense>& bg)
 	{
 	  std::cout << bg << std::endl;
+	  BOOST_CHECK (false);
 	}
       std::cout << "\n\n" << std::endl;
     }
-
-  return 0;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()

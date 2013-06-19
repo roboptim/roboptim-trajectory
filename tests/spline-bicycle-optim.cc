@@ -43,10 +43,11 @@ using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
+// Solver type different from the test suite's solver_t
 typedef Solver<DifferentiableFunction,
 	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
-solver_t;
-typedef solver_t::problem_t::constraints_t constraint_t;
+test_solver_t;
+typedef test_solver_t::problem_t::constraints_t constraint_t;
 
 typedef TrajectorySumCost<CubicBSpline>::discreteStableTimePointInterval_t
 discreteStableTimePointInterval_t;
@@ -103,7 +104,10 @@ public:
   }
 };
 
-int run_test ()
+
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_spline_bibycle_optim)
 {
   using namespace boost::assign;
   CubicBSpline::vector_t params (22);
@@ -157,21 +161,21 @@ int run_test ()
 					      interval, 1);
   // Check cost gradient.
   try
-  {
-    Function::vector_t x (params.size ());
-    x.setZero ();
-    checkGradientAndThrow (sumCost, 0, x, 2e-3);
+    {
+      Function::vector_t x (params.size ());
+      x.setZero ();
+      checkGradientAndThrow (sumCost, 0, x, 2e-3);
 
-    x = params;
-    checkGradientAndThrow (sumCost, 0, x, 2e-3);
-  }
+      x = params;
+      checkGradientAndThrow (sumCost, 0, x, 2e-3);
+    }
   catch (BadGradient<EigenMatrixDense>& bg)
     {
       std::cout << bg << std::endl;
-      //      return 1;
+      BOOST_CHECK(false);
     }
 
-  solver_t::problem_t problem (sumCost);
+  test_solver_t::problem_t problem (sumCost);
   problem.startingPoint () = params;
   problem.argumentBounds() = defDomain;
 
@@ -182,15 +186,18 @@ int run_test ()
   indices.push_back (params.size () - 1);
   makeFreeze (problem) (indices, params);
 
-  SolverFactory<solver_t> factory (TESTSUITE_SOLVER, problem);
-  solver_t& solver = factory ();
+  SolverFactory<test_solver_t> factory (TESTSUITE_SOLVER, problem);
+  test_solver_t& solver = factory ();
+
+  // Set optional log file for debugging
+  SET_LOG_FILE(solver);
 
   std::cerr << "Cost function (before): " << sumCost (params) << std::endl;
   std::cerr << "Parameters (before): " << params << std::endl;
 
   std::cerr << solver << std::endl;
 
-  solver_t::result_t res = solver.minimum ();
+  test_solver_t::result_t res = solver.minimum ();
 
   switch (res.which ())
     {
@@ -206,7 +213,7 @@ int run_test ()
     case GenericSolver::SOLVER_NO_SOLUTION:
       {
 	std::cerr << "No solution" << std::endl;
-	return 1;
+	BOOST_CHECK(false);
       }
     case GenericSolver::SOLVER_VALUE_WARNINGS:
       {
@@ -222,7 +229,7 @@ int run_test ()
       {
 	SolverError& result = boost::get<SolverError> (res);
 	std::cerr << result << std::endl;
-      return 1;
+	BOOST_CHECK(false);
       }
     }
 
@@ -236,10 +243,11 @@ int run_test ()
   catch (BadGradient<EigenMatrixDense>& bg)
     {
       std::cout << bg << std::endl;
+
+      BOOST_CHECK(false);
     }
 
   std::cout << (gnuplot << unset ("multiplot"));
-  return 0;
 }
 
-GENERATE_TEST ()
+BOOST_AUTO_TEST_SUITE_END ()
