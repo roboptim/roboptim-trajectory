@@ -17,9 +17,9 @@ mkdir -p "$build_dir"
 mkdir -p "$install_dir"
 
 # Setup environment variables.
-export LD_LIBRARY_PATH="$install_dir/lib:$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH="$install_dir/lib/roboptim-core:$install_dir/lib/x86_64-linux-gnu/roboptim-core:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="$install_dir/lib/pkgconfig:$install_dir/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH):$install_dir/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/roboptim-core:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/pkgconfig:$install_dir/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Checkout Eigen.
 cd "$build_dir"
@@ -29,7 +29,7 @@ cd "$build_dir/eigen-eigen-5097c01bcdc4/"
 mkdir -p "$build_dir/eigen-eigen-5097c01bcdc4/_build"
 cd "$build_dir/eigen-eigen-5097c01bcdc4/_build"
 cmake .. -DCMAKE_INSTALL_PREFIX:STRING="$install_dir" \
-          -Dpkg_config_libdir:STRING="$install_dir/lib"
+         -Dpkg_config_libdir:STRING="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)"
 make
 make install
 
