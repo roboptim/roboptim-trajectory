@@ -73,21 +73,20 @@ namespace roboptim
 	using namespace detail;
 	assert (traj.outputSize () >= 2);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
-	Function::value_type max = Function::getUpperBound (traj.timeRange ());
-	Function::discreteInterval_t interval (min, max, step);
+        Function::value_type max = Function::getUpperBound (traj.timeRange ());
 
 	if (min + step > max)
 	  throw std::string ("bad interval");
 
-	std::string str = (boost::format ("plot '-' title '%1%' with line\n")
+        std::string str = (boost::format ("plot '-' title '%1%' with line\n")
 			   % traj.getName ()).str ();
 
 	for (double i = step; i < 1. - step; i += step)
 	  {
 	    Function::vector_t res = traj (i * tMax);
-	    str += (format ("%1f %2f\n")
+            str += (format ("%2.8f %2.8f\n")
 		    % normalize (res[0])
-		    % normalize (res [1])).str ();
+                    % normalize (res[1])).str ();
 	  }
 
 	str += "e\n";
@@ -133,7 +132,7 @@ namespace roboptim
 	      {
 		StableTimePoint timePoint = i * tMax;
 		Function::vector_t res = traj (timePoint);
-		str += (format ("%1.2f %2.2f\n")
+                str += (format ("%2.8f %2.8f\n")
 			% normalize (timePoint.getTime (traj.timeRange ()))
 			% normalize (res [component])).str ();
 	      }
