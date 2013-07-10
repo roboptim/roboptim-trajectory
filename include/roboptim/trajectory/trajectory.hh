@@ -26,10 +26,10 @@
 # include <roboptim/trajectory/stable-time-point.hh>
 
 # define ROBOPTIM_IMPLEMENT_CLONE(C)		\
-    virtual C* clone () const throw ()		\
-    {						\
-      return new C (*this);			\
-    }
+  virtual C* clone () const throw ()		\
+  {						\
+    return new C (*this);			\
+  }
 
 namespace roboptim
 {
@@ -45,9 +45,9 @@ namespace roboptim
       const double tmin = Function::getLowerBound (trajectory.timeRange ());
       const double tmax = Function::getUpperBound (trajectory.timeRange ());
       if (t < tmin && (t + epsilon) >= tmin)
-	  return tmin;
+        return tmin;
       if (t > tmax && (t - epsilon) <= tmax)
-	  return tmax;
+        return tmax;
       return t;
     }
   } // end of namespace detail.
@@ -62,10 +62,10 @@ namespace roboptim
   ///   of parameters \f$\textbf{R}^m\f$
   /// - to a vector space \f$\textbf{R}^n\f$:
   /**   \f[
-\begin{array}{llll}
- \Gamma: & [t_{min}, t_{max}] \times \textbf{R}^m & \rightarrow & \textbf{R}^n \\
-  & (t, \textbf{p}) & \rightarrow & \Gamma_{\textbf{p}}(t)
-\end{array}
+        \begin{array}{llll}
+        \Gamma: & [t_{min}, t_{max}] \times \textbf{R}^m & \rightarrow & \textbf{R}^n \\
+        & (t, \textbf{p}) & \rightarrow & \Gamma_{\textbf{p}}(t)
+        \end{array}
         \f]*/
   ///
   /// \tparam DerivabilityOrder derivability order
@@ -114,10 +114,10 @@ namespace roboptim
     /// \return the state defined as the vector containing the
     /// config and first derivatives:
     /** \f[
-\textbf{X}(t) = \left(\Gamma_{\textbf{p}}(t),
-\frac{d\Gamma_{\textbf{p}}}{dt}(t),\cdots,
-\frac{d^{r}\Gamma_{\textbf{p}}}{dt^{r}}(t)\right)
-    \f]*/
+        \textbf{X}(t) = \left(\Gamma_{\textbf{p}}(t),
+        \frac{d\Gamma_{\textbf{p}}}{dt}(t),\cdots,
+        \frac{d^{r}\Gamma_{\textbf{p}}}{dt^{r}}(t)\right)
+        \f]*/
     /// The configuration and derivatives are concatenated in one vector.
     virtual vector_t state (double t, size_type order) const throw ();
     virtual vector_t state (StableTimePoint t, size_type order) const throw ();
@@ -141,8 +141,8 @@ namespace roboptim
     /// \param order order \f$r\f$ of the derivative.
     /// \return jacobian
     /** \f[
-\frac{\partial}{\partial\textbf{p}}
-\left(\frac{d^r\Gamma_{\textbf{p}}}{dt^r}(t)\right)
+        \frac{\partial}{\partial\textbf{p}}
+        \left(\frac{d^r\Gamma_{\textbf{p}}}{dt^r}(t)\right)
         \f]*/
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
       const throw () = 0;
@@ -153,11 +153,11 @@ namespace roboptim
     /// \param order order \f$r\f$ of the derivative.
     /// \return jacobian
     /** \f[
-\left(\begin{array}{c}\frac{\partial}{\partial \lambda}
- \Gamma_{\textbf{p}}(t) \\
- \vdots \\
- \frac{\partial}{\partial \lambda}\frac{d\Gamma_{\textbf{p}}^r}{dt^r}(t)
-\end{array}\right)
+        \left(\begin{array}{c}\frac{\partial}{\partial \lambda}
+        \Gamma_{\textbf{p}}(t) \\
+        \vdots \\
+        \frac{\partial}{\partial \lambda}\frac{d\Gamma_{\textbf{p}}^r}{dt^r}(t)
+        \end{array}\right)
         \f]**/
 
     jacobian_t variationStateWrtParam (double t, size_type order) const throw ();

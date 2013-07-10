@@ -33,17 +33,19 @@ namespace roboptim
     : Trajectory<3> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
   {
-    //Parameter size should be a multiple of spline dimension
+    // Parameter size should be a multiple of spline dimension.
     assert (parameters_.size () % outputSize == 0);
-    // number of control points should be at least 4.
+
+    // Number of control points should be at least 4.
     assert (nbp_ >= 4);
-    // Fill vector of regularly spaced knots
+
+    // Fill vector of regularly spaced knots.
     size_type m = nbp_ + 4;
 
     double delta_t = (tr.second - tr.first) / (static_cast<double> (m) - 7.);
 
     double ti = tr.first - 3*delta_t;
-    for (size_type i=0; i<m; i++) {
+    for (size_type i = 0; i < m; i++) {
       knots_.push_back (ti);
       ti += delta_t;
     }
@@ -53,14 +55,16 @@ namespace roboptim
 
   CubicBSpline::CubicBSpline (const CubicBSpline& spline) throw ()
     : Trajectory<3> (spline.timeRange (), spline.outputSize (),
-		     spline.parameters ()),
+                     spline.parameters (), spline.getName ()),
       nbp_ (spline.parameters ().size () / spline.outputSize ()),
-      knots_ (spline.knots_), basisPolynomials_ (spline.basisPolynomials_),
+      knots_ (spline.knots_),
+      basisPolynomials_ (spline.basisPolynomials_),
       uniform_ (spline.uniform_)
   {
-    //Parameter size should be a multiple of spline dimension
+    // Parameter size should be a multiple of spline dimension.
     assert (parameters_.size () % outputSize () == 0);
-    // number of control points should be at least 4.
+
+    // Number of control points should be at least 4.
     assert (nbp_ >= 5);
 
     setParameters (spline.parameters ());
@@ -70,7 +74,7 @@ namespace roboptim
   void CubicBSpline::computeBasisPolynomials ()
   {
     basisPolynomials_.clear();
-    for (size_type j=0; j<nbp_; j++)
+    for (size_type j = 0; j < nbp_; j++)
       {
 	std::size_t j_ = static_cast<std::size_t> (j);
 
@@ -135,7 +139,7 @@ namespace roboptim
   CubicBSpline::impl_compute (result_t& derivative, double t) const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     t = detail::fixTime (t, *this);
@@ -155,9 +159,11 @@ namespace roboptim
   {
     t = detail::fixTime (t, *this);
     typedef boost::numeric::converter<size_type, double> Double2SizeType;
+
     // t_3
     double tmin = timeRange ().first;
     size_type imin = 3;
+
     // t_{m-4}
     double tmax = timeRange ().second;
     size_type imax = nbp_;
@@ -187,7 +193,7 @@ namespace roboptim
       assert (count < 10000);
       iPrev = i;
     }
-    if (i > nbp_-1) i=nbp_-1;
+    if (i > nbp_-1) i = nbp_-1;
     if (i < 3) i = 3;
     return i;
   }
@@ -200,12 +206,10 @@ namespace roboptim
 
     const double Dt = length () / ((value_type)nbp_ - 3.);
     const double t3 = getLowerBound (timeRange ());
-    //const double tm = getUpperBound (timeRange ());
 
     const size_type i = interval (t);
-    //const size_type n = outputSize ();
 
-    // Non zero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
+    // Nonzero basis functions are b_{i-3,3}(t), b_{i-2,3}(t), b_{i-1,3}(t),
     // b_{i,3}(t).
     const value_type t_i = t3 + ((value_type)i - 3) * Dt;
 
@@ -261,7 +265,7 @@ namespace roboptim
     const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     t = detail::fixTime (t, *this);
@@ -290,7 +294,7 @@ namespace roboptim
 				 size_type order) const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     this->impl_derivative (derivative,
