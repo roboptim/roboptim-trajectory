@@ -20,8 +20,10 @@
 
 # include <roboptim/core/function.hh>
 
+# include <ostream>
+
 namespace roboptim {
-  /// Polynomial of degree at most 3
+  /// \brief Polynomial of degree at most 3.
 
   /// \f[
   /// P (t) = \sum_{i=0}{3} a_i (t-t_0)^i
@@ -30,7 +32,9 @@ namespace roboptim {
   {
   public:
     typedef Function::size_type size_type;
-    //    Polynomial3 ();
+
+    /// \brief Default constructor: create a null polynomial.
+    Polynomial3 ();
     Polynomial3 (double t0, double a0, double a1, double a2, double a3);
     Polynomial3 operator* (const Polynomial3& poly) const;
     Polynomial3 operator+ (const Polynomial3& poly) const;
@@ -40,13 +44,17 @@ namespace roboptim {
     double operator () (const double& t) const;
     double derivative (const double& t, size_type order = 1) const;
 
+    /// \brief Print Polynomial3.
+    std::ostream& print (std::ostream& o) const throw ();
+
     double coefs_ [4];
     double t0_;
   }; // class Polynomial3
+
+  /// \brief Scalar multiplication of a 3rd degree polynomial.
   Polynomial3 operator* (const double& lambda, const Polynomial3& poly);
 
-  /// Monomial
-
+  /// \brief Monomial
   /// \f[
   /// M (t) = t-t_0
   /// \f]
@@ -54,5 +62,8 @@ namespace roboptim {
   {
     Monomial (double t0) : Polynomial3 (t0, 0., 1., 0., 0.) {}
   }; // class Monomial
+
+  std::ostream& operator << (std::ostream& o, const Polynomial3& p);
+
 } // namespace roboptim
 #endif // ROBOPTIM_TRAJECTORY_POLYNOMIAL_3_HH

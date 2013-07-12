@@ -85,12 +85,44 @@ namespace roboptim
     jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
       const throw ();
 
+    /// \brief Add a constraint to a problem in order to freeze the B-spline
+    /// at its start.
+    /// \param problem problem to which the constraint will be added.
+    /// \param offset offset of the B-spline parameters in the problem's
+    /// parameter list.
     template <typename P>
     void freezeCurveStart (P& problem, size_type offset = 0) const throw ();
+
+    /// \brief Add a constraint to a problem in order to freeze the B-spline
+    /// at its end.
+    /// \param problem problem to which the constraint will be added.
+    /// \param offset offset of the B-spline parameters in the problem's
+    /// parameter list.
     template <typename P>
     void freezeCurveEnd (P& problem, size_type offset = 0) const throw ();
 
+    /// \brief Regular spacing between B-spline knots. This is only valid for
+    /// uniform B-splines.
+    /// \return regular spacing between B-spline knots.
     value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
+
+    /// \brief Constant getter for the basis polynomials of the cubic B-spline.
+    /// \return constant reference to the basis polynomials.
+    ///
+    /// Note: computeBasisPolynomials() needs to be called beforehand (which is
+    /// done in the CubicBSpline constructor).
+    const std::vector <std::vector <Polynomial3> >&
+    basisPolynomials() const
+    {
+      return basisPolynomials_;
+    }
+
+    /// \brief Get the number of control points of the spline.
+    /// \return Number of control points of the spline.
+    size_type getNumberControlPoints() const
+    {
+      return nbp_;
+    }
 
   protected:
     using Trajectory<3>::impl_compute;
@@ -100,19 +132,34 @@ namespace roboptim
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const throw ();
 
+    /// \brief Find the index of the interval in which t is.
+    /// \param t instant considered.
+    /// \return index of the interval in which t is.
     size_type interval (value_type t) const;
+
+    /// \brief Compute the basis polynomials for the cubic B-spline.
+    void computeBasisPolynomials ();
+
+    /// \brief Compute the basis functions for a given instant t.
+    /// \param t instant considered.
+    /// \param order order of the basis functions.
+    /// \return basis functions evaluated at t.
     vector_t basisFunctions (value_type t, size_type order) const
       ROBOPTIM_TRAJECTORY_DEPRECATED;
-    void computeBasisPolynomials ();
 
   private:
     /// \brief Number of control points.
     size_type nbp_;
-    /// Vector of knots
+
+    /// \brief Vector of knots.
     std::vector <value_type> knots_;
+
+    /// \brief Basis polynomials.
     /// basisPolynomials_[i][j] = B_{i,i+j}
     std::vector <std::vector <Polynomial3> > basisPolynomials_;
-    /// For backward compatibility only
+
+    /// \brief Whether the B-spline is uniform.
+    /// Note: for backward compatibility only.
     bool uniform_;
   };
 

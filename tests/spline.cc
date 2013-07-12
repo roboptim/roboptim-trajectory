@@ -17,15 +17,15 @@
 
 #undef NDEBUG
 
-#include "shared-tests/common.hh"
-
-#include <boost/numeric/ublas/io.hpp>
+#include "shared-tests/fixture.hh"
 
 #include <roboptim/core/finite-difference-gradient.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
 #include <roboptim/core/visualization/gnuplot-function.hh>
+
+#include <roboptim/trajectory/visualization/trajectory.hh>
 
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/cubic-b-spline.hh>
@@ -81,6 +81,11 @@ BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE (trajectory_spline)
 {
+  using namespace roboptim::visualization::gnuplot;
+
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern("spline");
+
   CubicBSpline::vector_t params (16);
 
   // Initial position.
@@ -96,79 +101,135 @@ BOOST_AUTO_TEST_CASE (trajectory_spline)
   params[12] = 100., params[13] = 100.;
   params[14] = 100., params[15] = 100.;
 
-  //FIXME: change interval.
-  CubicBSpline spline (std::make_pair (0., 5.), 2, params, "spline");
+  // First 2D spline
+  CubicBSpline spline_2d_1 (std::make_pair (0., 5.), 2,
+                            params, "Cubic B-spline 2D (1)");
+
+  // Second 2D spline (change some parameters)
+  params[7] = 75.;
+  CubicBSpline spline_2d_2 (std::make_pair (0., 5.), 2,
+                            params, "Cubic B-spline 2D (2)");
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t interval (0., 5., 0.01);
 
-  std::cout
-    << "# Values:" << std::endl
-    << "# " << spline (0.) << std::endl
-    << "# " << spline (2.5) << std::endl
-    << "# " << spline (5.) << std::endl
+  // FIRST PART: TEST 1D CUBIC B-SPLINES
 
-    << "# 1st derivative:" << std::endl
-    << "# " << spline.derivative (0., 1) << std::endl
-    << "# " << spline.derivative (2.5, 1) << std::endl
-    << "# " << spline.derivative (5., 1) << std::endl
+  CubicBSpline::vector_t params_1d (8);
 
-    << "# 2nd derivative:" << std::endl
-    << "# " << spline.derivative (0., 2) << std::endl
-    << "# " << spline.derivative (2.5, 2) << std::endl
-    << "# " << spline.derivative (5., 2) << std::endl
-    << (gnuplot << plot_xy (spline, interval));
+  // Initial position.
+  params_1d[0] = 0.;
+  params_1d[1] = 0.;
+  params_1d[2] = 0.;
+  // Control point 3.
+  params_1d[3] = 50.;
+  // Control point 4.
+  params_1d[4] = 50.;
+  // Final position.
+  params_1d[5] = 0.;
+  params_1d[6] = 0.;
+  params_1d[7] = 0.;
 
-  // Reset parameters and recompute some values.
-  params[6] = 50.,  params[7] = 25.;
-  spline.setParameters (params);
+  // First 1D spline
+  CubicBSpline spline_1d_1 (std::make_pair (0., 5.), 1,
+                            params_1d, "Cubic B-spline 1D (1)");
 
-  std::cout
-    << "# 1st derivative:" << std::endl
-    << "# " << spline.derivative (0., 1) << std::endl
-    << "# " << spline.derivative (2.5, 1) << std::endl
-    << "# " << spline.derivative (5., 1) << std::endl
+  // Second 1D spline (change some parameters)
+  params_1d[3] = 75.;
+  params_1d[4] = 25.;
+  CubicBSpline spline_1d_2 (std::make_pair (0., 5.), 1,
+                            params_1d, "Cubic B-spline 1D (2)");
 
-    << "# 2nd derivative:" << std::endl
-    << "# " << spline.derivative (0., 2) << std::endl
-    << "# " << spline.derivative (2.5, 2) << std::endl
-    << "# " << spline.derivative (5., 2) << std::endl;
+
+  // Gnuplot export and compare to pattern
+  (*output)
+    << (gnuplot
+        << set ("multiplot layout 2,2")
+
+        << comment (" Values:")
+        << comment (spline_2d_1 (0.))
+        << comment (spline_2d_1 (2.5))
+        << comment (spline_2d_1 (5.))
+
+        << comment (" 1st derivative:")
+        << comment (spline_2d_1.derivative (0., 1))
+        << comment (spline_2d_1.derivative (2.5, 1))
+        << comment (spline_2d_1.derivative (5., 1))
+
+        << comment (" 2nd derivative:")
+        << comment (spline_2d_1.derivative (0., 2))
+        << comment (spline_2d_1.derivative (2.5, 2))
+        << comment (spline_2d_1.derivative (5., 2))
+        << plot_xy (spline_2d_1, interval)
+
+        << comment (" Values:")
+        << comment (spline_2d_2 (0.))
+        << comment (spline_2d_2 (2.5))
+        << comment (spline_2d_2 (5.))
+
+        << comment (" 1st derivative:")
+        << comment (spline_2d_2.derivative (0., 1))
+        << comment (spline_2d_2.derivative (2.5, 1))
+        << comment (spline_2d_2.derivative (5., 1))
+
+        << comment (" 2nd derivative:")
+        << comment (spline_2d_2.derivative (0., 2))
+        << comment (spline_2d_2.derivative (2.5, 2))
+        << comment (spline_2d_2.derivative (5., 2))
+        << plot_xy (spline_2d_2, interval)
+
+        << plot (spline_1d_1, interval)
+
+        << plot (spline_1d_2, interval)
+
+        << unset ("multiplot"));
+
+
+  std::cout << output->str () << std::endl;
+
+  BOOST_CHECK (output->match_pattern ());
+
+  // Check gradients with finite-differences
 
   for (double t = 0.5; t < 5.; t += 0.5)
     {
       try
-	{
-	  Function::vector_t x (1);
-	  x[0] = t;
-	  checkGradientAndThrow (spline, 0, x);
+        {
+          Function::vector_t x (1);
+          x[0] = t;
+          checkGradientAndThrow (spline_2d_1, 0, x);
 
-	  SplineDerivWrtParameters splineDerivWrtParams (spline, t);
-	  checkGradientAndThrow
-	    (splineDerivWrtParams, 0, spline.parameters ());
-	}
+          SplineDerivWrtParameters splineDerivWrtParams (spline_2d_1, t);
+          checkGradientAndThrow
+            (splineDerivWrtParams, 0, spline_2d_1.parameters ());
+        }
       catch (BadGradient<EigenMatrixDense>& bg)
-	{
-	  std::cerr << bg << std::endl;
-	  BOOST_CHECK(false);
-	}
+        {
+          std::cerr << bg << std::endl;
+          BOOST_CHECK(false);
+        }
     }
 
   for (double x = 0.; x < 10.; x += 0.25)
     {
-      Function::vector_t params = spline.parameters ();
+      Function::vector_t params = spline_2d_1.parameters ();
       params[0 * 2] = 321;
       params[1 * 2] = 123;
       params[2 * 2] =
-	6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
+        6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
 
       assert (1. / 6. * params[0 * 2]
-	      + 2. / 3. * params[1 * 2]
-	      + 1. / 6. * params[2 * 2] - x < 1e-8);
+              + 2. / 3. * params[1 * 2]
+              + 1. / 6. * params[2 * 2] - x < 1e-8);
 
-      spline.setParameters (params);
-      if (std::fabs (spline (0.)[0] - x) >= 1e-8)
-	std::cout << "# " << spline (0.)[0] << " != " << x << std::endl;
+      spline_2d_1.setParameters (params);
+      if (std::fabs (spline_2d_1 (0.)[0] - x) >= 1e-8)
+        std::cout << "# " << spline_2d_1 (0.)[0] << " != " << x << std::endl;
     }
+
+  // Non-regression test (compilation)
+  std::vector<CubicBSpline> vec;
+  vec.push_back(CubicBSpline (std::make_pair (0., 5.), 2, params, "spline"));
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

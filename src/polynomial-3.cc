@@ -17,16 +17,18 @@
 
 #include "roboptim/trajectory/polynomial-3.hh"
 
+#include <boost/lexical_cast.hpp>
+
 namespace roboptim {
 
-  // Polynomial3::Polynomial3 ()
-  // {
-  //   t0_ = 0;
-  //   memset (coefs_, 0, 4*sizeof(double));
-  // }
+  Polynomial3::Polynomial3 ()
+  {
+    t0_ = 0;
+    memset (coefs_, 0, 4*sizeof(double));
+  }
 
   Polynomial3::Polynomial3 (double t0, double a0, double a1, double a2,
-			    double a3)
+                            double a3)
   {
     t0_ = t0;
     coefs_ [0] = a0;
@@ -137,6 +139,27 @@ namespace roboptim {
     default:
       return 0;
     }
+  }
+
+  std::ostream&
+  Polynomial3::print (std::ostream& o) const throw ()
+  {
+    for (unsigned int i = 0; i < 4; ++i)
+      {
+        o << ((coefs_[i] >= 0)? " + " : " - ")
+          << fabs(coefs_[i]) << " * "
+          << ((fabs(t0_) < 1e-12)? "t":
+              std::string("(t - " )
+              + boost::lexical_cast<std::string>(t0_)
+              + ")")
+          << "^" << i;
+      }
+    return o;
+  }
+
+  std::ostream& operator << (std::ostream& o, const Polynomial3& p)
+  {
+    return p.print(o);
   }
 
 } // namespace roboptim
