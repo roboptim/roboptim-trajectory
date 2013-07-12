@@ -32,7 +32,7 @@
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/trajectory-cost.hh>
 
-#include "shared-tests/common.hh"
+#include "shared-tests/fixture.hh"
 
 using namespace roboptim;
 using namespace roboptim::visualization;
@@ -42,11 +42,16 @@ BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
 {
+  using namespace roboptim::visualization::gnuplot;
+
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern("spline-gradient");
+
   CubicBSpline::vector_t params (7);
 
   for (unsigned x = 0; x < 7; ++x)
     {
-      std::cout
+      (*output)
 	<<
 	(boost::format
 	 ("set term wxt persist title 'Spline: base functions' %1% font ',5'")
@@ -83,14 +88,14 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
 	      assert (0);
 	    }
 
-	  std::cout << "plot '-' title '"<< title <<"' with line\n"
+          (*output) << "plot '-' title '"<< title <<"' with line\n"
 		    << std::endl;
 	  // Loop over the interval of definition
 	  for (double t = boost::get<0> (window); t < boost::get<1> (window);
 	       t += boost::get<2> (window))
 	    {
 	      CubicBSpline::vector_t grad = spline.derivative (t, i);
-	      std::cout << (boost::format ("%1.2f %2.2f\n")
+              (*output) << (boost::format ("%1.2f %2.4f\n")
 			    % normalize (t)
 			    % normalize (grad (0))).str ();
 
@@ -110,7 +115,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
 		  std::cerr << "t=" << t << ", spline=" << spline << std::endl;
 		}
 	    }
-	  std::cout << "e" << std::endl;
+          (*output) << "e" << std::endl;
 	}
 
       // Loop over control points
@@ -135,7 +140,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
 	      }
 	    title.append ((boost::format (" (%1%)") % j).str ());
 
-	    std::cout
+            (*output)
 	      << "plot '-' title '"<< title
 	      << "' with line\n" << std::endl;
 	    // Loop over the interval of definition
@@ -144,14 +149,19 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
 	      {
 		CubicBSpline::matrix_t jac =
 		  spline.variationDerivWrtParam (t, i);
-		std::cout << (boost::format ("%1.2f %2.2f\n")
+                (*output) << (boost::format ("%1.2f %2.4f\n")
 			      % normalize (t)
 			      % normalize (jac (0, j))).str ();
 	      }
-	    std::cout << "e" << std::endl;
+            (*output) << "e" << std::endl;
 	  }
-      std::cout << "unset multiplot" << std::endl;
+      (*output) << "unset multiplot" << std::endl;
     }
+
+
+  std::cout << output->str () << std::endl;
+
+  BOOST_CHECK (output->match_pattern ());
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
