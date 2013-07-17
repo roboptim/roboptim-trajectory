@@ -106,6 +106,17 @@ namespace roboptim
     /// \return regular spacing between B-spline knots.
     value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
 
+    /// \brief Translate the basis polynomials to a given time t1.
+    /// \param t1 new center time, i.e. P = sum(a_i*(t-t1)^i, i={0,3})
+    ///
+    /// This method can be useful when one needs to have all the polynomials
+    /// expressed in the same basis (e.g. t1 = 0).
+    void translateBasisPolynomials (double t1) throw ();
+
+    /// \brief Return the polynomial expression of the cubic B-spline on each
+    /// time interval.
+    void toPolynomials (std::vector<Polynomial3>& res) const throw ();
+
     /// \brief Constant getter for the basis polynomials of the cubic B-spline.
     /// \return constant reference to the basis polynomials.
     ///
@@ -122,6 +133,13 @@ namespace roboptim
     size_type getNumberControlPoints() const
     {
       return nbp_;
+    }
+
+    /// \brief Return the knot vector of the spline.
+    /// \return knot vector of the spline (const).
+    const std::vector <value_type>& knot_vector () const
+    {
+        return knots_;
     }
 
   protected:

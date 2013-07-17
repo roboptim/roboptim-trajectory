@@ -101,7 +101,6 @@ namespace roboptim
 	assert (traj.outputSize () == 3);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
-	Function::discreteInterval_t interval (min, max, step);
 
 	if (min + step > max)
 	  throw std::string ("bad interval");

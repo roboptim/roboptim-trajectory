@@ -18,6 +18,7 @@
 #include "roboptim/trajectory/polynomial-3.hh"
 
 #include <boost/lexical_cast.hpp>
+#include <limits>
 
 namespace roboptim {
 
@@ -95,15 +96,26 @@ namespace roboptim {
     double dt = t1 - t0_;
     double dt2 = dt*dt;
     double dt3 = dt*dt2;
-    double a0 = coefs_ [0];
-    double a1 = coefs_ [1];
-    double a2 = coefs_ [2];
-    double a3 = coefs_ [3];
 
-    return Polynomial3 (t1, a0 + a1*dt + a2*dt2 + a3*dt3,
-			a1 + 2*dt*a2 + 3*dt2*a3,
-			a2 + 3*dt*a3,
-			a3);
+    return Polynomial3
+      (t1,
+       coefs_[0] + coefs_[1]*dt + coefs_[2]*dt2 + coefs_[3]*dt3,
+       coefs_[1] + 2*dt*coefs_[2] + 3*dt2*coefs_[3],
+       coefs_[2] + 3*dt*coefs_[3],
+       coefs_[3]);
+  }
+
+  void Polynomial3::translateInPlace (const double &t1)
+  {
+    double dt = t1 - t0_;
+    double dt2 = dt*dt;
+    double dt3 = dt*dt2;
+
+    t0_ = t1;
+    coefs_ [0] += coefs_ [1]*dt + coefs_ [2]*dt2 + coefs_[3]*dt3;
+    coefs_ [1] += 2*dt*coefs_ [2] + 3*dt2*coefs_[3];
+    coefs_ [2] += 3*dt*coefs_[3];
+    // coefs_[3] remains the same
   }
 
   double Polynomial3::operator () (const double& t) const
@@ -111,31 +123,24 @@ namespace roboptim {
     double dt = t - t0_;
     double dt2 = dt*dt;
     double dt3 = dt*dt2;
-    double a0 = coefs_ [0];
-    double a1 = coefs_ [1];
-    double a2 = coefs_ [2];
-    double a3 = coefs_ [3];
 
-    return a0 + a1*dt + a2*dt2 + a3*dt3;
+    return coefs_[0] + coefs_[1]*dt + coefs_ [2]*dt2 + coefs_ [3]*dt3;
   }
 
   double Polynomial3::derivative (const double& t, size_type order) const
   {
     double dt = t - t0_;
     double dt2 = dt*dt;
-    double a1 = coefs_ [1];
-    double a2 = coefs_ [2];
-    double a3 = coefs_ [3];
 
     switch (order) {
     case 0:
       return (*this) (t);
     case 1:
-      return a1 + 2*a2*dt + 3*a3*dt2;
+      return coefs_[1] + 2*coefs_[2]*dt + 3*coefs_[3]*dt2;
     case 2:
-      return 2*a2 + 6*a3*dt;
+      return 2*coefs_[2] + 6*coefs_[3]*dt;
     case 3:
-      return 6*a3;
+      return 6*coefs_[3];
     default:
       return 0;
     }
@@ -144,15 +149,25 @@ namespace roboptim {
   std::ostream&
   Polynomial3::print (std::ostream& o) const throw ()
   {
-    for (unsigned int i = 0; i < 4; ++i)
+    bool is_first_coeff = true;
+    for (size_t i = 0; i < 4; ++i)
       {
-        o << ((coefs_[i] >= 0)? " + " : " - ")
-          << fabs(coefs_[i]) << " * "
-          << ((fabs(t0_) < 1e-12)? "t":
-              std::string("(t - " )
-              + boost::lexical_cast<std::string>(t0_)
-              + ")")
-          << "^" << i;
+        if (fabs(coefs_[i]) > std::numeric_limits<double>::epsilon())
+          {
+            o << ((coefs_[i] >= 0)?
+                  ((!is_first_coeff)? " + " : "")
+                  : ((!is_first_coeff)? " - " : "-"))
+              << boost::lexical_cast<std::string>(fabs(coefs_[i]))
+              << "*"
+              << ((fabs(t0_) < std::numeric_limits<double>::epsilon())? "t":
+                  std::string("(t" )
+                  + (t0_ > 0 ? "-" : "+")
+                  + boost::lexical_cast<std::string>(fabs(t0_))
+                  + ")")
+              << "^" << i;
+
+            is_first_coeff = false;
+          }
       }
     return o;
   }

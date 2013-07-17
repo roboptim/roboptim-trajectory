@@ -23,8 +23,8 @@
 # include <ostream>
 
 namespace roboptim {
-  /// \brief Polynomial of degree at most 3.
 
+  /// \brief Polynomial of degree at most 3.
   /// \f[
   /// P (t) = \sum_{i=0}{3} a_i (t-t_0)^i
   /// \f]
@@ -39,15 +39,26 @@ namespace roboptim {
     Polynomial3 operator* (const Polynomial3& poly) const;
     Polynomial3 operator+ (const Polynomial3& poly) const;
     Polynomial3 operator- (const Polynomial3& poly) const;
+
+    /// \brief Return a new polynomial translated from (t-t0) to (t-t1).
     Polynomial3 translate (const double &t1) const;
 
+    /// \brief Translate the polynomial (in place) from (t-t0) to (t-t1).
+    void translateInPlace (const double &t1);
+
+    /// \brief Evaluate the polynomial.
     double operator () (const double& t) const;
+
+    /// \brief Evaluate the derivative of a given order.
     double derivative (const double& t, size_type order = 1) const;
 
     /// \brief Print Polynomial3.
     std::ostream& print (std::ostream& o) const throw ();
 
+    /// \brief Polynomial coefficients (ordered from lowest to highest degree).
     double coefs_ [4];
+
+    /// \brief Point on which the polynomial is centered.
     double t0_;
   }; // class Polynomial3
 

@@ -16,10 +16,10 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/numeric/conversion/converter.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <roboptim/trajectory/sys.hh>
+#include <boost/format.hpp>
 
 #include <roboptim/core/indent.hh>
+#include <roboptim/trajectory/sys.hh>
 #include <roboptim/trajectory/cubic-b-spline.hh>
 
 namespace roboptim
@@ -288,6 +288,51 @@ namespace roboptim
       B_k_k.derivative(t, order) * P_k;
   }
 
+
+  void
+  CubicBSpline::translateBasisPolynomials (double t1) throw ()
+  {
+      for (std::vector <std::vector <Polynomial3> >::iterator
+           it = basisPolynomials_.begin ();
+           it != basisPolynomials_.end ();
+           ++it)
+          for (std::vector <Polynomial3>::iterator
+               p = it->begin ();
+               p != it->end ();
+               ++p)
+              p->translateInPlace (t1);
+  }
+
+  void
+  CubicBSpline::toPolynomials (std::vector<Polynomial3>& res)
+  const throw ()
+  {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+      Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+      // Cubic B-spline ---> nbp_-3 intervals (aka segments or bays)
+      if (res.size() != nbp_-3) res.resize(nbp_-3);
+
+      for (size_type k = 3; k < nbp_; ++k)
+      {
+          const value_type& P_k_3 = parameters()(k - 3);
+          const value_type& P_k_2 = parameters()(k - 2);
+          const value_type& P_k_1 = parameters()(k - 1);
+          const value_type& P_k   = parameters()(k - 0);
+
+          const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
+          const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
+          const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
+          const Polynomial3& B_k_k   = basisPolynomials_[k][0];
+
+          res[k-3] = P_k_3 * B_k_3_k
+                   + P_k_2 * B_k_2_k
+                   + P_k_1 * B_k_1_k
+                   + P_k   * B_k_k;
+      }
+  }
+
   void
   CubicBSpline::impl_derivative (gradient_t& derivative,
 				 StableTimePoint stp,
@@ -380,6 +425,7 @@ namespace roboptim
       << iendl << "Number of parameters per spline function: " << nbp_
       << iendl << "Length: " << length ()
       << iendl << "Parameters: " << parameters ()
+      << iendl << "Knot vector: " << knots_
       << decindent << iendl;
     return o;
   }
