@@ -2,7 +2,7 @@ roboptim-trajectory
 ===================
 
 [![Build Status](https://travis-ci.org/roboptim/roboptim-trajectory.png?branch=master)](https://travis-ci.org/roboptim/roboptim-trajectory)
-[![Coverage Status](https://coveralls.io/repos/roboptim/roboptim-core/badge.png)](https://coveralls.io/r/roboptim/roboptim-trajectory)
+[![Coverage Status](https://coveralls.io/repos/roboptim/roboptim-trajectory/badge.png)](https://coveralls.io/r/roboptim/roboptim-trajectory)
 
 For general information about the project, please refer to its
 homepage: https://github.com/roboptim/roboptim-trajectory
