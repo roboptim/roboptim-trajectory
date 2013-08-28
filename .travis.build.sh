@@ -17,9 +17,12 @@ mkdir -p "$build_dir"
 mkdir -p "$install_dir"
 
 # Setup environment variables.
+export LD_LIBRARY_PATH="$install_dir/lib/:$install_dir/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH):$install_dir/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$install_dir/lib/roboptim-core:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/roboptim-core:$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/pkgconfig:$install_dir/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$install_dir/lib/pkgconfig:$install_dir/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$install_dir/lib/$(dpkg-architecture -qDEB_BUILD_MULTIARCH)/pkgconfig:$PKG_CONFIG_PATH"
 
 # Print paths for debugging
 echo "Printing environment variables..."
