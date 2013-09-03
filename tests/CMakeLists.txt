@@ -111,6 +111,9 @@ ROBOPTIM_TRAJECTORY_TEST(state-function)
 ROBOPTIM_TRAJECTORY_TEST(spline)
 ROBOPTIM_TRAJECTORY_TEST(spline-gradient)
 
+# Other
+ROBOPTIM_TRAJECTORY_TEST(vector-interpolation)
+
 IF(TESTSUITE_SOLVER)
   ROBOPTIM_TRAJECTORY_TEST(spline-bicycle-optim)
   ROBOPTIM_TRAJECTORY_TEST(spline-optimization)

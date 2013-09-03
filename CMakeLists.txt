@@ -61,6 +61,8 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/trajectory-cost.hxx
   ${CSD}/include/roboptim/trajectory/freeze.hxx
   ${CSD}/include/roboptim/trajectory/stable-point-state-function.hh
+  ${CSD}/include/roboptim/trajectory/vector-interpolation.hh
+  ${CSD}/include/roboptim/trajectory/vector-interpolation.hxx
   ${CSD}/include/roboptim/trajectory.hh )
 
 SETUP_PROJECT()
