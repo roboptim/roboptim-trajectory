@@ -90,7 +90,6 @@ namespace roboptim
       Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
-    using namespace boost::numeric::ublas;
     static trajectory_t updatedTrajectory = trajectory_;
     updatedTrajectory.setParameters (p);
     grad.setZero ();

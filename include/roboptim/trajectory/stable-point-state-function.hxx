@@ -78,7 +78,6 @@ namespace roboptim
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     assert (i == 0);
-    using namespace boost::numeric::ublas;
 
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
