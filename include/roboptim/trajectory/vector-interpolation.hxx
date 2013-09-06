@@ -49,7 +49,7 @@ namespace roboptim
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
       return;
-    if (after > parameters ().size ())
+    if (after >= (parameters ().size () / this->outputSize ()))
       return;
 
     result = parameters ().segment (before * this->outputSize (), this->outputSize ());
@@ -75,8 +75,10 @@ namespace roboptim
     Trajectory<3>::setParameters (x);
 
     //FIXME: this should be configurable.
+    dx_.resize (x.size ());
     for (size_type i = 0; i < x.size () - 1; ++i)
       dx_[i] = (x[i] - x[i + 1]) / (2. * dt_);
+    dx_[x.size () - 1] = 0.;
   }
 
   inline
@@ -139,7 +141,7 @@ namespace roboptim
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
       return;
-    if (after > parameters ().size ())
+    if (after >= (parameters ().size () / this->outputSize ()))
       return;
 
     if (order == 0)

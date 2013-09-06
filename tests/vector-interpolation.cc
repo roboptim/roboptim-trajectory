@@ -64,4 +64,25 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_test, T, functionType
     }
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test, T, functionTypes_t)
+{
+  typename VectorInterpolation::size_type outputSize = 10;
+  typename VectorInterpolation::vector_t params
+    = typename VectorInterpolation::vector_t (outputSize * 15);
+  params.setZero ();
+
+  boost::shared_ptr<VectorInterpolation >
+    interpolation = vectorInterpolation (params, outputSize);
+
+  BOOST_CHECK (interpolation->outputSize () == outputSize);
+
+  for (unsigned i = 0; i < 30; ++i)
+    {
+      std::cout
+	<< (*interpolation) (i) << "\n"
+	<< interpolation->derivative (i);
+    }
+}
+
+
 BOOST_AUTO_TEST_SUITE_END ()
