@@ -14,6 +14,7 @@
 //
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
+#include <fstream>
 
 #include <boost/mpl/list.hpp>
 
@@ -24,18 +25,24 @@
 #include <iostream>
 
 #include <roboptim/core/io.hh>
+#include <roboptim/core/filter/derivative.hh>
 #include <roboptim/core/filter/map.hh>
 #include <roboptim/core/function/cos.hh>
+#include <roboptim/core/visualization/gnuplot.hh>
+#include <roboptim/core/visualization/gnuplot-commands.hh>
+#include <roboptim/core/visualization/gnuplot-function.hh>
 #include <roboptim/trajectory/vector-interpolation.hh>
 
 using namespace roboptim;
+using namespace roboptim::visualization;
 
 
 typedef boost::mpl::list< ::roboptim::EigenMatrixDense> functionTypes_t;
 
 BOOST_FIXTURE_TEST_SUITE (core, TestSuiteConfiguration)
 
-BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_test, T, functionTypes_t)
+BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_test, T,
+			       functionTypes_t)
 {
   boost::shared_ptr<Cos<T> > cosinus = boost::make_shared<Cos<T> > ();
   boost::shared_ptr<GenericDifferentiableFunction<T> >
@@ -56,33 +63,62 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_test, T, functionType
 
   BOOST_CHECK (interpolation->outputSize () == 1);
 
-  for (unsigned i = 0; i < 30; ++i)
-    {
-      std::cout
-	<< (*interpolation) (i) << "\n"
-	<< interpolation->derivative (i);
-    }
+  // Display initial and final trajectory.
+  VectorInterpolation::discreteInterval_t intervalS (0., 10., 0.01);
+  using namespace roboptim::visualization::gnuplot;
+
+  std::ofstream f ("/tmp/vector-interpolation-0.gp");
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+  f  << (gnuplot
+	 << set ("multiplot layout 4, 1")
+	 << plot (*cosinus, intervalS)
+	 << plot (*derivative(cosinus, 0), intervalS)
+	 << plot (*interpolation, intervalS)
+	 << plot (*derivative(interpolation, 0), intervalS)
+	 << unset ("multiplot")
+	 );
+
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test, T, functionTypes_t)
+BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test,
+			       T, functionTypes_t)
 {
-  typename VectorInterpolation::size_type outputSize = 10;
-  typename VectorInterpolation::vector_t params
-    = typename VectorInterpolation::vector_t (outputSize * 15);
-  params.setZero ();
+  typename VectorInterpolation::value_type dt = 1.;
+  typename VectorInterpolation::size_type outputSize = 2;
+  typename VectorInterpolation::vector_t params (6 * outputSize);
+
+  params <<
+    0. , 0., // t = 0
+    1. , 1., // t = 1
+    2. , 2., // t = 2
+    3. , 1., // t = 3
+    4. , 0., // t = 4
+    5. , 1.; // t = 5
 
   boost::shared_ptr<VectorInterpolation >
-    interpolation = vectorInterpolation (params, outputSize);
+    interpolation = vectorInterpolation (params, outputSize, dt);
+
+  VectorInterpolation::discreteInterval_t intervalS (0., 10., 0.01);
 
   BOOST_CHECK (interpolation->outputSize () == outputSize);
 
-  for (unsigned i = 0; i < 30; ++i)
+  for (std::size_t i = 0; i < 0; ++i)
     {
-      std::cout
-	<< (*interpolation) (i) << "\n"
-	<< interpolation->derivative (i);
+      BOOST_CHECK (params[i * outputSize + 0] == (*interpolation) (i * dt)[0]);
+      BOOST_CHECK (params[i * outputSize + 1] == (*interpolation) (i * dt)[1]);
     }
-}
 
+  // Display initial and final trajectory.
+  using namespace roboptim::visualization::gnuplot;
+  std::ofstream f ("/tmp/vector-interpolation-1.gp");
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+
+  f << (gnuplot
+	<< set ("multiplot layout 3, 1")
+	<< plot (*interpolation, intervalS)
+	<< plot (*derivative(interpolation, 0), intervalS)
+	<< unset ("multiplot")
+	);
+}
 
 BOOST_AUTO_TEST_SUITE_END ()

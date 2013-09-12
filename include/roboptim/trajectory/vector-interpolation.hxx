@@ -59,7 +59,7 @@ namespace roboptim
 
     // Otherwise interpolate.
     // f(x) = (1. - alpha) * x_before + alpha * x_after
-    double alpha = static_cast<value_type> (after) - (t / dt_);
+    double alpha = ((t / dt_) - std::floor (t / dt_)) * dt_;
     result *= 1. - alpha;
     result +=
       alpha * parameters ().segment (after * this->outputSize (), this->outputSize ());
@@ -76,16 +76,22 @@ namespace roboptim
 
     //FIXME: this should be configurable.
     dx_.resize (x.size ());
-    for (size_type i = 0; i < x.size () - 1; ++i)
-      dx_[i] = (x[i] - x[i + 1]) / (2. * dt_);
-    dx_[x.size () - 1] = 0.;
+
+    for (size_type i = 1;
+	 i < this->parameters ().size () / this->outputSize (); ++i)
+      dx_.segment ((i - 1) * outputSize (), outputSize ()) =
+	  (x.segment (i * outputSize (), outputSize ())
+	   - x.segment ((i - 1) * outputSize (), outputSize ())) / dt_;
+    dx_.segment
+      (this->parameters ().size () - outputSize (), outputSize ()).setZero ();
+    singularPoints_ = this->parameters ().size () / this->outputSize ();
   }
 
   inline
   VectorInterpolation::jacobian_t
   VectorInterpolation::variationConfigWrtParam (double t) const throw ()
   {
-    throw std::runtime_error ("NOT IMPLEMENTED");
+    return variationDerivWrtParam (t, 0);
   }
 
   inline
@@ -93,14 +99,65 @@ namespace roboptim
   VectorInterpolation::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
-    throw std::runtime_error ("NOT IMPLEMENTED");
+    VectorInterpolation::jacobian_t jacobian (this->jacobianSize ().first,
+					      this->jacobianSize ().second);
+    jacobian.setZero ();
+
+    size_type before = static_cast<size_type> (std::floor (t / dt_));
+    size_type after = static_cast<size_type> (std::ceil (t / dt_));
+
+    // If we are outsize the domain of definition, return zero.
+    if (before < 0)
+      return;
+    if (after >= (parameters ().size () / this->outputSize ()))
+      return;
+
+    if (order == 0)
+      {
+	for (size_type i = 0;
+	     i < this->parameters ().size () / this->outputSize (); ++i)
+	  {
+	    double alpha = ((t / dt_) - std::floor (t / dt_)) * dt_;
+
+	    if (i == before)
+	      jacobian.block
+		(0, i * this->outputSize (),
+		 this->outputSize (),
+		 this->outputSize ()).diagonal ().setConstant (1 - alpha);
+	    else if (i == after)
+	      jacobian.block
+		(0, i * this->outputSize (),
+		 this->outputSize (),
+		 this->outputSize ()).diagonal ().setConstant (alpha);
+	  }
+      }
+    else if (order == 1)
+      {
+	for (size_type i = 0;
+	     i < this->parameters ().size () / this->outputSize (); ++i)
+	  {
+	    double alpha = ((t / dt_) - std::floor (t / dt_)) * dt_;
+	    if (i == before)
+	      jacobian.block
+		(0, i * this->outputSize (),
+		 this->outputSize (),
+		 this->outputSize ()).diagonal ().setConstant (1 - alpha);
+	    else if (i == after)
+	      jacobian.block
+		(0, i * this->outputSize (),
+		 this->outputSize (),
+		 this->outputSize ()).diagonal ().setConstant (alpha);
+	  }
+      }
+    else if (order == 2)
+      throw std::runtime_error ("NOT IMPLEMENTED");
   }
 
   inline
   VectorInterpolation::value_type
-  VectorInterpolation::singularPointAtRank (size_type) const
+  VectorInterpolation::singularPointAtRank (size_type rank) const
   {
-    return value_type (); // zero
+    return rank * dt_;
   }
 
   inline
@@ -117,7 +174,7 @@ namespace roboptim
   VectorInterpolation::jacobian_t
   VectorInterpolation::variationConfigWrtParam (StableTimePoint tp) const throw ()
   {
-    throw std::runtime_error ("NOT IMPLEMENTED");
+    return variationDerivWrtParam (tp, 0);
   }
 
   inline
@@ -147,22 +204,8 @@ namespace roboptim
     if (order == 0)
       this->operator () (gradient, t);
     else if (order == 1)
-      {
-	gradient =
-	  dx_.segment (before * this->outputSize (), this->outputSize ());
-
-	// If we are exactly on a data point, just return.
-	if (before == after)
-	  return;
-
-	// Otherwise interpolate.
-	// f(x) = (1. - alpha) * x_before + alpha * x_after
-	double alpha = static_cast<value_type> (after) - (t  / dt_);
-	gradient *= 1. - alpha;
-	gradient +=
-	  alpha * dx_.segment (after * this->outputSize (),
-			       this->outputSize ());
-      }
+      gradient =
+	dx_.segment (before * this->outputSize (), this->outputSize ());
     else if (order == 2)
       throw std::runtime_error ("NOT IMPLEMENTED");
   }
