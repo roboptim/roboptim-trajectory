@@ -99,8 +99,8 @@ namespace roboptim
   VectorInterpolation::variationDerivWrtParam (double t, size_type order)
     const throw ()
   {
-    VectorInterpolation::jacobian_t jacobian (this->jacobianSize ().first,
-					      this->jacobianSize ().second);
+    VectorInterpolation::jacobian_t jacobian (this->outputSize (),
+					      this->parameters ().size ());
     jacobian.setZero ();
 
     size_type before = static_cast<size_type> (std::floor (t / dt_));
@@ -151,6 +151,8 @@ namespace roboptim
       }
     else if (order == 2)
       throw std::runtime_error ("NOT IMPLEMENTED");
+
+    return jacobian;
   }
 
   inline

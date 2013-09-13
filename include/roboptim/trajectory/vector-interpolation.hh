@@ -53,8 +53,7 @@ namespace roboptim
 
     /// \brief Store parameters and update coefficients.
     void setParameters (const vector_t&) throw ();
-  protected:
-    void impl_compute (result_t& result, double t) const throw ();
+
     jacobian_t variationConfigWrtParam (double t) const throw ();
     jacobian_t variationDerivWrtParam (double t, size_type order)
       const throw ();
@@ -67,6 +66,9 @@ namespace roboptim
     jacobian_t
     variationDerivWrtParam (StableTimePoint tp, size_type order)
       const throw ();
+
+  protected:
+    void impl_compute (result_t& result, double t) const throw ();
     void impl_derivative (gradient_t& derivative,
 			  double argument,
 			  size_type order = 1) const throw ();
