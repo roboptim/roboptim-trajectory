@@ -108,9 +108,9 @@ namespace roboptim
 
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
-      return;
+      return jacobian;
     if (after >= (parameters ().size () / this->outputSize ()))
-      return;
+      return jacobian;
 
     if (order == 0)
       {

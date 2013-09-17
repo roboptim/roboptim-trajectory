@@ -27,6 +27,7 @@
 #include <roboptim/core/io.hh>
 #include <roboptim/core/filter/derivative.hh>
 #include <roboptim/core/filter/map.hh>
+#include <roboptim/core/filter/selection.hh>
 #include <roboptim/core/function/cos.hh>
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
@@ -35,6 +36,60 @@
 
 using namespace roboptim;
 using namespace roboptim::visualization;
+
+
+struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
+{
+  VectorInterpolationDerivWrtParameters
+  (const VectorInterpolation& vectorInterpolation, value_type t, value_type variableId)
+    : DifferentiableFunction
+      (1,
+       vectorInterpolation.outputSize (),
+       "vectorInterpolation differentiable w.r.t parameters"),
+      vectorInterpolation_ (vectorInterpolation),
+      t_ (t),
+      variableId_ (variableId_)
+  {}
+
+  virtual void
+  impl_compute (result_t& result, const argument_t& x)
+    const throw ()
+  {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+    VectorInterpolation vectorInterpolation (vectorInterpolation_);
+    vector_t params = vectorInterpolation.parameters ();
+    params[variableId_] = x[0];
+    vectorInterpolation.setParameters (params);
+    result = vectorInterpolation (t_);
+  }
+
+  virtual void
+  impl_gradient (gradient_t& gradient,
+		 const argument_t& x,
+		 size_type functionId = 0)
+    const throw ()
+  {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    Eigen::internal::set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+    VectorInterpolation vectorInterpolation (vectorInterpolation_);
+    vector_t params = vectorInterpolation.parameters ();
+    params[variableId_] = x[0];
+    vectorInterpolation.setParameters (params);
+
+    gradient = vectorInterpolation.variationConfigWrtParam (t_).block
+      (variableId_, functionId, 1, 1);
+  }
+
+private:
+  const VectorInterpolation& vectorInterpolation_;
+  value_type t_;
+  value_type variableId_;
+};
 
 
 typedef boost::mpl::list< ::roboptim::EigenMatrixDense> functionTypes_t;
@@ -119,6 +174,45 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test,
 	<< plot (*derivative(interpolation, 0), intervalS)
 	<< unset ("multiplot")
 	);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_derivWrtParams_test, T,
+			       functionTypes_t)
+{
+  typename VectorInterpolation::value_type dt = 1.;
+  typename VectorInterpolation::size_type outputSize = 2;
+  typename VectorInterpolation::vector_t params (6 * outputSize);
+
+  params <<
+    0. , 0., // t = 0
+    1. , 1., // t = 1
+    2. , 2., // t = 2
+    3. , 1., // t = 3
+    4. , 0., // t = 4
+    5. , 1.; // t = 5
+
+  boost::shared_ptr<VectorInterpolation >
+    interpolation = vectorInterpolation (params, outputSize, dt);
+
+  boost::shared_ptr<VectorInterpolationDerivWrtParameters> derivWrtParams
+    = boost::make_shared<VectorInterpolationDerivWrtParameters>
+    (*interpolation, 1.5, 2);
+
+
+  VectorInterpolation::discreteInterval_t intervalS (0., 10., 0.01);
+
+  // Display initial and final trajectory.
+  using namespace roboptim::visualization::gnuplot;
+  std::ofstream f ("/tmp/vector-interpolation-2.gp");
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+
+  f << (gnuplot
+	<< set ("multiplot layout 3, 1")
+	<< plot (*derivWrtParams, intervalS)
+	<< plot (*derivative(derivWrtParams, 0), intervalS)
+	<< unset ("multiplot")
+	);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
