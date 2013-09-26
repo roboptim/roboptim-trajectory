@@ -18,6 +18,7 @@
 #ifndef ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HH
 # define ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HH
 # include <vector>
+# include <boost/make_shared.hpp>
 # include <boost/shared_ptr.hpp>
 # include <roboptim/trajectory/trajectory.hh>
 
