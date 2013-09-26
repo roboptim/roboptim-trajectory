@@ -96,6 +96,29 @@ namespace roboptim
 	}
     }
 
+    template <typename F, typename CLIST>
+    static void addToProblem
+    (const trajectory_t& trajectory,
+     boost::shared_ptr<DerivableFunction> function,
+     unsigned order,
+     Problem<F, CLIST>& problem,
+     const typename Function::intervals_t& bounds,
+     const std::vector<typename Function::value_type>& scales,
+     unsigned nConstraints)
+    {
+      using namespace boost;
+
+      for (unsigned i = 0; i < nConstraints; ++i)
+	{
+	  const value_type t = (i + 1.) / (nConstraints + 1.);
+	  assert (t > 0. && t < 1.);
+	  shared_ptr<DerivableFunction> constraint
+	    (new StateFunction (trajectory, function, t * tMax, order));
+	  problem.addConstraint (constraint, bounds, scales);
+	}
+    }
+
+
   protected:
     void impl_compute (result_t&, const argument_t&) const throw ();
     void impl_gradient (gradient_t&, const argument_t&, size_type)
