@@ -22,7 +22,8 @@ notifications:
 before_install:
 - ./.travis/dependencies/eigen-3.2.0
 - ./.travis/run  before_install
-script: ./.travis/run build
+script:
+- export LD_LIBRARY_PATH=`pkg-config --variable=plugindir roboptim-core`:$LD_LIBRARY_PATH; ./.travis/run build
 after_failure: ./.travis/run after_failure
 after_success: ./.travis/run after_success
 branches:
