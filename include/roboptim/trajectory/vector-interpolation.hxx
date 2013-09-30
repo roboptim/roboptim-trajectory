@@ -149,8 +149,8 @@ namespace roboptim
 		 this->outputSize ()).diagonal ().setConstant (alpha);
 	  }
       }
-    else if (order == 2)
-      throw std::runtime_error ("NOT IMPLEMENTED");
+    else
+      jacobian.setZero ();
 
     return jacobian;
   }
@@ -209,8 +209,8 @@ namespace roboptim
     else if (order == 1)
       gradient =
 	dx_.segment (before * this->outputSize (), this->outputSize ());
-    else if (order == 2)
-      throw std::runtime_error ("NOT IMPLEMENTED");
+    else
+      gradient.setZero ();
   }
 
   inline
