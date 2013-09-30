@@ -182,9 +182,10 @@ namespace roboptim
   inline
   VectorInterpolation::jacobian_t
   VectorInterpolation::variationDerivWrtParam
-  (StableTimePoint tp, size_type order) const throw ()
+  (StableTimePoint stp, size_type order) const throw ()
   {
-    throw std::runtime_error ("NOT IMPLEMENTED");
+    return this->variationDerivWrtParam
+      (stp.getTime (this->timeRange ()), order);
   }
 
   inline
@@ -214,12 +215,15 @@ namespace roboptim
 
   inline
   void
-  VectorInterpolation::impl_derivative (gradient_t& gradient,
-					StableTimePoint t,
-					size_type functionId)
+  VectorInterpolation::impl_derivative (gradient_t& derivative,
+					StableTimePoint stp,
+					size_type order)
     const throw ()
   {
-    throw std::runtime_error ("NOT IMPLEMENTED");
+    this->impl_derivative
+      (derivative,
+       stp.getTime (this->timeRange ()),
+       order);
   }
 
   Trajectory<3>*
