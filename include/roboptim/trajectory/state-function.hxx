@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_STATE_COST_HXX
 # define ROBOPTIM_TRAJECTORY_STATE_COST_HXX
+# include <stdexcept>
 # include <boost/format.hpp>
 
 namespace roboptim
@@ -25,17 +26,26 @@ namespace roboptim
   StateFunction<T>::StateFunction (const trajectory_t& trajectory,
 				   boost::shared_ptr<DerivableFunction> function,
 				   const StableTimePoint tpt,
-				   size_type order) throw ()
+				   size_type order) throw (std::runtime_error)
     : DerivableFunction (trajectory.parameters ().size (),
 			 function->outputSize (),
-			 (boost::format ("state cost using function ``%1%''")
-			  % function->getName ()).str ()),
+			 (boost::format ("state cost using function ``%s'' at t=%f * tMax")
+			  % function->getName ()
+			  % tpt.getAlpha ()).str ()),
       trajectory_ (trajectory),
       function_ (function),
       tpt_ (tpt),
       order_ (order)
   {
-    assert (function_->inputSize () == trajectory_.outputSize () * (order + 1));
+    if (function_->inputSize () != trajectory_.outputSize () * (order + 1))
+      {
+	boost::format fmt
+	  ("failed to build state cost object:"
+	   " state function input size is %d, expected size is %d");
+	fmt % function_->inputSize ()
+	  % (trajectory_.outputSize () * (order + 1));
+	throw std::runtime_error (fmt.str ());
+      }
   }
 
   template <typename T>

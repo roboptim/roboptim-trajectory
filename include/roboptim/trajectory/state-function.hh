@@ -19,6 +19,8 @@
 # define ROBOPTIM_TRAJECTORY_STATE_FUNCTION_HH
 # include <roboptim/trajectory/sys.hh>
 
+# include <stdexcept>
+
 # include <boost/shared_ptr.hpp>
 # include <boost/static_assert.hpp>
 # include <boost/type_traits/is_base_of.hpp>
@@ -68,9 +70,9 @@ namespace roboptim
     /// \param tpt parameter \f$t\f$ where the state is evaluated.
     /// \param order order \f$r\f$ of derivation.
     StateFunction (const trajectory_t& gamma,
-	       boost::shared_ptr<DerivableFunction> cost,
-	       const StableTimePoint tpt,
-	       size_type order = 1) throw ();
+		   boost::shared_ptr<DerivableFunction> cost,
+		   const StableTimePoint tpt,
+		   size_type order = 1) throw (std::runtime_error);
 
     virtual ~StateFunction () throw ();
 
