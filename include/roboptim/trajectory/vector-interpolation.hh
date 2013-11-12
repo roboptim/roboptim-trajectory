@@ -18,6 +18,7 @@
 #ifndef ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HH
 # define ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HH
 # include <vector>
+# include <stdexcept>
 # include <boost/make_shared.hpp>
 # include <boost/shared_ptr.hpp>
 # include <roboptim/trajectory/trajectory.hh>
@@ -49,11 +50,11 @@ namespace roboptim
 
     explicit VectorInterpolation
     (const vector_t& x, size_type outputSize, value_type dt)
-      throw ();
+      throw (std::runtime_error);
     ~VectorInterpolation () throw ();
 
     /// \brief Store parameters and update coefficients.
-    void setParameters (const vector_t&) throw ();
+    void setParameters (const vector_t&) throw (std::runtime_error);
 
     jacobian_t variationConfigWrtParam (double t) const throw ();
     jacobian_t variationDerivWrtParam (double t, size_type order)

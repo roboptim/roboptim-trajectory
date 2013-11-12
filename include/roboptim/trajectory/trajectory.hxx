@@ -53,7 +53,8 @@ namespace roboptim
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::setParameters (const vector_t& p) throw ()
+  Trajectory<dorder>::setParameters (const vector_t& p)
+    throw (std::runtime_error)
   {
     parameters_ = p;
   }

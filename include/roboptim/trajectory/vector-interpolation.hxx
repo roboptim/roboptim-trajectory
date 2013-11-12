@@ -17,13 +17,15 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HXX
 # define ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HXX
+# include <boost/format.hpp>
 # include <roboptim/trajectory/vector-interpolation.hh>
 
 namespace roboptim
 {
   inline
   VectorInterpolation::VectorInterpolation
-  (const vector_t& x, size_type outputSize, value_type dt) throw ()
+  (const vector_t& x, size_type outputSize, value_type dt)
+    throw (std::runtime_error)
     : roboptim::Trajectory<3>
       (makeInterval (0., dt * x.size () / outputSize), outputSize, x,
        "vectorInterpolation"),
@@ -67,10 +69,15 @@ namespace roboptim
 
   inline
   void
-  VectorInterpolation::setParameters (const vector_t& x) throw ()
+  VectorInterpolation::setParameters (const vector_t& x) throw (std::runtime_error)
   {
     if (x.size () % this->outputSize () != 0)
-      throw std::runtime_error ("x and outputSize are not compatible");
+      {
+	boost::format fmt
+	  ("parameter vector size (%d) does not match outputSize (%d)");
+	fmt % x.size () % this->outputSize ();
+	throw std::runtime_error (fmt.str ());
+      }
 
     Trajectory<3>::setParameters (x);
 

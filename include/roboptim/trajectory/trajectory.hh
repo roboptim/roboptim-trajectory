@@ -19,6 +19,7 @@
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_HH
 # include <roboptim/core/sys.hh>
 
+# include <stdexcept>
 # include <utility>
 
 # include <roboptim/core/n-times-derivable-function.hh>
@@ -102,7 +103,7 @@ namespace roboptim
     /// \{
 
     const vector_t& parameters () const throw ();
-    virtual void setParameters (const vector_t&) throw ();
+    virtual void setParameters (const vector_t&) throw (std::runtime_error);
 
     interval_t timeRange () const throw ();
     value_type length () const throw ();
