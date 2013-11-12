@@ -233,7 +233,7 @@ namespace roboptim
        order);
   }
 
-  Trajectory<3>*
+  inline Trajectory<3>*
   VectorInterpolation::resize (interval_t timeRange)
     const throw ()
   {

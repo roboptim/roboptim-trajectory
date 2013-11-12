@@ -83,7 +83,7 @@ namespace roboptim
     value_type dt_;
   };
 
-  boost::shared_ptr<VectorInterpolation>
+  inline boost::shared_ptr<VectorInterpolation>
   vectorInterpolation (VectorInterpolation::vector_t x,
 		       VectorInterpolation::size_type outputSize,
 		       VectorInterpolation::value_type dt = 1.)
