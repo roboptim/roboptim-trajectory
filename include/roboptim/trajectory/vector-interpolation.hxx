@@ -27,7 +27,9 @@ namespace roboptim
   (const vector_t& x, size_type outputSize, value_type dt)
     throw (std::runtime_error)
     : roboptim::Trajectory<3>
-      (makeInterval (0., dt * x.size () / outputSize), outputSize, x,
+      (makeInterval (0., dt * static_cast<value_type> (x.size ())
+                     / static_cast<value_type> (outputSize)),
+       outputSize, x,
        "vectorInterpolation"),
       dx_ (x.size ()),
       dt_ (dt)
@@ -87,8 +89,8 @@ namespace roboptim
     for (size_type i = 1;
 	 i < this->parameters ().size () / this->outputSize (); ++i)
       dx_.segment ((i - 1) * outputSize (), outputSize ()) =
-	  (x.segment (i * outputSize (), outputSize ())
-	   - x.segment ((i - 1) * outputSize (), outputSize ())) / dt_;
+        (x.segment (i * outputSize (), outputSize ())
+         - x.segment ((i - 1) * outputSize (), outputSize ())) / dt_;
     dx_.segment
       (this->parameters ().size () - outputSize (), outputSize ()).setZero ();
     singularPoints_ = this->parameters ().size () / this->outputSize ();
@@ -166,18 +168,22 @@ namespace roboptim
   VectorInterpolation::value_type
   VectorInterpolation::singularPointAtRank (size_type rank) const
   {
-    return rank * dt_;
+    return static_cast<value_type> (rank) * dt_;
   }
 
   inline
   VectorInterpolation::vector_t
-  VectorInterpolation::derivBeforeSingularPoint (size_type rank, size_type order) const
-  {}
+  VectorInterpolation::derivBeforeSingularPoint (size_type, size_type) const
+  {
+    // FIXME: this should return something
+  }
 
   inline
   VectorInterpolation::vector_t
-  VectorInterpolation::derivAfterSingularPoint (size_type rank, size_type order) const
-  {}
+  VectorInterpolation::derivAfterSingularPoint (size_type, size_type) const
+  {
+    // FIXME: this should return something
+  }
 
   inline
   VectorInterpolation::jacobian_t
@@ -234,7 +240,7 @@ namespace roboptim
   }
 
   inline Trajectory<3>*
-  VectorInterpolation::resize (interval_t timeRange)
+  VectorInterpolation::resize (interval_t)
     const throw ()
   {
     throw std::runtime_error ("NOT IMPLEMENTED");

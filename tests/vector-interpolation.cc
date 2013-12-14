@@ -41,14 +41,14 @@ using namespace roboptim::visualization;
 struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
 {
   VectorInterpolationDerivWrtParameters
-  (const VectorInterpolation& vectorInterpolation, value_type t, value_type variableId)
+  (const VectorInterpolation& vectorInterpolation, value_type t, size_type variableId)
     : DifferentiableFunction
       (1,
        vectorInterpolation.outputSize (),
        "vectorInterpolation differentiable w.r.t parameters"),
       vectorInterpolation_ (vectorInterpolation),
       t_ (t),
-      variableId_ (variableId_)
+      variableId_ (variableId)
   {}
 
   virtual void
@@ -82,13 +82,13 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
     vectorInterpolation.setParameters (params);
 
     gradient = vectorInterpolation.variationConfigWrtParam (t_).block
-      (variableId_, functionId, 1, 1);
+      (functionId, variableId_, 1, 1);
   }
 
 private:
   const VectorInterpolation& vectorInterpolation_;
   value_type t_;
-  value_type variableId_;
+  size_type variableId_;
 };
 
 
