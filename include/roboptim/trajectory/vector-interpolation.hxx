@@ -106,7 +106,7 @@ namespace roboptim
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
       return jacobian;
-    if (after >= (parameters ().size () / this->outputSize ()) - 1)
+    if (after >= (parameters ().size () / this->outputSize ()))
       return jacobian;
 
     if (order == 0)
@@ -188,7 +188,7 @@ namespace roboptim
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
       return;
-    if (after >= (parameters ().size () / this->outputSize ()) - 1)
+    if (after >= (parameters ().size () / this->outputSize ()))
       return;
 
     gradient.setZero ();
