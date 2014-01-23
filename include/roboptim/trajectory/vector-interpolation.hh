@@ -79,7 +79,6 @@ namespace roboptim
     Trajectory<3>* resize (interval_t timeRange)
       const throw ();
   private:
-    vector_t dx_;
     value_type dt_;
   };
 

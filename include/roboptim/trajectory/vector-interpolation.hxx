@@ -31,7 +31,6 @@ namespace roboptim
                      / static_cast<value_type> (outputSize)),
        outputSize, x,
        "vectorInterpolation"),
-      dx_ (x.size ()),
       dt_ (dt)
   {
     setParameters (x);
@@ -82,17 +81,6 @@ namespace roboptim
       }
 
     Trajectory<3>::setParameters (x);
-
-    //FIXME: this should be configurable.
-    dx_.resize (x.size ());
-
-    for (size_type i = 1;
-	 i < this->parameters ().size () / this->outputSize (); ++i)
-      dx_.segment ((i - 1) * outputSize (), outputSize ()) =
-        (x.segment (i * outputSize (), outputSize ())
-         - x.segment ((i - 1) * outputSize (), outputSize ())) / dt_;
-    dx_.segment
-      (this->parameters ().size () - outputSize (), outputSize ()).setZero ();
     singularPoints_ = this->parameters ().size () / this->outputSize ();
   }
 
@@ -118,45 +106,31 @@ namespace roboptim
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
       return jacobian;
-    if (after >= (parameters ().size () / this->outputSize ()))
+    if (after >= (parameters ().size () / this->outputSize ()) - 1)
       return jacobian;
 
     if (order == 0)
       {
-	for (size_type i = 0;
-	     i < this->parameters ().size () / this->outputSize (); ++i)
-	  {
-	    double alpha = ((t / dt_) - std::floor (t / dt_)) * dt_;
-
-	    if (i == before)
-	      jacobian.block
-		(0, i * this->outputSize (),
-		 this->outputSize (),
-		 this->outputSize ()).diagonal ().setConstant (1 - alpha);
-	    else if (i == after)
-	      jacobian.block
-		(0, i * this->outputSize (),
-		 this->outputSize (),
-		 this->outputSize ()).diagonal ().setConstant (alpha);
-	  }
+	double alpha = ((t / dt_) - std::floor (t / dt_)) * dt_;
+	jacobian.block
+	  (0, before * this->outputSize (),
+	   this->outputSize (),
+	   this->outputSize ()).diagonal ().setConstant (1 - alpha);
+	jacobian.block
+	  (0, after * this->outputSize (),
+	   this->outputSize (),
+	   this->outputSize ()).diagonal ().setConstant (alpha);
       }
     else if (order == 1)
       {
-	for (size_type i = 0;
-	     i < this->parameters ().size () / this->outputSize (); ++i)
-	  {
-	    double alpha = ((t / dt_) - std::floor (t / dt_)) * dt_;
-	    if (i == before)
-	      jacobian.block
-		(0, i * this->outputSize (),
-		 this->outputSize (),
-		 this->outputSize ()).diagonal ().setConstant (1 - alpha);
-	    else if (i == after)
-	      jacobian.block
-		(0, i * this->outputSize (),
-		 this->outputSize (),
-		 this->outputSize ()).diagonal ().setConstant (alpha);
-	  }
+	jacobian.block
+	  (0, before * this->outputSize (),
+	   this->outputSize (),
+	   this->outputSize ()).diagonal ().setConstant (- 1. / dt_);
+	jacobian.block
+	  (0, after * this->outputSize (),
+	   this->outputSize (),
+	   this->outputSize ()).diagonal ().setConstant (1. / dt_);
       }
     else
       jacobian.setZero ();
@@ -214,14 +188,24 @@ namespace roboptim
     // If we are outsize the domain of definition, return zero.
     if (before < 0)
       return;
-    if (after >= (parameters ().size () / this->outputSize ()))
+    if (after >= (parameters ().size () / this->outputSize ()) - 1)
       return;
+
+    gradient.setZero ();
 
     if (order == 0)
       this->operator () (gradient, t);
     else if (order == 1)
-      gradient =
-	dx_.segment (before * this->outputSize (), this->outputSize ());
+      {
+	// If we are exactly on a data point, just return.
+	if (before == after)
+	  return;
+
+	gradient =
+	  this->parameters ().segment (after * outputSize (), outputSize ())
+	  - this->parameters ().segment (before * outputSize (), outputSize ());
+	gradient /= dt_;
+      }
     else
       gradient.setZero ();
   }
