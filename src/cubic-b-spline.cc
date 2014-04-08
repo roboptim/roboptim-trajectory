@@ -376,11 +376,11 @@ namespace roboptim
   std::ostream&
   CubicBSpline::print (std::ostream& o) const throw ()
   {
-    o << "CubicBSpline" << incindent << std::endl
-      << "Number of parameters per spline function: " << nbp_ << std::endl
-      << "Length: " << length () << std::endl
-      << "Parameters: " << parameters ()
-      << decindent;
+    o << "Cubic B-spline:" << incindent
+      << iendl << "Number of parameters per spline function: " << nbp_
+      << iendl << "Length: " << length ()
+      << iendl << "Parameters: " << parameters ()
+      << decindent << iendl;
     return o;
   }
 } // end of namespace roboptim.
