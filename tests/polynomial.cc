@@ -31,7 +31,7 @@ using namespace std;
 template <int N>
 void test_multiply ()
 {
-  Eigen::Matrix<double, N + 1, 1> params;
+  typename Polynomial<N>::coef_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
@@ -65,7 +65,7 @@ struct poly_props
   }
 
   static void check_evaluate (double t0,
-			      Eigen::Matrix<double, 3 + 1, 1>& params,
+                  typename Polynomial<N>::coef_t& params,
 			      double t)
   {
     // Not implemented for this N
@@ -80,11 +80,11 @@ void poly_props<3>::check_derivative (const Polynomial<3>& poly,
                                       double t, int order,
                                       double derivative)
 {
-  double dt = t - poly.t0_;
+  double dt = t - poly.t0 ();
   double dt2 = dt * dt;
-  double a1 = poly.coefs_ [1];
-  double a2 = poly.coefs_ [2];
-  double a3 = poly.coefs_ [3];
+  double a1 = poly.coefs () [1];
+  double a2 = poly.coefs () [2];
+  double a3 = poly.coefs () [3];
 
   double result;
   switch (order)
@@ -114,15 +114,15 @@ template <>
 void poly_props<5>::check_derivative (const Polynomial<5>& poly,
                                       double t, int order, double derivative)
 {
-  double dt = t - poly.t0_;
+  double dt = t - poly.t0 ();
   double dt2 = dt * dt;
   double dt3 = dt * dt2;
   double dt4 = dt * dt3;
-  double a1 = poly.coefs_ [1];
-  double a2 = poly.coefs_ [2];
-  double a3 = poly.coefs_ [3];
-  double a4 = poly.coefs_ [4];
-  double a5 = poly.coefs_ [5];
+  double a1 = poly.coefs () [1];
+  double a2 = poly.coefs () [2];
+  double a3 = poly.coefs () [3];
+  double a4 = poly.coefs () [4];
+  double a5 = poly.coefs () [5];
 
   double result;
   switch (order)
@@ -159,27 +159,27 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
                                      double t1,
                                      const Polynomial<3>& ref_poly)
 {
-  double dt = t1 - poly.t0_;
+  double dt = t1 - poly.t0 ();
   double dt2 = dt * dt;
   double dt3 = dt * dt2;
-  double a0 = poly.coefs_ [0];
-  double a1 = poly.coefs_ [1];
-  double a2 = poly.coefs_ [2];
-  double a3 = poly.coefs_ [3];
+  double a0 = poly.coefs () [0];
+  double a1 = poly.coefs () [1];
+  double a2 = poly.coefs () [2];
+  double a3 = poly.coefs () [3];
 
-  Eigen::Matrix<double, 3 + 1, 1> temp;
+  Polynomial<3>::coef_t temp;
   temp [0] = a0 + a1 * dt + a2 * dt2 + a3 * dt3;
   temp [1] = a1 + 2 * dt * a2 + 3 * dt2 * a3;
   temp [2] = a2 + 3 * dt * a3;
   temp [3] = a3;
   Polynomial<3> p_new (t1, temp);
 
-  assert (p_new.t0_ == ref_poly.t0_);
+  assert (p_new.t0 () == ref_poly.t0 ());
 
   for (int idx = 0; idx < 3 + 1; idx++)
     {
-      const double delta = std::abs (p_new.coefs_[idx]
-				     - ref_poly.coefs_[idx]);
+      const double delta = std::abs (p_new.coefs ()[idx]
+				     - ref_poly.coefs ()[idx]);
       assert (delta < std::numeric_limits<double>::epsilon () * 1e2);
     }
 }
@@ -187,7 +187,7 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
 //FIXME: import code from Polynomial3 once it is replaced by Polynomial
 template <>
 void poly_props<3>::check_evaluate (double t0,
-                                    Eigen::Matrix<double, 3 + 1, 1>& params,
+                                    Polynomial<3>::coef_t& params,
                                     double t)
 {
   Polynomial<3> new_poly (t0, params);
@@ -202,20 +202,20 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
                                      double t1,
                                      const Polynomial<5>& ref_poly)
 {
-  double dt = t1 - poly.t0_;
+  double dt = t1 - poly.t0 ();
   double dt2 = dt * dt;
   double dt3 = dt * dt2;
   double dt4 = dt * dt3;
   double dt5 = dt * dt4;
-  double a0 = poly.coefs_[0];
-  double a1 = poly.coefs_[1];
-  double a2 = poly.coefs_[2];
-  double a3 = poly.coefs_[3];
-  double a4 = poly.coefs_[4];
-  double a5 = poly.coefs_[5];
+  double a0 = poly.coefs ()[0];
+  double a1 = poly.coefs ()[1];
+  double a2 = poly.coefs ()[2];
+  double a3 = poly.coefs ()[3];
+  double a4 = poly.coefs ()[4];
+  double a5 = poly.coefs ()[5];
 
 
-  Eigen::Matrix<double, 5 + 1, 1> temp;
+  Polynomial<5>::coef_t temp;
   // FIXME: have doubts about this, minus sign is probably not correct
   temp [0] = a0 -   a1 * dt +   a2 * dt2 -   a3 * dt3 +   a4 * dt4 - a5 * dt5;
   temp [1] = a1 - 2 * a2 * dt + 3 * a3 * dt2 - 4 * a4 * dt3 + 5 * a5 * dt4;
@@ -225,12 +225,12 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
   temp [5] = a5;
   Polynomial<5> p_new (t1, temp);
 
-  assert (p_new.t0_ == ref_poly.t0_);
+  assert (p_new.t0 () == ref_poly.t0 ());
 
   for (int idx = 0; idx < 5 + 1; idx++)
     {
-      const double delta = std::abs (p_new.coefs_[idx]
-				     - ref_poly.coefs_[idx]);
+      const double delta = std::abs (p_new.coefs ()[idx]
+				     - ref_poly.coefs ()[idx]);
       assert (delta < std::numeric_limits<double>::epsilon () * 1e2);
     }
 }
@@ -239,7 +239,7 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
 template <int N>
 void test_derivative ()
 {
-  Eigen::Matrix<double, N + 1, 1> params;
+  typename Polynomial<N>::coef_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   Polynomial<N> p_1 (t0, params);
@@ -260,7 +260,7 @@ void test_derivative ()
 template <int N>
 void test_translate ()
 {
-  Eigen::Matrix<double, N + 1, 1> params;
+  typename Polynomial<N>::coef_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
@@ -276,7 +276,7 @@ void test_translate ()
 template <int N>
 void test_evaluate ()
 {
-  Eigen::Matrix<double, N + 1, 1> params;
+  typename Polynomial<N>::coef_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t = (double)rand () / RAND_MAX;

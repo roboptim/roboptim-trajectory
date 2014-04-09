@@ -28,7 +28,7 @@ namespace roboptim
   /// \f[
   /// P (t) = \sum_{i=0}{N} a_i (t-t_0)^i
   /// \f]
-  template<int N>
+  template <int N>
   class Polynomial
   {
   public:
@@ -60,7 +60,7 @@ namespace roboptim
     /// \param order order of the derivative.
     ///
     /// \return derivative of a given order evaluated at t.
-    value_type derivative (const value_type& t, size_type order = 1) const;
+    value_type derivative (value_type t, size_type order = 1) const;
 
     Polynomial<N> operator* (const Polynomial<N>& poly) const;
     Polynomial<N> operator+ (const Polynomial<N>& poly) const;
@@ -71,7 +71,27 @@ namespace roboptim
     /// \param t point of evaluation.
     ///
     /// \return P(t)
-    value_type operator () (const value_type& t) const;
+    value_type operator () (value_type t) const;
+
+    /// \brief Const getter to coefs.
+    ///
+    /// \return const reference to polynomial coefficients.
+    const coef_t& coefs () const;
+
+    /// \brief Getter to coefs.
+    ///
+    /// \return reference to polynomial coefficients.
+    coef_t& coefs ();
+
+    /// \brief Const getter to t0.
+    ///
+    /// \return t0.
+    value_type t0 () const;
+
+    /// \brief Reference to t0.
+    ///
+    /// \return reference to t0.
+    value_type& t0 ();
 
   private:
 
@@ -86,7 +106,7 @@ namespace roboptim
   protected:
     value_type
     impl_derivative
-    (const value_type& t, size_type order, size_type start_coef = 0) const;
+    (value_type t, size_type order, size_type start_coef = 0) const;
 
     /// \brief order of the polynomial.
     static const int order_ = N;
@@ -110,11 +130,11 @@ namespace roboptim
   /// \f[
   /// M (t) = t-t_0
   /// \f]
-  template<int N>
+  template <int N>
   struct Monomial : public Polynomial<N>
   {
-    typedef typename Polynomial<N> parent_t;
-    typedef parent_t::value_type value_type;
+    typedef Polynomial<N> parent_t;
+    typedef typename parent_t::value_type value_type;
 
   public:
     /// \brief Constructor of a monomial: (t-t₀)
