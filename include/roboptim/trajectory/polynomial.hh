@@ -1,5 +1,6 @@
 // Copyright (C) 2012 by Florent Lamiraux, CNRS.
 // Copyright (C) 2013 by Alexander Werner, DLR.
+// Copyright (C) 2014 by Benjamin Chrétien, LIRMM-CNRS.
 //
 // This file is part of the roboptim.
 //
@@ -22,68 +23,105 @@
 
 namespace roboptim
 {
-  /// Polynomial of degree at most N
+  /// \brief Polynomial of degree at most N.
   ///
   /// \f[
-  /// P (t) = \sum_{i=0}{3} a_i (t-t_0)^i
+  /// P (t) = \sum_{i=0}{N} a_i (t-t_0)^i
   /// \f]
   template<int N>
   class Polynomial
   {
   public:
     typedef Function::size_type size_type;
+    typedef Function::value_type value_type;
     typedef Function::vector_t vector_t;
+    typedef Eigen::Matrix<value_type, N+1, 1> coef_t;
 
-    Polynomial (double t0, const  vector_t& coefs);
+    /// \brief Default constructor: return a null polynomial.
+    Polynomial ();
 
-    /**
-     * these operations are degree specific, and are only implemented
-     * for N={3,5} FIXME
-     */
-    Polynomial<N> translate (const double &t1) const;
+    /// \brief Construct of a polynomial from its center and its
+    /// coefficients.
+    ///
+    /// \param t0 polynomial of (t-t₀).
+    /// \param coefs polynomial coefficients.
+    Polynomial (value_type t0, const vector_t& coefs);
 
-    double derivative (const double& t, size_type order = 1) const;
+    /// \brief Return a new polynomial translated from (t-t₀) to (t-t₁).
+    ///
+    /// \param t1 new center.
+    ///
+    /// \return polynomial translated to (t-t₁)
+    Polynomial<N> translate (value_type t1) const;
+
+    /// \brief Evaluate the derivative of a given order.
+    ///
+    /// \param t time of the evaluation.
+    /// \param order order of the derivative.
+    ///
+    /// \return derivative of a given order evaluated at t.
+    value_type derivative (const value_type& t, size_type order = 1) const;
+
     Polynomial<N> operator* (const Polynomial<N>& poly) const;
     Polynomial<N> operator+ (const Polynomial<N>& poly) const;
     Polynomial<N> operator- (const Polynomial<N>& poly) const;
-    double operator () (const double& t) const;
 
-    double coefs_[N+1];
-    // could not use fixed size Eigen::Matrix here since this would
-    // create a direct reference to Eigen
-    double t0_;
+    /// \brief Evaluate the polynomial.
+    ///
+    /// \param t point of evaluation.
+    ///
+    /// \return P(t)
+    value_type operator () (const value_type& t) const;
+
+  private:
+
+    /// \brief vector of polynomial coefficients (ordered from lowest to
+    /// highest).
+    coef_t coefs_;
+
+    /// \brief Point on which the polynomial is centered, i.e. a polynomial
+    /// of (t-t₀).
+    value_type t0_;
+
   protected:
-    double
+    value_type
     impl_derivative
-    (const double &t, size_type order, size_type start_coef=0) const;
+    (const value_type& t, size_type order, size_type start_coef = 0) const;
 
-    static const int order_=N;
+    /// \brief order of the polynomial.
+    static const int order_ = N;
 
+    /// \brief FIXME
     enum special_polynomials
       {
-	all_zero_coefficients=0,
-	monomial_coefficients=1
+        all_zero_coefficients = 0,
+        monomial_coefficients = 1
       };
 
-    /**
-     * \brief special constructor for Monomial<N> and some operators
-     * \param key one of all_zero_coefficients, monomial_coefficients
-     */
-    Polynomial (double t0, special_polynomials key);
+    /// \brief Special constructor for Monomial<N> and some operators.
+    ///
+    /// \param t0
+    /// \param key one of all_zero_coefficients, monomial_coefficients.
+    Polynomial (value_type t0, special_polynomials key);
   }; // class Polynomial
 
 
-  /// Monomial
-
+  /// \brief Monomial
   /// \f[
   /// M (t) = t-t_0
   /// \f]
   template<int N>
   struct Monomial : public Polynomial<N>
   {
+    typedef typename Polynomial<N> parent_t;
+    typedef parent_t::value_type value_type;
+
   public:
-    Monomial (double t0)
-      : Polynomial<N> (t0,Polynomial<N>::monomial_coefficients)
+    /// \brief Constructor of a monomial: (t-t₀)
+    ///
+    /// \param t0 "center" of the monomial.
+    Monomial (value_type t0)
+      : parent_t (t0, parent_t::monomial_coefficients)
     {}
   }; // class Monomial
 } // end of namespace roboptim.
