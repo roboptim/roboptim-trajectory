@@ -16,17 +16,19 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-# include <roboptim/trajectory/polynomial.hh>
-# include <roboptim/trajectory/polynomial-3.hh>
+#include "shared-tests/common.hh"
 
-# include <cstdlib>
-# include <limits>
-# include <cassert>
-# include <cmath>
-# include <iostream>
+#include <roboptim/trajectory/polynomial.hh>
+#include <roboptim/trajectory/polynomial-3.hh>
+
+#include <limits>
 
 using namespace roboptim;
 using namespace std;
+
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+static double tol = 1e-6;
 
 template <int N>
 void test_multiply ()
@@ -64,9 +66,9 @@ struct poly_props
     assert (0);
   }
 
-  static void check_evaluate (double t0,
-                  typename Polynomial<N>::coef_t& params,
-			      double t)
+  static void check_evaluate (double,
+			      typename Polynomial<N>::coef_t&,
+			      double)
   {
     // Not implemented for this N
     assert (0);
@@ -106,8 +108,7 @@ void poly_props<3>::check_derivative (const Polynomial<3>& poly,
       break;
     }
 
-  assert (std::abs (result - derivative)
-	  < std::numeric_limits<double>::epsilon () * 1e2);
+  BOOST_CHECK_CLOSE (result, derivative, tol);
 }
 
 template <>
@@ -149,8 +150,8 @@ void poly_props<5>::check_derivative (const Polynomial<5>& poly,
       result = 0;
       break;
     }
-  assert (std::abs (result - derivative)
-	  < std::numeric_limits<double>::epsilon () * 1e2 );
+
+  BOOST_CHECK_CLOSE (result, derivative, tol);
 }
 
 
@@ -174,13 +175,15 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
   temp [3] = a3;
   Polynomial<3> p_new (t1, temp);
 
-  assert (p_new.t0 () == ref_poly.t0 ());
+  BOOST_CHECK_CLOSE (p_new.t0 (),
+                     ref_poly.t0 (),
+                     tol);
 
   for (int idx = 0; idx < 3 + 1; idx++)
     {
-      const double delta = std::abs (p_new.coefs ()[idx]
-				     - ref_poly.coefs ()[idx]);
-      assert (delta < std::numeric_limits<double>::epsilon () * 1e2);
+      BOOST_CHECK_CLOSE (p_new.coefs ()[idx],
+                         ref_poly.coefs ()[idx],
+                         tol);
     }
 }
 
@@ -192,8 +195,7 @@ void poly_props<3>::check_evaluate (double t0,
 {
   Polynomial<3> new_poly (t0, params);
   Polynomial3 old_poly (t0, params (0), params (1), params (2), params (3));
-  double delta = old_poly (t) - new_poly (t);
-  assert (delta < std::numeric_limits<double>::epsilon () * 1e3 );
+  BOOST_CHECK_CLOSE (new_poly (t), old_poly (t), tol);
 }
 
 
@@ -216,22 +218,21 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
 
 
   Polynomial<5>::coef_t temp;
-  // FIXME: have doubts about this, minus sign is probably not correct
-  temp [0] = a0 -   a1 * dt +   a2 * dt2 -   a3 * dt3 +   a4 * dt4 - a5 * dt5;
-  temp [1] = a1 - 2 * a2 * dt + 3 * a3 * dt2 - 4 * a4 * dt3 + 5 * a5 * dt4;
-  temp [2] = a2 - 3 * a3 * dt + 6 * a4 * dt2 - 10 * a5 * dt3;
-  temp [3] = a3 - 4 * a4 * dt + 10 * a5 * dt2;
-  temp [4] = a4 - 5 * a5 * dt;
+  temp [0] = a0 +     a1 * dt +      a2 * dt2 +      a3 * dt3 +     a4 * dt4 + a5 * dt5;
+  temp [1] = a1 + 2 * a2 * dt +  3 * a3 * dt2 +  4 * a4 * dt3 + 5 * a5 * dt4;
+  temp [2] = a2 + 3 * a3 * dt +  6 * a4 * dt2 + 10 * a5 * dt3;
+  temp [3] = a3 + 4 * a4 * dt + 10 * a5 * dt2;
+  temp [4] = a4 + 5 * a5 * dt;
   temp [5] = a5;
   Polynomial<5> p_new (t1, temp);
 
-  assert (p_new.t0 () == ref_poly.t0 ());
+  BOOST_CHECK_CLOSE (p_new.t0 (), ref_poly.t0 (), tol);
 
   for (int idx = 0; idx < 5 + 1; idx++)
     {
-      const double delta = std::abs (p_new.coefs ()[idx]
-				     - ref_poly.coefs ()[idx]);
-      assert (delta < std::numeric_limits<double>::epsilon () * 1e2);
+      BOOST_CHECK_CLOSE (p_new.coefs ()[idx],
+                         ref_poly.coefs ()[idx],
+                         tol);
     }
 }
 
@@ -250,7 +251,7 @@ void test_derivative ()
     {
       double derivative = p_1.derivative (t, order);
       if (order > N)
-	assert (derivative == 0);
+        BOOST_CHECK_SMALL (derivative, tol);
 
       // Only for N = 3
       poly_props<N>::check_derivative (p_1, t, order, derivative);
@@ -265,9 +266,9 @@ void test_translate ()
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
   Polynomial<N> p_1 (t0, params);
-  p_1 (0.);
   Polynomial<N> p_2 = p_1.translate (t1);
-  p_2 (0.);
+
+  BOOST_CHECK_CLOSE (p_1 (0.), p_2 (0.), tol);
 
   poly_props<N>::check_translate (p_1, t1, p_2);
 }
@@ -283,9 +284,9 @@ void test_evaluate ()
   poly_props<N>::check_evaluate (t0, params, t);
 }
 
-int main ()
+BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 {
-  srand (time (NULL));
+  srand (static_cast<unsigned int> (time (NULL)));
 
   test_evaluate<3> ();
   test_evaluate<5> ();
@@ -299,3 +300,5 @@ int main ()
   test_multiply<3> ();
   test_multiply<5> ();
 }
+
+BOOST_AUTO_TEST_SUITE_END ()
