@@ -84,7 +84,8 @@ IF (NOT LTDL_H_FOUND)
 ENDIF()
 #FIXME: check that libltdl.so is available.
 
-ADD_REQUIRED_DEPENDENCY("roboptim-core >= 0.5")
+ADD_REQUIRED_DEPENDENCY("roboptim-core >= 2.0")
+ADD_REQUIRED_DEPENDENCY("eigen3 >= 3.2.0")
 
 HEADER_INSTALL("${HEADERS}")
 
