@@ -1,5 +1,6 @@
 // Copyright (C) 2012 by Florent Lamiraux, CNRS.
 // Copyright (C) 2013 by Alexander Werner, DLR.
+// Copyright (C) 2014 by Benjamin Chrétien, CNRS-LIRMM.
 //
 // This file is part of the roboptim.
 //
@@ -25,20 +26,20 @@ namespace roboptim
   Polynomial<N>
   operator* (const double& lambda, const Polynomial<N>& poly)
   {
-    Eigen::Matrix<double,N+1,1> temp;
-    for(int idx=0;idx<N+1;idx++)
+    Eigen::Matrix<double, N + 1, 1> temp;
+    for (int idx = 0; idx < N + 1; idx++)
       temp[idx] = lambda * poly.coefs_ [idx];
-    return Polynomial<N> (poly.t0_,temp);
+    return Polynomial<N> (poly.t0_, temp);
   }
 
   template<int N>
   std::ostream& operator<< (std::ostream& stream, const Polynomial<N>& p)
   {
     stream << "f = ";
-    bool printed_before=false;
+    bool printed_before = false;
     for (int idx = N; idx > 0; idx--)
       {
-	if(std::abs (p.coefs_[idx]) > std::numeric_limits<double>::epsilon ())
+	if (std::abs (p.coefs_[idx]) > std::numeric_limits<double>::epsilon ())
 	  {
 	    if (printed_before)
 	      stream << " + ";
@@ -61,15 +62,13 @@ namespace roboptim
   }
 
 
-  /**
-   * start_coef is only used in translate
-   */
+  // start_coef is only used in translate
   template <int N>
   double
   Polynomial<N>::impl_derivative
-  (const double &t, size_type order, size_type start_coef) const
+  (const double& t, size_type order, size_type start_coef) const
   {
-    if(order == 0 && start_coef == 0)
+    if (order == 0 && start_coef == 0)
       return (*this) (t);
 
     double dt = 1.;
@@ -78,7 +77,7 @@ namespace roboptim
     size_type idx = order;
     if (start_coef > idx)
       {
-	for (int diff = 0; diff< start_coef - idx ; diff++)
+	for (int diff = 0; diff < start_coef - idx ; diff++)
 	  dt = dt * (t - t0_);
 	idx = start_coef;
       }
@@ -102,14 +101,14 @@ namespace roboptim
   }
 
   template <int N>
-  Polynomial<N> Polynomial<N>::translate (const double &t1) const
+  Polynomial<N> Polynomial<N>::translate (const double& t1) const
   {
     Polynomial<N> result (t1, all_zero_coefficients);
-    for(int order = 0; order <= order_; order++)
+    for (int order = 0; order <= order_; order++)
       {
 	result.coefs_[order] = coefs_[order];
 	int factorial = 1;
-	for(int idx = order; idx > 0; idx--)
+	for (int idx = order; idx > 0; idx--)
 	  factorial *= idx; // calculate order!
 	const double remaining_derivs = impl_derivative (t1, order, order + 1);
 	result.coefs_[order] += remaining_derivs / factorial;
@@ -118,16 +117,16 @@ namespace roboptim
   }
 
   template <int N>
-  double Polynomial<N>::derivative(const double &t, size_type order) const
+  double Polynomial<N>::derivative (const double& t, size_type order) const
   {
-    return impl_derivative(t, order);
+    return impl_derivative (t, order);
   }
 
   template <int N>
   Polynomial<N> Polynomial<N>::operator* (const Polynomial<N>& poly) const
   {
     Polynomial<order_> other = poly.translate (t0_);
-    Eigen::Matrix<double, order_+1, 1> temp;
+    Eigen::Matrix<double, order_ + 1, 1> temp;
     temp.setZero ();
 
     /* unrolling should be possible here since the loops are only
@@ -156,19 +155,19 @@ namespace roboptim
   {
     Polynomial<N> other = poly.translate (t0_);
     Eigen::Matrix<double, order_ + 1, 1> temp;
-    for (int idx = 0; idx  <N + 1; idx++)
+    for (int idx = 0; idx  < N + 1; idx++)
       temp[idx] = coefs_ [idx] + other.coefs_ [idx];
-    return Polynomial<N> (t0_,temp);
+    return Polynomial<N> (t0_, temp);
   }
 
   template <int N>
   Polynomial<N> Polynomial<N>::operator- (const Polynomial<N>& poly) const
   {
     Polynomial<N> other = poly.translate (t0_);
-    Eigen::Matrix<double,order_+1,1> temp;
-    for(int idx=0;idx<N+1;idx++)
+    Eigen::Matrix< double, order_ + 1, 1> temp;
+    for (int idx = 0; idx < N + 1; idx++)
       temp[idx] = coefs_ [idx] + other.coefs_ [idx];
-    return Polynomial<N> (t0_,temp);
+    return Polynomial<N> (t0_, temp);
   }
 
   template <int N>
@@ -176,7 +175,7 @@ namespace roboptim
   {
     double dt = 1.;
     double result = 0.;
-    for(int idx=0;idx<N+1;idx++)
+    for (int idx = 0; idx < N + 1; idx++)
       {
 	result += coefs_[idx] * dt;
 	dt = dt * ( t - t0_ );
@@ -186,7 +185,7 @@ namespace roboptim
 
   template <int N>
   Polynomial<N>::Polynomial (double t0, const  vector_t& coefs)
-    : t0_(t0)
+    : t0_ (t0)
   {
     assert (coefs.rows () == N + 1);
     std::copy (coefs.data (), coefs.data () + coefs.rows (), coefs_);
@@ -196,18 +195,18 @@ namespace roboptim
   Polynomial<N>::Polynomial (double t0, special_polynomials key)
     : t0_ (t0)
   {
-    switch(key)
+    switch (key)
       {
       case all_zero_coefficients:
-	std::fill_n(coefs_,order_+1,0);
-	break;
+        std::fill_n (coefs_, order_ + 1, 0);
+        break;
       case monomial_coefficients:
-	std::fill_n(coefs_,order_+1,0);
-	coefs_[1]=1.;
-	break;
+        std::fill_n (coefs_, order_ + 1, 0);
+        coefs_[1] = 1.;
+        break;
       default:
-	assert(0);
-	break;
+        assert (0);
+        break;
       }
   }
 
