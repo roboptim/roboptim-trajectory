@@ -35,7 +35,7 @@ namespace roboptim
     typedef Function::size_type size_type;
     typedef Function::value_type value_type;
     typedef Function::vector_t vector_t;
-    typedef Eigen::Matrix<value_type, N+1, 1> coef_t;
+    typedef Eigen::Matrix<value_type, N+1, 1> coefs_t;
 
     /// \brief Default constructor: return a null polynomial.
     Polynomial ();
@@ -76,12 +76,12 @@ namespace roboptim
     /// \brief Const getter to coefs.
     ///
     /// \return const reference to polynomial coefficients.
-    const coef_t& coefs () const;
+    const coefs_t& coefs () const;
 
     /// \brief Getter to coefs.
     ///
     /// \return reference to polynomial coefficients.
-    coef_t& coefs ();
+    coefs_t& coefs ();
 
     /// \brief Const getter to t0.
     ///
@@ -97,7 +97,7 @@ namespace roboptim
 
     /// \brief vector of polynomial coefficients (ordered from lowest to
     /// highest).
-    coef_t coefs_;
+    coefs_t coefs_;
 
     /// \brief Point on which the polynomial is centered, i.e. a polynomial
     /// of (t-t₀).

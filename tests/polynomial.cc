@@ -22,6 +22,7 @@
 #include <roboptim/trajectory/polynomial-3.hh>
 
 #include <limits>
+#include <unsupported/Eigen/Polynomials>
 
 using namespace roboptim;
 using namespace std;
@@ -33,7 +34,7 @@ static double tol = 1e-6;
 template <int N>
 void test_multiply ()
 {
-  typename Polynomial<N>::coef_t params;
+  typename Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
@@ -66,12 +67,17 @@ struct poly_props
     assert (0);
   }
 
-  static void check_evaluate (double,
-			      typename Polynomial<N>::coef_t&,
-			      double)
+  static void check_evaluate (double t0,
+			      typename Polynomial<N>::coefs_t& coefs,
+			      double t)
   {
-    // Not implemented for this N
-    assert (0);
+    Polynomial<N> poly (t0, coefs);
+
+    // Use Eigen's evaluator: translate polynomial from (t-t₀) to t
+    Polynomial<N> eigen_poly = poly.translate (0.);
+    double res = Eigen::poly_eval (eigen_poly.coefs (), t);
+
+    BOOST_CHECK_CLOSE (poly (t), res, tol);
   }
 };
 
@@ -168,7 +174,7 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
   double a2 = poly.coefs () [2];
   double a3 = poly.coefs () [3];
 
-  Polynomial<3>::coef_t temp;
+  Polynomial<3>::coefs_t temp;
   temp [0] = a0 + a1 * dt + a2 * dt2 + a3 * dt3;
   temp [1] = a1 + 2 * dt * a2 + 3 * dt2 * a3;
   temp [2] = a2 + 3 * dt * a3;
@@ -190,7 +196,7 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
 //FIXME: import code from Polynomial3 once it is replaced by Polynomial
 template <>
 void poly_props<3>::check_evaluate (double t0,
-                                    Polynomial<3>::coef_t& params,
+                                    Polynomial<3>::coefs_t& params,
                                     double t)
 {
   Polynomial<3> new_poly (t0, params);
@@ -217,7 +223,7 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
   double a5 = poly.coefs ()[5];
 
 
-  Polynomial<5>::coef_t temp;
+  Polynomial<5>::coefs_t temp;
   temp [0] = a0 +     a1 * dt +      a2 * dt2 +      a3 * dt3 +     a4 * dt4 + a5 * dt5;
   temp [1] = a1 + 2 * a2 * dt +  3 * a3 * dt2 +  4 * a4 * dt3 + 5 * a5 * dt4;
   temp [2] = a2 + 3 * a3 * dt +  6 * a4 * dt2 + 10 * a5 * dt3;
@@ -240,7 +246,7 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
 template <int N>
 void test_derivative ()
 {
-  typename Polynomial<N>::coef_t params;
+  typename Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   Polynomial<N> p_1 (t0, params);
@@ -261,7 +267,7 @@ void test_derivative ()
 template <int N>
 void test_translate ()
 {
-  typename Polynomial<N>::coef_t params;
+  typename Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
@@ -277,7 +283,7 @@ void test_translate ()
 template <int N>
 void test_evaluate ()
 {
-  typename Polynomial<N>::coef_t params;
+  typename Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t = (double)rand () / RAND_MAX;

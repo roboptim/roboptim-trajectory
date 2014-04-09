@@ -33,7 +33,7 @@ namespace roboptim
     for (int idx = N; idx > 0; idx--)
       {
 	if (std::abs (p.coefs_[idx])
-        > std::numeric_limits<value_type>::epsilon ())
+	    > std::numeric_limits<value_type>::epsilon ())
 	  {
 	    if (printed_before)
 	      stream << " + ";
@@ -195,14 +195,14 @@ namespace roboptim
   }
 
   template <int N>
-  const typename Polynomial<N>::coef_t&
+  const typename Polynomial<N>::coefs_t&
   Polynomial<N>::coefs () const
   {
     return coefs_;
   }
 
   template <int N>
-  typename Polynomial<N>::coef_t&
+  typename Polynomial<N>::coefs_t&
   Polynomial<N>::coefs ()
   {
     return coefs_;
