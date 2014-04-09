@@ -93,6 +93,16 @@ namespace roboptim
     /// \return reference to t0.
     value_type& t0 ();
 
+    /// \brief Get the i-th polynomial coefficient.
+    /// \param i number of the coefficient to get.
+    /// \return i-th polynomial coefficient αi, with: α_i (t-t₀)^i
+    value_type operator [] (int i) const;
+
+    /// \brief Return the real roots of the polynomial.
+    /// \warning This function relies on Eigen's experimental polynomial solver.
+    /// \return vector of the real roots of the polynomial.
+    std::vector<value_type> realRoots () const;
+
   private:
 
     /// \brief vector of polynomial coefficients (ordered from lowest to

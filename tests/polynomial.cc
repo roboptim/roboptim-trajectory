@@ -290,6 +290,24 @@ void test_evaluate ()
   poly_props<N>::check_evaluate (t0, params, t);
 }
 
+template <int N>
+void test_roots ()
+{
+  typedef typename Polynomial<N>::value_type value_type;
+
+  typename Polynomial<N>::coefs_t params;
+  params.setRandom ();
+  double t0 = (double)rand () / RAND_MAX;
+  Polynomial<N> p (t0, params);
+
+  std::vector<value_type> roots = p.realRoots ();
+  for (typename std::vector<value_type>::const_iterator
+	 iter = roots.begin ();
+       iter != roots.end ();
+       ++iter)
+    BOOST_CHECK_SMALL (p (*iter), tol);
+}
+
 BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 {
   srand (static_cast<unsigned int> (time (NULL)));
@@ -305,6 +323,9 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 
   test_multiply<3> ();
   test_multiply<5> ();
+
+  test_roots<3> ();
+  test_roots<5> ();
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

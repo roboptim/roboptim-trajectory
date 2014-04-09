@@ -20,6 +20,11 @@
 #ifndef ROBOPTIM_TRAJECTORY_POLYNOMIAL_HXX
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_HXX
 
+# include <algorithm> // transform
+
+// Polynomial solver
+# include <unsupported/Eigen/Polynomials>
+
 namespace roboptim
 {
 
@@ -143,9 +148,6 @@ namespace roboptim
     return Polynomial<order_> (t0_, temp);
   }
 
-  /**
-   * implementations of general Polynomial<N> operators follow
-   */
   template <int N>
   Polynomial<N> Polynomial<N>::operator+ (const Polynomial<N>& poly) const
   {
@@ -206,6 +208,35 @@ namespace roboptim
   Polynomial<N>::coefs ()
   {
     return coefs_;
+  }
+
+  template <int N>
+  typename Polynomial<N>::value_type
+  Polynomial<N>::operator [] (int i) const
+  {
+    assert (i >= 0 && i < N+1);
+    return coefs_[i];
+  }
+
+  template <int N>
+  std::vector<typename Polynomial<N>::value_type>
+  Polynomial<N>::realRoots () const
+  {
+    std::vector<value_type> roots;
+
+    // Eigen expects a polynomial in the form: Σ α_i t^i
+    // Thus, we compute the roots of the "translated" polynomial:
+    // P(u) = Σ α_i u^i
+    Eigen::PolynomialSolver<value_type, N> solver (coefs_);
+    solver.realRoots (roots);
+
+    // Then we shift the roots to get the roots of the actual polynomial:
+    // u = t - t₀
+    // P(u) = 0 => P(t = u + t₀) = 0
+    std::transform (roots.begin (), roots.end (), roots.begin (),
+                    std::bind2nd (std::plus<value_type> (), t0_));
+
+    return roots;
   }
 
   template <int N>
