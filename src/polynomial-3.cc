@@ -20,6 +20,9 @@
 #include <boost/lexical_cast.hpp>
 #include <limits>
 
+// Polynomial solver
+#include <unsupported/Eigen/Polynomials>
+
 namespace roboptim {
 
   Polynomial3::Polynomial3 ()
@@ -127,6 +130,12 @@ namespace roboptim {
     return coefs_[0] + coefs_[1]*dt + coefs_ [2]*dt2 + coefs_ [3]*dt3;
   }
 
+  double Polynomial3::operator [] (int i) const
+  {
+    assert (i >= 0 && i < 4);
+    return coefs_[i];
+  }
+
   double Polynomial3::derivative (const double& t, size_type order) const
   {
     double dt = t - t0_;
@@ -144,6 +153,22 @@ namespace roboptim {
     default:
       return 0;
     }
+  }
+
+  std::vector<double>
+  Polynomial3::realRoots () const
+  {
+    typedef Eigen::Matrix<double, 4, 1> coef_t;
+    std::vector<double> roots;
+
+    // Eigen expects a polynomial in the form: Σ(α_i t^i)
+    Polynomial3 p = this->translate (0.);
+    Eigen::Map<coef_t> coefs (&p.coefs_[0], 4);
+
+    Eigen::PolynomialSolver<double, 3> solver (coefs);
+    solver.realRoots (roots);
+
+    return roots;
   }
 
   std::ostream&

@@ -55,6 +55,16 @@ namespace roboptim {
     /// \brief Print Polynomial3.
     std::ostream& print (std::ostream& o) const throw ();
 
+    /// \brief Get the i-th polynomial coefficient.
+    /// \param i number of the coefficient to get.
+    /// \return i-th polynomial coefficient αi, with: α_i (t-t₀)^i
+    double operator [] (int i) const;
+
+    /// \brief Return the real roots of the translated polynomial.
+    /// \warning This function relies on Eigen's experimental polynomial solver.
+    /// \return vector of the real roots of the translated polynomial.
+    std::vector<double> realRoots () const;
+
     /// \brief Polynomial coefficients (ordered from lowest to highest degree).
     double coefs_ [4];
 
