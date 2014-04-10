@@ -1,4 +1,5 @@
 // Copyright (C) 2012 by Florent Lamiraux, CNRS.
+// Copyright (C) 2014 by Benjamin Chrétien, CNRS-LIRMM.
 //
 // This file is part of the roboptim.
 //
@@ -19,8 +20,6 @@
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_3_HH
 
 # include <roboptim/trajectory/polynomial.hh>
-
-# include <ostream>
 
 namespace roboptim {
 
