@@ -284,6 +284,30 @@ void test_translate ()
   poly_props<N>::check_translate (p_1, t1, p_2);
 }
 
+template <int N>
+void test_copy ()
+{
+  typename Polynomial<N>::coefs_t params;
+  params.setRandom ();
+
+  // Same degree
+  Polynomial<N> p_0 (3., params);
+  Polynomial<N> p_1 = p_0;
+
+  BOOST_CHECK_CLOSE (p_0.t0 (), p_1.t0 (), tol);
+  BOOST_CHECK (allclose (p_0.coefs (), p_1.coefs ()));
+
+  // Different degrees
+  Polynomial<N+2> p_2 = p_0;
+  BOOST_CHECK_CLOSE (p_0.t0 (), p_2.t0 (), tol);
+  BOOST_CHECK (allclose (p_0.coefs (),
+                         p_2.coefs ().template head<N+1> ()));
+
+  Polynomial<N-1> p_3 = p_0;
+  BOOST_CHECK_CLOSE (p_0.t0 (), p_3.t0 (), tol);
+  BOOST_CHECK (allclose (p_3.coefs (),
+                         p_0.coefs ().template head<N> ()));
+}
 
 template <int N>
 void test_evaluate ()
@@ -316,6 +340,9 @@ void test_roots ()
 BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 {
   srand (static_cast<unsigned int> (time (NULL)));
+
+  test_copy<3> ();
+  test_copy<5> ();
 
   test_evaluate<3> ();
   test_evaluate<5> ();

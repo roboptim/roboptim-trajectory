@@ -29,6 +29,38 @@ namespace roboptim
 {
 
   template <int N>
+  Polynomial<N>::Polynomial ()
+    : t0_ (0)
+  {
+    coefs_.setZero ();
+  }
+
+  template <int N>
+  Polynomial<N>::Polynomial (value_type t0, const vector_t& coefs)
+    : t0_ (t0)
+  {
+    assert (coefs.rows () == N + 1);
+    coefs_ = coefs;
+  }
+
+  template <int N>
+  template <int M>
+  Polynomial<N>::Polynomial (const Polynomial<M>& p)
+    : t0_ (p.t0 ())
+  {
+    if (M > N)
+      {
+	// Warning: this discards coefficients of higher degree.
+	coefs_ = p.coefs ().template head<N+1> ();
+      }
+    else // M <= N
+      {
+	coefs_.setZero ();
+	coefs_.template head<M+1> () = p.coefs ();
+      }
+  }
+
+  template <int N>
   std::ostream& operator<< (std::ostream& stream, const Polynomial<N>& p)
   {
     typedef typename Polynomial<N>::value_type value_type;
@@ -243,21 +275,6 @@ namespace roboptim
                     std::bind2nd (std::plus<value_type> (), t0_));
 
     return roots;
-  }
-
-  template <int N>
-  Polynomial<N>::Polynomial ()
-    : t0_ (0)
-  {
-    coefs_.setZero ();
-  }
-
-  template <int N>
-  Polynomial<N>::Polynomial (value_type t0, const vector_t& coefs)
-    : t0_ (t0)
-  {
-    assert (coefs.rows () == N + 1);
-    coefs_ = coefs;
   }
 
   template <int N>

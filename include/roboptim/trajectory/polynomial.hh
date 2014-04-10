@@ -47,6 +47,16 @@ namespace roboptim
     /// \param coefs polynomial coefficients.
     Polynomial (value_type t0, const vector_t& coefs);
 
+    /// \brief Copy constructor of polynomials of different orders.
+    ///
+    /// \warning If N < M, coefficients of higher degrees will be discarded.
+    /// This is only valid if you are considering |t-t₀|«1.
+    ///
+    /// \tparam M degree of the copied polynomial.
+    /// \param p copied polynomial.
+    template <int M>
+    Polynomial (const Polynomial<M>& p);
+
     /// \brief Return a new polynomial translated from (t-t₀) to (t-t₁).
     ///
     /// \param t1 new center.
@@ -100,7 +110,8 @@ namespace roboptim
     value_type operator [] (int i) const;
 
     /// \brief Return the real roots of the polynomial.
-    /// \warning This function relies on Eigen's experimental polynomial solver.
+    /// \warning This function relies on Eigen's experimental polynomial
+    /// solver.
     /// \return vector of the real roots of the polynomial.
     std::vector<value_type> realRoots () const;
 
