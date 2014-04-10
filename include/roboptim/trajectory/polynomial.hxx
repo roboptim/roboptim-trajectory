@@ -22,6 +22,7 @@
 
 # include <algorithm> // transform
 # include <limits> // numeric_limits
+# include <cstdarg> // va_list, va_start, va_arg, va_end
 
 // Polynomial solver
 # include <unsupported/Eigen/Polynomials>
@@ -41,6 +42,24 @@ namespace roboptim
   {
     assert (coefs.rows () == N + 1);
     coefs_ = coefs;
+  }
+
+  template <int N>
+  Polynomial<N>::Polynomial (value_type t0, ...)
+    :  t0_ (t0)
+  {
+    va_list vl;
+    // Note: void va_start (va_list ap, paramN);
+    // ---> "paramN: Name of the last named parameter in the function
+    // definition. The arguments extracted by subsequent calls to
+    // va_arg are those after paramN."
+    // See: http://www.cplusplus.com/reference/cstdarg/va_start/
+    va_start (vl, t0);
+
+    for (size_type i = 0; i < N + 1; ++i)
+      // We expect coefs to be of size N+1.
+      coefs_[i] = va_arg (vl, value_type);
+    va_end (vl);
   }
 
   template <int N>

@@ -26,7 +26,6 @@ ADD_LIBRARY(roboptim-trajectory SHARED
   spline-length.cc
   debug.hh
   cubic-b-spline.cc
-  polynomial-3.cc
   )
 PKG_CONFIG_USE_DEPENDENCY(roboptim-trajectory roboptim-core)
 SET_TARGET_PROPERTIES(roboptim-trajectory PROPERTIES SOVERSION 1.1.0)

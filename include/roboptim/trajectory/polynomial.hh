@@ -47,6 +47,12 @@ namespace roboptim
     /// \param coefs polynomial coefficients.
     Polynomial (value_type t0, const vector_t& coefs);
 
+    /// \brief Variadic constructor.
+    /// Note: this is a legacy constructor used to keep Polynomial3's API.
+    /// \param t0 polynomial of (t-t₀).
+    /// \param ... variadic arguments containing [a₀,a₁,...,a_N]
+    Polynomial (value_type t0, ...);
+
     /// \brief Copy constructor of polynomials of different orders.
     ///
     /// \warning If N < M, coefficients of higher degrees will be discarded.
