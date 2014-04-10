@@ -266,13 +266,13 @@ void test_derivative ()
 
   double t = (double)rand () / RAND_MAX;
 
-  for (int order = 1; order < N + 1; order++)
+  for (int order = 0; order < N + 2; order++)
     {
       double derivative = p_1.derivative (t, order);
+
       if (order > N)
         BOOST_CHECK_SMALL (derivative, tol);
 
-      // Only for N = 3
       poly_props<N>::check_derivative (p_1, t, order, derivative);
     }
 }

@@ -100,7 +100,9 @@ namespace roboptim
   Polynomial<N>::impl_derivative
   (value_type t, size_type order, size_type start_coef) const
   {
-    if (order == 0 && start_coef == 0)
+    if (order > N)
+      return 0.;
+    else if (order == 0 && start_coef == 0)
       return (*this) (t);
 
     value_type dt = 1.;
