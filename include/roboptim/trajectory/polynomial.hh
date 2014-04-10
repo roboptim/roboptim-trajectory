@@ -65,6 +65,7 @@ namespace roboptim
     Polynomial<N> operator* (const Polynomial<N>& poly) const;
     Polynomial<N> operator+ (const Polynomial<N>& poly) const;
     Polynomial<N> operator- (const Polynomial<N>& poly) const;
+    Polynomial<N> operator* (value_type lambda) const;
 
     /// \brief Evaluate the polynomial.
     ///
@@ -135,6 +136,9 @@ namespace roboptim
     Polynomial (value_type t0, special_polynomials key);
   }; // class Polynomial
 
+  template <int N>
+  Polynomial<N> operator* (typename Polynomial<N>::value_type lambda,
+                           const Polynomial<N>& poly);
 
   /// \brief Monomial
   /// \f[

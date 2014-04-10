@@ -95,7 +95,7 @@ namespace roboptim
 
 	result += deriv_coef * coefs_[idx] * dt;
 
-	dt = dt * ( t - t0_ );
+	dt = dt * (t - t0_);
       }
     return result;
   }
@@ -130,9 +130,8 @@ namespace roboptim
     Eigen::Matrix<value_type, order_ + 1, 1> temp;
     temp.setZero ();
 
-    /* unrolling should be possible here since the loops are only
-     * dependant on constants and the if/else goes away in release mode
-     */
+    // unrolling should be possible here since the loops are only
+    // dependant on constants and the if/else goes away in release mode
     for (size_type idx_a = 0; idx_a < order_ + 1; idx_a++)
       {
 	for (size_type idx_b = 0; idx_b < order_ + 1; idx_b++)
@@ -152,20 +151,27 @@ namespace roboptim
   Polynomial<N> Polynomial<N>::operator+ (const Polynomial<N>& poly) const
   {
     Polynomial<N> other = poly.translate (t0_);
-    Eigen::Matrix<value_type, order_ + 1, 1> temp;
-    for (int idx = 0; idx  < N + 1; idx++)
-      temp[idx] = coefs_ [idx] + other.coefs_ [idx];
-    return Polynomial<N> (t0_, temp);
+    return Polynomial<N> (t0_, coefs_ + other.coefs_);
   }
 
   template <int N>
   Polynomial<N> Polynomial<N>::operator- (const Polynomial<N>& poly) const
   {
     Polynomial<N> other = poly.translate (t0_);
-    Eigen::Matrix<value_type, order_ + 1, 1> temp;
-    for (int idx = 0; idx < N + 1; idx++)
-      temp[idx] = coefs_ [idx] + other.coefs_ [idx];
-    return Polynomial<N> (t0_, temp);
+    return Polynomial<N> (t0_, coefs_ - other.coefs_);
+  }
+
+  template <int N>
+  Polynomial<N> Polynomial<N>::operator* (value_type lambda) const
+  {
+    return Polynomial<N> (t0_, lambda * coefs_);
+  }
+
+  template <int N>
+  Polynomial<N> operator* (typename Polynomial<N>::value_type lambda,
+                           const Polynomial<N>& poly)
+  {
+    return poly * lambda;
   }
 
   template <int N>

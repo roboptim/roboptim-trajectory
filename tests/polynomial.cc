@@ -48,6 +48,11 @@ void test_multiply ()
 
   Polynomial<N> p_3 = p_1 * p_2;
   p_3 (0.1);
+
+  Polynomial<N> p_4 = 2.0 * p_1;
+  Polynomial<N> p_5 = p_1 * 2.0;
+
+  BOOST_CHECK (allclose (p_5.coefs (), p_4.coefs ()));
 }
 
 
