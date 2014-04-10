@@ -72,15 +72,30 @@ namespace roboptim
     /// \return derivative of a given order evaluated at t.
     value_type derivative (value_type t, size_type order = 1) const;
 
-    Polynomial<N> operator* (const Polynomial<N>& poly) const;
+    /// \brief Multiply polynomials of different orders.
+    /// \tparam M order of the polynomial.
+    /// \param poly polynomial to multiply.
+    /// \return P₀P₁
+    template <int M>
+    Polynomial<N+M> operator* (const Polynomial<M>& poly) const;
+
+    /// \brief Addition of polynomials
+    /// \param poly polynomial to add.
+    /// \return P₀ + P₁
     Polynomial<N> operator+ (const Polynomial<N>& poly) const;
+
+    /// \brief Subtraction of polynomials.
+    /// \param poly polynomial to subtract.
+    /// \return P₀ - P₁
     Polynomial<N> operator- (const Polynomial<N>& poly) const;
+
+    /// \brief Scalar multiplication of a polynomial.
+    /// \param lambda scalar.
+    /// \return λP
     Polynomial<N> operator* (value_type lambda) const;
 
     /// \brief Evaluate the polynomial.
-    ///
     /// \param t point of evaluation.
-    ///
     /// \return P(t)
     value_type operator () (value_type t) const;
 

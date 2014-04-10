@@ -156,27 +156,23 @@ namespace roboptim
   }
 
   template <int N>
-  Polynomial<N> Polynomial<N>::operator* (const Polynomial<N>& poly) const
+  template <int M>
+  Polynomial<N+M> Polynomial<N>::operator* (const Polynomial<M>& poly) const
   {
-    Polynomial<order_> other = poly.translate (t0_);
-    Eigen::Matrix<value_type, order_ + 1, 1> temp;
+    Polynomial<M> other = poly.translate (t0_);
+    typename Polynomial<N+M>::coefs_t temp;
     temp.setZero ();
 
     // unrolling should be possible here since the loops are only
-    // dependant on constants and the if/else goes away in release mode
-    for (size_type idx_a = 0; idx_a < order_ + 1; idx_a++)
+    // dependent on constant values
+    for (size_type idx_a = 0; idx_a < N + 1; idx_a++)
       {
-	for (size_type idx_b = 0; idx_b < order_ + 1; idx_b++)
+	for (size_type idx_b = 0; idx_b < M + 1; idx_b++)
 	  {
-	    const size_type combined_idx = idx_a + idx_b;
-	    if (combined_idx < order_ + 1)
-	      temp[combined_idx] += coefs_[idx_a] * other.coefs_[idx_b];
-	    else
-	      // Those combinations whould yield a Polynomial of higher order
-	      assert (coefs_[idx_a] * other.coefs_[idx_b] == 0);
+	    temp[idx_a + idx_b] += coefs_[idx_a] * other.coefs_[idx_b];
 	  }
       }
-    return Polynomial<order_> (t0_, temp);
+    return Polynomial<N+M> (t0_, temp);
   }
 
   template <int N>

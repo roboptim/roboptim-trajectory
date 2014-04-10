@@ -38,21 +38,29 @@ void test_multiply ()
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
-  Polynomial<N> p_1 (t0, params);
-  p_1 (0.1);
+
+  Polynomial<N> p_0 (t0, params);
+  p_0 (0.1);
 
   params.setZero ();
   params[0] = 0.3;
-  Polynomial<N> p_2 (t1, params);
+  Polynomial<N> p_1 (t1, params);
+  p_1 (0.1);
+
+  // Polynomial multiplication
+  Polynomial<2*N> p_2 = p_0 * p_1;
   p_2 (0.1);
+  // Polynomial multiplication + crop
+  Polynomial<N> p_3 = p_0 * p_1;
+  // Compare uncropped part
+  BOOST_CHECK (allclose (p_2.coefs ().template head<N+1> (),
+                         p_3.coefs ()));
 
-  Polynomial<N> p_3 = p_1 * p_2;
-  p_3 (0.1);
+  // Scalar multiplication
+  Polynomial<N> q_0 = 2.0 * p_0;
+  Polynomial<N> q_1 = p_0 * 2.0;
 
-  Polynomial<N> p_4 = 2.0 * p_1;
-  Polynomial<N> p_5 = p_1 * 2.0;
-
-  BOOST_CHECK (allclose (p_5.coefs (), p_4.coefs ()));
+  BOOST_CHECK (allclose (q_0.coefs (), q_1.coefs ()));
 }
 
 
