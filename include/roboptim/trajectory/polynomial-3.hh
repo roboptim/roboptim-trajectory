@@ -75,13 +75,13 @@ namespace roboptim {
   /// \brief Scalar multiplication of a 3rd degree polynomial.
   Polynomial3 operator* (const double& lambda, const Polynomial3& poly);
 
-  /// \brief Monomial
+  /// \brief Monomial3
   /// \f[
   /// M (t) = t-t_0
   /// \f]
-  struct Monomial : public Polynomial3
+  struct Monomial3 : public Polynomial3
   {
-    Monomial (double t0) : Polynomial3 (t0, 0., 1., 0., 0.) {}
+    Monomial3 (double t0) : Polynomial3 (t0, 0., 1., 0., 0.) {}
   }; // class Monomial
 
   std::ostream& operator << (std::ostream& o, const Polynomial3& p);

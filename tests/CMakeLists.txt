@@ -103,6 +103,7 @@ ENDMACRO(ROBOPTIM_TRAJECTORY_TEST)
 # Tools.
 ROBOPTIM_TRAJECTORY_TEST(simple)
 ROBOPTIM_TRAJECTORY_TEST(polynomial-3)
+ROBOPTIM_TRAJECTORY_TEST(polynomial)
 ROBOPTIM_TRAJECTORY_TEST(free-time-trajectory)
 ROBOPTIM_TRAJECTORY_TEST(free-time-trajectory-stable-time-point)
 ROBOPTIM_TRAJECTORY_TEST(stable-point-state-function)

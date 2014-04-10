@@ -92,30 +92,30 @@ namespace roboptim
 
 	Polynomial3 B0 =
 	  1./((t3-t0)*(t2-t0)*(t1-t0))
-	  * Monomial(t0) * Monomial(t0) * Monomial(t0);
+	  * Monomial3(t0) * Monomial3(t0) * Monomial3(t0);
 
 	Polynomial3 B1 =
 	  -1./((t3-t0)*(t2-t1)*(t2-t0))
-	  * Monomial (t0) * Monomial (t0)
-	  * Monomial (t2)
+	  * Monomial3 (t0) * Monomial3 (t0)
+	  * Monomial3 (t2)
 	  -1./((t3-t0)*(t3-t1)*(t2-t1))
-	  * Monomial (t0) * Monomial (t3)
-	  * Monomial (t1)
+	  * Monomial3 (t0) * Monomial3 (t3)
+	  * Monomial3 (t1)
 	  -1./((t4-t1)*(t3-t1)*(t2-t1))
-	  * Monomial (t4) * Monomial (t1) * Monomial (t1);
+	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t1);
 
 	Polynomial3 B2 =
 	  1./((t3-t0)*(t3-t1)*(t2-t1))
-	  * Monomial (t0) * Monomial (t3)
-	  * Monomial (t3)
+	  * Monomial3 (t0) * Monomial3 (t3)
+	  * Monomial3 (t3)
 	  + 1./((t4-t1)*(t3-t1)*(t3-t2))
-	  * Monomial (t4) * Monomial (t1) * Monomial (t3)
+	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t3)
 	  + 1./((t4-t1)*(t4-t2)*(t3-t2))
-	  *Monomial (t4) * Monomial (t4) * Monomial (t2);
+	  *Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t2);
 
 	Polynomial3 B3 =
 	  -1./((t4-t1)*(t4-t2)*(t4-t3))
-	  * Monomial (t4) * Monomial (t4) * Monomial (t4);
+	  * Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t4);
 
 	basisPolynomials_.back ().push_back (B0);
 	basisPolynomials_.back ().push_back (B1);
@@ -292,44 +292,44 @@ namespace roboptim
   void
   CubicBSpline::translateBasisPolynomials (double t1) throw ()
   {
-      for (std::vector <std::vector <Polynomial3> >::iterator
+    for (std::vector <std::vector <Polynomial3> >::iterator
            it = basisPolynomials_.begin ();
-           it != basisPolynomials_.end ();
-           ++it)
-          for (std::vector <Polynomial3>::iterator
-               p = it->begin ();
-               p != it->end ();
-               ++p)
-              p->translateInPlace (t1);
+	 it != basisPolynomials_.end ();
+	 ++it)
+      for (std::vector <Polynomial3>::iterator
+	     p = it->begin ();
+	   p != it->end ();
+	   ++p)
+	p->translateInPlace (t1);
   }
 
   void
   CubicBSpline::toPolynomials (std::vector<Polynomial3>& res)
-  const throw ()
+    const throw ()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
-      // Cubic B-spline ---> nbp_-3 intervals (aka segments or bays)
-      if (res.size() != nbp_-3) res.resize(nbp_-3);
+    // Cubic B-spline ---> nbp_-3 intervals (aka segments or bays)
+    if (res.size() != nbp_-3) res.resize(nbp_-3);
 
-      for (size_type k = 3; k < nbp_; ++k)
+    for (size_type k = 3; k < nbp_; ++k)
       {
-          const value_type& P_k_3 = parameters()(k - 3);
-          const value_type& P_k_2 = parameters()(k - 2);
-          const value_type& P_k_1 = parameters()(k - 1);
-          const value_type& P_k   = parameters()(k - 0);
+	const value_type& P_k_3 = parameters()(k - 3);
+	const value_type& P_k_2 = parameters()(k - 2);
+	const value_type& P_k_1 = parameters()(k - 1);
+	const value_type& P_k   = parameters()(k - 0);
 
-          const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
-          const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
-          const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
-          const Polynomial3& B_k_k   = basisPolynomials_[k][0];
+	const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
+	const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
+	const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
+	const Polynomial3& B_k_k   = basisPolynomials_[k][0];
 
-          res[k-3] = P_k_3 * B_k_3_k
-                   + P_k_2 * B_k_2_k
-                   + P_k_1 * B_k_1_k
-                   + P_k   * B_k_k;
+	res[k-3] = P_k_3 * B_k_3_k
+	  + P_k_2 * B_k_2_k
+	  + P_k_1 * B_k_1_k
+	  + P_k   * B_k_k;
       }
   }
 
