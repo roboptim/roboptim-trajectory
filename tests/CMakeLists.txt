@@ -112,6 +112,7 @@ ROBOPTIM_TRAJECTORY_TEST(state-function)
 # Spline.
 ROBOPTIM_TRAJECTORY_TEST(spline)
 ROBOPTIM_TRAJECTORY_TEST(spline-gradient)
+ROBOPTIM_TRAJECTORY_TEST(b-spline)
 
 # Other
 ROBOPTIM_TRAJECTORY_TEST(vector-interpolation)

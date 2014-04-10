@@ -36,7 +36,7 @@ namespace roboptim
   /// B-Spline trajectory.
   /// Implement a B-Spline as a trajectory based in doc/quintic-b-spline.tex
   /// The template parameter N determines the order of the spline.
-  template<int N>
+  template <int N>
   class BSpline : public Trajectory<N>
   {
   public:
@@ -114,7 +114,9 @@ namespace roboptim
 
     value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
 
-    vector_t const& knots() const;
+    vector_t const& knots () const;
+
+    size_type interval (value_type t) const;
 
   protected:
     using Trajectory<N>::impl_compute;
@@ -123,7 +125,6 @@ namespace roboptim
       const throw ();
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const throw ();
-    size_type interval (value_type t) const;
 
     vector_t basisFunctions (value_type t, size_type order) const
       ROBOPTIM_TRAJECTORY_DEPRECATED;
@@ -136,16 +137,32 @@ namespace roboptim
     typedef std::map<int, polynomial_t> cox_map;
     typedef typename cox_map::iterator cox_map_itr_t;
     cox_map cox_de_boor (size_type j, size_type n) const;
+
   private:
+
     /// \brief Number of control points.
     size_type nbp_;
-    /// Vector of knots
+
+    /// \brief Vector of knots.
     vector_t knots_;
-    /// basisPolynomials_[i][j] = B_{i,i+j}
+
+    /// \brief basisPolynomials_[i][j] = B_{i,i+j}
     std::vector <std::vector <Polynomial<N> > > basisPolynomials_;
-    /// For backward compatibility only
+
+    /// \brief For backward compatibility only.
     bool uniform_;
+
+  protected:
+    /// \brief Pointer to B-spline logger (see log4cxx documentation).
+    static log4cxx::LoggerPtr logger;
   };
+
+  /// \brief LOG4CXX logger for B-splines.
+  /// \tparam N order of the B-Spline.
+  /// \return logger.
+  template <int N>
+  log4cxx::LoggerPtr BSpline<N>::logger
+  (log4cxx::Logger::getLogger ("roboptim.trajectory"));
 
   /// @}
 
