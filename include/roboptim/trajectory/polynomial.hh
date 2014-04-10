@@ -26,7 +26,7 @@ namespace roboptim
   /// \brief Polynomial of degree at most N.
   ///
   /// \f[
-  /// P (t) = \sum_{i=0}{N} a_i (t-t_0)^i
+  /// P (t) = \sum_{i=0}^{N} a_i (t-t_0)^i
   /// \f]
   template <int N>
   class Polynomial
@@ -58,11 +58,13 @@ namespace roboptim
     Polynomial (const Polynomial<M>& p);
 
     /// \brief Return a new polynomial translated from (t-t₀) to (t-t₁).
-    ///
     /// \param t1 new center.
-    ///
     /// \return polynomial translated to (t-t₁)
     Polynomial<N> translate (value_type t1) const;
+
+    /// \brief Translate the polynomial (in place) from (t-t₀) to (t-t₁).
+    /// \param t1 new center.
+    void translateInPlace (value_type t1);
 
     /// \brief Evaluate the derivative of a given order.
     ///
@@ -130,6 +132,13 @@ namespace roboptim
     /// \return vector of the real roots of the polynomial.
     std::vector<value_type> realRoots () const;
 
+    /// \brief Return the order of such a polynomial.
+    /// \return order of such a polynomial.
+    static int order ()
+    {
+      return order_;
+    }
+
   private:
 
     /// \brief vector of polynomial coefficients (ordered from lowest to
@@ -145,13 +154,18 @@ namespace roboptim
     impl_derivative
     (value_type t, size_type order, size_type start_coef = 0) const;
 
+    coefs_t
+    impl_translate (value_type t1) const;
+
     /// \brief order of the polynomial.
     static const int order_ = N;
 
-    /// \brief FIXME
+    /// \brief Enum for special polynomials.
     enum special_polynomials
       {
+        /// \brief Null polynomial: 0
         all_zero_coefficients = 0,
+        /// \brief Monomial polynomial: (t-t₀)
         monomial_coefficients = 1
       };
 

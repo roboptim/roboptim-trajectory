@@ -290,6 +290,12 @@ void test_translate ()
   BOOST_CHECK_CLOSE (p_1 (0.), p_2 (0.), tol);
 
   poly_props<N>::check_translate (p_1, t1, p_2);
+
+  // Test translate in place.
+  Polynomial<N> p_3 = p_1;
+  p_3.translateInPlace (t1);
+  BOOST_CHECK_CLOSE (p_2.t0 (), p_3.t0 (), tol);
+  BOOST_CHECK (allclose (p_2.coefs (), p_3.coefs ()));
 }
 
 template <int N>

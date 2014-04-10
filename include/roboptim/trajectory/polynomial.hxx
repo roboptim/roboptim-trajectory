@@ -21,13 +21,13 @@
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_HXX
 
 # include <algorithm> // transform
+# include <limits> // numeric_limits
 
 // Polynomial solver
 # include <unsupported/Eigen/Polynomials>
 
 namespace roboptim
 {
-
   template <int N>
   Polynomial<N>::Polynomial ()
     : t0_ (0)
@@ -135,19 +135,41 @@ namespace roboptim
   }
 
   template <int N>
-  Polynomial<N> Polynomial<N>::translate (value_type t1) const
+  typename Polynomial<N>::coefs_t
+  Polynomial<N>::impl_translate (typename Polynomial<N>::value_type t1) const
   {
-    Polynomial<N> result (t1, all_zero_coefficients);
+    coefs_t coefs;
     for (int order = 0; order <= order_; order++)
       {
-	result.coefs_[order] = coefs_[order];
+	coefs[order] = coefs_[order];
 	int factorial = 1;
 	for (int idx = order; idx > 0; idx--)
-	  factorial *= idx; // calculate order!
-	const value_type remaining_derivs = impl_derivative (t1, order, order + 1);
-	result.coefs_[order] += remaining_derivs / factorial;
+	  {
+	    // overflow check
+	    assert ((factorial <= std::numeric_limits<int>::max ()/idx)
+		    && "Overflow detected in factorial computation.");
+	    factorial *= idx; // calculate order!
+	  }
+
+	const value_type remaining_derivs = impl_derivative (t1,
+							     order,
+							     order + 1);
+	coefs[order] += remaining_derivs / factorial;
       }
-    return result;
+    return coefs;
+  }
+
+  template <int N>
+  Polynomial<N> Polynomial<N>::translate (value_type t1) const
+  {
+    return Polynomial<N> (t1, impl_translate (t1));
+  }
+
+  template <int N>
+  void Polynomial<N>::translateInPlace (value_type t1)
+  {
+    coefs_ = impl_translate (t1);
+    t0_ = t1;
   }
 
   template <int N>
@@ -171,7 +193,7 @@ namespace roboptim
       {
 	for (size_type idx_b = 0; idx_b < M + 1; idx_b++)
 	  {
-	    temp[idx_a + idx_b] += coefs_[idx_a] * other.coefs_[idx_b];
+	    temp[idx_a + idx_b] += coefs_[idx_a] * other.coefs ()[idx_b];
 	  }
       }
     return Polynomial<N+M> (t0_, temp);
