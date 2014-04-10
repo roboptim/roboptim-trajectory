@@ -1,5 +1,6 @@
 // Copyright (C) 2009, 2010 by Thomas Moulard, AIST, CNRS, INRIA.
 // Copyright (C) 2013 by Alexander Werner, DLR.
+// Copyright (C) 2014 by Benjamin Chrétien, CNRS-LIRMM.
 //
 // This file is part of the roboptim.
 //
@@ -39,15 +40,15 @@ namespace roboptim
   class BSpline : public Trajectory<N>
   {
   public:
-		typedef Trajectory<N> parent_t;
-		typedef typename parent_t::interval_t interval_t;
-		typedef typename parent_t::size_type size_type;
-		typedef typename parent_t::value_type value_type;
-		typedef typename parent_t::vector_t vector_t;
-		typedef typename parent_t::matrix_t matrix_t;
-		typedef typename parent_t::result_t result_t;
-		typedef typename parent_t::gradient_t gradient_t;
-		typedef typename parent_t::jacobian_t jacobian_t;
+    typedef Trajectory<N> parent_t;
+    typedef typename parent_t::interval_t interval_t;
+    typedef typename parent_t::size_type size_type;
+    typedef typename parent_t::value_type value_type;
+    typedef typename parent_t::vector_t vector_t;
+    typedef typename parent_t::matrix_t matrix_t;
+    typedef typename parent_t::result_t result_t;
+    typedef typename parent_t::gradient_t gradient_t;
+    typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Instantiate a B-Spline from its definition.
     ///
     /// \param timeRange spline time range: $\f$[t_3,t_n]\f$
@@ -58,8 +59,8 @@ namespace roboptim
     /// Number of control points is inferred from dimension of dimenion of
     /// parameter vector.
     BSpline (interval_t timeRange, size_type dimension,
-		  const vector_t& parameters,
-		  const std::string name = "B-Spline") throw ();
+             const vector_t& parameters,
+             const std::string name = "B-Spline") throw ();
 
     /// \brief Instantiate a B-Spline with parameters and knot points.
     ///
@@ -75,15 +76,15 @@ namespace roboptim
     /// The rest of the knot point must lie before the
     /// end of the spline interval.
     BSpline (interval_t tr, size_type dimension,
-  			      const vector_t& parameters,
-  			      const vector_t& knots,
-  			      std::string name = "B-Spline") throw ();
+             const vector_t& parameters,
+             const vector_t& knots,
+             std::string name = "B-Spline") throw ();
 
     /// \brief Copy constructor.
     /// \param spline spline that will be copied
     BSpline (const BSpline<N>& spline) throw ();
 
-    virtual ~BSpline () throw (){};
+    virtual ~BSpline () throw () {};
 
     /// \brief Modify spline parameters.
     virtual void setParameters (const vector_t&) throw ();
@@ -97,7 +98,7 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    ROBOPTIM_IMPLEMENT_CLONE(BSpline<N>)
+    ROBOPTIM_IMPLEMENT_CLONE (BSpline<N>)
 
     virtual Trajectory<N>* resize (interval_t timeRange) const throw ();
 
@@ -113,7 +114,7 @@ namespace roboptim
 
     value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
 
-    vector_t const & knots() const;
+    vector_t const& knots() const;
 
   protected:
     using Trajectory<N>::impl_compute;
@@ -132,9 +133,9 @@ namespace roboptim
 
     typedef Polynomial<N> polynomial_t;
     typedef Monomial<N> monomial_t;
-    typedef std::map<int,polynomial_t> cox_map;
+    typedef std::map<int, polynomial_t> cox_map;
     typedef typename cox_map::iterator cox_map_itr_t;
-    cox_map cox_de_boor(size_type j, size_type n) const;
+    cox_map cox_de_boor (size_type j, size_type n) const;
   private:
     /// \brief Number of control points.
     size_type nbp_;
