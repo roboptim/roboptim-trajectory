@@ -30,40 +30,45 @@ SET(CXX_DISABLE_WERROR 1)
 SET(CSD ${CMAKE_SOURCE_DIR})
 SET(HEADERS
   ${CSD}/include/roboptim/trajectory/anthropomorphic-cost-function.hh
-  ${CSD}/include/roboptim/trajectory/cubic-b-spline.hxx
-  ${CSD}/include/roboptim/trajectory/limit-speed.hxx
-  ${CSD}/include/roboptim/trajectory/cubic-b-spline.hh
-  ${CSD}/include/roboptim/trajectory/polynomial-3.hh
-  ${CSD}/include/roboptim/trajectory/limit-speed.hh
-  ${CSD}/include/roboptim/trajectory/sys.hh
-  ${CSD}/include/roboptim/trajectory/limit-omega.hh
-  ${CSD}/include/roboptim/trajectory/stable-time-point.hh
-  ${CSD}/include/roboptim/trajectory/spline-length.hh
-  ${CSD}/include/roboptim/trajectory/limit-omega.hxx
-  ${CSD}/include/roboptim/trajectory/free-time-trajectory.hh
-  ${CSD}/include/roboptim/trajectory/fwd.hh
   ${CSD}/include/roboptim/trajectory/anthropomorphic-cost-function.hxx
-  ${CSD}/include/roboptim/trajectory/state-function.hxx
-  ${CSD}/include/roboptim/trajectory/trajectory-sum-cost.hxx
+  ${CSD}/include/roboptim/trajectory/b-spline.hh
+  ${CSD}/include/roboptim/trajectory/b-spline.hxx
+  ${CSD}/include/roboptim/trajectory/cubic-b-spline.hh
+  ${CSD}/include/roboptim/trajectory/cubic-b-spline.hxx
+  ${CSD}/include/roboptim/trajectory/free-time-trajectory.hh
   ${CSD}/include/roboptim/trajectory/free-time-trajectory.hxx
   ${CSD}/include/roboptim/trajectory/freeze.hh
-  ${CSD}/include/roboptim/trajectory/state-function.hh
-  ${CSD}/include/roboptim/trajectory/trajectory.hxx
-  ${CSD}/include/roboptim/trajectory/trajectory-sum-cost.hh
+  ${CSD}/include/roboptim/trajectory/freeze.hxx
+  ${CSD}/include/roboptim/trajectory/frontal-speed.hh
+  ${CSD}/include/roboptim/trajectory/fwd.hh
+  ${CSD}/include/roboptim/trajectory/limit-omega.hh
+  ${CSD}/include/roboptim/trajectory/limit-omega.hxx
+  ${CSD}/include/roboptim/trajectory/limit-speed.hh
+  ${CSD}/include/roboptim/trajectory/limit-speed.hxx
   ${CSD}/include/roboptim/trajectory/orthogonal-speed.hh
+  ${CSD}/include/roboptim/trajectory/polynomial.hh
+  ${CSD}/include/roboptim/trajectory/polynomial.hxx
+  ${CSD}/include/roboptim/trajectory/polynomial-3.hh
+  ${CSD}/include/roboptim/trajectory/spline-length.hh
+  ${CSD}/include/roboptim/trajectory/stable-point-state-function.hh
+  ${CSD}/include/roboptim/trajectory/stable-point-state-function.hxx
+  ${CSD}/include/roboptim/trajectory/stable-time-point.hh
+  ${CSD}/include/roboptim/trajectory/state-function.hh
+  ${CSD}/include/roboptim/trajectory/state-function.hxx
+  ${CSD}/include/roboptim/trajectory/sys.hh
+  ${CSD}/include/roboptim/trajectory/trajectory-cost.hh
+  ${CSD}/include/roboptim/trajectory/trajectory-cost.hxx
+  ${CSD}/include/roboptim/trajectory/trajectory-sum-cost.hh
+  ${CSD}/include/roboptim/trajectory/trajectory-sum-cost.hxx
+  ${CSD}/include/roboptim/trajectory/trajectory.hh
+  ${CSD}/include/roboptim/trajectory/trajectory.hxx
+  ${CSD}/include/roboptim/trajectory/vector-interpolation.hh
+  ${CSD}/include/roboptim/trajectory/vector-interpolation.hxx
   ${CSD}/include/roboptim/trajectory/visualization/limit-speed.hh
   ${CSD}/include/roboptim/trajectory/visualization/speed.hh
   ${CSD}/include/roboptim/trajectory/visualization/trajectory.hh
-  ${CSD}/include/roboptim/trajectory/trajectory-cost.hh
-  ${CSD}/include/roboptim/trajectory/trajectory.hh
-  ${CSD}/include/roboptim/trajectory/stable-point-state-function.hxx
-  ${CSD}/include/roboptim/trajectory/frontal-speed.hh
-  ${CSD}/include/roboptim/trajectory/trajectory-cost.hxx
-  ${CSD}/include/roboptim/trajectory/freeze.hxx
-  ${CSD}/include/roboptim/trajectory/stable-point-state-function.hh
-  ${CSD}/include/roboptim/trajectory/vector-interpolation.hh
-  ${CSD}/include/roboptim/trajectory/vector-interpolation.hxx
-  ${CSD}/include/roboptim/trajectory.hh )
+  ${CSD}/include/roboptim/trajectory.hh
+)
 
 SETUP_PROJECT()
 
