@@ -206,17 +206,6 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
     }
 }
 
-//FIXME: import code from Polynomial3 once it is replaced by Polynomial
-template <>
-void poly_props<3>::check_evaluate (double t0,
-                                    Polynomial<3>::coefs_t& params,
-                                    double t)
-{
-  Polynomial<3> new_poly (t0, params);
-  Polynomial3 old_poly (t0, params (0), params (1), params (2), params (3));
-  BOOST_CHECK_CLOSE (new_poly (t), old_poly (t), tol);
-}
-
 
 template <>
 void poly_props<5>::check_translate (const Polynomial<5>& poly,
