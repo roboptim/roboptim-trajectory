@@ -83,32 +83,34 @@ namespace roboptim
   std::ostream& operator<< (std::ostream& stream, const Polynomial<N>& p)
   {
     typedef typename Polynomial<N>::value_type value_type;
+    typedef typename Polynomial<N>::coefs_t coefs_t;
+    const coefs_t& coefs = p.coefs ();
 
     stream << "f = ";
     bool printed_before = false;
     for (int idx = N; idx > 0; idx--)
       {
-	if (std::abs (p.coefs_[idx])
+	if (std::abs (coefs[idx])
 	    > std::numeric_limits<value_type>::epsilon ())
 	  {
 	    if (printed_before)
 	      stream << " + ";
-	    stream << p.coefs_[idx] << " * x**" << idx;
+	    stream << coefs[idx] << " * x**" << idx;
 	    printed_before = true;
 	  }
       }
-    if (std::abs (p.coefs_[0])
+    if (std::abs (coefs[0])
         > std::numeric_limits<value_type>::epsilon ())
       {
 	if (printed_before)
 	  stream << " + ";
-	stream << p.coefs_[0];
+	stream << coefs[0];
       }
     else if (!printed_before)
       {
-	stream << p.coefs_[0];
+	stream << coefs[0];
       }
-    stream << "\t" << "( x = t - " << p.t0_ << " )";
+    stream << "\t" << "( x = t - " << p.t0 () << " )";
     return stream;
   }
 
