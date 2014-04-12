@@ -63,10 +63,11 @@ namespace roboptim
     /// \f$value = \frac{\partial^derivative}{\partial t^derivative}
     ///            f_{dimension}(t) \f$
     /// \param t time in the spline to constrain.
-    /// \param value Desired spline value at t.
     /// \param dimension Which dimension of the spline to constrain.
-    /// \param derivative Which derivative of the split to constrain.
-    void addFixedConstraint (double t, size_type dimension,
+    /// \param value Desired spline value at t.
+    /// \param derivative Which derivative of the spline to constrain.
+    void addFixedConstraint (double t,
+                             size_type dimension,
                              value_type value,
                              size_type derivative = 0) throw ();
 

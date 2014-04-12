@@ -16,44 +16,44 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_CONSTRAINT_B_SPLINE_HXX
-# define ROBOPTIM_TRAJECTORY_CONSTRAINT_B_SPLINE_HXX
+#ifndef ROBOPTIM_TRAJECTORY_CONSTRAINED_B_SPLINE_HXX
+# define ROBOPTIM_TRAJECTORY_CONSTRAINED_B_SPLINE_HXX
 
 # include <boost/shared_ptr.hpp>
-# include <boost/numeric/conversion/converter.hpp>
 
 # include <Eigen/SVD>
 
-# include <roboptim/core/numeric-linear-function.hh>
-
 namespace roboptim
 {
-  template<int N>
+  template <int N>
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
 					     const vector_t& parameters,
-					     const std::string name) throw()
+					     const std::string name) throw ()
     : BSpline<N> (timeRange, dimension, parameters, name),
-      constraints_ (0, parameters.rows ()), tunables_ (parameters)
+      constraints_ (0, parameters.rows ()),
+      tunables_ (parameters)
   {}
 
-  template<int N>
+  template <int N>
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
 					     const vector_t& parameters,
 					     const vector_t& knots,
-					     const std::string name)throw()
+					     const std::string name) throw ()
     : BSpline<N> (timeRange, dimension, parameters, knots, name),
-      constraints_ (0, parameters.rows ()), tunables_ (parameters)
+      constraints_ (0, parameters.rows ()),
+      tunables_ (parameters)
   {}
 
-  template<int N>
-  ConstrainedBSpline<N>::~ConstrainedBSpline() throw() {}
+  template <int N>
+  ConstrainedBSpline<N>::~ConstrainedBSpline () throw () {}
 
-  template<int N>
-  void ConstrainedBSpline<N>::addFixedConstraint (double t, size_type dimension,
-						  value_type value,
-						  size_type order) throw()
+  template <int N>
+  void ConstrainedBSpline<N>::addFixedConstraint (double t,
+                                                  size_type dimension,
+                                                  value_type value,
+                                                  size_type order) throw ()
   {
     // constraint_values = constraints_ * parameters_ (1)
     const int existing_constraints = constraints_.rows ();
@@ -61,7 +61,8 @@ namespace roboptim
     constraint_values_.conservativeResize (existing_constraints + 1);
     constraint_values_ (existing_constraints) = value;
 
-    constraints_.conservativeResize (existing_constraints + 1, Eigen::NoChange);
+    constraints_.conservativeResize (existing_constraints + 1,
+                                     Eigen::NoChange);
     constraints_.bottomRows (1).setZero ();
 
     t = detail::fixTime (t, *this);
@@ -73,15 +74,15 @@ namespace roboptim
         constraints_ (existing_constraints, (k - idx) * n + dimension)
 	  = this->basisPolynomials ()[k - idx][idx].derivative (t, order);
       }
-    updateProjector();
+    updateProjector ();
   }
 
 
-  template<int N>
-  void ConstrainedBSpline<N>::addCoupledConstraint (
-						    value_type t_1, size_type dimension_1,
-						    value_type t_2, size_type dimension_2,
-						    size_type derivative, value_type factor) throw()
+  template <int N>
+  void ConstrainedBSpline<N>::addCoupledConstraint
+  (value_type t_1, size_type dimension_1,
+   value_type t_2, size_type dimension_2,
+   size_type derivative, value_type factor) throw ()
   {
     // constraint_values = constraints_ * parameters_ (1)
     const int existing_constraints = constraints_.rows ();
@@ -89,7 +90,8 @@ namespace roboptim
     constraint_values_.conservativeResize (existing_constraints + 1);
     constraint_values_ (existing_constraints) = 0.;
 
-    constraints_.conservativeResize (existing_constraints + 1, Eigen::NoChange);
+    constraints_.conservativeResize (existing_constraints + 1,
+                                     Eigen::NoChange);
     constraints_.bottomRows (1).setZero ();
 
     t_1 = detail::fixTime (t_1, *this);
@@ -106,18 +108,18 @@ namespace roboptim
 	  += factor *
 	  this->basisPolynomials ()[k_2 - idx][idx].derivative (t_2, derivative);
       }
-    updateProjector();
+    updateProjector ();
   }
 
 
-  template<int N>
-  typename ConstrainedBSpline<N>::vector_t const&
-  ConstrainedBSpline<N>::parameters() const throw()
+  template <int N>
+  const typename ConstrainedBSpline<N>::vector_t&
+  ConstrainedBSpline<N>::parameters () const throw ()
   {
     return tunables_;
   }
 
-  template<int N>
+  template <int N>
   void ConstrainedBSpline<N>::setParameters (const vector_t& parameters_in)
     throw ()
   {
@@ -128,42 +130,54 @@ namespace roboptim
     this->parameters_.noalias () += projector_ * tunables_;
   }
 
-  template<int N>
-  void ConstrainedBSpline<N>::updateProjector()
+  template <int N>
+  void ConstrainedBSpline<N>::updateProjector ()
   {
-    Eigen::JacobiSVD<matrix_t> svd (constraints_.rows (), constraints_.cols());
+    Eigen::JacobiSVD<matrix_t> svd (constraints_.rows (),
+                                    constraints_.cols ());
     svd.compute (constraints_, Eigen::ComputeFullU | Eigen::ComputeFullV);
-    const int null_space_dim = svd.matrixV().rows () - svd.singularValues().rows ();
-    assert (null_space_dim > 0);	//otherwise no parameters to optimize are left
-    projector_ = svd.matrixV().rightCols (null_space_dim);
+
+    // Get the dimension of the null space
+    const int null_space_dim = svd.matrixV ().rows ()
+      - svd.singularValues ().rows ();
+
+    // Otherwise no parameters to optimize are left
+    assert (null_space_dim > 0);
+
+    projector_ = svd.matrixV ().rightCols (null_space_dim);
     projector_offset_ = svd.solve (constraint_values_);
-    //preserve parameters as good as possible ( not violating the constraints)
-    //projector should be invertible at any time and it should also be a base => transpose
-    //this also updated the size of tunables_ to the correct value
-    tunables_ = projector_.transpose () * (this->parameters_ - projector_offset_);
+
+    // Preserve parameters as good as possible ( not violating the constraints)
+    // Projector should be invertible at any time and it should also be a base
+    // => transpose
+    // This also updated the size of tunables_ to the correct value
+    tunables_ = projector_.transpose ()
+      * (this->parameters_ - projector_offset_);
     this->parameters_ = projector_offset_;
     this->parameters_.noalias () += projector_ * tunables_;
   }
 
-  template<int N>
-  Trajectory<N>*  ConstrainedBSpline<N>::resize
-  (interval_t timeRange) const throw ()
+  template <int N>
+  Trajectory<N>*  ConstrainedBSpline<N>::resize (interval_t timeRange)
+    const throw ()
   {
-    //create a non-constraint spline
+    // Create an unconstrained B-spline
     ConstrainedBSpline<N>* c
       = new ConstrainedBSpline<N> (timeRange,
                                    this->outputSize (),
-				   this->parameters_,
-				   this->knots (),
-				   this->getName ());
-    //copy constraints from this instance
+                                   this->parameters_,
+                                   this->knots (),
+                                   this->getName ());
+
+    // Copy constraints from this instance
     c->constraints_ = this->constraints_;
     c->constraint_values_ = this->constraint_values_;
     c->tunables_ = this->tunables_;
+
     return c;
   }
 
-  template<int N>
+  template <int N>
   typename ConstrainedBSpline<N>::jacobian_t
   ConstrainedBSpline<N>::variationDerivWrtParam
   (double t, size_type order) const throw ()
@@ -175,7 +189,7 @@ namespace roboptim
     for (size_type idx = 0; idx < this->order_ + 1; idx++)
       {
         const Polynomial<N>& B = this->basisPolynomials ()[k - idx][idx];
-        jac_basispolynomials.middleCols ((k - idx)*n, n).diagonal().
+        jac_basispolynomials.middleCols ((k - idx)*n, n).diagonal ().
 	  setConstant (B.derivative (t, order));
       }
     const int variables = tunables_.rows ();
@@ -186,4 +200,4 @@ namespace roboptim
 
 } // end of namespace roboptim.
 
-#endif //! ROBOPTIM_TRAJECTORY_CONSTRAINT_B_SPLINE_HXX
+#endif //! ROBOPTIM_TRAJECTORY_CONSTRAINED_B_SPLINE_HXX

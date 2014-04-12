@@ -16,6 +16,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "shared-tests/common.hh"
+
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/b-spline.hh>
 #include <roboptim/trajectory/constrained-b-spline.hh>
@@ -26,7 +28,6 @@
 
 #include <cstdlib>
 #include <limits>
-#include <cassert>
 #include <cmath>
 #include <iostream>
 
@@ -37,15 +38,23 @@ typedef Function::vector_t vector_t;
 typedef Function::argument_t argument_t;
 typedef Function::value_type value_type;
 
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+static double tol = 1e-6;
+
 /// Simple test evaluating the spline throughout the interval.
-/// Start and end value of the spline are fixed through constraints.
+/// Start and end values of the spline are fixed through constraints.
 template <int N>
 void check_evaluate (std::pair<value_type, value_type> interval,
-                     int dimension, vector_t const& params, int order)
+                     int dimension, const vector_t& params, int order)
 {
   ConstrainedBSpline<N> spline (interval, dimension, params);
 
+  // First point of the spline fixed at 0.
   spline.addFixedConstraint (interval.first, 0, 0);
+  // Mid point of the spline fixed at 1.
+  spline.addFixedConstraint (0.5*(interval.first+interval.second), 0, 1.);
+  // Last point of the spline fixed at 0.
   spline.addFixedConstraint (interval.second, 0, 0);
 
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
@@ -61,11 +70,13 @@ void test_evaluate()
 {
   std::pair<value_type, value_type> interval (0., 1.);
   const int params_no = 10;
-  assert (params_no > N + 1);
+  BOOST_CHECK (params_no > N + 1);
+
   for (int dimension = 1; dimension < 4; dimension++)
     {
       argument_t params (dimension * params_no);
-      params.setRandom();
+      params.setRandom ();
+
       for (int order = 0; order < N; order++)
         {
 	  check_evaluate<N> (interval, dimension, params, order);
@@ -84,15 +95,20 @@ void test_plot (void)
 
   int min_params = N + 1;
   int params_c = N + 1 + N;
-  assert (params_c >= min_params);
+  BOOST_CHECK (params_c >= min_params);
   argument_t params (params_c);
-  params.setRandom();
+  params.setRandom ();
 
   //BSpline<N> spline(interval,1,params,knots);
   ConstrainedBSpline<N> spline (interval, 1, params);
 
+  // First point of the spline fixed at 0.
   spline.addFixedConstraint (interval.first, 0, 0);
+  // Mid point of the spline fixed at 1.
+  spline.addFixedConstraint (0.5*(interval.first+interval.second), 0, 1.);
+  // Last point of the spline fixed at 0.
   spline.addFixedConstraint (interval.second, 0, 0);
+
   spline.addFixedConstraint (interval.second, 0, 1, 1);
 
   /*std::cout << "spline.constraint_values_" << std::endl << spline.constraint_values_ << std::endl;
@@ -102,17 +118,18 @@ void test_plot (void)
 
   value_type delta;
   delta = std::abs (0. - spline.derivative (interval.first, 0) (0));
-  assert ( delta < 1e-5 );
+  BOOST_CHECK_SMALL (delta, tol);
 
   delta = std::abs (0. - spline.derivative (interval.second, 0) (0));
-  assert ( delta < 1e-5 );
+  BOOST_CHECK_SMALL (delta, tol);
 
   delta = std::abs (1. - spline.derivative (interval.second, 1) (0));
-  assert ( delta < 1e-5 );
+  BOOST_CHECK_SMALL (delta, tol);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t plot_interval (interval.first, interval.second, 0.01);
 
+  // TODO: use RobOptim's gnuplot interface rather than stdout
   std::cout << "set terminal wxt persist" << std::endl;
   std::cout << "set multiplot layout 2,1" << std::endl;
   //		<< (gnuplot << plot (spline, plot_interval));
@@ -130,10 +147,12 @@ void test_plot (void)
   std::cout << "e" << std::endl;
 }
 
-int main()
+BOOST_AUTO_TEST_CASE (trajectory_constrained_bspline)
 {
   srand (time (NULL));
-  test_evaluate<3>();
-  test_plot<3>();
 
+  test_evaluate<4> ();
+  test_plot<4> ();
 }
+
+BOOST_AUTO_TEST_SUITE_END ()
