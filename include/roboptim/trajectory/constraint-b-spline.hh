@@ -47,14 +47,14 @@ namespace roboptim
 
     /// \brief see B-Spline constructors for documentation
     ConstraintBSpline (interval_t timeRange, size_type dimension,
-		       const vector_t& parameters,
-		       const std::string name = "Constrain B-Spline") throw ();
+                       const vector_t& parameters,
+                       const std::string name = "Constrain B-Spline") throw ();
 
     /// \brief see B-Spline constructors for documentation
     ConstraintBSpline (interval_t tr, size_type dimension,
-		       const vector_t& parameters,
-		       const vector_t& knots,
-		       std::string name = "Constraint B-Spline") throw ();
+                       const vector_t& parameters,
+                       const vector_t& knots,
+                       std::string name = "Constraint B-Spline") throw ();
 
     virtual ~ConstraintBSpline () throw ();
 
@@ -69,8 +69,8 @@ namespace roboptim
      * \param derivative Which derivative of the split to constrain.
      */
     void addfixedConstraint (double t, size_type dimension,
-			     value_type value,
-			     size_type derivative=0) throw ();
+                             value_type value,
+                             size_type derivative = 0) throw ();
 
     /**
      * Creates a constraint against another part of the spline.
@@ -79,7 +79,7 @@ namespace roboptim
     void addCoupledConstraint
     (value_type t_1, size_type dimension_1,
      value_type t_2, size_type dimension_2,
-     size_type derivative=0, value_type factor=1.) throw ();
+     size_type derivative = 0, value_type factor = 1.) throw ();
 
     /**
      * overloaded parameters method from Trajectory<N>.
