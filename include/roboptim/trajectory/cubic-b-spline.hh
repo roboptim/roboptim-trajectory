@@ -70,7 +70,7 @@ namespace roboptim
     ROBOPTIM_IMPLEMENT_CLONE(CubicBSpline)
 
     virtual Trajectory<derivabilityOrder>* resize (interval_t timeRange)
-      const throw ()
+    const throw ()
     {
       return new CubicBSpline (timeRange, this->outputSize (), this->parameters ());
     }
@@ -139,7 +139,7 @@ namespace roboptim
     /// \return knot vector of the spline (const).
     const std::vector <value_type>& knot_vector () const
     {
-        return knots_;
+      return knots_;
     }
 
   protected:

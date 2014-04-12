@@ -41,6 +41,7 @@ namespace roboptim
   {
   public:
     typedef Trajectory<N> parent_t;
+
     typedef typename parent_t::interval_t interval_t;
     typedef typename parent_t::size_type size_type;
     typedef typename parent_t::value_type value_type;
@@ -49,6 +50,12 @@ namespace roboptim
     typedef typename parent_t::result_t result_t;
     typedef typename parent_t::gradient_t gradient_t;
     typedef typename parent_t::jacobian_t jacobian_t;
+
+    typedef Polynomial<N> polynomial_t;
+    typedef Monomial<N> monomial_t;
+    typedef std::map<int, polynomial_t> cox_map;
+    typedef typename cox_map::iterator cox_map_itr_t;
+
     /// \brief Instantiate a B-Spline from its definition.
     ///
     /// \param timeRange spline time range: $\f$[t_3,t_n]\f$
@@ -118,8 +125,29 @@ namespace roboptim
 
     size_type interval (value_type t) const;
 
+    /// \brief Get the number of control points of the spline.
+    /// \return Number of control points of the spline.
+    size_type getNumberControlPoints() const
+    {
+      return nbp_;
+    }
+
+    /// \brief Constant getter for the basis polynomials of the B-spline.
+    ///
+    /// Note: computeBasisPolynomials() needs to be called beforehand (which is
+    /// done in the BSpline constructor).
+    ///
+    /// \return constant reference to the basis polynomials.
+    const std::vector <std::vector <polynomial_t> >&
+    basisPolynomials () const
+    {
+      return basisPolynomials_;
+    }
+
   protected:
+
     using Trajectory<N>::impl_compute;
+
     void impl_compute (result_t&, double) const throw ();
     void impl_derivative (gradient_t& g, double x, size_type order)
       const throw ();
@@ -128,14 +156,12 @@ namespace roboptim
 
     vector_t basisFunctions (value_type t, size_type order) const
       ROBOPTIM_TRAJECTORY_DEPRECATED;
+
     void computeBasisPolynomials ();
+
     /// order of the B-Spline
     static const size_type order_ = N;
 
-    typedef Polynomial<N> polynomial_t;
-    typedef Monomial<N> monomial_t;
-    typedef std::map<int, polynomial_t> cox_map;
-    typedef typename cox_map::iterator cox_map_itr_t;
     cox_map cox_de_boor (size_type j, size_type n) const;
 
   private:
