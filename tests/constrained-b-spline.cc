@@ -67,6 +67,13 @@ void check_evaluate (interval_t interval,
   spline.addFixedConstraint (interval.second, 0, 0);
   BOOST_CHECK (spline.parameters ().size () == param_size - 3);
 
+  // Add couple constrained: 0.25 and 0.75 should have the same derivative.
+  value_type range = interval.second - interval.first;
+  spline.addCoupledConstraint (interval.first + 0.25 * range, 0,
+                               interval.first + 0.75 * range, 0,
+                               1, 1.);
+  BOOST_CHECK (spline.parameters ().size () == param_size - 4);
+
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
     {
       vector_t res (dimension);
@@ -112,13 +119,18 @@ void test_plot (void)
 
   // First point of the spline fixed at 0.
   spline.addFixedConstraint (interval.first, 0, 0);
+
   // Mid point of the spline fixed at 1.
   spline.addFixedConstraint (0.5*(interval.first+interval.second), 0, 1.);
+
   // Last point of the spline fixed at 0.
   spline.addFixedConstraint (interval.second, 0, 0);
 
-  spline.addFixedConstraint (interval.second, 0, 1, 1);
-
+  // Add couple constrained: 0.25 and 0.75 should have the same derivative.
+  value_type range = interval.second - interval.first;
+  spline.addCoupledConstraint (interval.first + 0.25 * range, 0,
+                               interval.first + 0.75 * range, 0,
+                               1, 2.);
   value_type delta;
   delta = std::abs (0. - spline.derivative (interval.first, 0) (0));
   BOOST_CHECK_SMALL (delta, tol);

@@ -55,6 +55,7 @@ namespace roboptim
 			const vector_t& knots,
 			std::string name = "Constrained B-Spline") throw ();
 
+    /// \brief Destructor of constrained B-spline.
     virtual ~ConstrainedBSpline () throw ();
 
     /// Creates a constraint on the basic spline.
@@ -71,11 +72,15 @@ namespace roboptim
                              value_type value,
                              size_type derivative = 0) throw ();
 
-    /// Creates a constraint against another part of the spline.
-    /// \f$ 0 = \frac{\partial^derivative}{\partial t^derivative}
-    ///         f_{dimension_1}(t_1)
-    ///         - factor * \frac{\partial^derivative}{\partial t^derivative}
-    ///         f_{dimension_2}(t_2) \f$
+    /// \brief Create a constraint against another part of the spline.
+    /// \f$\frac{\partial^d}{\partial t^d} f_{d_1}(t_1)
+    /// = factor * \frac{\partial^d}{\partial t^d} f_{d_2}(t_2) \f$
+    /// \param t_1         first time.
+    /// \param dimension_1 first dimension.
+    /// \param t_2         second time.
+    /// \param dimension_2 second dimension.
+    /// \param derivative  derivative order (\f$d\f$).
+    /// \param factor      scalar factor.
     void addCoupledConstraint
     (value_type t_1, size_type dimension_1,
      value_type t_2, size_type dimension_2,
@@ -89,6 +94,9 @@ namespace roboptim
     /// Given the free parameters, it calculates the spline parameters.
     void setParameters (const vector_t&) throw ();
 
+    /// \brief Clone and resize a trajectory.
+    /// \param timeRange new time range.
+    /// \return cloned trajectory with new time range.
     virtual Trajectory<N>* resize (interval_t timeRange) const throw ();
 
     jacobian_t variationDerivWrtParam (double t, size_type order)
@@ -99,10 +107,20 @@ namespace roboptim
     /// \brief Update the projector matrix. Called after adding a constraint.
     void updateProjector();
 
-    vector_t constraint_values_;
+    /// \brief Matrix storing constraints.
+    /// One row per constraint, one column per parameter.
     matrix_t constraints_;
+
+    /// \brief Constraint values.
+    vector_t constraint_values_;
+
+    /// \brief Tunable parameters, i.e. the free parameters.
     vector_t tunables_;
+
+    /// \brief Projector matrix.
     matrix_t projector_;
+
+    /// \brief Result of: Constraints * X = Constraint values
     vector_t projector_offset_;
   };
 

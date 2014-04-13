@@ -32,7 +32,10 @@ namespace roboptim
 					     const std::string name) throw ()
     : BSpline<N> (timeRange, dimension, parameters, name),
       constraints_ (0, parameters.rows ()),
-      tunables_ (parameters)
+      constraint_values_ (),
+      tunables_ (parameters),
+      projector_ (),
+      projector_offset_ ()
   {}
 
   template <int N>
@@ -43,7 +46,10 @@ namespace roboptim
 					     const std::string name) throw ()
     : BSpline<N> (timeRange, dimension, parameters, knots, name),
       constraints_ (0, parameters.rows ()),
-      tunables_ (parameters)
+      constraint_values_ (),
+      tunables_ (parameters),
+      projector_ (),
+      projector_offset_ ()
   {}
 
   template <int N>
@@ -55,9 +61,9 @@ namespace roboptim
                                                   value_type value,
                                                   size_type order) throw ()
   {
-    // constraint_values = constraints_ * parameters_ (1)
+    // Constraint_values = constraints_ * parameters_ (1)
     const int existing_constraints = constraints_.rows ();
-    //insert constraint into new row of (1)
+    // Insert constraint into new row of (1)
     constraint_values_.conservativeResize (existing_constraints + 1);
     constraint_values_ (existing_constraints) = value;
 
@@ -84,9 +90,10 @@ namespace roboptim
    value_type t_2, size_type dimension_2,
    size_type derivative, value_type factor) throw ()
   {
-    // constraint_values = constraints_ * parameters_ (1)
+    // Constraint_values = constraints_ * parameters_ (1)
     const int existing_constraints = constraints_.rows ();
-    //insert constraint into new row of (1)
+
+    // Insert constraint into new row of (1)
     constraint_values_.conservativeResize (existing_constraints + 1);
     constraint_values_ (existing_constraints) = 0.;
 
@@ -105,7 +112,7 @@ namespace roboptim
         constraints_ (existing_constraints, (k_1 - idx) * n + dimension_1)
 	  = this->basisPolynomials ()[k_1 - idx][idx].derivative (t_1, derivative);
         constraints_ (existing_constraints, (k_2 - idx) * n + dimension_2)
-	  += factor *
+	  -= factor *
 	  this->basisPolynomials ()[k_2 - idx][idx].derivative (t_2, derivative);
       }
     updateProjector ();
@@ -147,7 +154,7 @@ namespace roboptim
     projector_ = svd.matrixV ().rightCols (null_space_dim);
     projector_offset_ = svd.solve (constraint_values_);
 
-    // Preserve parameters as good as possible ( not violating the constraints)
+    // Preserve parameters as good as possible (not violating the constraints)
     // Projector should be invertible at any time and it should also be a base
     // => transpose
     // This also updated the size of tunables_ to the correct value
