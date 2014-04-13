@@ -34,9 +34,11 @@
 using namespace roboptim;
 using namespace std;
 
-typedef Function::vector_t vector_t;
+typedef Function::vector_t   vector_t;
 typedef Function::argument_t argument_t;
+typedef Function::interval_t interval_t;
 typedef Function::value_type value_type;
+typedef Function::size_type  size_type;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
@@ -45,30 +47,37 @@ static double tol = 1e-6;
 /// Simple test evaluating the spline throughout the interval.
 /// Start and end values of the spline are fixed through constraints.
 template <int N>
-void check_evaluate (std::pair<value_type, value_type> interval,
+void check_evaluate (interval_t interval,
                      int dimension, const vector_t& params, int order)
 {
   ConstrainedBSpline<N> spline (interval, dimension, params);
 
+  // Initial parameters size
+  size_type param_size = spline.parameters ().size ();
+
   // First point of the spline fixed at 0.
   spline.addFixedConstraint (interval.first, 0, 0);
+  BOOST_CHECK (spline.parameters ().size () == param_size - 1);
+
   // Mid point of the spline fixed at 1.
   spline.addFixedConstraint (0.5*(interval.first+interval.second), 0, 1.);
+  BOOST_CHECK (spline.parameters ().size () == param_size - 2);
+
   // Last point of the spline fixed at 0.
   spline.addFixedConstraint (interval.second, 0, 0);
+  BOOST_CHECK (spline.parameters ().size () == param_size - 3);
 
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
     {
       vector_t res (dimension);
       spline.derivative (res, t, order);
     }
-
 }
 
 template <int N>
 void test_evaluate()
 {
-  std::pair<value_type, value_type> interval (0., 1.);
+  interval_t interval (0., 1.);
   const int params_no = 10;
   BOOST_CHECK (params_no > N + 1);
 
@@ -91,7 +100,7 @@ void test_plot (void)
   using namespace roboptim::visualization;
   using namespace roboptim::visualization::gnuplot;
 
-  std::pair<value_type, value_type> interval = std::make_pair (0., 1.);
+  interval_t interval = std::make_pair (0., 1.);
 
   int min_params = N + 1;
   int params_c = N + 1 + N;
@@ -99,7 +108,6 @@ void test_plot (void)
   argument_t params (params_c);
   params.setRandom ();
 
-  //BSpline<N> spline(interval,1,params,knots);
   ConstrainedBSpline<N> spline (interval, 1, params);
 
   // First point of the spline fixed at 0.
@@ -110,11 +118,6 @@ void test_plot (void)
   spline.addFixedConstraint (interval.second, 0, 0);
 
   spline.addFixedConstraint (interval.second, 0, 1, 1);
-
-  /*std::cout << "spline.constraint_values_" << std::endl << spline.constraint_values_ << std::endl;
-    std::cout << "spline.constraints_" << std::endl << spline.constraints_ << std::endl;
-    std::cout << "spline.projector_offset_" << std::endl << spline.projector_offset_ << std::endl;
-    std::cout << "spline.projector_" << std::endl << spline.projector_ << std::endl;*/
 
   value_type delta;
   delta = std::abs (0. - spline.derivative (interval.first, 0) (0));
