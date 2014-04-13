@@ -130,7 +130,7 @@ void test_plot (void)
   value_type range = interval.second - interval.first;
   spline.addCoupledConstraint (interval.first + 0.25 * range, 0,
                                interval.first + 0.75 * range, 0,
-                               1, 2.);
+                               1, 1.);
   value_type delta;
   delta = std::abs (0. - spline.derivative (interval.first, 0) (0));
   BOOST_CHECK_SMALL (delta, tol);
@@ -147,15 +147,21 @@ void test_plot (void)
   // TODO: use RobOptim's gnuplot interface rather than stdout
   std::cout << "set terminal wxt persist" << std::endl;
   std::cout << "set multiplot layout 2,1" << std::endl;
+  std::cout << "set xrange [" << interval.first << ":"
+	    << interval.second << "]" << std::endl;
+  std::cout << "set xtics 0.1" << std::endl;
   //		<< (gnuplot << plot (spline, plot_interval));
   std::cout << "plot '-' title 'B-Spline' with line" << std::endl;
-  for (value_type t = interval.first; t < interval.second; t += 1e-2)
+  value_type delta_t = 1e-2;
+  for (value_type t = interval.first; t < interval.second + delta_t;
+       t += delta_t)
     {
       std::cout << t << " " << spline.derivative (t, 0)[0] << std::endl;
     }
   std::cout << "e" << std::endl;
   std::cout << "plot '-' title 'B-Spline 1-deriv' with line" << std::endl;
-  for (value_type t = interval.first; t < interval.second; t += 1e-2)
+  for (value_type t = interval.first; t < interval.second + delta_t;
+       t += delta_t)
     {
       std::cout << t << " " << spline.derivative (t, 1)[0] << std::endl;
     }
