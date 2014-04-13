@@ -138,7 +138,8 @@ void test_plot (void)
   delta = std::abs (0. - spline.derivative (interval.second, 0) (0));
   BOOST_CHECK_SMALL (delta, tol);
 
-  delta = std::abs (1. - spline.derivative (interval.second, 1) (0));
+  delta = std::abs (spline.derivative (interval.first + 0.25 * range, 1) (0)
+		    - spline.derivative (interval.first + 0.75 * range, 1) (0));
   BOOST_CHECK_SMALL (delta, tol);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
