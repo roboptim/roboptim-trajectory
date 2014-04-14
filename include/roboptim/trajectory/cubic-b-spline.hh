@@ -137,7 +137,7 @@ namespace roboptim
 
     /// \brief Return the knot vector of the spline.
     /// \return knot vector of the spline (const).
-    const std::vector <value_type>& knot_vector () const
+    const std::vector <value_type>& knotVector () const
     {
       return knots_;
     }

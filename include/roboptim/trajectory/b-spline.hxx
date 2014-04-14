@@ -484,7 +484,7 @@ namespace roboptim
   }
 
   template <int N>
-  typename BSpline<N>::vector_t const& BSpline<N>::knots() const
+  const typename BSpline<N>::vector_t& BSpline<N>::knotVector () const
   {
     return this->knots_;
   }

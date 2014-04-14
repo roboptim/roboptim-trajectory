@@ -121,7 +121,9 @@ namespace roboptim
 
     value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
 
-    vector_t const& knots () const;
+    /// \brief Return the knot vector of the spline.
+    /// \return knot vector of the spline (const).
+    const vector_t& knotVector () const;
 
     size_type interval (value_type t) const;
 

@@ -173,7 +173,7 @@ namespace roboptim
       = new ConstrainedBSpline<N> (timeRange,
                                    this->outputSize (),
                                    this->parameters_,
-                                   this->knots (),
+                                   this->knotVector (),
                                    this->getName ());
 
     // Copy constraints from this instance
