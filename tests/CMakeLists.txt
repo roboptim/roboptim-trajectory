@@ -110,8 +110,8 @@ ROBOPTIM_TRAJECTORY_TEST(stable-point-state-function)
 ROBOPTIM_TRAJECTORY_TEST(state-function)
 
 # Spline.
-ROBOPTIM_TRAJECTORY_TEST(spline)
-ROBOPTIM_TRAJECTORY_TEST(spline-gradient)
+ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline)
+ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-gradient)
 ROBOPTIM_TRAJECTORY_TEST(b-spline)
 ROBOPTIM_TRAJECTORY_TEST(constrained-b-spline)
 

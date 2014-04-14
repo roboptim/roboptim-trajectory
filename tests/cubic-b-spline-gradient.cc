@@ -40,12 +40,12 @@ using namespace roboptim::visualization::gnuplot;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
-BOOST_AUTO_TEST_CASE (trajectory_spline_gradient)
+BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 {
   using namespace roboptim::visualization::gnuplot;
 
   boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern("spline-gradient");
+    output = retrievePattern("cubic-b-spline-gradient");
 
   CubicBSpline::vector_t params (7);
 

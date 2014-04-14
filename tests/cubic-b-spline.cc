@@ -79,12 +79,12 @@ private:
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
-BOOST_AUTO_TEST_CASE (trajectory_spline)
+BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
 {
   using namespace roboptim::visualization::gnuplot;
 
   boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern("spline");
+    output = retrievePattern("cubic-b-spline");
 
   CubicBSpline::vector_t params (16);
 
@@ -229,7 +229,8 @@ BOOST_AUTO_TEST_CASE (trajectory_spline)
 
   // Non-regression test (compilation)
   std::vector<CubicBSpline> vec;
-  vec.push_back(CubicBSpline (std::make_pair (0., 5.), 2, params, "spline"));
+  vec.push_back(CubicBSpline (std::make_pair (0., 5.), 2, params,
+                              "cubic-b-spline"));
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
