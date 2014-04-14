@@ -87,7 +87,8 @@ namespace roboptim
     : Trajectory<N> (spline.timeRange (), spline.outputSize (),
 		     spline.parameters_),
       nbp_ (spline.parameters_.size () / spline.outputSize ()),
-      knots_ (spline.knots_), basisPolynomials_ (spline.basisPolynomials_),
+      knots_ (spline.knots_),
+      basisPolynomials_ (spline.basisPolynomials_),
       uniform_ (spline.uniform_)
   {
     // Parameter size should be a multiple of spline dimension

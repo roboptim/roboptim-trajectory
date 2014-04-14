@@ -33,6 +33,8 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/anthropomorphic-cost-function.hxx
   ${CSD}/include/roboptim/trajectory/b-spline.hh
   ${CSD}/include/roboptim/trajectory/b-spline.hxx
+  ${CSD}/include/roboptim/trajectory/constrained-b-spline.hh
+  ${CSD}/include/roboptim/trajectory/constrained-b-spline.hxx
   ${CSD}/include/roboptim/trajectory/cubic-b-spline.hh
   ${CSD}/include/roboptim/trajectory/cubic-b-spline.hxx
   ${CSD}/include/roboptim/trajectory/free-time-trajectory.hh
