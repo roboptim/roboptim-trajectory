@@ -338,6 +338,14 @@ namespace roboptim
   }
 
   template <int N>
+  bool Polynomial<N>::isConstant () const
+  {
+    // Check whether all coefs after the first one are null
+    return coefs_.template tail<N> ().template lpNorm<Eigen::Infinity> ()
+      < Function::epsilon ();
+  }
+
+  template <int N>
   Polynomial<N>::Polynomial (value_type t0, special_polynomials key)
     : t0_ (t0)
   {

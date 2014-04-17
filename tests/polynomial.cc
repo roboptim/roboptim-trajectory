@@ -354,6 +354,18 @@ void test_roots ()
   BOOST_CHECK_THROW (roots = p.realRoots (), std::runtime_error);
 }
 
+template <int N>
+void test_misc ()
+{
+  typename Polynomial<N>::coefs_t params;
+  params.setZero ();
+  Polynomial<N> p (1., params);
+
+  BOOST_CHECK (p.isConstant ());
+  p.coefs ()[1] = 2.;
+  BOOST_CHECK (!p.isConstant ());
+}
+
 BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 {
   srand (static_cast<unsigned int> (time (NULL)));
@@ -375,6 +387,9 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 
   test_roots<3> ();
   test_roots<5> ();
+
+  test_misc<3> ();
+  test_misc<5> ();
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

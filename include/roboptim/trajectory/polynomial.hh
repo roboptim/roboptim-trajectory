@@ -139,6 +139,10 @@ namespace roboptim
     /// \throw std::runtime_error invalid polynomial (e.g. null).
     std::vector<value_type> realRoots () const throw (std::runtime_error);
 
+    /// \brief Return whether the polynomial is constant.
+    /// \return true if the polynomial is constant, false otherwise.
+    bool isConstant () const;
+
     /// \brief Return the order of such a polynomial.
     /// \return order of such a polynomial.
     static int order ()
@@ -149,7 +153,7 @@ namespace roboptim
   private:
 
     /// \brief vector of polynomial coefficients (ordered from lowest to
-    /// highest).
+    /// highest). The vector is of size N+1.
     coefs_t coefs_;
 
     /// \brief Point on which the polynomial is centered, i.e. a polynomial
