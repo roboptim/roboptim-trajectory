@@ -299,15 +299,34 @@ namespace roboptim
 
   template <int N>
   std::vector<typename Polynomial<N>::value_type>
-  Polynomial<N>::realRoots () const
+  Polynomial<N>::realRoots () const throw (std::runtime_error)
   {
+    const value_type eps = 1e-6;
     std::vector<value_type> roots;
 
     // Eigen expects a polynomial in the form: Σ α_i t^i
     // Thus, we compute the roots of the "translated" polynomial:
     // P(u) = Σ α_i u^i
-    Eigen::PolynomialSolver<value_type, N> solver (coefs_);
-    solver.realRoots (roots);
+    // Note: the leading coefficient has to be different than 0
+    vector_t::Index n = coefs_.size ();
+
+    // Usual case: leading coefficient ≠ 0 (i.e. known polynomial size)
+    if (std::abs (coefs_[n-1]) > eps)
+      {
+	Eigen::PolynomialSolver<value_type, N> solver (coefs_);
+	solver.realRoots (roots);
+      }
+    else // leading coefficient = 0, i.e. dynamic size
+      {
+	while (n > 0 && std::abs (coefs_[n-1]) < eps)
+	  n--;
+
+	if (n == 0)
+	  throw std::runtime_error ("solver cannot process null polynomials.");
+
+	Eigen::PolynomialSolver<value_type, Eigen::Dynamic> solver (coefs_.head (n));
+	solver.realRoots (roots);
+      }
 
     // Then we shift the roots to get the roots of the actual polynomial:
     // u = t - t₀

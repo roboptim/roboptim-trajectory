@@ -69,6 +69,12 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial3)
   BOOST_CHECK_CLOSE (roots[0], 2., tol);
   BOOST_CHECK_CLOSE (roots[1], 3., tol);
   BOOST_CHECK_CLOSE (roots[2], 4., tol);
+
+  p = Polynomial3 (1., -6., 11., -6., 0.);
+  roots = p.realRoots ();
+
+  p = Polynomial3 (1., 0., 0., 0., 0.);
+  BOOST_CHECK_THROW (roots = p.realRoots (), std::runtime_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

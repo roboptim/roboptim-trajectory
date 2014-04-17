@@ -338,6 +338,20 @@ void test_roots ()
        iter != roots.end ();
        ++iter)
     BOOST_CHECK_SMALL (p (*iter), tol);
+
+  // Test other cases: null leading coefficient or null polynomial
+  roots.clear ();
+  p.coefs ()[N] = 0.;
+  roots = p.realRoots ();
+  for (typename std::vector<value_type>::const_iterator
+	 iter = roots.begin ();
+       iter != roots.end ();
+       ++iter)
+    BOOST_CHECK_SMALL (p (*iter), tol);
+
+  roots.clear ();
+  p.coefs ().setZero ();
+  BOOST_CHECK_THROW (roots = p.realRoots (), std::runtime_error);
 }
 
 BOOST_AUTO_TEST_CASE (trajectory_polynomial)

@@ -136,7 +136,8 @@ namespace roboptim
     /// \warning This function relies on Eigen's experimental polynomial
     /// solver.
     /// \return vector of the real roots of the polynomial.
-    std::vector<value_type> realRoots () const;
+    /// \throw std::runtime_error invalid polynomial (e.g. null).
+    std::vector<value_type> realRoots () const throw (std::runtime_error);
 
     /// \brief Return the order of such a polynomial.
     /// \return order of such a polynomial.
