@@ -22,6 +22,9 @@
 #include <roboptim/trajectory/polynomial-3.hh>
 
 #include <limits>
+#include <boost/mpl/for_each.hpp>
+#include <boost/mpl/range_c.hpp>
+#include <boost/mpl/int.hpp>
 #include <unsupported/Eigen/Polynomials>
 
 using namespace roboptim;
@@ -244,6 +247,35 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
     }
 }
 
+template <int N>
+struct test_derivative_loop
+{
+  test_derivative_loop (const Polynomial<N>& p,
+                        Function::value_type t)
+    : p_ (p),
+      t_ (t)
+  {
+  }
+
+  template <typename U>
+  void operator () (U)
+  {
+    const int order = U::value;
+    double derivative = p_.derivative (t_, order);
+
+    BOOST_CHECK_CLOSE (derivative,
+		       p_.template derivative<order> () (t_),
+		       tol);
+
+    if (order > N)
+      BOOST_CHECK_SMALL (derivative, tol);
+
+    poly_props<N>::check_derivative (p_, t_, order, derivative);
+  }
+
+  const Polynomial<N>& p_;
+  Function::value_type t_;
+};
 
 template <int N>
 void test_derivative ()
@@ -255,15 +287,8 @@ void test_derivative ()
 
   double t = (double)rand () / RAND_MAX;
 
-  for (int order = 0; order < N + 2; order++)
-    {
-      double derivative = p_1.derivative (t, order);
-
-      if (order > N)
-        BOOST_CHECK_SMALL (derivative, tol);
-
-      poly_props<N>::check_derivative (p_1, t, order, derivative);
-    }
+  boost::mpl::for_each<boost::mpl::range_c<int,0,N+1> >
+    (test_derivative_loop<N> (p_1, t));
 }
 
 template <int N>

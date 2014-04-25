@@ -72,6 +72,12 @@ namespace roboptim
     /// \param t1 new center.
     void translateInPlace (value_type t1);
 
+    /// \brief Compute the derivative polynomial of a given order.
+    /// \tparam K derivative order.
+    /// \return K-th derivative of the polynomial.
+    template <int K>
+    Polynomial<N-K> derivative () const;
+
     /// \brief Evaluate the derivative of a given order.
     ///
     /// \param t time of the evaluation.
@@ -164,6 +170,12 @@ namespace roboptim
     value_type
     impl_derivative
     (value_type t, size_type order, size_type start_coef = 0) const;
+
+    /// \brief Implementation of the compile-time derivative.
+    /// \tparam K order of the derivation.
+    /// \return K-th derivative.
+    template <int K>
+    Polynomial<N-K> impl_derivative () const;
 
     coefs_t
     impl_translate (value_type t1) const;

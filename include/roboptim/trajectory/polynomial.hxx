@@ -114,6 +114,30 @@ namespace roboptim
     return stream;
   }
 
+  template <int N>
+  template <int K>
+  Polynomial<N-K>
+  Polynomial<N>::impl_derivative () const
+  {
+    assert ((K >= 0 && K <= N) && "Wrong derivation order.");
+    if (K == 0) return Polynomial<N> (*this);
+
+    typename Polynomial<N-K>::coefs_t coefs;
+    coefs.setZero ();
+    value_type alpha = 1.;
+
+    for (size_type i = 0; i < coefs.size (); ++i)
+      {
+	alpha = 1.;
+
+	for (size_type j = i+K; j > i; --j)
+	  alpha *= static_cast<value_type> (j);
+
+	coefs[i] = alpha * coefs_[i+K];
+      }
+
+    return Polynomial<N-K> (t0_, coefs);
+  }
 
   // start_coef is only used in translate
   template <int N>
@@ -191,6 +215,13 @@ namespace roboptim
   {
     coefs_ = impl_translate (t1);
     t0_ = t1;
+  }
+
+  template <int N>
+  template <int K>
+  Polynomial<N-K> Polynomial<N>::derivative () const
+  {
+    return impl_derivative<K> ();
   }
 
   template <int N>
