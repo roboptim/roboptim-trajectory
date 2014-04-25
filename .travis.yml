@@ -9,6 +9,7 @@ env:
   - DEBSIGN_KEYID=5AE5CD75
   - PPA_URI="roboptim/ppa"
   - NSIQCPPSTYLE_FILEFILTERPATH=cmake/filefilter.txt
+  - LCOV_IGNORE_RULES="*tests*"
   - GH_USERNAME=thomas-moulard
   - GH_REPO=roboptim/roboptim-trajectory
   - secure: dn2Iai0VINXoHlHTL0s0/+37pIbTTaKI0698dAPYpMBUkE9RIuumcKEjDP1uKqaA9anSPm1dLrtSsSm+kFGaEBk+cviGxsc242KSxqxCBqNP3Bbm4dFCbKnnG4c7I8OTuYUuJJg90xVm2QGAnUNn9vvBnydvTpeCEN850lT+dBM=
