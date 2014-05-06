@@ -41,9 +41,8 @@ namespace roboptim
 				 const typename boost::optional<value_type> ksi1
 				 = typename boost::optional<value_type> (),
 				 const typename boost::optional<value_type> ksi2
-				 = typename boost::optional<value_type> ())
-      throw ();
-    ~AnthropomorphicCostFunction () throw ();
+				 = typename boost::optional<value_type> ());
+    ~AnthropomorphicCostFunction ();
 
     static vector_t defaultAlpha ()
     {
@@ -54,7 +53,7 @@ namespace roboptim
       res[3] = 5.;
       return res;
     }
-    
+
     static value_type defaultKsi1 ()
     {
       return M_PI / 18.;
@@ -66,11 +65,11 @@ namespace roboptim
     }
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
+    void impl_compute (result_t& res, const argument_t& p) const;
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const throw ();
+      const;
   private:
-    value_type alpha3 (value_type deltaTheta, value_type dsquare) const throw ();
+    value_type alpha3 (value_type deltaTheta, value_type dsquare) const;
 
     const T& trajectory_;
     const vector_t alpha_;

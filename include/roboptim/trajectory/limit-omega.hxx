@@ -30,7 +30,7 @@ namespace roboptim
 {
   template <typename T>
   LimitOmega<T>::LimitOmega (StableTimePoint timePoint,
-			     const T& trajectory) throw ()
+			     const T& trajectory)
     : DerivableFunction (trajectory.parameters ().size (), 1,
 			 (boost::format ("omega limit (%1%)")
 			  % timePoint.getAlpha ()).str ()),
@@ -39,7 +39,7 @@ namespace roboptim
   {}
 
   template <typename T>
-  LimitOmega<T>::~LimitOmega () throw ()
+  LimitOmega<T>::~LimitOmega ()
   {}
 
   template <typename T>
@@ -68,7 +68,7 @@ namespace roboptim
 
   template <typename T>
   void
-  LimitOmega<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
+  LimitOmega<T>::impl_compute (result_t& res, const argument_t& p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -83,7 +83,7 @@ namespace roboptim
   void
   LimitOmega<T>::impl_gradient
   (gradient_t& grad, const argument_t& p, size_type i)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

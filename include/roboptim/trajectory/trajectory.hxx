@@ -25,7 +25,6 @@ namespace roboptim
 				  size_type outputSize,
 				  const vector_t& p,
 				  std::string name)
-    throw ()
     : parent_t (outputSize, name),
       timeRange_ (tr),
       parameters_ (p),
@@ -38,14 +37,14 @@ namespace roboptim
 
 
   template <unsigned dorder>
-  Trajectory<dorder>::~Trajectory () throw ()
+  Trajectory<dorder>::~Trajectory ()
   {
   }
 
 
   template <unsigned dorder>
   const typename Trajectory<dorder>::vector_t&
-  Trajectory<dorder>::parameters () const throw ()
+  Trajectory<dorder>::parameters () const
   {
     return parameters_;
   }
@@ -54,7 +53,6 @@ namespace roboptim
   template <unsigned dorder>
   void
   Trajectory<dorder>::setParameters (const vector_t& p)
-    throw (std::runtime_error)
   {
     parameters_ = p;
   }
@@ -62,14 +60,14 @@ namespace roboptim
 
   template <unsigned dorder>
   typename Trajectory<dorder>::interval_t
-  Trajectory<dorder>::timeRange () const throw ()
+  Trajectory<dorder>::timeRange () const
   {
     return timeRange_;
   }
 
   template <unsigned dorder>
   typename Trajectory<dorder>::value_type
-  Trajectory<dorder>::length () const throw ()
+  Trajectory<dorder>::length () const
   {
     return timeRange ().second - timeRange ().first;
   }
@@ -77,7 +75,7 @@ namespace roboptim
 
   template <unsigned dorder>
   typename Trajectory<dorder>::vector_t
-  Trajectory<dorder>::state (double t, size_type order) const throw ()
+  Trajectory<dorder>::state (double t, size_type order) const
   {
     const size_type dimension = this->outputSize ();
     vector_t result ((order + 1) * dimension);
@@ -91,7 +89,7 @@ namespace roboptim
   template <unsigned dorder>
   typename Trajectory<dorder>::vector_t
   Trajectory<dorder>::state
-  (StableTimePoint stp, size_type order) const throw ()
+  (StableTimePoint stp, size_type order) const
   {
     const size_type dimension = this->outputSize ();
     vector_t result ((order + 1) * dimension);
@@ -106,7 +104,7 @@ namespace roboptim
   template <unsigned dorder>
   typename Trajectory<dorder>::jacobian_t
   Trajectory<dorder>::variationStateWrtParam (double t, size_type order)
-    const throw ()
+    const
   {
     const size_type dimension = this->outputSize ();
     const size_type parameterSize = parameters ().size ();
@@ -122,7 +120,7 @@ namespace roboptim
   typename Trajectory<dorder>::jacobian_t
   Trajectory<dorder>::variationStateWrtParam
   (StableTimePoint stp, size_type order)
-    const throw ()
+    const
   {
     const size_type dimension = this->outputSize ();
     const size_type parameterSize = parameters ().size ();
@@ -137,7 +135,7 @@ namespace roboptim
 
   template <unsigned dorder>
   typename Trajectory<dorder>::size_type
-  Trajectory<dorder>::singularPoints () const throw ()
+  Trajectory<dorder>::singularPoints () const
   {
     return singularPoints_;
   }
@@ -146,7 +144,7 @@ namespace roboptim
   template <unsigned dorder>
   void
   Trajectory<dorder>::impl_compute (result_t& res , StableTimePoint stp)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -156,7 +154,7 @@ namespace roboptim
 
   template <unsigned dorder>
   bool
-  Trajectory<dorder>::isValidTime (value_type t) const throw ()
+  Trajectory<dorder>::isValidTime (value_type t) const
   {
     value_type tmin = this->getLowerBound (this->timeRange ());
     value_type tmax = this->getUpperBound (this->timeRange ());
@@ -165,7 +163,7 @@ namespace roboptim
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::normalizeAngles (size_type index) throw ()
+  Trajectory<dorder>::normalizeAngles (size_type index)
   {
     this->normalizeAngles (index, 0);
   }
@@ -173,7 +171,6 @@ namespace roboptim
   template <unsigned dorder>
   void
   Trajectory<dorder>::normalizeAngles (size_type index, size_type offset)
-    throw ()
   {
     value_type thetaPrev = 0.;
     for (int i = 0; i < (parameters_.size () - offset) / this->outputSize (); ++i)
@@ -201,7 +198,7 @@ namespace roboptim
 
   template <unsigned dorder>
   std::ostream&
-  Trajectory<dorder>::print (std::ostream& o) const throw ()
+  Trajectory<dorder>::print (std::ostream& o) const
   {
     o << "Generic (abstract) trajectory." << std::endl;
     return o;

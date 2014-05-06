@@ -32,8 +32,8 @@ namespace roboptim
   {
   public:
     LimitOmega (StableTimePoint timePoint,
-		const T& trajectory) throw ();
-    ~LimitOmega () throw ();
+		const T& trajectory);
+    ~LimitOmega ();
 
     template <typename F, typename CLIST>
     static void addToProblem (const T& trajectory,
@@ -42,9 +42,9 @@ namespace roboptim
 			      unsigned nConstraints);
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
+    void impl_compute (result_t& res, const argument_t& p) const;
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const throw ();
+      const;
 
   private:
     StableTimePoint timePoint_;

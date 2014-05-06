@@ -65,7 +65,7 @@ public:
   {
   }
 
-  void impl_compute(result_t& res, const argument_t& x) const throw ()
+  void impl_compute(result_t& res, const argument_t& x) const
   {
 #ifdef BICYCLE_COST_FUNCTION
     res[0] = std::max(0., m*x[3]);
@@ -79,7 +79,7 @@ public:
   }
 
   void impl_gradient(gradient_t& grad, const argument_t& x,
-		     size_type functionId = 0) const throw ()
+		     size_type functionId = 0) const
   {
     assert (functionId == 0);
     grad.setZero ();

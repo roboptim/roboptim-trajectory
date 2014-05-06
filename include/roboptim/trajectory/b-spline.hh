@@ -67,7 +67,7 @@ namespace roboptim
     /// parameter vector.
     BSpline (interval_t timeRange, size_type dimension,
              const vector_t& parameters,
-             const std::string name = "B-Spline") throw ();
+             const std::string name = "B-Spline");
 
     /// \brief Instantiate a B-Spline with parameters and knot points.
     ///
@@ -85,20 +85,20 @@ namespace roboptim
     BSpline (interval_t tr, size_type dimension,
              const vector_t& parameters,
              const vector_t& knots,
-             std::string name = "B-Spline") throw ();
+             std::string name = "B-Spline");
 
     /// \brief Copy constructor.
     /// \param spline spline that will be copied
-    BSpline (const BSpline<N>& spline) throw ();
+    BSpline (const BSpline<N>& spline);
 
-    virtual ~BSpline () throw () {};
+    virtual ~BSpline () {};
 
     /// \brief Modify spline parameters.
-    virtual void setParameters (const vector_t&) throw ();
+    virtual void setParameters (const vector_t&);
 
-    virtual jacobian_t variationConfigWrtParam (double t) const throw ();
+    virtual jacobian_t variationConfigWrtParam (double t) const;
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
-      const throw ();
+      const;
     virtual value_type singularPointAtRank (size_type rank) const;
     virtual vector_t derivBeforeSingularPoint (size_type rank, size_type order)
       const;
@@ -107,17 +107,17 @@ namespace roboptim
 
     ROBOPTIM_IMPLEMENT_CLONE (BSpline<N>)
 
-    virtual Trajectory<N>* resize (interval_t timeRange) const throw ();
+    virtual Trajectory<N>* resize (interval_t timeRange) const;
 
     /// \brief Display the function on the specified output stream.
     ///
     /// \param o output stream used for display
     /// \return output stream
-    virtual std::ostream& print (std::ostream& o) const throw ();
+    virtual std::ostream& print (std::ostream& o) const;
 
-    jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    jacobian_t variationConfigWrtParam (StableTimePoint tp) const;
     jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw ();
+      const;
 
     value_type Dt () const ROBOPTIM_TRAJECTORY_DEPRECATED;
 
@@ -150,11 +150,11 @@ namespace roboptim
 
     using Trajectory<N>::impl_compute;
 
-    void impl_compute (result_t&, double) const throw ();
+    void impl_compute (result_t&, double) const;
     void impl_derivative (gradient_t& g, double x, size_type order)
-      const throw ();
+      const;
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw ();
+      const;
 
     vector_t basisFunctions (value_type t, size_type order) const
       ROBOPTIM_TRAJECTORY_DEPRECATED;

@@ -22,14 +22,14 @@ namespace roboptim
 {
   template <typename T>
   TrajectoryCost<T>::TrajectoryCost (const trajectory_t& traj,
-				     std::string name) throw ()
+				     std::string name)
     : DerivableFunction (traj.parameters ().size (), 1, name),
       trajectory_ (traj)
   {
   }
 
   template <typename T>
-  TrajectoryCost<T>::~TrajectoryCost () throw ()
+  TrajectoryCost<T>::~TrajectoryCost ()
   {
   }
 

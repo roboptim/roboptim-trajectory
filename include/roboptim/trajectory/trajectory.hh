@@ -27,7 +27,7 @@
 # include <roboptim/trajectory/stable-time-point.hh>
 
 # define ROBOPTIM_IMPLEMENT_CLONE(C)		\
-  virtual C* clone () const throw ()		\
+  virtual C* clone () const		\
   {						\
     return new C (*this);			\
   }
@@ -97,16 +97,20 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
-    virtual ~Trajectory () throw ();
+    virtual ~Trajectory ();
 
     /// \name Accessing parameters, and state.
     /// \{
 
-    const vector_t& parameters () const throw ();
-    virtual void setParameters (const vector_t&) throw (std::runtime_error);
+    const vector_t& parameters () const;
 
-    interval_t timeRange () const throw ();
-    value_type length () const throw ();
+    /// \brief Set parameters.
+    /// \param vector_t parameters.
+    /// \throw std::runtime_error
+    virtual void setParameters (const vector_t&);
+
+    interval_t timeRange () const;
+    value_type length () const;
 
     /// \brief Get state along trajectory
     ///
@@ -120,8 +124,8 @@ namespace roboptim
         \frac{d^{r}\Gamma_{\textbf{p}}}{dt^{r}}(t)\right)
         \f]*/
     /// The configuration and derivatives are concatenated in one vector.
-    virtual vector_t state (double t, size_type order) const throw ();
-    virtual vector_t state (StableTimePoint t, size_type order) const throw ();
+    virtual vector_t state (double t, size_type order) const;
+    virtual vector_t state (StableTimePoint t, size_type order) const;
 
     /// \}
 
@@ -133,7 +137,7 @@ namespace roboptim
     /// \param t value \f$t\f$ in the definition interval.
     /// \return Jacobian:
     /// \f[\frac{\partial\Gamma_{\textbf{p}}(t)}{\partial\textbf{p}}\f]
-    virtual jacobian_t variationConfigWrtParam (double t) const throw () = 0;
+    virtual jacobian_t variationConfigWrtParam (double t) const = 0;
 
     /// \brief Get the variation of a derivative with respect to parameter
     /// vector.
@@ -146,7 +150,7 @@ namespace roboptim
         \left(\frac{d^r\Gamma_{\textbf{p}}}{dt^r}(t)\right)
         \f]*/
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
-      const throw () = 0;
+      const = 0;
 
     /// \brief Get the variation of the state with respect to parameter vector
     ///
@@ -161,9 +165,9 @@ namespace roboptim
         \end{array}\right)
         \f]**/
 
-    jacobian_t variationStateWrtParam (double t, size_type order) const throw ();
+    jacobian_t variationStateWrtParam (double t, size_type order) const;
     jacobian_t variationStateWrtParam
-    (StableTimePoint stp, size_type order) const throw ();
+    (StableTimePoint stp, size_type order) const;
 
     /// \}
 
@@ -172,7 +176,7 @@ namespace roboptim
     /// \{
 
     /// \brief Get number of singular points
-    size_type singularPoints () const throw ();
+    size_type singularPoints () const;
 
     /// \brief Get singular point at given rank.
     virtual value_type singularPointAtRank (size_type rank) const = 0;
@@ -196,7 +200,7 @@ namespace roboptim
     /// \}
 
 
-    result_t operator () (StableTimePoint argument) const throw ()
+    result_t operator () (StableTimePoint argument) const
     {
       result_t result (this->outputSize ());
       result.setZero();
@@ -204,7 +208,7 @@ namespace roboptim
       return result;
     }
 
-    void operator () (result_t& result, StableTimePoint argument) const throw ()
+    void operator () (result_t& result, StableTimePoint argument) const
     {
       assert (this->isValidResult (result));
       this->impl_compute (result, argument);
@@ -212,7 +216,6 @@ namespace roboptim
     }
 
     gradient_t derivative (StableTimePoint argument, size_type order = 1) const
-      throw ()
     {
       gradient_t derivative (this->derivativeSize ());
       derivative.setZero ();
@@ -223,7 +226,6 @@ namespace roboptim
     void derivative (gradient_t& derivative,
 		     StableTimePoint argument,
 		     size_type order = 1) const
-      throw ()
     {
       assert (order <= Trajectory<DerivabilityOrder>::derivabilityOrder
 	      && this->isValidDerivative (derivative));
@@ -233,24 +235,24 @@ namespace roboptim
 
     virtual jacobian_t
     variationConfigWrtParam (StableTimePoint tp)
-      const throw () = 0;
+      const = 0;
     virtual jacobian_t
     variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw () = 0;
+      const = 0;
 
-    bool isValidTime (value_type t) const throw ();
+    bool isValidTime (value_type t) const;
 
     /// \brief Normalize angles in parameters array.
     ///
     /// Make sure angles are continuous.
     /// \param index Angles index in parameter array.
-    virtual void normalizeAngles (size_type index) throw ();
+    virtual void normalizeAngles (size_type index);
 
-    virtual Trajectory<DerivabilityOrder>* clone () const throw () = 0;
+    virtual Trajectory<DerivabilityOrder>* clone () const = 0;
 
     /// \brief Clone and resize a trajectory.
     virtual Trajectory<DerivabilityOrder>* resize (interval_t timeRange)
-      const throw () = 0;
+      const = 0;
 
     /// \name Tolerance for inclusion of parameter in interval of definition.
     /// \{
@@ -260,22 +262,22 @@ namespace roboptim
     double tolerance () const;
     /// \}
 
-    virtual std::ostream& print (std::ostream&) const throw ();
+    virtual std::ostream& print (std::ostream&) const;
   protected:
-    void impl_compute (result_t&, StableTimePoint) const throw ();
+    void impl_compute (result_t&, StableTimePoint) const;
     virtual void
     impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw () = 0;
+      const = 0;
 
     Trajectory (interval_t, size_type, const vector_t&,
-		std::string name = std::string ()) throw ();
+		std::string name = std::string ());
 
     /// \brief Internal version of normalizeAngles allowing an optional offset.
     ///
     /// Used to factorize code between trajectories and free time trajectories.
     /// \param index Angles index in parameter array.
     /// \param offset Index of the first control point in the parameter vector.
-    virtual void normalizeAngles (size_type index, size_type offset) throw ();
+    virtual void normalizeAngles (size_type index, size_type offset);
 
     interval_t timeRange_;
     vector_t parameters_;

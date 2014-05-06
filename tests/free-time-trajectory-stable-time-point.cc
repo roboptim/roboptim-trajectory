@@ -51,7 +51,7 @@ bool isAlmostEqual (const T& x, const T& y, const T& epsilon = 1e10-8)
 
 struct ConfigWrtParam : public DerivableFunction
 {
-  ConfigWrtParam (const freeTime_t& traj, StableTimePoint stp) throw ()
+  ConfigWrtParam (const freeTime_t& traj, StableTimePoint stp)
     : DerivableFunction (traj.parameters ().size (),
 			 traj.outputSize (),
 			 "config wrt param"),
@@ -60,12 +60,12 @@ struct ConfigWrtParam : public DerivableFunction
   {
   }
 
-  ~ConfigWrtParam () throw ()
+  ~ConfigWrtParam ()
   {
   }
 
   void
-  impl_compute (result_t& res, const argument_t& p) const throw ()
+  impl_compute (result_t& res, const argument_t& p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -78,7 +78,7 @@ struct ConfigWrtParam : public DerivableFunction
 
   void
   impl_gradient (gradient_t& grad, const argument_t& p, size_type)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -96,18 +96,18 @@ struct ConfigWrtParam : public DerivableFunction
 
 struct DerivWrtParam : public DerivableFunction
 {
-  DerivWrtParam (const freeTime_t& traj) throw ()
+  DerivWrtParam (const freeTime_t& traj)
     : DerivableFunction (traj.inputSize (),
 			 traj.parameters ().size (),
 			 "config wrt param"),
       traj_ (traj.clone ())
   {}
 
-  ~DerivWrtParam () throw ()
+  ~DerivWrtParam ()
   {}
 
   void
-  impl_compute (result_t& res, const argument_t& stp) const throw ()
+  impl_compute (result_t& res, const argument_t& stp) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -129,7 +129,7 @@ struct DerivWrtParam : public DerivableFunction
 
   void
   impl_gradient (gradient_t& grad, const argument_t& stp, size_type i)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);

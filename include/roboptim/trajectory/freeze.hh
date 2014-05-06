@@ -57,19 +57,19 @@ namespace roboptim
     /// \brief Create the constraint from a vector of pairs.
     ///
     /// \param problem problem that will be modified.
-    Freeze (problem_t& problem) throw ();
+    Freeze (problem_t& problem);
 
-    virtual ~Freeze () throw ();
+    virtual ~Freeze ();
 
     /// \brief Apply modification.
     /// \param fa Vector of pairs containing what to freeze and to what value.
-    void operator () (const frozenArguments_t fa) throw ();
+    void operator () (const frozenArguments_t fa);
 
     /// \brief Apply modification.
     /// \param indices Vector of parameters index that will be frozen.
     /// \param values Vector of parameters values.
     void operator () (const std::vector<Function::size_type>& indices,
-		      const Function::vector_t& values) throw ();
+		      const Function::vector_t& values);
 
   private:
     /// \brief Reference to the problem that will be modified.
@@ -77,7 +77,7 @@ namespace roboptim
   };
 
   template <typename P>
-  Freeze<P> makeFreeze (P& problem) throw ()
+  Freeze<P> makeFreeze (P& problem)
   {
     return Freeze<P> (problem);
   }

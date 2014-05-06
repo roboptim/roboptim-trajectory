@@ -23,17 +23,17 @@
 
 namespace roboptim
 {
-  FrontalSpeed::FrontalSpeed () throw ()
+  FrontalSpeed::FrontalSpeed ()
     : DerivableFunction (2 * 3, 1, "frontal speed")
   {}
 
 
-  FrontalSpeed::~FrontalSpeed () throw ()
+  FrontalSpeed::~FrontalSpeed ()
   {}
 
 
   void
-  FrontalSpeed::impl_compute (result_t& res, const argument_t& x) const throw ()
+  FrontalSpeed::impl_compute (result_t& res, const argument_t& x) const
   {
     const value_type& theta = x[2];
 
@@ -47,7 +47,7 @@ namespace roboptim
   FrontalSpeed::impl_gradient (gradient_t& grad,
 			       const argument_t& arg,
 			       size_type ONLY_DEBUG (i))
-    const throw ()
+    const
   {
     assert (i == 0);
     //const value_type& x = arg[0];

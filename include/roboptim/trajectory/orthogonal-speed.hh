@@ -26,13 +26,13 @@ namespace roboptim
   class OrthogonalSpeed : public DerivableFunction
   {
   public:
-    OrthogonalSpeed () throw ();
-    ~OrthogonalSpeed () throw ();
+    OrthogonalSpeed ();
+    ~OrthogonalSpeed ();
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
+    void impl_compute (result_t& res, const argument_t& p) const;
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const throw ();
+      const;
   };
 } // end of namespace roboptim.
 

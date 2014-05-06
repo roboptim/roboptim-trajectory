@@ -26,7 +26,7 @@ namespace roboptim
   StateFunction<T>::StateFunction (const trajectory_t& trajectory,
 				   boost::shared_ptr<DerivableFunction> function,
 				   const StableTimePoint tpt,
-				   size_type order) throw (std::runtime_error)
+				   size_type order)
     : DerivableFunction (trajectory.parameters ().size (),
 			 function->outputSize (),
 			 (boost::format ("state cost using function ``%s'' at t=%f * tMax")
@@ -49,13 +49,13 @@ namespace roboptim
   }
 
   template <typename T>
-  StateFunction<T>::~StateFunction() throw ()
+  StateFunction<T>::~StateFunction()
   {
   }
 
   template <typename T>
   typename StateFunction<T>::size_type
-  StateFunction<T>::order () const throw ()
+  StateFunction<T>::order () const
   {
     return order_;
   }
@@ -63,7 +63,7 @@ namespace roboptim
   template <typename T>
   void
   StateFunction<T>::impl_compute (result_t& res,
-				  const argument_t& p) const throw ()
+				  const argument_t& p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -79,7 +79,7 @@ namespace roboptim
   void
   StateFunction<T>::impl_gradient (gradient_t& grad,
 				   const argument_t& p,
-				   size_type i) const throw ()
+				   size_type i) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

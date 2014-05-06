@@ -26,7 +26,7 @@ namespace roboptim
   TrajectorySumCost (const trajectory_t& gamma,
 		     boost::shared_ptr<DerivableFunction> cost,
 		     const discreteStableTimePointInterval_t& interval,
-		     size_type order) throw ()
+		     size_type order)
     : DerivableFunction (gamma.parameters ().size (),
 			 cost->outputSize (),
 			 (boost::format ("sum cost using function ``%1%''")
@@ -40,13 +40,13 @@ namespace roboptim
   }
 
   template <typename T>
-  TrajectorySumCost<T>::~TrajectorySumCost() throw ()
+  TrajectorySumCost<T>::~TrajectorySumCost()
   {
   }
 
   template <typename T>
   typename TrajectorySumCost<T>::size_type
-  TrajectorySumCost<T>::order () const throw ()
+  TrajectorySumCost<T>::order () const
   {
     return order_;
   }
@@ -54,7 +54,7 @@ namespace roboptim
   template <typename T>
   void
   TrajectorySumCost<T>::impl_compute (result_t& res,
-				      const argument_t& p) const throw ()
+				      const argument_t& p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -84,7 +84,7 @@ namespace roboptim
   template <typename T>
   void
   TrajectorySumCost<T>::impl_gradient (gradient_t& grad, const argument_t& p,
-				       size_type i) const throw ()
+				       size_type i) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

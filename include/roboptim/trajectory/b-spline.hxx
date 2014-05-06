@@ -29,7 +29,6 @@ namespace roboptim
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
                        const vector_t& p,
                        std::string name)
-    throw ()
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
   {
@@ -61,7 +60,6 @@ namespace roboptim
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
                        const vector_t& p, const vector_t& knots,
                        std::string name)
-    throw ()
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), knots_ (knots), uniform_ (false)
   {
@@ -83,7 +81,7 @@ namespace roboptim
   }
 
   template <int N>
-  BSpline<N>::BSpline (const BSpline<N>& spline) throw ()
+  BSpline<N>::BSpline (const BSpline<N>& spline)
     : Trajectory<N> (spline.timeRange (), spline.outputSize (),
 		     spline.parameters_),
       nbp_ (spline.parameters_.size () / spline.outputSize ()),
@@ -100,7 +98,7 @@ namespace roboptim
   }
 
   template <int N>
-  Trajectory<N>* BSpline<N>::resize (interval_t timeRange) const throw ()
+  Trajectory<N>* BSpline<N>::resize (interval_t timeRange) const
   {
     return new BSpline<N> (timeRange,
                            this->outputSize (),
@@ -259,14 +257,14 @@ namespace roboptim
   }
 
   template <int N>
-  void BSpline<N>::setParameters (const vector_t& p) throw ()
+  void BSpline<N>::setParameters (const vector_t& p)
   {
     assert (p.size () == this->parameters_.size ());
     this->parameters_ = p;
   }
 
   template <int N>
-  void BSpline<N>::impl_compute (result_t& derivative, double t) const throw ()
+  void BSpline<N>::impl_compute (result_t& derivative, double t) const
   {
     t = detail::fixTime (t, *this);
     assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
@@ -355,7 +353,7 @@ namespace roboptim
   template <int N> void
   BSpline<N>::impl_derivative (gradient_t& derivative, double t,
 			       size_type order)
-    const throw ()
+    const
   {
 
     t = detail::fixTime (t, *this);
@@ -391,7 +389,7 @@ namespace roboptim
   template <int N> void
   BSpline<N>::impl_derivative (gradient_t& derivative,
 			       StableTimePoint stp,
-			       size_type order) const throw ()
+			       size_type order) const
   {
     this->impl_derivative (derivative,
 			   stp.getTime (this->timeRange ()),
@@ -400,7 +398,7 @@ namespace roboptim
 
   template <int N>
   typename BSpline<N>::jacobian_t
-  BSpline<N>::variationConfigWrtParam (double t) const throw ()
+  BSpline<N>::variationConfigWrtParam (double t) const
   {
     return variationDerivWrtParam (t, 0);
   }
@@ -409,7 +407,7 @@ namespace roboptim
   template <int N>
   typename BSpline<N>::jacobian_t
   BSpline<N>::variationDerivWrtParam (double t, size_type order)
-    const throw ()
+    const
   {
 
     t = detail::fixTime (t, *this);
@@ -435,7 +433,7 @@ namespace roboptim
   template <int N>
   typename BSpline<N>::jacobian_t
   BSpline<N>::variationConfigWrtParam (StableTimePoint stp)
-    const throw ()
+    const
   {
     return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
   }
@@ -444,7 +442,7 @@ namespace roboptim
   template <int N>
   typename BSpline<N>::jacobian_t
   BSpline<N>::variationDerivWrtParam (StableTimePoint stp, size_type order)
-    const throw ()
+    const
   {
     return this->variationDerivWrtParam
       (stp.getTime (this->timeRange ()), order);
@@ -472,7 +470,7 @@ namespace roboptim
   }
 
   template <int N> std::ostream&
-  BSpline<N>::print (std::ostream& o) const throw ()
+  BSpline<N>::print (std::ostream& o) const
   {
     o << "Order " << order_ << " B-spline:" << incindent
       << iendl << "Number of parameters per spline function: " << nbp_

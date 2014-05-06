@@ -110,7 +110,7 @@ namespace roboptim
     /// \param interval accessed discrete interval
     /// \return lower bound of the discrete interval
     static StableTimePoint
-    getLowerBound (const discreteStableTimePointInterval_t& interval) throw ()
+    getLowerBound (const discreteStableTimePointInterval_t& interval)
     {
       return boost::get<0> (interval);
     }
@@ -120,7 +120,7 @@ namespace roboptim
     /// \param interval accessed discrete interval
     /// \return upper bound of the discrete interval
     static StableTimePoint
-    getUpperBound (const discreteStableTimePointInterval_t& interval) throw ()
+    getUpperBound (const discreteStableTimePointInterval_t& interval)
     {
       return boost::get<1> (interval);
     }
@@ -130,7 +130,7 @@ namespace roboptim
     /// \param interval accessed discrete interval
     /// \return upper step of the discrete interval
     static StableTimePoint
-    getStep (const discreteStableTimePointInterval_t& interval) throw ()
+    getStep (const discreteStableTimePointInterval_t& interval)
     {
       return boost::get<2> (interval);
     }
@@ -148,15 +148,15 @@ namespace roboptim
     TrajectorySumCost (const trajectory_t& gamma,
 		       boost::shared_ptr<DerivableFunction> cost,
 		       const discreteStableTimePointInterval_t& interval,
-		       size_type order = 1) throw ();
+		       size_type order = 1);
 
-    virtual ~TrajectorySumCost () throw ();
+    virtual ~TrajectorySumCost ();
 
-    size_type order () const throw ();
+    size_type order () const;
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const throw ();
-    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw ();
+    void impl_compute (result_t&, const argument_t&) const;
+    void impl_gradient (gradient_t&, const argument_t&, size_type) const;
 
   private:
     const trajectory_t& trajectory_;

@@ -47,20 +47,20 @@ namespace roboptim
     /// parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
 		  const vector_t& parameters,
-		  const std::string name = "cubic B-Spline") throw ();
+		  const std::string name = "cubic B-Spline");
 
     /// \brief Copy constructor.
     /// \param spline spline that will be copied
-    CubicBSpline (const CubicBSpline& spline) throw ();
+    CubicBSpline (const CubicBSpline& spline);
 
-    virtual ~CubicBSpline () throw ();
+    virtual ~CubicBSpline ();
 
     /// \brief Modify spline parameters.
-    virtual void setParameters (const vector_t&) throw ();
+    virtual void setParameters (const vector_t&);
 
-    virtual jacobian_t variationConfigWrtParam (double t) const throw ();
+    virtual jacobian_t variationConfigWrtParam (double t) const;
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
-      const throw ();
+      const;
     virtual value_type singularPointAtRank (size_type rank) const;
     virtual vector_t derivBeforeSingularPoint (size_type rank, size_type order)
       const;
@@ -70,7 +70,7 @@ namespace roboptim
     ROBOPTIM_IMPLEMENT_CLONE(CubicBSpline)
 
     virtual Trajectory<derivabilityOrder>* resize (interval_t timeRange)
-    const throw ()
+    const
     {
       return new CubicBSpline (timeRange, this->outputSize (), this->parameters ());
     }
@@ -79,11 +79,11 @@ namespace roboptim
     ///
     /// \param o output stream used for display
     /// \return output stream
-    virtual std::ostream& print (std::ostream& o) const throw ();
+    virtual std::ostream& print (std::ostream& o) const;
 
-    jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    jacobian_t variationConfigWrtParam (StableTimePoint tp) const;
     jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw ();
+      const;
 
     /// \brief Add a constraint to a problem in order to freeze the B-spline
     /// at its start.
@@ -91,7 +91,7 @@ namespace roboptim
     /// \param offset offset of the B-spline parameters in the problem's
     /// parameter list.
     template <typename P>
-    void freezeCurveStart (P& problem, size_type offset = 0) const throw ();
+    void freezeCurveStart (P& problem, size_type offset = 0) const;
 
     /// \brief Add a constraint to a problem in order to freeze the B-spline
     /// at its end.
@@ -99,7 +99,7 @@ namespace roboptim
     /// \param offset offset of the B-spline parameters in the problem's
     /// parameter list.
     template <typename P>
-    void freezeCurveEnd (P& problem, size_type offset = 0) const throw ();
+    void freezeCurveEnd (P& problem, size_type offset = 0) const;
 
     /// \brief Regular spacing between B-spline knots. This is only valid for
     /// uniform B-splines.
@@ -111,11 +111,11 @@ namespace roboptim
     ///
     /// This method can be useful when one needs to have all the polynomials
     /// expressed in the same basis (e.g. t1 = 0).
-    void translateBasisPolynomials (double t1) throw ();
+    void translateBasisPolynomials (double t1);
 
     /// \brief Return the polynomial expression of the cubic B-spline on each
     /// time interval.
-    void toPolynomials (std::vector<Polynomial3>& res) const throw ();
+    void toPolynomials (std::vector<Polynomial3>& res) const;
 
     /// \brief Constant getter for the basis polynomials of the cubic B-spline.
     /// \return constant reference to the basis polynomials.
@@ -144,11 +144,11 @@ namespace roboptim
 
   protected:
     using Trajectory<3>::impl_compute;
-    void impl_compute (result_t&, double) const throw ();
+    void impl_compute (result_t&, double) const;
     void impl_derivative (gradient_t& g, double x, size_type order)
-      const throw ();
+      const;
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw ();
+      const;
 
     /// \brief Find the index of the interval in which t is.
     /// \param t instant considered.

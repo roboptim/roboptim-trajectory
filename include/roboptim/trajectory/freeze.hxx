@@ -22,19 +22,19 @@
 namespace roboptim
 {
   template <typename P>
-  Freeze<P>::Freeze (problem_t& problem) throw ()
+  Freeze<P>::Freeze (problem_t& problem)
     : problem_ (problem)
   {
   }
 
   template <typename P>
-  Freeze<P>::~Freeze () throw ()
+  Freeze<P>::~Freeze ()
   {
   }
 
   template <typename P>
   void
-  Freeze<P>::operator () (const frozenArguments_t frozenArguments) throw ()
+  Freeze<P>::operator () (const frozenArguments_t frozenArguments)
   {
     using namespace boost;
     typedef frozenArguments_t::const_iterator citer_t;
@@ -58,7 +58,7 @@ namespace roboptim
   template <typename P>
   void
   Freeze<P>::operator () (const std::vector<Function::size_type>& indices,
-			  const Function::vector_t& values) throw ()
+			  const Function::vector_t& values)
   {
     frozenArguments_t fa;
     for (unsigned i = 0; i < indices.size (); ++i)

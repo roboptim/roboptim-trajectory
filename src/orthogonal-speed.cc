@@ -22,15 +22,15 @@
 
 namespace roboptim
 {
-  OrthogonalSpeed::OrthogonalSpeed () throw ()
+  OrthogonalSpeed::OrthogonalSpeed ()
     : DerivableFunction (2 * 3, 1, "orthogonal speed")
   {}
 
-  OrthogonalSpeed::~OrthogonalSpeed () throw ()
+  OrthogonalSpeed::~OrthogonalSpeed ()
   {}
 
   void
-  OrthogonalSpeed::impl_compute (result_t& res, const argument_t& x) const throw ()
+  OrthogonalSpeed::impl_compute (result_t& res, const argument_t& x) const
   {
     const value_type& theta = x[2];
 
@@ -42,7 +42,7 @@ namespace roboptim
 
   void
   OrthogonalSpeed::impl_gradient (gradient_t& grad, const argument_t& arg, size_type)
-    const throw ()
+    const
   {
     //const value_type& x = arg[0];
     //const value_type& y = arg[1];

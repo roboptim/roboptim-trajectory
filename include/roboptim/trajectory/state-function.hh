@@ -69,14 +69,15 @@ namespace roboptim
     /// \param cost state cost: \f$cost\f$.
     /// \param tpt parameter \f$t\f$ where the state is evaluated.
     /// \param order order \f$r\f$ of derivation.
+    /// \throw std::runtime_error
     StateFunction (const trajectory_t& gamma,
 		   boost::shared_ptr<DerivableFunction> cost,
 		   const StableTimePoint tpt,
-		   size_type order = 1) throw (std::runtime_error);
+		   size_type order = 1);
 
-    virtual ~StateFunction () throw ();
+    virtual ~StateFunction ();
 
-    size_type order () const throw ();
+    size_type order () const;
 
     template <typename F, typename CLIST>
     static void addToProblem (const trajectory_t& trajectory,
@@ -122,9 +123,9 @@ namespace roboptim
 
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const throw ();
+    void impl_compute (result_t&, const argument_t&) const;
     void impl_gradient (gradient_t&, const argument_t&, size_type)
-      const throw ();
+      const;
 
   private:
     const trajectory_t& trajectory_;

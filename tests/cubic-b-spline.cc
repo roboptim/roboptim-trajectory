@@ -46,7 +46,7 @@ struct SplineDerivWrtParameters : public DifferentiableFunction
 
   virtual void
   impl_compute (result_t& result, const argument_t& x)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -61,7 +61,7 @@ struct SplineDerivWrtParameters : public DifferentiableFunction
   impl_gradient (gradient_t& gradient,
 		 const argument_t& x,
 		 size_type functionId = 0)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);

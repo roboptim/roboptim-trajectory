@@ -24,7 +24,7 @@ namespace roboptim
 {
   template <typename P>
   void
-  CubicBSpline::freezeCurveStart (P& problem, size_type offset) const throw ()
+  CubicBSpline::freezeCurveStart (P& problem, size_type offset) const
   {
     using boost::shared_ptr;
     const size_type paramSize = parameters ().size ();
@@ -50,7 +50,7 @@ namespace roboptim
 
   template <typename P>
   void
-  CubicBSpline::freezeCurveEnd (P& problem, size_type offset) const throw ()
+  CubicBSpline::freezeCurveEnd (P& problem, size_type offset) const
   {
     using boost::shared_ptr;
     const size_type paramSize = parameters ().size ();

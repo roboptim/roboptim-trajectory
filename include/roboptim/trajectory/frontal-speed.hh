@@ -26,13 +26,13 @@ namespace roboptim
   class FrontalSpeed : public DerivableFunction
   {
   public:
-    FrontalSpeed () throw ();
-    ~FrontalSpeed () throw ();
+    FrontalSpeed ();
+    ~FrontalSpeed ();
 
   protected:
-    void impl_compute (result_t& res, const argument_t& t) const throw ();
+    void impl_compute (result_t& res, const argument_t& t) const;
     void impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
-      const throw ();
+      const;
   };
 } // end of namespace roboptim.
 

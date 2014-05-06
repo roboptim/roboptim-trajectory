@@ -51,13 +51,13 @@ namespace roboptim
     /// \param nDiscretizationPoints number of discretization points
     SplineLength (const CubicBSpline& spline,
 		  const size_type nDiscretizationPoints = 100,
-		  boost::optional<interval_t> interval = boost::none_t ()) throw ();
+		  boost::optional<interval_t> interval = boost::none_t ());
 
-    virtual ~SplineLength () throw ();
+    virtual ~SplineLength ();
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const throw ();
-    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw ();
+    void impl_compute (result_t&, const argument_t&) const;
+    void impl_gradient (gradient_t&, const argument_t&, size_type) const;
 
   private:
     /// \brief Interval on which the length is computed.

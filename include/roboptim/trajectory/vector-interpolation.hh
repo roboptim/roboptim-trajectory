@@ -48,36 +48,39 @@ namespace roboptim
 
     typedef boost::shared_ptr<VectorInterpolation> VectorInterpolationShPtr_t;
 
+    /// \brief Vector interpolation constructor.
+    /// \throw std::runtime_error
     explicit VectorInterpolation
-    (const vector_t& x, size_type outputSize, value_type dt)
-      throw (std::runtime_error);
-    ~VectorInterpolation () throw ();
+    (const vector_t& x, size_type outputSize, value_type dt);
+    ~VectorInterpolation ();
 
     /// \brief Store parameters and update coefficients.
-    void setParameters (const vector_t&) throw (std::runtime_error);
+    /// \param vector_t vector of parameters.
+    /// \throw std::runtime_error
+    void setParameters (const vector_t&);
 
-    jacobian_t variationConfigWrtParam (double t) const throw ();
+    jacobian_t variationConfigWrtParam (double t) const;
     jacobian_t variationDerivWrtParam (double t, size_type order)
-      const throw ();
+      const;
     value_type singularPointAtRank (size_type rank) const;
     vector_t derivBeforeSingularPoint (size_type rank, size_type order) const;
     vector_t derivAfterSingularPoint (size_type rank, size_type order) const;
 
     jacobian_t variationConfigWrtParam (StableTimePoint tp)
-      const throw ();
+      const;
     jacobian_t
     variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw ();
+      const;
 
   protected:
-    void impl_compute (result_t& result, double t) const throw ();
+    void impl_compute (result_t& result, double t) const;
     void impl_derivative (gradient_t& derivative,
 			  double argument,
-			  size_type order = 1) const throw ();
+			  size_type order = 1) const;
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw ();
+      const;
     Trajectory<3>* resize (interval_t timeRange)
-      const throw ();
+      const;
   private:
     value_type dt_;
   };

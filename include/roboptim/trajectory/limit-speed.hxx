@@ -42,7 +42,7 @@ namespace roboptim
 
   template <typename T>
   LimitSpeed<T>::LimitSpeed (StableTimePoint timePoint,
-			     const T& trajectory) throw ()
+			     const T& trajectory)
     : DerivableFunction (trajectory.parameters ().size (), 1,
 			 detail::getLimitSpeedName (timePoint)),
       timePoint_ (timePoint),
@@ -50,19 +50,19 @@ namespace roboptim
   {}
 
   template <typename T>
-  LimitSpeed<T>::~LimitSpeed () throw ()
+  LimitSpeed<T>::~LimitSpeed ()
   {}
 
   template <typename T>
   const T&
-  LimitSpeed<T>::trajectory () const throw ()
+  LimitSpeed<T>::trajectory () const
   {
     return trajectory_;
   }
 
   template <typename T>
   void
-  LimitSpeed<T>::impl_compute (result_t& res, const argument_t& p) const throw ()
+  LimitSpeed<T>::impl_compute (result_t& res, const argument_t& p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -81,7 +81,7 @@ namespace roboptim
   template <typename T>
   void
   LimitSpeed<T>::impl_gradient
-  (gradient_t& grad, const argument_t& p, size_type i) const throw ()
+  (gradient_t& grad, const argument_t& p, size_type i) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

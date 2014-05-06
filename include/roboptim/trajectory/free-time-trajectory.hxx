@@ -46,7 +46,7 @@ namespace roboptim
 
   template <typename T>
   FreeTimeTrajectory<T>::FreeTimeTrajectory
-  (const fixedTimeTrajectory_t& traj, value_type s) throw ()
+  (const fixedTimeTrajectory_t& traj, value_type s)
     : parent_t (detail::unscaleInterval (traj, s), traj.outputSize (),
 		addScaleToParameters (traj.parameters (), s)),
       trajectory_ (traj.clone ())
@@ -57,7 +57,6 @@ namespace roboptim
   template <typename T>
   FreeTimeTrajectory<T>::FreeTimeTrajectory
   (const self_t& traj)
-    throw ()
     : parent_t (traj.timeRange (), traj.outputSize (),
 		traj.parameters ()),
       trajectory_ (traj.trajectory_->clone ())
@@ -65,7 +64,7 @@ namespace roboptim
   }
 
   template <typename T>
-  FreeTimeTrajectory<T>::~FreeTimeTrajectory () throw ()
+  FreeTimeTrajectory<T>::~FreeTimeTrajectory ()
   {
     delete trajectory_;
   }
@@ -73,7 +72,7 @@ namespace roboptim
   template <typename T>
   void
   FreeTimeTrajectory<T>::impl_compute (result_t& res , double t)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -86,7 +85,7 @@ namespace roboptim
   void
   FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
 					  double t,
-					  size_type order) const throw ()
+					  size_type order) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -101,7 +100,7 @@ namespace roboptim
   void
   FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
 					  StableTimePoint stp,
-					  size_type order) const throw ()
+					  size_type order) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -114,7 +113,7 @@ namespace roboptim
 
   template <typename T>
   typename FreeTimeTrajectory<T>::jacobian_t
-  FreeTimeTrajectory<T>::variationConfigWrtParam (double t) const throw ()
+  FreeTimeTrajectory<T>::variationConfigWrtParam (double t) const
   {
     value_type scaled = this->scaleTime (t);
 
@@ -137,7 +136,7 @@ namespace roboptim
   template <typename T>
   typename FreeTimeTrajectory<T>::jacobian_t
   FreeTimeTrajectory<T>::variationDerivWrtParam (double t, size_type order)
-    const throw ()
+    const
   {
     if (order == 0)
       return this->variationConfigWrtParam (t);
@@ -169,7 +168,7 @@ namespace roboptim
   template <typename T>
   typename FreeTimeTrajectory<T>::jacobian_t
   FreeTimeTrajectory<T>::variationConfigWrtParam
-  (StableTimePoint stp) const throw ()
+  (StableTimePoint stp) const
   {
     jacobian_t result (this->outputSize (),
 		       this->parameters ().size ());
@@ -189,7 +188,7 @@ namespace roboptim
   template <typename T>
   typename FreeTimeTrajectory<T>::jacobian_t
   FreeTimeTrajectory<T>::variationDerivWrtParam
-  (StableTimePoint stp, size_type order) const throw ()
+  (StableTimePoint stp, size_type order) const
   {
     if (order == 0)
       return this->variationConfigWrtParam (stp);
@@ -239,7 +238,7 @@ namespace roboptim
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::setParameters (const vector_t& p) throw ()
+  FreeTimeTrajectory<T>::setParameters (const vector_t& p)
   {
     //FIXME: is this ok?
     vector_t p_ = p;
@@ -254,14 +253,14 @@ namespace roboptim
 
   template <typename T>
   typename FreeTimeTrajectory<T>::value_type
-  FreeTimeTrajectory<T>::timeScale () const throw ()
+  FreeTimeTrajectory<T>::timeScale () const
   {
     return this->parameters_[0];
   }
 
   template <typename T>
   double
-  FreeTimeTrajectory<T>::scaleTime (double unscaled) const throw ()
+  FreeTimeTrajectory<T>::scaleTime (double unscaled) const
   {
     value_type tMin = this->getLowerBound (this->timeRange ());
     value_type tmin = this->getLowerBound (this->trajectory_->timeRange ());
@@ -281,7 +280,7 @@ namespace roboptim
 
   template <typename T>
   double
-  FreeTimeTrajectory<T>::unscaleTime (double scaled) const throw ()
+  FreeTimeTrajectory<T>::unscaleTime (double scaled) const
   {
     value_type tMin = this->getLowerBound (this->timeRange ());
     value_type tMax = this->getUpperBound (this->timeRange ());
@@ -301,7 +300,7 @@ namespace roboptim
 
   template <typename T>
   std::ostream&
-  FreeTimeTrajectory<T>::print (std::ostream& o) const throw ()
+  FreeTimeTrajectory<T>::print (std::ostream& o) const
   {
     o << "Free time trajectory." << std::endl;
     return o;
@@ -309,7 +308,7 @@ namespace roboptim
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::normalizeAngles (size_type index) throw ()
+  FreeTimeTrajectory<T>::normalizeAngles (size_type index)
   {
     this->normalizeAngles (index, 1);
   }

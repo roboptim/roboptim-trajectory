@@ -29,7 +29,7 @@ namespace roboptim
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
 					     const vector_t& parameters,
-					     const std::string name) throw ()
+					     const std::string name)
     : BSpline<N> (timeRange, dimension, parameters, name),
       constraints_ (0, parameters.rows ()),
       constraint_values_ (),
@@ -43,7 +43,7 @@ namespace roboptim
 					     size_type dimension,
 					     const vector_t& parameters,
 					     const vector_t& knots,
-					     const std::string name) throw ()
+					     const std::string name)
     : BSpline<N> (timeRange, dimension, parameters, knots, name),
       constraints_ (0, parameters.rows ()),
       constraint_values_ (),
@@ -53,13 +53,13 @@ namespace roboptim
   {}
 
   template <int N>
-  ConstrainedBSpline<N>::~ConstrainedBSpline () throw () {}
+  ConstrainedBSpline<N>::~ConstrainedBSpline () {}
 
   template <int N>
   void ConstrainedBSpline<N>::addFixedConstraint (double t,
                                                   size_type dimension,
                                                   value_type value,
-                                                  size_type order) throw ()
+                                                  size_type order)
   {
     // Constraint_values = constraints_ * parameters_ (1)
     const int existing_constraints = constraints_.rows ();
@@ -88,7 +88,7 @@ namespace roboptim
   void ConstrainedBSpline<N>::addCoupledConstraint
   (value_type t_1, size_type dimension_1,
    value_type t_2, size_type dimension_2,
-   size_type derivative, value_type factor) throw ()
+   size_type derivative, value_type factor)
   {
     // Constraint_values = constraints_ * parameters_ (1)
     const int existing_constraints = constraints_.rows ();
@@ -121,14 +121,13 @@ namespace roboptim
 
   template <int N>
   const typename ConstrainedBSpline<N>::vector_t&
-  ConstrainedBSpline<N>::parameters () const throw ()
+  ConstrainedBSpline<N>::parameters () const
   {
     return tunables_;
   }
 
   template <int N>
   void ConstrainedBSpline<N>::setParameters (const vector_t& parameters_in)
-    throw ()
   {
     assert (tunables_.rows () == parameters_in.rows ());
     tunables_ = parameters_in;
@@ -166,7 +165,7 @@ namespace roboptim
 
   template <int N>
   Trajectory<N>*  ConstrainedBSpline<N>::resize (interval_t timeRange)
-    const throw ()
+    const
   {
     // Create an unconstrained B-spline
     ConstrainedBSpline<N>* c
@@ -187,7 +186,7 @@ namespace roboptim
   template <int N>
   typename ConstrainedBSpline<N>::jacobian_t
   ConstrainedBSpline<N>::variationDerivWrtParam
-  (double t, size_type order) const throw ()
+  (double t, size_type order) const
   {
     const size_type n = this->outputSize ();
     jacobian_t jac_basispolynomials (n, this->getNumberControlPoints () * n);

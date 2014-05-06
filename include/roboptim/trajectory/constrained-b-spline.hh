@@ -46,17 +46,16 @@ namespace roboptim
     /// \brief see B-Spline constructors for documentation
     ConstrainedBSpline (interval_t timeRange, size_type dimension,
 			const vector_t& parameters,
-			const std::string name = "Constrained B-Spline")
-      throw ();
+			const std::string name = "Constrained B-Spline");
 
     /// \brief see B-Spline constructors for documentation
     ConstrainedBSpline (interval_t tr, size_type dimension,
 			const vector_t& parameters,
 			const vector_t& knots,
-			std::string name = "Constrained B-Spline") throw ();
+			std::string name = "Constrained B-Spline");
 
     /// \brief Destructor of constrained B-spline.
-    virtual ~ConstrainedBSpline () throw ();
+    virtual ~ConstrainedBSpline ();
 
     /// Creates a constraint on the basic spline.
     /// This reduces the number of parameter by one.
@@ -70,7 +69,7 @@ namespace roboptim
     void addFixedConstraint (double t,
                              size_type dimension,
                              value_type value,
-                             size_type derivative = 0) throw ();
+                             size_type derivative = 0);
 
     /// \brief Create a constraint against another part of the spline.
     /// \f$\frac{\partial^d}{\partial t^d} f_{d_1}(t_1)
@@ -84,23 +83,23 @@ namespace roboptim
     void addCoupledConstraint
     (value_type t_1, size_type dimension_1,
      value_type t_2, size_type dimension_2,
-     size_type derivative = 0, value_type factor = 1.) throw ();
+     size_type derivative = 0, value_type factor = 1.);
 
     /// Overloaded parameters method from Trajectory<N>.
     /// Returns only the tunable parameters.
-    const vector_t& parameters () const throw ();
+    const vector_t& parameters () const;
 
     /// Overloaded setParameters method from Trajectory<N>.
     /// Given the free parameters, it calculates the spline parameters.
-    void setParameters (const vector_t&) throw ();
+    void setParameters (const vector_t&);
 
     /// \brief Clone and resize a trajectory.
     /// \param timeRange new time range.
     /// \return cloned trajectory with new time range.
-    virtual Trajectory<N>* resize (interval_t timeRange) const throw ();
+    virtual Trajectory<N>* resize (interval_t timeRange) const;
 
     jacobian_t variationDerivWrtParam (double t, size_type order)
-      const throw ();
+      const;
 
   protected:
 

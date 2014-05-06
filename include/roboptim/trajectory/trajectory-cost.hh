@@ -47,8 +47,8 @@ namespace roboptim
     /// \param traj trajectory on which the cost is computed
     /// \param name function's name
     TrajectoryCost (const trajectory_t& traj,
-		    std::string name = std::string ()) throw ();
-    virtual ~TrajectoryCost () throw ();
+		    std::string name = std::string ());
+    virtual ~TrajectoryCost ();
   protected:
     /// \brief Input trajectory.
     const trajectory_t& trajectory_;

@@ -71,11 +71,11 @@ namespace roboptim
     StablePointStateFunction (const trajectory_t& gamma,
 			      boost::shared_ptr<DerivableFunction> cost,
 			      const StableTimePoint tpt,
-			      size_type order = 1) throw ();
+			      size_type order = 1);
 
-    virtual ~StablePointStateFunction () throw ();
+    virtual ~StablePointStateFunction ();
 
-    size_type order () const throw ();
+    size_type order () const;
 
     template <typename F, typename CLIST>
     static void addToProblem (const trajectory_t& trajectory,
@@ -99,9 +99,9 @@ namespace roboptim
     }
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const throw ();
+    void impl_compute (result_t&, const argument_t&) const;
     void impl_gradient (gradient_t&, const argument_t&, size_type)
-      const throw ();
+      const;
 
   private:
     const trajectory_t& trajectory_;

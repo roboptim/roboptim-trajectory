@@ -143,7 +143,7 @@ namespace roboptim
     /// solver.
     /// \return vector of the real roots of the polynomial.
     /// \throw std::runtime_error invalid polynomial (e.g. null).
-    std::vector<value_type> realRoots () const throw (std::runtime_error);
+    std::vector<value_type> realRoots () const;
 
     /// \brief Return whether the polynomial is constant.
     /// \return true if the polynomial is constant, false otherwise.

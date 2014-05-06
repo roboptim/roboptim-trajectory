@@ -72,17 +72,16 @@ namespace roboptim
     ///
     /// \param traj trajectory defining this one by reparameterization
     /// \param s time scale
-    FreeTimeTrajectory (const fixedTimeTrajectory_t& traj, value_type s)
-      throw ();
+    FreeTimeTrajectory (const fixedTimeTrajectory_t& traj, value_type s);
 
-    FreeTimeTrajectory (const self_t& traj) throw ();
+    FreeTimeTrajectory (const self_t& traj);
 
-    virtual ~FreeTimeTrajectory () throw ();
+    virtual ~FreeTimeTrajectory ();
 
 
-    virtual jacobian_t variationConfigWrtParam (double t) const throw ();
+    virtual jacobian_t variationConfigWrtParam (double t) const;
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
-      const throw ();
+      const;
 
     virtual value_type singularPointAtRank (size_type rank) const;
     virtual vector_t derivBeforeSingularPoint (size_type rank, size_type order)
@@ -90,13 +89,13 @@ namespace roboptim
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    virtual void setParameters (const vector_t&) throw ();
+    virtual void setParameters (const vector_t&);
 
     /// \brief Get time scale factor.
     /// \return time scale factor.
-    value_type timeScale () const throw ();
+    value_type timeScale () const;
 
-    size_type getTimeScalingIndex () const throw ()
+    size_type getTimeScalingIndex () const
     {
       return 0;
     }
@@ -107,23 +106,23 @@ namespace roboptim
     ///
     /// \param o output stream used for display
     /// \return output stream
-    virtual std::ostream& print (std::ostream& o) const throw ();
+    virtual std::ostream& print (std::ostream& o) const;
 
     /// \brief Normalize angles in parameters array.
     ///
     /// Make sure angles are continuous.
     /// \param index Angles index in parameter array.
-    virtual void normalizeAngles (size_type index) throw ();
+    virtual void normalizeAngles (size_type index);
 
     const fixedTimeTrajectory_t&
-    getFixedTimeTrajectory () const throw ()
+    getFixedTimeTrajectory () const
     {
       assert (trajectory_);
       return *trajectory_;
     }
 
     self_t*
-    resize (interval_t) const throw ()
+    resize (interval_t) const
     {
       assert (trajectory_);
       value_type tMin = this->getLowerBound (this->timeRange ());
@@ -144,7 +143,7 @@ namespace roboptim
     }
 
     fixedTimeTrajectory_t*
-    makeFixedTimeTrajectory () const throw ()
+    makeFixedTimeTrajectory () const
     {
       assert (trajectory_);
       return trajectory_->resize (this->timeRange ());
@@ -160,19 +159,19 @@ namespace roboptim
     ///
     /// \param t input time
     /// \return new scaled time
-    double scaleTime (double t) const throw ();
-    double unscaleTime (double t) const throw ();
+    double scaleTime (double t) const;
+    double unscaleTime (double t) const;
 
-    jacobian_t variationConfigWrtParam (StableTimePoint tp) const throw ();
+    jacobian_t variationConfigWrtParam (StableTimePoint tp) const;
     jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
-      const throw ();
+      const;
 
   protected:
-    void impl_compute (result_t&, double) const throw ();
+    void impl_compute (result_t&, double) const;
     void impl_derivative (gradient_t& g, double x, size_type order)
-      const throw ();
+      const;
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const throw ();
+      const;
   private:
     /// \brief Input fixed time trajectory.
     fixedTimeTrajectory_t* trajectory_;

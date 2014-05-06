@@ -330,7 +330,7 @@ namespace roboptim
 
   template <int N>
   std::vector<typename Polynomial<N>::value_type>
-  Polynomial<N>::realRoots () const throw (std::runtime_error)
+  Polynomial<N>::realRoots () const
   {
     const value_type eps = 1e-6;
     std::vector<value_type> roots;

@@ -25,7 +25,6 @@ namespace roboptim
   inline
   VectorInterpolation::VectorInterpolation
   (const vector_t& x, size_type outputSize, value_type dt)
-    throw (std::runtime_error)
     : roboptim::Trajectory<3>
       (makeInterval (0., dt * static_cast<value_type> (x.size ())
                      / static_cast<value_type> (outputSize)),
@@ -37,14 +36,14 @@ namespace roboptim
   }
 
   inline
-  VectorInterpolation::~VectorInterpolation () throw ()
+  VectorInterpolation::~VectorInterpolation ()
   {}
 
   inline
   void
   VectorInterpolation::impl_compute
   (result_t& result, double t)
-    const throw ()
+    const
   {
     size_type before = static_cast<size_type> (std::floor (t / dt_));
     size_type after = static_cast<size_type> (std::ceil (t / dt_));
@@ -70,7 +69,7 @@ namespace roboptim
 
   inline
   void
-  VectorInterpolation::setParameters (const vector_t& x) throw (std::runtime_error)
+  VectorInterpolation::setParameters (const vector_t& x)
   {
     if (x.size () % this->outputSize () != 0)
       {
@@ -86,7 +85,7 @@ namespace roboptim
 
   inline
   VectorInterpolation::jacobian_t
-  VectorInterpolation::variationConfigWrtParam (double t) const throw ()
+  VectorInterpolation::variationConfigWrtParam (double t) const
   {
     return variationDerivWrtParam (t, 0);
   }
@@ -94,7 +93,7 @@ namespace roboptim
   inline
   VectorInterpolation::jacobian_t
   VectorInterpolation::variationDerivWrtParam (double t, size_type order)
-    const throw ()
+    const
   {
     VectorInterpolation::jacobian_t jacobian (this->outputSize (),
 					      this->parameters ().size ());
@@ -161,7 +160,7 @@ namespace roboptim
 
   inline
   VectorInterpolation::jacobian_t
-  VectorInterpolation::variationConfigWrtParam (StableTimePoint tp) const throw ()
+  VectorInterpolation::variationConfigWrtParam (StableTimePoint tp) const
   {
     return variationDerivWrtParam (tp, 0);
   }
@@ -169,7 +168,7 @@ namespace roboptim
   inline
   VectorInterpolation::jacobian_t
   VectorInterpolation::variationDerivWrtParam
-  (StableTimePoint stp, size_type order) const throw ()
+  (StableTimePoint stp, size_type order) const
   {
     return this->variationDerivWrtParam
       (stp.getTime (this->timeRange ()), order);
@@ -180,7 +179,7 @@ namespace roboptim
   VectorInterpolation::impl_derivative (gradient_t& gradient,
 					double t,
 					size_type order)
-    const throw ()
+    const
   {
     size_type before = static_cast<size_type> (std::floor (t / dt_));
     size_type after = static_cast<size_type> (std::ceil (t / dt_));
@@ -215,7 +214,7 @@ namespace roboptim
   VectorInterpolation::impl_derivative (gradient_t& derivative,
 					StableTimePoint stp,
 					size_type order)
-    const throw ()
+    const
   {
     this->impl_derivative
       (derivative,
@@ -225,7 +224,7 @@ namespace roboptim
 
   inline Trajectory<3>*
   VectorInterpolation::resize (interval_t)
-    const throw ()
+    const
   {
     throw std::runtime_error ("NOT IMPLEMENTED");
   }

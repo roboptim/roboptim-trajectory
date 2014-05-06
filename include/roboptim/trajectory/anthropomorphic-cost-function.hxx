@@ -28,7 +28,6 @@ namespace roboptim
    const typename boost::optional<vector_t> alpha,
    const typename boost::optional<value_type> ksi1,
    const typename boost::optional<value_type> ksi2)
-    throw ()
     : DerivableFunction (trajectory.parameters ().size (), 1,
 			 "cost function"),
       trajectory_ (trajectory),
@@ -51,7 +50,7 @@ namespace roboptim
   }
 
   template <typename T>
-  AnthropomorphicCostFunction<T>::~AnthropomorphicCostFunction () throw ()
+  AnthropomorphicCostFunction<T>::~AnthropomorphicCostFunction ()
   {}
 
   namespace detail
@@ -97,7 +96,7 @@ namespace roboptim
   void
   AnthropomorphicCostFunction<T>::impl_compute (result_t& res,
 						const argument_t& p)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -120,7 +119,7 @@ namespace roboptim
   AnthropomorphicCostFunction<T>::impl_gradient (gradient_t& grad,
 						 const argument_t& p,
 						 size_type)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -133,7 +132,7 @@ namespace roboptim
   template <typename T>
   typename AnthropomorphicCostFunction<T>::value_type
   AnthropomorphicCostFunction<T>::alpha3 (value_type deltaTheta,
-					  value_type dsquare) const throw ()
+					  value_type dsquare) const
   {
     const value_type ksi1 = M_PI / 18.;
     const value_type ksi2 = .5;

@@ -32,10 +32,10 @@ namespace roboptim
   {
   public:
 
-    LimitSpeed (StableTimePoint timePoint, const T& spline) throw ();
-    ~LimitSpeed () throw ();
+    LimitSpeed (StableTimePoint timePoint, const T& spline);
+    ~LimitSpeed ();
 
-    const T& trajectory () const throw ();
+    const T& trajectory () const;
 
     template <typename F, typename CLIST>
     static void addToProblem (const T&,
@@ -44,9 +44,9 @@ namespace roboptim
 			      unsigned);
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const throw ();
+    void impl_compute (result_t& res, const argument_t& p) const;
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const throw ();
+      const;
   private:
     StableTimePoint timePoint_;
     const T& trajectory_;

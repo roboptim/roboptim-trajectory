@@ -29,7 +29,6 @@ namespace roboptim
   CubicBSpline::CubicBSpline (interval_t tr, size_type outputSize,
 			      const vector_t& p,
 			      std::string name)
-    throw ()
     : Trajectory<3> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
   {
@@ -53,7 +52,7 @@ namespace roboptim
     computeBasisPolynomials ();
   }
 
-  CubicBSpline::CubicBSpline (const CubicBSpline& spline) throw ()
+  CubicBSpline::CubicBSpline (const CubicBSpline& spline)
     : Trajectory<3> (spline.timeRange (), spline.outputSize (),
                      spline.parameters (), spline.getName ()),
       nbp_ (spline.parameters ().size () / spline.outputSize ()),
@@ -124,19 +123,19 @@ namespace roboptim
       }
   }
 
-  CubicBSpline::~CubicBSpline () throw ()
+  CubicBSpline::~CubicBSpline ()
   {
   }
 
   void
-  CubicBSpline::setParameters (const vector_t& p) throw ()
+  CubicBSpline::setParameters (const vector_t& p)
   {
     assert (p.size () == parameters_.size ());
     parameters_ = p;
   }
 
   void
-  CubicBSpline::impl_compute (result_t& derivative, double t) const throw ()
+  CubicBSpline::impl_compute (result_t& derivative, double t) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -262,7 +261,7 @@ namespace roboptim
   void
   CubicBSpline::impl_derivative (gradient_t& derivative, double t,
 				 size_type order)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -290,7 +289,7 @@ namespace roboptim
 
 
   void
-  CubicBSpline::translateBasisPolynomials (double t1) throw ()
+  CubicBSpline::translateBasisPolynomials (double t1)
   {
     for (std::vector <std::vector <Polynomial3> >::iterator
            it = basisPolynomials_.begin ();
@@ -305,7 +304,7 @@ namespace roboptim
 
   void
   CubicBSpline::toPolynomials (std::vector<Polynomial3>& res)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -336,7 +335,7 @@ namespace roboptim
   void
   CubicBSpline::impl_derivative (gradient_t& derivative,
 				 StableTimePoint stp,
-				 size_type order) const throw ()
+				 size_type order) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -348,14 +347,14 @@ namespace roboptim
   }
 
   CubicBSpline::jacobian_t
-  CubicBSpline::variationConfigWrtParam (double t) const throw ()
+  CubicBSpline::variationConfigWrtParam (double t) const
   {
     return variationDerivWrtParam (t, 0);
   }
 
   CubicBSpline::jacobian_t
   CubicBSpline::variationDerivWrtParam (double t, size_type order)
-    const throw ()
+    const
   {
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
@@ -385,7 +384,7 @@ namespace roboptim
 
   CubicBSpline::jacobian_t
   CubicBSpline::variationConfigWrtParam (StableTimePoint stp)
-    const throw ()
+    const
   {
     return this->variationConfigWrtParam (stp.getTime (this->timeRange ()));
   }
@@ -393,7 +392,7 @@ namespace roboptim
 
   CubicBSpline::jacobian_t
   CubicBSpline::variationDerivWrtParam (StableTimePoint stp, size_type order)
-    const throw ()
+    const
   {
     return this->variationDerivWrtParam
       (stp.getTime (this->timeRange ()), order);
@@ -419,7 +418,7 @@ namespace roboptim
   }
 
   std::ostream&
-  CubicBSpline::print (std::ostream& o) const throw ()
+  CubicBSpline::print (std::ostream& o) const
   {
     o << "Cubic B-spline:" << incindent
       << iendl << "Number of parameters per spline function: " << nbp_

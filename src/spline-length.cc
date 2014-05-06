@@ -68,20 +68,19 @@ namespace roboptim
   SplineLength::SplineLength (const CubicBSpline& spline,
 			      size_type nDiscretizationPoints,
 			      boost::optional<interval_t> interval)
-    throw ()
     : TrajectoryCost<CubicBSpline> (spline, "spline length"),
       interval_ (interval ? *interval : spline.timeRange ()),
       nDiscretizationPoints_ (nDiscretizationPoints)
   {
   }
 
-  SplineLength::~SplineLength () throw ()
+  SplineLength::~SplineLength ()
   {
   }
 
   void
   SplineLength::impl_compute (result_t& res, const argument_t& p)
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -102,7 +101,7 @@ namespace roboptim
   void
   SplineLength::impl_gradient (gradient_t& grad, const argument_t& p,
 			       size_type ONLY_DEBUG (i))
-    const throw ()
+    const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
