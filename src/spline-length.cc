@@ -74,13 +74,13 @@ namespace roboptim
   {
   }
 
-  SplineLength::~SplineLength ()
+  SplineLength::~SplineLength () throw()
   {
   }
 
   void
   SplineLength::impl_compute (result_t& res, const argument_t& p)
-    const
+    const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -101,7 +101,7 @@ namespace roboptim
   void
   SplineLength::impl_gradient (gradient_t& grad, const argument_t& p,
 			       size_type ONLY_DEBUG (i))
-    const
+    const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

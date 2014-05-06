@@ -27,12 +27,12 @@ namespace roboptim
   {
   public:
     FrontalSpeed ();
-    ~FrontalSpeed ();
+    ~FrontalSpeed () throw();
 
   protected:
-    void impl_compute (result_t& res, const argument_t& t) const;
+    void impl_compute (result_t& res, const argument_t& t) const throw();
     void impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
-      const;
+      const throw();
   };
 } // end of namespace roboptim.
 

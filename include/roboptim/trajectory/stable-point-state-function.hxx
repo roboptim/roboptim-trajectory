@@ -41,7 +41,7 @@ namespace roboptim
   }
 
   template <typename T>
-  StablePointStateFunction<T>::~StablePointStateFunction()
+  StablePointStateFunction<T>::~StablePointStateFunction() throw()
   {
   }
 
@@ -55,7 +55,7 @@ namespace roboptim
   template <typename T>
   void
   StablePointStateFunction<T>::impl_compute (result_t& res,
-				  const argument_t& p) const
+				  const argument_t& p) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -71,7 +71,7 @@ namespace roboptim
   void
   StablePointStateFunction<T>::impl_gradient (gradient_t& grad,
 				   const argument_t& p,
-				   size_type i) const
+				   size_type i) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

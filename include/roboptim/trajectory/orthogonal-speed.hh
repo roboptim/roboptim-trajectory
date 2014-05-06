@@ -27,12 +27,12 @@ namespace roboptim
   {
   public:
     OrthogonalSpeed ();
-    ~OrthogonalSpeed ();
+    ~OrthogonalSpeed () throw();
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const;
+    void impl_compute (result_t& res, const argument_t& p) const throw();
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
-      const;
+      const throw();
   };
 } // end of namespace roboptim.
 

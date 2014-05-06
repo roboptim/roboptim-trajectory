@@ -52,7 +52,7 @@ namespace roboptim
     /// \throw std::runtime_error
     explicit VectorInterpolation
     (const vector_t& x, size_type outputSize, value_type dt);
-    ~VectorInterpolation ();
+    ~VectorInterpolation () throw();
 
     /// \brief Store parameters and update coefficients.
     /// \param vector_t vector of parameters.
@@ -73,12 +73,12 @@ namespace roboptim
       const;
 
   protected:
-    void impl_compute (result_t& result, double t) const;
+    void impl_compute (result_t& result, double t) const throw();
     void impl_derivative (gradient_t& derivative,
 			  double argument,
-			  size_type order = 1) const;
+			  size_type order = 1) const throw();
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const;
+      const throw();
     Trajectory<3>* resize (interval_t timeRange)
       const;
   private:

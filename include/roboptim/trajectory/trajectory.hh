@@ -97,7 +97,7 @@ namespace roboptim
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
-    virtual ~Trajectory ();
+    virtual ~Trajectory () throw();
 
     /// \name Accessing parameters, and state.
     /// \{
@@ -262,12 +262,12 @@ namespace roboptim
     double tolerance () const;
     /// \}
 
-    virtual std::ostream& print (std::ostream&) const;
+    virtual std::ostream& print (std::ostream&) const throw();
   protected:
-    void impl_compute (result_t&, StableTimePoint) const;
+    void impl_compute (result_t&, StableTimePoint) const throw();
     virtual void
     impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const = 0;
+      const throw() = 0;
 
     Trajectory (interval_t, size_type, const vector_t&,
 		std::string name = std::string ());

@@ -150,13 +150,13 @@ namespace roboptim
 		       const discreteStableTimePointInterval_t& interval,
 		       size_type order = 1);
 
-    virtual ~TrajectorySumCost ();
+    virtual ~TrajectorySumCost () throw();
 
     size_type order () const;
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const;
-    void impl_gradient (gradient_t&, const argument_t&, size_type) const;
+    void impl_compute (result_t&, const argument_t&) const throw();
+    void impl_gradient (gradient_t&, const argument_t&, size_type) const throw();
 
   private:
     const trajectory_t& trajectory_;
