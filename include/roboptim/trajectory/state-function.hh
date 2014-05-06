@@ -75,7 +75,7 @@ namespace roboptim
 		   const StableTimePoint tpt,
 		   size_type order = 1);
 
-    virtual ~StateFunction ();
+    virtual ~StateFunction () throw();
 
     size_type order () const;
 
@@ -123,9 +123,9 @@ namespace roboptim
 
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const;
+    void impl_compute (result_t&, const argument_t&) const throw();
     void impl_gradient (gradient_t&, const argument_t&, size_type)
-      const;
+      const throw();
 
   private:
     const trajectory_t& trajectory_;

@@ -53,7 +53,7 @@ namespace roboptim
   {}
 
   template <int N>
-  ConstrainedBSpline<N>::~ConstrainedBSpline () {}
+  ConstrainedBSpline<N>::~ConstrainedBSpline () throw() {};
 
   template <int N>
   void ConstrainedBSpline<N>::addFixedConstraint (double t,

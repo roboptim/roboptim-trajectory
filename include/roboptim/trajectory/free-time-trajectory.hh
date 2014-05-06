@@ -76,7 +76,7 @@ namespace roboptim
 
     FreeTimeTrajectory (const self_t& traj);
 
-    virtual ~FreeTimeTrajectory ();
+    virtual ~FreeTimeTrajectory () throw();
 
 
     virtual jacobian_t variationConfigWrtParam (double t) const;
@@ -106,7 +106,7 @@ namespace roboptim
     ///
     /// \param o output stream used for display
     /// \return output stream
-    virtual std::ostream& print (std::ostream& o) const;
+    virtual std::ostream& print (std::ostream& o) const throw();
 
     /// \brief Normalize angles in parameters array.
     ///
@@ -167,11 +167,11 @@ namespace roboptim
       const;
 
   protected:
-    void impl_compute (result_t&, double) const;
+    void impl_compute (result_t&, double) const throw();
     void impl_derivative (gradient_t& g, double x, size_type order)
-      const;
+      const throw();
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const;
+      const throw();
   private:
     /// \brief Input fixed time trajectory.
     fixedTimeTrajectory_t* trajectory_;

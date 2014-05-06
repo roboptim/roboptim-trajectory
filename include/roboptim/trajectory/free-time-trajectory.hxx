@@ -64,7 +64,7 @@ namespace roboptim
   }
 
   template <typename T>
-  FreeTimeTrajectory<T>::~FreeTimeTrajectory ()
+  FreeTimeTrajectory<T>::~FreeTimeTrajectory () throw()
   {
     delete trajectory_;
   }
@@ -72,7 +72,7 @@ namespace roboptim
   template <typename T>
   void
   FreeTimeTrajectory<T>::impl_compute (result_t& res , double t)
-    const
+    const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -85,7 +85,7 @@ namespace roboptim
   void
   FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
 					  double t,
-					  size_type order) const
+					  size_type order) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -100,7 +100,7 @@ namespace roboptim
   void
   FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
 					  StableTimePoint stp,
-					  size_type order) const
+					  size_type order) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -300,7 +300,7 @@ namespace roboptim
 
   template <typename T>
   std::ostream&
-  FreeTimeTrajectory<T>::print (std::ostream& o) const
+  FreeTimeTrajectory<T>::print (std::ostream& o) const throw()
   {
     o << "Free time trajectory." << std::endl;
     return o;

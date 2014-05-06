@@ -29,7 +29,7 @@ namespace roboptim
   }
 
   template <typename T>
-  TrajectoryCost<T>::~TrajectoryCost ()
+  TrajectoryCost<T>::~TrajectoryCost () throw()
   {
   }
 

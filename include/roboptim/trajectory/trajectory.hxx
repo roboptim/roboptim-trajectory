@@ -37,7 +37,7 @@ namespace roboptim
 
 
   template <unsigned dorder>
-  Trajectory<dorder>::~Trajectory ()
+  Trajectory<dorder>::~Trajectory () throw()
   {
   }
 
@@ -144,7 +144,7 @@ namespace roboptim
   template <unsigned dorder>
   void
   Trajectory<dorder>::impl_compute (result_t& res , StableTimePoint stp)
-    const
+    const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -198,7 +198,7 @@ namespace roboptim
 
   template <unsigned dorder>
   std::ostream&
-  Trajectory<dorder>::print (std::ostream& o) const
+  Trajectory<dorder>::print (std::ostream& o) const throw()
   {
     o << "Generic (abstract) trajectory." << std::endl;
     return o;

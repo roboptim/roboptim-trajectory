@@ -264,7 +264,7 @@ namespace roboptim
   }
 
   template <int N>
-  void BSpline<N>::impl_compute (result_t& derivative, double t) const
+  void BSpline<N>::impl_compute (result_t& derivative, double t) const throw()
   {
     t = detail::fixTime (t, *this);
     assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
@@ -353,7 +353,7 @@ namespace roboptim
   template <int N> void
   BSpline<N>::impl_derivative (gradient_t& derivative, double t,
 			       size_type order)
-    const
+    const throw()
   {
 
     t = detail::fixTime (t, *this);
@@ -389,7 +389,7 @@ namespace roboptim
   template <int N> void
   BSpline<N>::impl_derivative (gradient_t& derivative,
 			       StableTimePoint stp,
-			       size_type order) const
+			       size_type order) const throw()
   {
     this->impl_derivative (derivative,
 			   stp.getTime (this->timeRange ()),
@@ -470,7 +470,7 @@ namespace roboptim
   }
 
   template <int N> std::ostream&
-  BSpline<N>::print (std::ostream& o) const
+  BSpline<N>::print (std::ostream& o) const throw()
   {
     o << "Order " << order_ << " B-spline:" << incindent
       << iendl << "Number of parameters per spline function: " << nbp_

@@ -40,7 +40,7 @@ namespace roboptim
   }
 
   template <typename T>
-  TrajectorySumCost<T>::~TrajectorySumCost()
+  TrajectorySumCost<T>::~TrajectorySumCost() throw()
   {
   }
 
@@ -54,7 +54,7 @@ namespace roboptim
   template <typename T>
   void
   TrajectorySumCost<T>::impl_compute (result_t& res,
-				      const argument_t& p) const
+				      const argument_t& p) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -84,7 +84,7 @@ namespace roboptim
   template <typename T>
   void
   TrajectorySumCost<T>::impl_gradient (gradient_t& grad, const argument_t& p,
-				       size_type i) const
+				       size_type i) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);

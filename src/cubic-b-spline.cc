@@ -123,7 +123,7 @@ namespace roboptim
       }
   }
 
-  CubicBSpline::~CubicBSpline ()
+  CubicBSpline::~CubicBSpline () throw()
   {
   }
 
@@ -135,7 +135,7 @@ namespace roboptim
   }
 
   void
-  CubicBSpline::impl_compute (result_t& derivative, double t) const
+  CubicBSpline::impl_compute (result_t& derivative, double t) const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -261,7 +261,7 @@ namespace roboptim
   void
   CubicBSpline::impl_derivative (gradient_t& derivative, double t,
 				 size_type order)
-    const
+    const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -335,7 +335,8 @@ namespace roboptim
   void
   CubicBSpline::impl_derivative (gradient_t& derivative,
 				 StableTimePoint stp,
-				 size_type order) const
+				 size_type order) 
+    const throw()
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -418,7 +419,7 @@ namespace roboptim
   }
 
   std::ostream&
-  CubicBSpline::print (std::ostream& o) const
+  CubicBSpline::print (std::ostream& o) const throw()
   {
     o << "Cubic B-spline:" << incindent
       << iendl << "Number of parameters per spline function: " << nbp_

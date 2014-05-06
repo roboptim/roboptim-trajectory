@@ -36,14 +36,14 @@ namespace roboptim
   }
 
   inline
-  VectorInterpolation::~VectorInterpolation ()
+  VectorInterpolation::~VectorInterpolation () throw()
   {}
 
   inline
   void
   VectorInterpolation::impl_compute
   (result_t& result, double t)
-    const
+    const throw()
   {
     size_type before = static_cast<size_type> (std::floor (t / dt_));
     size_type after = static_cast<size_type> (std::ceil (t / dt_));
@@ -179,7 +179,7 @@ namespace roboptim
   VectorInterpolation::impl_derivative (gradient_t& gradient,
 					double t,
 					size_type order)
-    const
+    const throw()
   {
     size_type before = static_cast<size_type> (std::floor (t / dt_));
     size_type after = static_cast<size_type> (std::ceil (t / dt_));
@@ -214,7 +214,7 @@ namespace roboptim
   VectorInterpolation::impl_derivative (gradient_t& derivative,
 					StableTimePoint stp,
 					size_type order)
-    const
+    const throw()
   {
     this->impl_derivative
       (derivative,

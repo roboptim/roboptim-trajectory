@@ -53,7 +53,7 @@ namespace roboptim
     /// \param spline spline that will be copied
     CubicBSpline (const CubicBSpline& spline);
 
-    virtual ~CubicBSpline ();
+    virtual ~CubicBSpline () throw();
 
     /// \brief Modify spline parameters.
     virtual void setParameters (const vector_t&);
@@ -79,7 +79,7 @@ namespace roboptim
     ///
     /// \param o output stream used for display
     /// \return output stream
-    virtual std::ostream& print (std::ostream& o) const;
+    virtual std::ostream& print (std::ostream& o) const throw();
 
     jacobian_t variationConfigWrtParam (StableTimePoint tp) const;
     jacobian_t variationDerivWrtParam (StableTimePoint tp, size_type order)
@@ -144,11 +144,11 @@ namespace roboptim
 
   protected:
     using Trajectory<3>::impl_compute;
-    void impl_compute (result_t&, double) const;
+    void impl_compute (result_t&, double) const throw();
     void impl_derivative (gradient_t& g, double x, size_type order)
-      const;
+      const throw();
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
-      const;
+      const throw();
 
     /// \brief Find the index of the interval in which t is.
     /// \param t instant considered.

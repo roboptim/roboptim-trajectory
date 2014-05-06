@@ -55,7 +55,7 @@ namespace roboptim
 			std::string name = "Constrained B-Spline");
 
     /// \brief Destructor of constrained B-spline.
-    virtual ~ConstrainedBSpline ();
+    virtual ~ConstrainedBSpline () throw();
 
     /// Creates a constraint on the basic spline.
     /// This reduces the number of parameter by one.
