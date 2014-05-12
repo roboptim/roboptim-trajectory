@@ -146,33 +146,37 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
     << (gnuplot
         << set ("multiplot layout 2,2")
 
-        << comment (" Values:")
+        << comment (spline_2d_1)
+
+        << comment ("Values:")
         << comment (spline_2d_1 (0.))
         << comment (spline_2d_1 (2.5))
         << comment (spline_2d_1 (5.))
 
-        << comment (" 1st derivative:")
+        << comment ("1st derivative:")
         << comment (spline_2d_1.derivative (0., 1))
         << comment (spline_2d_1.derivative (2.5, 1))
         << comment (spline_2d_1.derivative (5., 1))
 
-        << comment (" 2nd derivative:")
+        << comment ("2nd derivative:")
         << comment (spline_2d_1.derivative (0., 2))
         << comment (spline_2d_1.derivative (2.5, 2))
         << comment (spline_2d_1.derivative (5., 2))
         << plot_xy (spline_2d_1, interval)
 
-        << comment (" Values:")
+        << comment (spline_2d_2)
+
+        << comment ("Values:")
         << comment (spline_2d_2 (0.))
         << comment (spline_2d_2 (2.5))
         << comment (spline_2d_2 (5.))
 
-        << comment (" 1st derivative:")
+        << comment ("1st derivative:")
         << comment (spline_2d_2.derivative (0., 1))
         << comment (spline_2d_2.derivative (2.5, 1))
         << comment (spline_2d_2.derivative (5., 1))
 
-        << comment (" 2nd derivative:")
+        << comment ("2nd derivative:")
         << comment (spline_2d_2.derivative (0., 2))
         << comment (spline_2d_2.derivative (2.5, 2))
         << comment (spline_2d_2.derivative (5., 2))
