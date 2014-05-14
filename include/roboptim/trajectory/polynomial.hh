@@ -140,14 +140,15 @@ namespace roboptim
 
     /// \brief Return the real roots of the polynomial.
     /// \warning This function relies on Eigen's experimental polynomial
-    /// solver.
+    /// solver. The polynomial should not be null or constant.
     /// \return vector of the real roots of the polynomial.
     /// \throw std::runtime_error invalid polynomial (e.g. null).
     std::vector<value_type> realRoots () const;
 
     /// \brief Return whether the polynomial is constant.
+    /// \param epsilon epsilon used.
     /// \return true if the polynomial is constant, false otherwise.
-    bool isConstant () const;
+    bool isConstant (value_type epsilon = Function::epsilon ()) const;
 
     /// \brief Return the order of such a polynomial.
     /// \return order of such a polynomial.
