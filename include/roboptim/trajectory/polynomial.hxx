@@ -282,12 +282,12 @@ namespace roboptim
   typename Polynomial<N>::value_type
   Polynomial<N>::operator () (value_type t) const
   {
-    value_type dt = 1.;
+    // Use Horner's method.
+    value_type dt = t - t0_;
     value_type result = 0.;
-    for (int idx = 0; idx < N + 1; idx++)
+    for (int idx = N; idx >= 0; idx--)
       {
-	result += coefs_[idx] * dt;
-	dt = dt * ( t - t0_ );
+	result = result * dt + coefs_[idx];
       }
     return result;
   }

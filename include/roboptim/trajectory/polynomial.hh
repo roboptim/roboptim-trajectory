@@ -108,7 +108,7 @@ namespace roboptim
     /// \return λP
     Polynomial<N> operator* (value_type lambda) const;
 
-    /// \brief Evaluate the polynomial.
+    /// \brief Evaluate the polynomial with Horner's method.
     /// \param t point of evaluation.
     /// \return P(t)
     value_type operator () (value_type t) const;
