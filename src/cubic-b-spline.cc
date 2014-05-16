@@ -77,7 +77,8 @@ namespace roboptim
       {
 	std::size_t j_ = static_cast<std::size_t> (j);
 
-	basisPolynomials_.push_back (std::vector <Polynomial3> ());
+	basisPolynomials_.push_back
+	  (polynomials3vector_t ());
 	// t_j
 	double t0 = knots_[j_];
 	// t_{j+1}
@@ -291,11 +292,11 @@ namespace roboptim
   void
   CubicBSpline::translateBasisPolynomials (double t1)
   {
-    for (std::vector <std::vector <Polynomial3> >::iterator
+    for (polynomials3vectors_t::iterator
            it = basisPolynomials_.begin ();
 	 it != basisPolynomials_.end ();
 	 ++it)
-      for (std::vector <Polynomial3>::iterator
+      for (polynomials3vector_t::iterator
 	     p = it->begin ();
 	   p != it->end ();
 	   ++p)
@@ -303,7 +304,7 @@ namespace roboptim
   }
 
   void
-  CubicBSpline::toPolynomials (std::vector<Polynomial3>& res)
+  CubicBSpline::toPolynomials (polynomials3vector_t& res)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION

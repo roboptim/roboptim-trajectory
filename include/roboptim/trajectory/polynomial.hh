@@ -198,6 +198,9 @@ namespace roboptim
     /// \param t0
     /// \param key one of all_zero_coefficients, monomial_coefficients.
     Polynomial (value_type t0, special_polynomials key);
+
+  public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   }; // class Polynomial
 
   template <int N>
@@ -221,6 +224,9 @@ namespace roboptim
     Monomial (value_type t0)
       : parent_t (t0, parent_t::monomial_coefficients)
     {}
+
+  public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   }; // class Monomial
 } // end of namespace roboptim.
 

@@ -36,6 +36,13 @@ namespace roboptim
   class CubicBSpline : public Trajectory<3>
   {
   public:
+    typedef std::vector<
+    Polynomial3, Eigen::aligned_allocator<Polynomial3> >
+    polynomials3vector_t;
+
+    typedef std::vector<polynomials3vector_t> polynomials3vectors_t;
+
+
     /// \brief Instantiate a cubic B-Spline from its definition.
     ///
     /// \param timeRange spline time range: $\f$[t_3,t_n]\f$
@@ -115,14 +122,14 @@ namespace roboptim
 
     /// \brief Return the polynomial expression of the cubic B-spline on each
     /// time interval.
-    void toPolynomials (std::vector<Polynomial3>& res) const;
+    void toPolynomials (polynomials3vector_t& res) const;
 
     /// \brief Constant getter for the basis polynomials of the cubic B-spline.
     /// \return constant reference to the basis polynomials.
     ///
     /// Note: computeBasisPolynomials() needs to be called beforehand (which is
     /// done in the CubicBSpline constructor).
-    const std::vector <std::vector <Polynomial3> >&
+    const polynomials3vectors_t&
     basisPolynomials() const
     {
       return basisPolynomials_;
@@ -174,11 +181,14 @@ namespace roboptim
 
     /// \brief Basis polynomials.
     /// basisPolynomials_[i][j] = B_{i,i+j}
-    std::vector <std::vector <Polynomial3> > basisPolynomials_;
+    polynomials3vectors_t basisPolynomials_;
 
     /// \brief Whether the B-spline is uniform.
     /// Note: for backward compatibility only.
     bool uniform_;
+
+  public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   };
 
   /// @}

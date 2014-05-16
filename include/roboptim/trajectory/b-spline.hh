@@ -53,8 +53,20 @@ namespace roboptim
 
     typedef Polynomial<N> polynomial_t;
     typedef Monomial<N> monomial_t;
-    typedef std::map<int, polynomial_t> cox_map;
+    typedef std::map<
+      int,
+      polynomial_t,
+      std::less<int>,
+      Eigen::aligned_allocator<std::pair<const int, polynomial_t> >
+      > cox_map;
     typedef typename cox_map::iterator cox_map_itr_t;
+
+    typedef std::vector <
+      polynomial_t,
+      Eigen::aligned_allocator<polynomial_t>
+      > basisPolynomials_t;
+    typedef std::vector <basisPolynomials_t>
+    basisPolynomialsVector_t;
 
     /// \brief Instantiate a B-Spline from its definition.
     ///
@@ -140,7 +152,7 @@ namespace roboptim
     /// done in the BSpline constructor).
     ///
     /// \return constant reference to the basis polynomials.
-    const std::vector <std::vector <polynomial_t> >&
+    const basisPolynomialsVector_t&
     basisPolynomials () const
     {
       return basisPolynomials_;
@@ -175,7 +187,7 @@ namespace roboptim
     vector_t knots_;
 
     /// \brief basisPolynomials_[i][j] = B_{i,i+j}
-    std::vector <std::vector <Polynomial<N> > > basisPolynomials_;
+    basisPolynomialsVector_t basisPolynomials_;
 
     /// \brief For backward compatibility only.
     bool uniform_;

@@ -242,7 +242,7 @@ namespace roboptim
     for (size_type j = 0; j < nbp_; j++)
       {
 	//calculate basis polynomials for each interval of the knot vector
-	basisPolynomials_.push_back (std::vector <polynomial_t> ());
+	basisPolynomials_.push_back (basisPolynomials_t ());
 	cox_map map = cox_de_boor (j, order_);
 
 	for (cox_map_itr_t itr = map.begin(); itr != map.end(); itr++)
