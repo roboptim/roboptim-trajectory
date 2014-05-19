@@ -380,6 +380,65 @@ void test_roots ()
 }
 
 template <int N>
+void test_min ()
+{
+  typedef typename Polynomial<N>::value_type value_type;
+  typedef typename Polynomial<N>::min_t      min_t;
+  typedef typename Polynomial<N>::interval_t interval_t;
+  typedef typename Polynomial<N>::coefs_t    coefs_t;
+
+  // Start with some dummy examples
+  coefs_t params;
+  interval_t interval;
+  value_type t0 = 0.;
+  min_t res_min;
+
+  // Quadratic: 1+x² on [-1,1]
+  params.setZero ();
+  params[0] = 1.;
+  params[2] = 1.;
+  interval.first  = -1.;
+  interval.second =  1.;
+  Polynomial<N> quadratic (t0, params);
+  res_min = quadratic.min (interval);
+  BOOST_CHECK_SMALL (res_min.first, tol);
+
+  // Cubic: 1+x³ on [0,1]
+  params.setZero ();
+  params[0] = 1.;
+  params[3] = 1.;
+  interval.first  = 0.;
+  interval.second = 1.;
+  Polynomial<N> cubic (t0, params);
+  res_min = cubic.min (interval);
+  BOOST_CHECK_SMALL (res_min.first, tol);
+
+  // Test with a random polynomial
+  params.setRandom ();
+  t0 = (value_type)rand () / RAND_MAX;
+  Polynomial<N> p (t0, params);
+  Polynomial<N-1> dp = p.template derivative<1> ();
+
+  interval.first  = -10. * std::abs ((double)rand () / RAND_MAX);
+  interval.second =  10. * std::abs ((double)rand () / RAND_MAX);
+
+  res_min = p.min (interval);
+  // TODO: use a better check (not just dP(t_min) = 0)
+  if (res_min.first != interval.first && res_min.first != interval.second)
+    BOOST_CHECK_SMALL (dp (res_min.first), tol);
+
+  // Test other cases: null leading coefficient or null polynomial
+  p.coefs ()[N] = 0.;
+  dp = p.template derivative<1> ();
+  res_min = p.min (interval);
+  if (res_min.first != interval.first && res_min.first != interval.second)
+    BOOST_CHECK_SMALL (dp (res_min.first), tol);
+
+  p.coefs ().setZero ();
+  BOOST_CHECK_THROW (res_min = p.min (interval), std::runtime_error);
+}
+
+template <int N>
 void test_misc ()
 {
   typename Polynomial<N>::coefs_t params;
@@ -412,6 +471,9 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 
   test_roots<3> ();
   test_roots<5> ();
+
+  test_min<3> ();
+  test_min<5> ();
 
   test_misc<3> ();
   test_misc<5> ();

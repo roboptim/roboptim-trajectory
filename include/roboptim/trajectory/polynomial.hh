@@ -32,10 +32,20 @@ namespace roboptim
   class Polynomial
   {
   public:
-    typedef Function::size_type size_type;
-    typedef Function::value_type value_type;
-    typedef Function::vector_t vector_t;
+    typedef Function::size_type               size_type;
+    typedef Function::value_type              value_type;
+    typedef Function::vector_t                vector_t;
+    typedef Function::interval_t              interval_t;
+
+    /// \brief Type of the vector of roots.
+    typedef std::vector<value_type> roots_t;
+
+    /// \brief Fixed-size coefficient vector (N+1 if N is the polynomial
+    /// degree).
     typedef Eigen::Matrix<value_type, N+1, 1> coefs_t;
+
+    /// \brief Type of a minimum query: (t_min, P(t_min))
+    typedef std::pair<value_type, value_type> min_t;
 
     /// \brief Default constructor: return a null polynomial.
     Polynomial ();
@@ -143,7 +153,13 @@ namespace roboptim
     /// solver. The polynomial should not be null or constant.
     /// \return vector of the real roots of the polynomial.
     /// \throw std::runtime_error invalid polynomial (e.g. null).
-    std::vector<value_type> realRoots () const;
+    roots_t realRoots () const;
+
+    /// \brief Compute the minimum of the polynomial on an interval.
+    /// \param interval time interval.
+    /// \return pair containing t_min and the associated minimum of the
+    /// polynomial on the interval.
+    min_t min (const interval_t& interval) const;
 
     /// \brief Return whether the polynomial is constant.
     /// \param epsilon epsilon used.

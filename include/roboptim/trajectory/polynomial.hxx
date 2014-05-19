@@ -24,6 +24,8 @@
 # include <limits> // numeric_limits
 # include <cstdarg> // va_list, va_start, va_arg, va_end
 
+#include <boost/bind.hpp> // bind
+
 // Polynomial solver
 # include <unsupported/Eigen/Polynomials>
 
@@ -329,17 +331,17 @@ namespace roboptim
   }
 
   template <int N>
-  std::vector<typename Polynomial<N>::value_type>
+  typename Polynomial<N>::roots_t
   Polynomial<N>::realRoots () const
   {
     const value_type eps = 1e-6;
-    std::vector<value_type> roots;
+    roots_t roots;
 
     // Eigen expects a polynomial in the form: Σ α_i t^i
     // Thus, we compute the roots of the "translated" polynomial:
     // P(u) = Σ α_i u^i
     // Note: the leading coefficient has to be different than 0
-    vector_t::Index n = coefs_.size ();
+    vector_t::Index n = static_cast<vector_t::Index> (N+1);
 
     // Usual case: leading coefficient ≠ 0 (i.e. known polynomial size)
     if (std::abs (coefs_[n-1]) > eps)
@@ -352,11 +354,21 @@ namespace roboptim
 	while (n > 0 && std::abs (coefs_[n-1]) < eps)
 	  n--;
 
-	if (n == 0)
-	  throw std::runtime_error ("solver cannot process null polynomials.");
-
-	Eigen::PolynomialSolver<value_type, Eigen::Dynamic> solver (coefs_.head (n));
-	solver.realRoots (roots);
+	if (n < 2)
+	  throw std::runtime_error ("solver cannot process null or constant "
+				    "polynomials.");
+	// Note: PolynomialSolver with linear polynomials leads to a segv in
+	// Eigen 3.2, so we deal with it ourselves until the patch is released
+	// (cf. Eigen PR #64).
+	else if (n == 2)
+	  {
+	    roots.push_back (-coefs_[0]/coefs_[1]);
+	  }
+	else
+	  {
+	    Eigen::PolynomialSolver<value_type, Eigen::Dynamic> solver (coefs_.head (n));
+	    solver.realRoots (roots);
+	  }
       }
 
     // Then we shift the roots to get the roots of the actual polynomial:
@@ -366,6 +378,51 @@ namespace roboptim
                     std::bind2nd (std::plus<value_type> (), t0_));
 
     return roots;
+  }
+
+  template <int N>
+  typename Polynomial<N>::min_t
+  Polynomial<N>::min (const interval_t& interval) const
+  {
+    typedef std::vector<value_type> values_t;
+
+    roots_t roots;
+
+    // If the polynomial is not constant, compute the roots
+    if (!isConstant ())
+      // Compute the real roots of poly
+      roots = derivative<1> ().realRoots ();
+    // We could also simply return its value with the center of the interval.
+    else throw std::runtime_error ("constant polynomial has an infinite number"
+                                   " of minimum values.");
+
+    // Set the critical points + bound values
+    values_t crit_points (2);
+    crit_points[0] = interval.first;
+    crit_points[1] = interval.second;
+
+    // Only keep the roots in the interval
+    for (values_t::const_iterator
+           root = roots.begin (); root != roots.end (); ++root)
+      {
+        if (*root > interval.first && *root < interval.second)
+          crit_points.push_back (*root);
+      }
+
+    // Compute all the critical values + bound values
+    values_t crit_values (crit_points.size ());
+    std::transform (crit_points.begin (), crit_points.end (),
+		    crit_values.begin (),
+		    boost::bind (&Polynomial<N>::operator (), &(*this), _1));
+
+    // Get the min of the critical values
+    values_t::const_iterator
+      min_val = std::min_element (crit_values.begin (),
+				  crit_values.end ());
+
+    // Return a pair <min time, min value>
+    return std::make_pair (crit_points[min_val - crit_values.begin ()],
+			   *min_val);
   }
 
   template <int N>
