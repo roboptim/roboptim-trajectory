@@ -1,5 +1,8 @@
 This package was written by and with the assistance of
 
+* Benjamin Chrétien             chretien@lirmm.fr
+- Polynomial, Monomial clases implementation.
+
 * Florent Lamiraux              florent@laas.fr
 - Interface design.
 
