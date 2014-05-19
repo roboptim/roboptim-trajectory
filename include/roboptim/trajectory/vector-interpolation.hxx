@@ -45,6 +45,13 @@ namespace roboptim
   (result_t& result, double t)
     const
   {
+    // Fix evaluation if we only have one frame
+    if (parameters ().size () == this->outputSize ())
+      {
+	result = parameters ();
+	return;
+      }
+
     size_type before = static_cast<size_type> (std::floor (t / dt_));
     size_type after = static_cast<size_type> (std::ceil (t / dt_));
 
