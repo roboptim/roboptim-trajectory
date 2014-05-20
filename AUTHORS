@@ -1,7 +1,7 @@
 This package was written by and with the assistance of
 
 * Benjamin Chrétien             chretien@lirmm.fr
-- Polynomial, Monomial clases implementation.
+- Polynomial implementation.
 
 * Florent Lamiraux              florent@laas.fr
 - Interface design.
@@ -14,6 +14,9 @@ This package was written by and with the assistance of
 
 * Olivier Stasse                olivier.stasse@aist.go.jp
 - Interface design.
+
+* Alexander Werner              alexander.werner@dlr.de
+- Generic B-spline implementation.
 
 * Pierre-Brice Wieber           pierre-brice.wieber@inrialpes.fr
 - Interface design.
