@@ -89,6 +89,7 @@ namespace roboptim
     trajectory_t traj = trajectory_;
     traj.setParameters (p);
 
+    res [0] = 0;
     SumLength sumlength (traj, res[0]);
     foreach (interval_, nDiscretizationPoints_, sumlength);
 
