@@ -333,6 +333,37 @@ namespace roboptim
       }
   }
 
+
+  CubicBSpline CubicBSpline::operator+ (const CubicBSpline& s) const
+  {
+    if (parameters ().size () != s.parameters ().size ()
+        || timeRange () != s.timeRange ()
+        || outputSize () != s.outputSize ())
+      throw std::runtime_error ("mismatch in cubic B-spline dimensions.");
+
+    // Since the splines have the same dimension, the sum of the splines
+    // is simply the spline with the sum of their control points.
+    CubicBSpline sum (timeRange (), outputSize (),
+                      parameters () + s.parameters (),
+                      this->getName () + " + " + s.getName ());
+
+    return sum;
+  }
+
+
+  void CubicBSpline::operator+= (const CubicBSpline& s)
+  {
+    if (parameters ().size () != s.parameters ().size ()
+        || timeRange () != s.timeRange ()
+        || outputSize () != s.outputSize ())
+      throw std::runtime_error ("mismatch in cubic B-spline dimensions.");
+
+    // Since the splines have the same dimension, the sum of the splines
+    // is simply the spline with the sum of their control points.
+    setParameters (parameters () + s.parameters ());
+  }
+
+
   void
   CubicBSpline::impl_derivative (gradient_t& derivative,
 				 StableTimePoint stp,

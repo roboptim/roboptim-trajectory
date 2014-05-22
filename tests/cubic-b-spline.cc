@@ -83,6 +83,8 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
 {
   using namespace roboptim::visualization::gnuplot;
 
+  typedef Function::value_type value_type;
+
   boost::shared_ptr<boost::test_tools::output_test_stream>
     output = retrievePattern("cubic-b-spline");
 
@@ -135,16 +137,27 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
                             params_1d, "Cubic B-spline 1D (1)");
 
   // Second 1D spline (change some parameters)
+  params_1d[0] = 30.;
   params_1d[3] = 75.;
   params_1d[4] = 25.;
+  params_1d[7] = 30.;
   CubicBSpline spline_1d_2 (std::make_pair (0., 5.), 1,
                             params_1d, "Cubic B-spline 1D (2)");
 
+  // Test spline additions
+  CubicBSpline spline_1d_3 = spline_1d_1 + spline_1d_2;
+  CubicBSpline spline_1d_4 = spline_1d_1;
+  spline_1d_4 += spline_1d_2;
+
+  BOOST_CHECK_THROW
+    (CubicBSpline spline_1d_5 = spline_1d_1 + spline_2d_2;
+     std::cout << spline_1d_5 << std::endl,
+     std::runtime_error);
 
   // Gnuplot export and compare to pattern
   (*output)
     << (gnuplot
-        << set ("multiplot layout 2,2")
+        << set ("multiplot layout 3,2")
 
         << comment (spline_2d_1)
 
@@ -183,8 +196,10 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
         << plot_xy (spline_2d_2, interval)
 
         << plot (spline_1d_1, interval)
-
         << plot (spline_1d_2, interval)
+
+        << plot (spline_1d_3, interval)
+        << plot (spline_1d_4, interval)
 
         << unset ("multiplot"));
 
@@ -195,7 +210,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
 
   // Check gradients with finite-differences
 
-  for (double t = 0.5; t < 5.; t += 0.5)
+  for (value_type t = 0.5; t < 5.; t += 0.5)
     {
       try
         {
@@ -214,7 +229,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
         }
     }
 
-  for (double x = 0.; x < 10.; x += 0.25)
+  for (value_type x = 0.; x < 10.; x += 0.25)
     {
       Function::vector_t params = spline_2d_1.parameters ();
       params[0 * 2] = 321;
@@ -231,10 +246,22 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
         std::cout << "# " << spline_2d_1 (0.)[0] << " != " << x << std::endl;
     }
 
+  discreteInterval_t window (0., 5., 0.01);
+  for (value_type t = boost::get<0> (window); t < boost::get<1> (window);
+       t += boost::get<2> (window))
+    {
+      BOOST_CHECK_SMALL (std::abs (spline_1d_3 (t)[0]
+				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
+			 1e-8);
+      BOOST_CHECK_SMALL (std::abs (spline_1d_4 (t)[0]
+				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
+			 1e-8);
+    }
+
   // Non-regression test (compilation)
   std::vector<CubicBSpline> vec;
   vec.push_back(CubicBSpline (std::make_pair (0., 5.), 2, params,
-                              "cubic-b-spline"));
+			      "cubic-b-spline"));
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

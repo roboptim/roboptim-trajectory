@@ -50,8 +50,8 @@ namespace roboptim
     /// \param parameters vector of parameters defining control points
     /// \param name function title
     ///
-    /// Number of control points is inferred from dimension of dimenion of
-    /// parameter vector.
+    /// The number of control points is inferred from the dimension of
+    /// the parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
 		  const vector_t& parameters,
 		  const std::string name = "cubic B-Spline");
@@ -148,6 +148,20 @@ namespace roboptim
     {
       return knots_;
     }
+
+    /// \brief Add two cubic B-splines, supposing they have the
+    /// same dimensions.
+    /// \param s other B-spline with the same dimensions.
+    /// \return S2 = S0 + S1
+    /// \throw std::runtime_error if splines do not have the same
+    /// dimensions.
+    CubicBSpline operator+ (const CubicBSpline& s) const;
+
+    /// \brief Add a second B-spline to this B-spline.
+    /// \param s other B-spline with the same dimensions.
+    /// \throw std::runtime_error if splines do not have the same
+    /// dimensions.
+    void operator+= (const CubicBSpline& s);
 
   protected:
     using Trajectory<3>::impl_compute;
