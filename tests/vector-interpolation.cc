@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test,
 
   BOOST_CHECK (interpolation->outputSize () == outputSize);
 
-  for (std::size_t i = 0; i < 0; ++i)
+  for (std::size_t i = 0; i < 6; ++i)
     {
       BOOST_CHECK (params[i * outputSize + 0] == (*interpolation) (i * dt)[0]);
       BOOST_CHECK (params[i * outputSize + 1] == (*interpolation) (i * dt)[1]);
