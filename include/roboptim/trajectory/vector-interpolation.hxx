@@ -153,16 +153,26 @@ namespace roboptim
 
   inline
   VectorInterpolation::vector_t
-  VectorInterpolation::derivBeforeSingularPoint (size_type, size_type) const
+  VectorInterpolation::derivBeforeSingularPoint
+  (size_type rank, size_type order) const
   {
-    // FIXME: this should return something
+    VectorInterpolation::vector_t gradient (this->gradientSize ());
+    VectorInterpolation::value_type t =
+      this->singularPointAtRank (rank) - (dt_ / 2.);
+    this->derivative (gradient, t, order);
+    return gradient;
   }
 
   inline
   VectorInterpolation::vector_t
-  VectorInterpolation::derivAfterSingularPoint (size_type, size_type) const
+  VectorInterpolation::derivAfterSingularPoint
+  (size_type rank, size_type order) const
   {
-    // FIXME: this should return something
+    VectorInterpolation::vector_t gradient (this->gradientSize ());
+    VectorInterpolation::value_type t =
+      this->singularPointAtRank (rank) + (dt_ / 2.);
+    this->derivative (gradient, t, order);
+    return gradient;
   }
 
   inline
