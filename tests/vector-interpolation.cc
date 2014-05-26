@@ -194,6 +194,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_derivWrtParams_test, T,
   boost::shared_ptr<VectorInterpolation >
     interpolation = vectorInterpolation (params, outputSize, dt);
 
+  boost::shared_ptr<VectorInterpolation >
+    interpolationCopy =
+    boost::shared_ptr<VectorInterpolation> (interpolation->clone ());
+  for (typename VectorInterpolation::vector_t::Index i = 0;
+       i < params.size (); ++i)
+    BOOST_CHECK_SMALL
+      (interpolation->parameters ()[i] -
+       interpolationCopy->parameters ()[i],
+       1e-8);
+
   boost::shared_ptr<VectorInterpolationDerivWrtParameters> derivWrtParams
     = boost::make_shared<VectorInterpolationDerivWrtParameters>
     (*interpolation, 1.5, 2);
