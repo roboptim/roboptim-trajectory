@@ -6,8 +6,8 @@ roboptim-trajectory
 
 ![LGPL-3](https://www.gnu.org/graphics/lgplv3-88x31.png)
 
-This package is the Trajectory tooblox of the RobOptim framework. It
-contains parametered curves definition, cost functions, constraints
+This package is the Trajectory toolbox of the RobOptim framework. It
+contains parametric curve definitions, cost functions, constraints
 and tools to optimize trajectories. It is released under the
 [LGPL-3](COPYING.LESSER) license.
 
