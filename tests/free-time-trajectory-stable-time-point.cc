@@ -291,7 +291,6 @@ BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE (trajectory_free_time_trajectory_stable_time_point)
 {
-  typedef CubicBSpline::value_type value_type;
   CubicBSpline::vector_t params (9);
 
   // Scale.

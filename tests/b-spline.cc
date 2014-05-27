@@ -182,9 +182,7 @@ void test_non_uniform ()
       for (int dimension = 1; dimension < 4; dimension++)
         {
 	  std::pair<value_type, value_type> interval = std::make_pair (0., 1.);
-	  int min_params = N + 1;
 	  int params_c = N + 1 + N;
-	  assert (params_c > min_params);
 	  vector_t params (dimension * params_c);
 	  params.setRandom ();
 	  params *= 10.;
@@ -209,9 +207,7 @@ void test_plot ()
 
   std::pair<value_type, value_type> interval = std::make_pair (0., 1.);
 
-  int min_params = N + 1;
   int params_c = N + 1 + N;
-  assert (params_c >= min_params);
   vector_t params (params_c);
   params.setRandom();
   params *= 10.;
