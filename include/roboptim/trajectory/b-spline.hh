@@ -108,8 +108,8 @@ namespace roboptim
     /// \brief Modify spline parameters.
     virtual void setParameters (const vector_t&);
 
-    virtual jacobian_t variationConfigWrtParam (double t) const;
-    virtual jacobian_t variationDerivWrtParam (double t, size_type order)
+    virtual jacobian_t variationConfigWrtParam (value_type t) const;
+    virtual jacobian_t variationDerivWrtParam (value_type t, size_type order)
       const;
     virtual value_type singularPointAtRank (size_type rank) const;
     virtual vector_t derivBeforeSingularPoint (size_type rank, size_type order)
@@ -162,8 +162,8 @@ namespace roboptim
 
     using Trajectory<N>::impl_compute;
 
-    void impl_compute (result_t&, double) const;
-    void impl_derivative (gradient_t& g, double x, size_type order)
+    void impl_compute (result_t&, value_type) const;
+    void impl_derivative (gradient_t& g, value_type x, size_type order)
       const;
     void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
       const;

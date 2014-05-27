@@ -171,7 +171,7 @@ void test_plot (void)
 
 BOOST_AUTO_TEST_CASE (trajectory_constrained_bspline)
 {
-  srand (time (NULL));
+  srand (0);
 
   test_evaluate<4> ();
   test_plot<4> ();

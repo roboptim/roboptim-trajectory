@@ -421,8 +421,9 @@ namespace roboptim
 				  crit_values.end ());
 
     // Return a pair <min time, min value>
-    return std::make_pair (crit_points[min_val - crit_values.begin ()],
-			   *min_val);
+    value_type min_time =
+      crit_points[static_cast<std::size_t> (min_val - crit_values.begin ())];
+    return std::make_pair (min_time, *min_val);
   }
 
   template <int N>

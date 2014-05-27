@@ -41,11 +41,11 @@ namespace roboptim
     size_type m = nbp_ + order_ + 1;
 
     //FIXME: check this
-    double delta_t =
+    value_type delta_t =
       (tr.second - tr.first)
-      / static_cast<double> (m - order_ - 1 - order_);
+      / static_cast<value_type> (m - order_ - 1 - order_);
 
-    double ti = tr.first - order_ * delta_t;
+    value_type ti = tr.first - order_ * delta_t;
     knots_.resize (m);
     for (size_type i = 0; i < m; i++)
       {
@@ -128,7 +128,7 @@ namespace roboptim
     if (n == 0) //end of recursion
       {
 	cox_map map;
-	Eigen::Matrix < double, N + 1, 1 > temp_params;
+	Eigen::Matrix < value_type, N + 1, 1 > temp_params;
 	temp_params.setZero();
 	temp_params[0] = 1.;
 	std::pair<cox_map_itr_t, bool> ptr =
@@ -141,13 +141,13 @@ namespace roboptim
     else
       {
 	// t_{j}
-	const double t0 = knots_[j + 0];
+	const value_type t0 = knots_[j + 0];
 	// t_{j+1}
-	const double t1 = knots_[j + 1];
+	const value_type t1 = knots_[j + 1];
 	// t_{j+n}
-	const double tn = knots_[j + n];
+	const value_type tn = knots_[j + n];
 	// t_{j+n+1}
-	const double tn1 = knots_[j + n + 1];
+	const value_type tn1 = knots_[j + n + 1];
 
 	polynomial_t p_1_rat = 1. / (tn - t0) * monomial_t (t0);
 	// http://wolftype.com/ucsb/spatial/bspline.html, uniform b-splines
@@ -264,7 +264,7 @@ namespace roboptim
   }
 
   template <int N>
-  void BSpline<N>::impl_compute (result_t& derivative, double t) const
+  void BSpline<N>::impl_compute (result_t& derivative, value_type t) const
   {
     t = detail::fixTime (t, *this);
     assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
@@ -276,7 +276,7 @@ namespace roboptim
   BSpline<N>::Dt () const
   {
     assert (uniform_);
-    return this->length () / ((value_type)nbp_ - static_cast<double> (order_));
+    return this->length () / ((value_type)nbp_ - static_cast<value_type> (order_));
   }
 
   template <int N>
@@ -284,14 +284,14 @@ namespace roboptim
   BSpline<N>::interval (value_type t) const
   {
     t = detail::fixTime (t, *this);
-    typedef boost::numeric::converter<size_type, double> Double2SizeType;
+    typedef boost::numeric::converter<size_type, value_type> Double2SizeType;
 
     // t_{order]
-    double tmin = this->timeRange ().first;
+    value_type tmin = this->timeRange ().first;
     size_type imin = order_;
 
     // t_{m-?}
-    double tmax = this->timeRange ().second;
+    value_type tmax = this->timeRange ().second;
     size_type imax = nbp_;
 
     unsigned int count = 0;
@@ -301,8 +301,11 @@ namespace roboptim
 
     while (!found && iPrev != i)
       {
-	i = Double2SizeType::convert
-	  (std::floor (imin + (t - tmin) / (tmax - tmin) * (imax - imin)));
+	value_type imin_ = static_cast<value_type> (imin);
+	value_type imax_ = static_cast<value_type> (imax);
+	value_type d =
+	  std::floor (imin_ + (t - tmin) / (tmax - tmin) * (imax_ - imin_));
+	i = Double2SizeType::convert (d);
 	if (t < knots_ [i])
 	  {
 	    tmax = knots_ [i - 1];
@@ -351,7 +354,7 @@ namespace roboptim
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_t& derivative, double t,
+  BSpline<N>::impl_derivative (gradient_t& derivative, value_type t,
 			       size_type order)
     const
   {
@@ -363,12 +366,15 @@ namespace roboptim
     derivative.setZero();
 
 # ifndef NDEBUG
-    double polynomial_sum = 0.;
+    value_type polynomial_sum = 0.;
 # endif //! NDEBUG
-    for (size_type idx = 0; idx < order_ + 1; idx++)
+    for (size_type idx = 0; idx < order_ + 1; ++idx)
       {
+	const std::size_t k_ = static_cast<std::size_t> (k);
+	const std::size_t idx_ = static_cast<std::size_t> (idx);
+
         const vector_t& P_seg = this->parameters_.segment ((k - idx) * n, n);
-        const Polynomial<N>& B = basisPolynomials_[k - idx][idx];
+        const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
 
 # ifndef NDEBUG
         polynomial_sum += B.derivative (t, order);
@@ -382,7 +388,7 @@ namespace roboptim
       {
         assert
           (std::abs ( polynomial_sum - 1.)
-           < std::numeric_limits<double>::epsilon() * 1e6);
+           < std::numeric_limits<value_type>::epsilon() * 1e6);
       }
   }
 
@@ -398,7 +404,7 @@ namespace roboptim
 
   template <int N>
   typename BSpline<N>::jacobian_t
-  BSpline<N>::variationConfigWrtParam (double t) const
+  BSpline<N>::variationConfigWrtParam (value_type t) const
   {
     return variationDerivWrtParam (t, 0);
   }
@@ -406,7 +412,7 @@ namespace roboptim
 
   template <int N>
   typename BSpline<N>::jacobian_t
-  BSpline<N>::variationDerivWrtParam (double t, size_type order)
+  BSpline<N>::variationDerivWrtParam (value_type t, size_type order)
     const
   {
 
@@ -415,13 +421,14 @@ namespace roboptim
     const size_type n = this->outputSize ();
 
     jacobian_t jac (n, nbp_ * n);
-    jac.setZero();
+    jac.setZero ();
     matrix_t In (n, n);
-    In.setIdentity();
+    In.setIdentity ();
 
-    for (size_type idx = 0; idx < order_ + 1; idx++)
+    for (std::size_t idx = 0; idx < static_cast<std::size_t> (order_ + 1); ++idx)
       {
-	const Polynomial<N>& B = basisPolynomials_[k - idx][idx];
+	const std::size_t k_ = static_cast<std::size_t> (k);
+	const Polynomial<N>& B = basisPolynomials_[k_ - idx][idx];
 
 	jac.middleCols ((k - order_) * n, n) =
 	  B.derivative (t, order) * In;

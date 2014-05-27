@@ -62,7 +62,7 @@ namespace roboptim
                                                   size_type order)
   {
     // Constraint_values = constraints_ * parameters_ (1)
-    const int existing_constraints = constraints_.rows ();
+    const typename vector_t::Index existing_constraints = constraints_.rows ();
     // Insert constraint into new row of (1)
     constraint_values_.conservativeResize (existing_constraints + 1);
     constraint_values_ (existing_constraints) = value;
@@ -73,12 +73,14 @@ namespace roboptim
 
     t = detail::fixTime (t, *this);
     const size_type k = this->interval (t);
+    const std::size_t k_ = static_cast<std::size_t> (k);
     const size_type n = this->outputSize ();
 
     for (size_type idx = 0; idx < this->order_ + 1; idx++)
       {
+	const std::size_t idx_ = static_cast<std::size_t> (idx);
         constraints_ (existing_constraints, (k - idx) * n + dimension)
-	  = this->basisPolynomials ()[k - idx][idx].derivative (t, order);
+	  = this->basisPolynomials ()[k_ - idx_][idx_].derivative (t, order);
       }
     updateProjector ();
   }
@@ -91,7 +93,7 @@ namespace roboptim
    size_type derivative, value_type factor)
   {
     // Constraint_values = constraints_ * parameters_ (1)
-    const int existing_constraints = constraints_.rows ();
+    const typename vector_t::Index existing_constraints = constraints_.rows ();
 
     // Insert constraint into new row of (1)
     constraint_values_.conservativeResize (existing_constraints + 1);
@@ -104,16 +106,20 @@ namespace roboptim
     t_1 = detail::fixTime (t_1, *this);
     t_2 = detail::fixTime (t_2, *this);
     const size_type k_1 = this->interval (t_1);
+    const std::size_t k_1_ = static_cast<std::size_t> (k_1);
     const size_type k_2 = this->interval (t_2);
+    const std::size_t k_2_ = static_cast<std::size_t> (k_2);
     const size_type n = this->outputSize ();
 
     for (size_type idx = 0; idx < this->order_ + 1; idx++)
       {
+	const std::size_t idx_ = static_cast<std::size_t> (idx);
         constraints_ (existing_constraints, (k_1 - idx) * n + dimension_1)
-	  = this->basisPolynomials ()[k_1 - idx][idx].derivative (t_1, derivative);
+	  = this->basisPolynomials ()
+	  [k_1_ - idx_][idx_].derivative (t_1, derivative);
         constraints_ (existing_constraints, (k_2 - idx) * n + dimension_2)
 	  -= factor *
-	  this->basisPolynomials ()[k_2 - idx][idx].derivative (t_2, derivative);
+	  this->basisPolynomials ()[k_2_ - idx_][idx_].derivative (t_2, derivative);
       }
     updateProjector ();
   }
@@ -144,7 +150,7 @@ namespace roboptim
     svd.compute (constraints_, Eigen::ComputeFullU | Eigen::ComputeFullV);
 
     // Get the dimension of the null space
-    const int null_space_dim = svd.matrixV ().rows ()
+    const typename vector_t::Index null_space_dim = svd.matrixV ().rows ()
       - svd.singularValues ().rows ();
 
     // Otherwise no parameters to optimize are left
@@ -192,13 +198,15 @@ namespace roboptim
     jacobian_t jac_basispolynomials (n, this->getNumberControlPoints () * n);
     jac_basispolynomials.setZero ();
     const size_type k = this->interval (t);
+    const std::size_t k_ = static_cast<std::size_t> (k);
     for (size_type idx = 0; idx < this->order_ + 1; idx++)
       {
-        const Polynomial<N>& B = this->basisPolynomials ()[k - idx][idx];
-        jac_basispolynomials.middleCols ((k - idx)*n, n).diagonal ().
+	const std::size_t idx_ = static_cast<std::size_t> (idx);
+        const Polynomial<N>& B = this->basisPolynomials ()[k_ - idx_][idx_];
+        jac_basispolynomials.middleCols ((k - idx) * n, n).diagonal ().
 	  setConstant (B.derivative (t, order));
       }
-    const int variables = tunables_.rows ();
+    const typename vector_t::Index variables = tunables_.rows ();
     jacobian_t jac (n, variables);
     jac = jac_basispolynomials * this->projector_;
     return jac;

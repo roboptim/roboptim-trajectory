@@ -157,10 +157,12 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test,
 
   BOOST_CHECK (interpolation->outputSize () == outputSize);
 
-  for (std::size_t i = 0; i < 6; ++i)
+  for (VectorInterpolation::vector_t::Index i = 0; i < 6; ++i)
     {
-      BOOST_CHECK (params[i * outputSize + 0] == (*interpolation) (i * dt)[0]);
-      BOOST_CHECK (params[i * outputSize + 1] == (*interpolation) (i * dt)[1]);
+      VectorInterpolation::value_type pt =
+	static_cast<VectorInterpolation::value_type> (i) * dt;
+      BOOST_CHECK (params[i * outputSize + 0] == (*interpolation) (pt)[0]);
+      BOOST_CHECK (params[i * outputSize + 1] == (*interpolation) (pt)[1]);
     }
 
   // Display initial and final trajectory.

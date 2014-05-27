@@ -46,8 +46,8 @@ template <int N>
 struct spline_checks
 {
   static void
-  check_evaluate (std::pair<value_type, value_type> interval,
-		  int dimension, vector_t const& params, int order)
+  check_evaluate (std::pair<value_type, value_type>,
+		  int, vector_t const&, int)
   {
     // do nothing
   };

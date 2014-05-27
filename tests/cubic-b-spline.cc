@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   boost::shared_ptr<CubicBSpline>
     spline_2d_2_copy =
     boost::shared_ptr<CubicBSpline> (spline_2d_2.clone ());
-  for (typename CubicBSpline::vector_t::Index i = 0;
+  for (CubicBSpline::vector_t::Index i = 0;
        i < params.size (); ++i)
     BOOST_CHECK_SMALL
       (spline_2d_2.parameters ()[i]-

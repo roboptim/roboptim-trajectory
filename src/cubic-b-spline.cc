@@ -171,30 +171,43 @@ namespace roboptim
     unsigned int count = 0;
     bool found = false;
     size_type i = 1;
+    std::size_t i_ = static_cast<std::size_t> (i);
     size_type iPrev = 0;
-    while (!found && iPrev != i) {
-      i = Double2SizeType::convert
-	(std::floor (static_cast<double> (imin) + (t - tmin)
-		     / (tmax - tmin) * static_cast<double> (imax - imin)));
-      if (t < knots_ [i]) {
-	tmax = knots_ [i-1];
-	imax = i-1;
-      } else if (t >= knots_ [i+1]) {
-	if (t < knots_ [i+2]) {
-	  i = i+1;
-	  found = true;
-	}
-	imin = i+1;
-	tmin = knots_ [i+1];
-      } else {
-	found = true;
+
+    while (!found && iPrev != i)
+      {
+	i = Double2SizeType::convert
+	  (std::floor (static_cast<double> (imin) + (t - tmin)
+		       / (tmax - tmin) * static_cast<double> (imax - imin)));
+	i_ = static_cast<std::size_t> (i);
+
+	if (t < knots_ [i_])
+	  {
+	    tmax = knots_ [i_ - 1];
+	    imax = i - 1;
+	  }
+	else if (t >= knots_ [i_ + 1])
+	  {
+	    if (t < knots_ [i_ + 2])
+	      {
+		i = i + 1;
+		found = true;
+	      }
+	    imin = i + 1;
+	    tmin = knots_ [i_ + 1];
+	  }
+	else
+	  {
+	    found = true;
+	  }
+	++count;
+	assert (count < 10000);
+	iPrev = i;
       }
-      count++;
-      assert (count < 10000);
-      iPrev = i;
-    }
-    if (i > nbp_-1) i = nbp_-1;
-    if (i < 3) i = 3;
+    if (i > nbp_ - 1)
+      i = nbp_-1;
+    if (i < 3)
+      i = 3;
     return i;
   }
 
@@ -270,6 +283,7 @@ namespace roboptim
 
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
+    const std::size_t k_ = static_cast<std::size_t> (k);
     const size_type n = outputSize ();
 
     const vector_t& P_k_3 = parameters().segment((k - 3) * n,n);
@@ -277,10 +291,10 @@ namespace roboptim
     const vector_t& P_k_1 = parameters().segment((k - 1) * n,n);
     const vector_t& P_k   = parameters().segment((k - 0) * n,n);
 
-    const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
-    const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
-    const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
-    const Polynomial3& B_k_k = basisPolynomials_[k][0];
+    const Polynomial3& B_k_3_k = basisPolynomials_[k_ - 3][3];
+    const Polynomial3& B_k_2_k = basisPolynomials_[k_ - 2][2];
+    const Polynomial3& B_k_1_k = basisPolynomials_[k_ - 1][1];
+    const Polynomial3& B_k_k = basisPolynomials_[k_][0];
 
     derivative = B_k_3_k.derivative(t, order) * P_k_3 +
       B_k_2_k.derivative(t, order) * P_k_2 +
@@ -311,22 +325,28 @@ namespace roboptim
     Eigen::internal::set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
+    const std::size_t nbp = static_cast<std::size_t> (nbp_);
+
     // Cubic B-spline ---> nbp_-3 intervals (aka segments or bays)
-    if (res.size() != nbp_-3) res.resize(nbp_-3);
+    if (res.size () != nbp - 3)
+      res.resize (nbp - 3);
 
     for (size_type k = 3; k < nbp_; ++k)
       {
+	const std::size_t k_ = static_cast<std::size_t> (k);
+
 	const value_type& P_k_3 = parameters()(k - 3);
 	const value_type& P_k_2 = parameters()(k - 2);
 	const value_type& P_k_1 = parameters()(k - 1);
 	const value_type& P_k   = parameters()(k - 0);
 
-	const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
-	const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
-	const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
-	const Polynomial3& B_k_k   = basisPolynomials_[k][0];
+	const Polynomial3& B_k_3_k = basisPolynomials_[k_ - 3][3];
+	const Polynomial3& B_k_2_k = basisPolynomials_[k_ - 2][2];
+	const Polynomial3& B_k_1_k = basisPolynomials_[k_ - 1][1];
+	const Polynomial3& B_k_k   = basisPolynomials_[k_][0];
 
-	res[k-3] = P_k_3 * B_k_3_k
+	res[k_- 3] =
+	  P_k_3 * B_k_3_k
 	  + P_k_2 * B_k_2_k
 	  + P_k_1 * B_k_1_k
 	  + P_k   * B_k_k;
@@ -390,17 +410,18 @@ namespace roboptim
   {
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
+    const std::size_t k_ = static_cast<std::size_t> (k);
     const size_type n = outputSize ();
 
-    const Polynomial3& B_k_3_k = basisPolynomials_[k-3][3];
-    const Polynomial3& B_k_2_k = basisPolynomials_[k-2][2];
-    const Polynomial3& B_k_1_k = basisPolynomials_[k-1][1];
-    const Polynomial3& B_k_k = basisPolynomials_[k][0];
+    const Polynomial3& B_k_3_k = basisPolynomials_[k_ - 3][3];
+    const Polynomial3& B_k_2_k = basisPolynomials_[k_ - 2][2];
+    const Polynomial3& B_k_1_k = basisPolynomials_[k_ - 1][1];
+    const Polynomial3& B_k_k = basisPolynomials_[k_][0];
 
-    jacobian_t jac(n, nbp_ * n);
-    jac.setZero();
-    matrix_t In(n,n);
-    In.setIdentity();
+    jacobian_t jac (n, nbp_ * n);
+    jac.setZero ();
+    matrix_t In (n,n);
+    In.setIdentity ();
 
     jac.middleCols((k - 3) * n, n) =
       B_k_3_k.derivative(t, order) * In;
