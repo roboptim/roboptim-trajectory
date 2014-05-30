@@ -29,4 +29,4 @@ ADD_LIBRARY(roboptim-trajectory SHARED
   )
 PKG_CONFIG_USE_DEPENDENCY(roboptim-trajectory roboptim-core)
 SET_TARGET_PROPERTIES(roboptim-trajectory PROPERTIES SOVERSION 1.1.0)
-INSTALL(TARGETS roboptim-trajectory DESTINATION lib)
+INSTALL(TARGETS roboptim-trajectory DESTINATION ${CMAKE_INSTALL_LIBDIR})
