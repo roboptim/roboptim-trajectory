@@ -272,7 +272,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 	freeTimeTraj.variationDerivWrtParam (t, 1);
       fmterDeriv % normalize (fttVarDeriv);
 
-      for (unsigned gradientId = 0;
+      for (freeTime_t::size_type gradientId = 0;
 	   gradientId < freeTimeTraj.parameters ().size (); ++gradientId)
 	try
 	  {
