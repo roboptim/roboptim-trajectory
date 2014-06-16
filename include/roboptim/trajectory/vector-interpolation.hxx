@@ -40,6 +40,14 @@ namespace roboptim
   {}
 
   inline
+  VectorInterpolation::VectorInterpolation (const VectorInterpolation& vi)
+    : roboptim::Trajectory<3> (vi),
+      dt_ (vi.dt_)
+  {
+    setParameters (vi.parameters ());
+  }
+
+  inline
   void
   VectorInterpolation::impl_compute
   (result_t& result, double t)

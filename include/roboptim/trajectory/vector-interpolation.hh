@@ -54,6 +54,8 @@ namespace roboptim
     (const vector_t& x, size_type outputSize, value_type dt);
     ~VectorInterpolation ();
 
+    VectorInterpolation (const VectorInterpolation& vi);
+
     /// \brief Store parameters and update coefficients.
     /// \param vector_t vector of parameters.
     /// \throw std::runtime_error
