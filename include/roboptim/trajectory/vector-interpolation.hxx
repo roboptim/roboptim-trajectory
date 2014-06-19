@@ -48,6 +48,37 @@ namespace roboptim
   }
 
   inline
+  VectorInterpolation::size_type
+  VectorInterpolation::numFrames () const
+  {
+    return
+      static_cast<size_type> (this->parameters ().size ())
+      / this->outputSize ();
+  }
+
+  inline boost::shared_ptr<VectorInterpolation>
+  VectorInterpolation::trim (size_type start, size_type length) const
+  {
+    // check that start is not too high
+    if (start >= this->numFrames ())
+      throw std::runtime_error ("invalid starting frame");
+    // if length is zero, compute automatically how many frames are
+    // remaining
+    if (length <= 0)
+      length = this->numFrames () - start;
+    // check again that the arguments are correct
+    if (length < 1 || start + length > this->numFrames ())
+      throw std::runtime_error ("invalid length");
+
+    Eigen::VectorBlock<const vector_t> x = this->parameters ().segment
+      (start * this->outputSize (), length * this->outputSize ());
+
+    boost::shared_ptr<VectorInterpolation> result =
+      boost::make_shared<VectorInterpolation> (x, this->outputSize (), this->dt_);
+    return result;
+  }
+
+  inline
   void
   VectorInterpolation::impl_compute
   (result_t& result, double t)

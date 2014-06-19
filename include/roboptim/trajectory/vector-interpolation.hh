@@ -61,6 +61,8 @@ namespace roboptim
     /// \throw std::runtime_error
     void setParameters (const vector_t&);
 
+    size_type numFrames () const;
+
     jacobian_t variationConfigWrtParam (double t) const;
     jacobian_t variationDerivWrtParam (double t, size_type order)
       const;
@@ -73,6 +75,18 @@ namespace roboptim
     jacobian_t
     variationDerivWrtParam (StableTimePoint tp, size_type order)
       const;
+
+    /// \brief Instantiate a trajectory corresponding to a sub-part of
+    ///        this trajectory.
+    ///
+    /// This function can be called to exclude some frames at the
+    /// beginning and/or the end of the trajectory.
+    ///
+    /// \param[in] start starting frame (0 is the first frame)
+    /// \param[out] length length of the output trajectory (0 means maximum length)
+    /// \return build sub-trajectory (data are copied)
+    boost::shared_ptr<VectorInterpolation>
+    trim (size_type start, size_type length) const;
 
   protected:
     void impl_compute (result_t& result, double t) const;
