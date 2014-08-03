@@ -51,4 +51,7 @@
 # include <roboptim/trajectory/visualization/speed.hh>
 # include <roboptim/trajectory/visualization/trajectory.hh>
 
+// FIXME: for transition to trajectory namespace (to be removed)
+using namespace roboptim::trajectory;
+
 #endif //! ROBOPTIM_TRAJECTORY_HH
