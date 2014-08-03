@@ -23,6 +23,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   class FrontalSpeed : public DerivableFunction
   {
   public:
@@ -34,6 +36,7 @@ namespace roboptim
     void impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
       const;
   };
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FRONTAL_SPEED_HH

@@ -28,10 +28,14 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace visualization
   {
     namespace gnuplot
     {
+      typedef roboptim::visualization::gnuplot::Command Command;
+
       /// \brief Plot a 2D trajectory with Gnuplot.
       ///
       /// Plot a 2D trajectory in Gnuplot.
@@ -71,6 +75,8 @@ namespace roboptim
       {
 	using boost::format;
 	using namespace detail;
+	using namespace ::roboptim::visualization;
+
 	assert (traj.outputSize () >= 2);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
         Function::value_type max = Function::getUpperBound (traj.timeRange ());
@@ -98,6 +104,8 @@ namespace roboptim
       Command plot_xytheta (const T& traj, typename T::value_type step)
       {
 	using boost::format;
+	using namespace ::roboptim::visualization;
+
 	assert (traj.outputSize () == 3);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
@@ -142,6 +150,7 @@ namespace roboptim
 
     } // end of namespace gnuplot.
   } // end of namespace visualization.
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_TRAJECTORY_HH

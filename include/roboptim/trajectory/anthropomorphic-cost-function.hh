@@ -27,6 +27,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// Cost function from ``An optimal control model unifying holonomic
   /// and nonholonomic walking'' Katja Mombaur, Jean-Paul Laumond,
   /// Eiichi Yoshida
@@ -77,6 +79,7 @@ namespace roboptim
     value_type ksi2_;
     value_type alpha3_;
   };
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/anthropomorphic-cost-function.hxx>

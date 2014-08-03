@@ -31,6 +31,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <int N>
   Polynomial<N>::Polynomial ()
     : t0_ (0)
@@ -453,6 +455,7 @@ namespace roboptim
       }
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_POLYNOMIAL_HXX

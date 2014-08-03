@@ -32,6 +32,7 @@
 #include <iostream>
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace std;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)

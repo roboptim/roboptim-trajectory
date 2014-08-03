@@ -21,6 +21,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace detail
   {
     inline Function::value_type
@@ -312,6 +314,7 @@ namespace roboptim
   {
     this->normalizeAngles (index, 1);
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HXX

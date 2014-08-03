@@ -23,6 +23,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   class OrthogonalSpeed : public DerivableFunction
   {
   public:
@@ -34,6 +36,7 @@ namespace roboptim
     void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
       const;
   };
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_ORTHOGONAL_SPEED_HH

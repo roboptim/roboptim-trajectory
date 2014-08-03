@@ -21,6 +21,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   TrajectorySumCost<T>::
   TrajectorySumCost (const trajectory_t& gamma,
@@ -112,6 +114,7 @@ namespace roboptim
 	grad += gr;
       }
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX

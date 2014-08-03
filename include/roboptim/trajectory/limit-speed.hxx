@@ -28,6 +28,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace detail
   {
     std::string getLimitSpeedName (const StableTimePoint& timePoint);
@@ -115,6 +117,7 @@ namespace roboptim
 	   vRange);
       }
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 

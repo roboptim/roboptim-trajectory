@@ -28,6 +28,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   LimitOmega<T>::LimitOmega (StableTimePoint timePoint,
 			     const T& trajectory)
@@ -93,6 +95,7 @@ namespace roboptim
     fd.gradient (grad, p, i);
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_LIMIT_OMEGA_HXX

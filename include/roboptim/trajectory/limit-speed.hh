@@ -27,6 +27,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   class LimitSpeed : public DerivableFunction
   {
@@ -51,6 +53,7 @@ namespace roboptim
     StableTimePoint timePoint_;
     const T& trajectory_;
   };
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/limit-speed.hxx>

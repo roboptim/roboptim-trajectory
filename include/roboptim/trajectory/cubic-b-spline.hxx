@@ -22,6 +22,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename P>
   void
   CubicBSpline::freezeCurveStart (P& problem, size_type offset) const
@@ -73,6 +75,7 @@ namespace roboptim
 	problem.addConstraint (boundaryCondShPtr, interval);
       }
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX

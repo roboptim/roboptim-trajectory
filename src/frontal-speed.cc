@@ -23,6 +23,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   FrontalSpeed::FrontalSpeed ()
     : DerivableFunction (2 * 3, 1, "frontal speed")
   {}
@@ -66,4 +68,5 @@ namespace roboptim
 
 
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.

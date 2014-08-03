@@ -23,6 +23,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \brief Polynomial of degree at most N.
   ///
   /// \f[
@@ -244,6 +246,7 @@ namespace roboptim
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   }; // class Monomial
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/polynomial.hxx>

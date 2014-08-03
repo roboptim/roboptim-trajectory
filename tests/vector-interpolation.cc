@@ -35,6 +35,7 @@
 #include <roboptim/trajectory/vector-interpolation.hh>
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 
 

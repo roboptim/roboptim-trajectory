@@ -34,6 +34,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace detail
   {
     template <typename T>
@@ -288,6 +290,7 @@ namespace roboptim
 
   /// @}
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/trajectory.hxx>

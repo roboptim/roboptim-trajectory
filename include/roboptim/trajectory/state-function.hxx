@@ -22,6 +22,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   StateFunction<T>::StateFunction (const trajectory_t& trajectory,
 				   boost::shared_ptr<DerivableFunction> function,
@@ -93,6 +95,7 @@ namespace roboptim
       updatedTrajectory->variationStateWrtParam (tpt_, this->order_);
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_STATE_COST_HXX

@@ -28,10 +28,14 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace visualization
   {
     namespace gnuplot
     {
+      typedef roboptim::visualization::gnuplot::Command Command;
+
       /// \brief Plot a speed limit constraint.
       ///
       /// \return Gnuplot command
@@ -54,6 +58,7 @@ namespace roboptim
 	  void operator () (const Function::value_type& t)
 	  {
 	    using boost::format;
+	    using namespace ::roboptim::visualization;
 
 	    double tmax = Function::getUpperBound (trajectory_.timeRange ());
 
@@ -105,6 +110,7 @@ namespace roboptim
       }
     } // end of namespace gnuplot.
   } // end of namespace visualization.
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_LIMIT_SPEED_HH

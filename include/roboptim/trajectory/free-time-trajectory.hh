@@ -26,6 +26,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \addtogroup roboptim_function
   /// @{
 
@@ -207,6 +209,7 @@ namespace roboptim
     return res;
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/free-time-trajectory.hxx>

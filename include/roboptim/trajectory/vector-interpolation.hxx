@@ -22,10 +22,12 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   inline
   VectorInterpolation::VectorInterpolation
   (const vector_t& x, size_type outputSize, value_type dt)
-    : roboptim::Trajectory<3>
+    : roboptim::trajectory::Trajectory<3>
       (makeInterval (0., dt * static_cast<value_type> (x.size ())
                      / static_cast<value_type> (outputSize)),
        outputSize, x,
@@ -41,7 +43,7 @@ namespace roboptim
 
   inline
   VectorInterpolation::VectorInterpolation (const VectorInterpolation& vi)
-    : roboptim::Trajectory<3> (vi),
+    : roboptim::trajectory::Trajectory<3> (vi),
       dt_ (vi.dt_)
   {
     setParameters (vi.parameters ());
@@ -284,6 +286,7 @@ namespace roboptim
   {
     throw std::runtime_error ("NOT IMPLEMENTED");
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FILTER_VECTOR_INTERPOLATION_HXX

@@ -27,6 +27,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \brief Add constraints that freeze parameters.
   ///
   /// This constraint expects a vector of pairs (argument id, value) to
@@ -85,6 +87,7 @@ namespace roboptim
   /// Example shows freeze use.
   /// \example spline-optimization.cc
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/freeze.hxx>
