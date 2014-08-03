@@ -437,6 +437,13 @@ namespace trajectory
   }
 
   template <int N>
+  typename Polynomial<N>::polynomialFunction_t
+  Polynomial<N>::asFunction () const
+  {
+    return polynomialFunction_t (translate (0.).coefs_);
+  }
+
+  template <int N>
   Polynomial<N>::Polynomial (value_type t0, special_polynomials key)
     : t0_ (t0)
   {
