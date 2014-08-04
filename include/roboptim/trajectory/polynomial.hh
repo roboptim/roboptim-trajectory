@@ -20,8 +20,11 @@
 #ifndef ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
 # include <roboptim/core/function.hh>
+# include <roboptim/core/function/polynomial.hh>
 
 namespace roboptim
+{
+namespace trajectory
 {
   /// \brief Polynomial of degree at most N.
   ///
@@ -46,6 +49,9 @@ namespace roboptim
 
     /// \brief Type of a minimum query: (t_min, P(t_min))
     typedef std::pair<value_type, value_type> min_t;
+
+    /// \brief Polynomial function.
+    typedef ::roboptim::Polynomial<Function::traits_t> polynomialFunction_t;
 
     /// \brief Default constructor: return a null polynomial.
     Polynomial ();
@@ -173,6 +179,12 @@ namespace roboptim
       return order_;
     }
 
+    /// \brief Get the equivalent Polynomial function.
+    /// This can be used for all the methods that expect a RobOptim
+    /// function (e.g. plotting).
+    /// \return Polynomial function with the appropriate coefficients set.
+    polynomialFunction_t asFunction () const;
+
   private:
 
     /// \brief vector of polynomial coefficients (ordered from lowest to
@@ -244,6 +256,7 @@ namespace roboptim
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   }; // class Monomial
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/polynomial.hxx>

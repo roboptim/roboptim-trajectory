@@ -31,6 +31,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <int N>
   Polynomial<N>::Polynomial ()
     : t0_ (0)
@@ -435,6 +437,13 @@ namespace roboptim
   }
 
   template <int N>
+  typename Polynomial<N>::polynomialFunction_t
+  Polynomial<N>::asFunction () const
+  {
+    return polynomialFunction_t (translate (0.).coefs_);
+  }
+
+  template <int N>
   Polynomial<N>::Polynomial (value_type t0, special_polynomials key)
     : t0_ (t0)
   {
@@ -453,6 +462,7 @@ namespace roboptim
       }
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_POLYNOMIAL_HXX

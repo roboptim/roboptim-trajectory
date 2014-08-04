@@ -24,6 +24,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   //FIXME: defined_lc_in has to be true (false untested).
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
@@ -494,6 +496,7 @@ namespace roboptim
     return this->knots_;
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX

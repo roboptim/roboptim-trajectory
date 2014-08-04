@@ -21,6 +21,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   StablePointStateFunction<T>::StablePointStateFunction
   (const trajectory_t& trajectory,
@@ -99,6 +101,7 @@ namespace roboptim
     grad[0] = df_dstate.dot (dgamma_dt);
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_COST_HXX

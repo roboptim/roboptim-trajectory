@@ -30,6 +30,7 @@
 #include <roboptim/trajectory/stable-point-state-function.hh>
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 
 

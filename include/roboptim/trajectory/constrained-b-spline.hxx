@@ -25,6 +25,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <int N>
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
@@ -212,6 +214,7 @@ namespace roboptim
     return jac;
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_CONSTRAINED_B_SPLINE_HXX

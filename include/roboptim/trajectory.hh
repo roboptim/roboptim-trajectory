@@ -24,6 +24,8 @@
 
 
 // Main headers.
+# include <roboptim/trajectory/b-spline.hh>
+# include <roboptim/trajectory/constrained-b-spline.hh>
 # include <roboptim/trajectory/cubic-b-spline.hh>
 # include <roboptim/trajectory/free-time-trajectory.hh>
 # include <roboptim/trajectory/freeze.hh>
@@ -31,18 +33,25 @@
 # include <roboptim/trajectory/limit-omega.hh>
 # include <roboptim/trajectory/limit-speed.hh>
 # include <roboptim/trajectory/orthogonal-speed.hh>
+# include <roboptim/trajectory/polynomial.hh>
+# include <roboptim/trajectory/polynomial-3.hh>
 # include <roboptim/trajectory/spline-length.hh>
 # include <roboptim/trajectory/stable-point-state-function.hh>
 # include <roboptim/trajectory/stable-time-point.hh>
 # include <roboptim/trajectory/state-function.hh>
+# include <roboptim/trajectory/sys.hh>
 # include <roboptim/trajectory/trajectory-cost.hh>
 # include <roboptim/trajectory/trajectory-sum-cost.hh>
 # include <roboptim/trajectory/trajectory.hh>
+# include <roboptim/trajectory/vector-interpolation.hh>
 
 
 // Visualization.
 # include <roboptim/trajectory/visualization/limit-speed.hh>
 # include <roboptim/trajectory/visualization/speed.hh>
 # include <roboptim/trajectory/visualization/trajectory.hh>
+
+// FIXME: for transition to trajectory namespace (to be removed)
+using namespace roboptim::trajectory;
 
 #endif //! ROBOPTIM_TRAJECTORY_HH

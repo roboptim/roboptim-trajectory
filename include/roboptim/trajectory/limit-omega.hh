@@ -27,6 +27,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   class LimitOmega : public DerivableFunction
   {
@@ -51,6 +53,7 @@ namespace roboptim
     const T& trajectory_;
   };
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/limit-omega.hxx>

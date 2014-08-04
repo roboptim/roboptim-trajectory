@@ -20,6 +20,7 @@
 #include <roboptim/trajectory/fwd.hh>
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 

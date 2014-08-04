@@ -25,6 +25,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace
   {
     struct SumLength
@@ -120,4 +122,5 @@ namespace roboptim
       getUpperBound (interval_) - getLowerBound (interval_);
     grad *= delta / (value_type)nDiscretizationPoints_;
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.

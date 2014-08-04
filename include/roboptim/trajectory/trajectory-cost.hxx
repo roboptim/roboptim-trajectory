@@ -20,6 +20,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   TrajectoryCost<T>::TrajectoryCost (const trajectory_t& traj,
 				     std::string name)
@@ -33,6 +35,7 @@ namespace roboptim
   {
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_COST_HXX

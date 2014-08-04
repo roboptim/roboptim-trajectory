@@ -38,6 +38,7 @@ using boost::format;
 using boost::io::group;
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 
 

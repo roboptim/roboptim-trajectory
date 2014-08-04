@@ -22,6 +22,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   AnthropomorphicCostFunction<T>::AnthropomorphicCostFunction
   (const T& trajectory,
@@ -140,6 +142,7 @@ namespace roboptim
     return alpha_[3] * (1. + (deltaTheta / ksi1)) * (1 + (dsquare / ksi2));
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_COST_FUNCTION_HXX

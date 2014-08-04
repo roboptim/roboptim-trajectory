@@ -21,6 +21,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename T>
   class FreeTimeTrajectory;
 
@@ -38,6 +40,7 @@ namespace roboptim
 
   class CubicBSpline;
   class SplineLength;
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FWD_HH

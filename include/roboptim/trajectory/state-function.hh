@@ -31,6 +31,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \addtogroup roboptim_meta_function
   /// @{
 
@@ -136,6 +138,7 @@ namespace roboptim
 
   /// @}
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/state-function.hxx>

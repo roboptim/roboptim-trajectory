@@ -28,6 +28,7 @@
 #include <unsupported/Eigen/Polynomials>
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace std;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
@@ -37,31 +38,31 @@ static double tol = 1e-6;
 template <int N>
 void test_multiply ()
 {
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
 
-  Polynomial<N> p_0 (t0, params);
+  roboptim::trajectory::Polynomial<N> p_0 (t0, params);
   p_0 (0.1);
 
   params.setZero ();
   params[0] = 0.3;
-  Polynomial<N> p_1 (t1, params);
+  roboptim::trajectory::Polynomial<N> p_1 (t1, params);
   p_1 (0.1);
 
   // Polynomial multiplication
-  Polynomial<2*N> p_2 = p_0 * p_1;
+  roboptim::trajectory::Polynomial<2*N> p_2 = p_0 * p_1;
   p_2 (0.1);
   // Polynomial multiplication + crop
-  Polynomial<N> p_3 = p_0 * p_1;
+  roboptim::trajectory::Polynomial<N> p_3 = p_0 * p_1;
   // Compare uncropped part
   BOOST_CHECK (allclose (p_2.coefs ().template head<N+1> (),
                          p_3.coefs ()));
 
   // Scalar multiplication
-  Polynomial<N> q_0 = 2.0 * p_0;
-  Polynomial<N> q_1 = p_0 * 2.0;
+  roboptim::trajectory::Polynomial<N> q_0 = 2.0 * p_0;
+  roboptim::trajectory::Polynomial<N> q_1 = p_0 * 2.0;
 
   BOOST_CHECK (allclose (q_0.coefs (), q_1.coefs ()));
 }
@@ -70,27 +71,28 @@ void test_multiply ()
 template <int N>
 struct poly_props
 {
-  static void check_derivative (const Polynomial<N>&, double, int, double)
+  static void check_derivative
+    (const roboptim::trajectory::Polynomial<N>&, double, int, double)
   {
     // Not implemented for this N
     assert (0);
   }
 
-  static void check_translate (const Polynomial<N>&, double,
-			       const Polynomial<N>&)
+  static void check_translate (const roboptim::trajectory::Polynomial<N>&, double,
+			       const roboptim::trajectory::Polynomial<N>&)
   {
     // Not implemented for this N
     assert (0);
   }
 
   static void check_evaluate (double t0,
-			      typename Polynomial<N>::coefs_t& coefs,
+			      typename roboptim::trajectory::Polynomial<N>::coefs_t& coefs,
 			      double t)
   {
-    Polynomial<N> poly (t0, coefs);
+    roboptim::trajectory::Polynomial<N> poly (t0, coefs);
 
     // Use Eigen's evaluator: translate polynomial from (t-t₀) to t
-    Polynomial<N> eigen_poly = poly.translate (0.);
+    roboptim::trajectory::Polynomial<N> eigen_poly = poly.translate (0.);
     double res = Eigen::poly_eval (eigen_poly.coefs (), t);
 
     BOOST_CHECK_CLOSE (poly (t), res, tol);
@@ -100,9 +102,10 @@ struct poly_props
 
 // Code from Polynomial3
 template <>
-void poly_props<3>::check_derivative (const Polynomial<3>& poly,
-                                      double t, int order,
-                                      double derivative)
+void poly_props<3>::check_derivative
+(const roboptim::trajectory::Polynomial<3>& poly,
+ double t, int order,
+ double derivative)
 {
   double dt = t - poly.t0 ();
   double dt2 = dt * dt;
@@ -134,8 +137,9 @@ void poly_props<3>::check_derivative (const Polynomial<3>& poly,
 }
 
 template <>
-void poly_props<5>::check_derivative (const Polynomial<5>& poly,
-                                      double t, int order, double derivative)
+void poly_props<5>::check_derivative
+(const roboptim::trajectory::Polynomial<5>& poly,
+ double t, int order, double derivative)
 {
   double dt = t - poly.t0 ();
   double dt2 = dt * dt;
@@ -178,9 +182,10 @@ void poly_props<5>::check_derivative (const Polynomial<5>& poly,
 
 
 template <>
-void poly_props<3>::check_translate (const Polynomial<3>& poly,
-                                     double t1,
-                                     const Polynomial<3>& ref_poly)
+void poly_props<3>::check_translate
+(const roboptim::trajectory::Polynomial<3>& poly,
+ double t1,
+ const roboptim::trajectory::Polynomial<3>& ref_poly)
 {
   double dt = t1 - poly.t0 ();
   double dt2 = dt * dt;
@@ -190,12 +195,12 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
   double a2 = poly.coefs () [2];
   double a3 = poly.coefs () [3];
 
-  Polynomial<3>::coefs_t temp;
+  roboptim::trajectory::Polynomial<3>::coefs_t temp;
   temp [0] = a0 + a1 * dt + a2 * dt2 + a3 * dt3;
   temp [1] = a1 + 2 * dt * a2 + 3 * dt2 * a3;
   temp [2] = a2 + 3 * dt * a3;
   temp [3] = a3;
-  Polynomial<3> p_new (t1, temp);
+  roboptim::trajectory::Polynomial<3> p_new (t1, temp);
 
   BOOST_CHECK_CLOSE (p_new.t0 (),
                      ref_poly.t0 (),
@@ -211,9 +216,10 @@ void poly_props<3>::check_translate (const Polynomial<3>& poly,
 
 
 template <>
-void poly_props<5>::check_translate (const Polynomial<5>& poly,
-                                     double t1,
-                                     const Polynomial<5>& ref_poly)
+void poly_props<5>::check_translate
+(const roboptim::trajectory::Polynomial<5>& poly,
+ double t1,
+ const roboptim::trajectory::Polynomial<5>& ref_poly)
 {
   double dt = t1 - poly.t0 ();
   double dt2 = dt * dt;
@@ -228,14 +234,14 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
   double a5 = poly.coefs ()[5];
 
 
-  Polynomial<5>::coefs_t temp;
+  roboptim::trajectory::Polynomial<5>::coefs_t temp;
   temp [0] = a0 +     a1 * dt +      a2 * dt2 +      a3 * dt3 +     a4 * dt4 + a5 * dt5;
   temp [1] = a1 + 2 * a2 * dt +  3 * a3 * dt2 +  4 * a4 * dt3 + 5 * a5 * dt4;
   temp [2] = a2 + 3 * a3 * dt +  6 * a4 * dt2 + 10 * a5 * dt3;
   temp [3] = a3 + 4 * a4 * dt + 10 * a5 * dt2;
   temp [4] = a4 + 5 * a5 * dt;
   temp [5] = a5;
-  Polynomial<5> p_new (t1, temp);
+  roboptim::trajectory::Polynomial<5> p_new (t1, temp);
 
   BOOST_CHECK_CLOSE (p_new.t0 (), ref_poly.t0 (), tol);
 
@@ -250,7 +256,7 @@ void poly_props<5>::check_translate (const Polynomial<5>& poly,
 template <int N>
 struct test_derivative_loop
 {
-  test_derivative_loop (const Polynomial<N>& p,
+  test_derivative_loop (const roboptim::trajectory::Polynomial<N>& p,
                         Function::value_type t)
     : p_ (p),
       t_ (t)
@@ -273,17 +279,17 @@ struct test_derivative_loop
     poly_props<N>::check_derivative (p_, t_, order, derivative);
   }
 
-  const Polynomial<N>& p_;
+  const roboptim::trajectory::Polynomial<N>& p_;
   Function::value_type t_;
 };
 
 template <int N>
 void test_derivative ()
 {
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
-  Polynomial<N> p_1 (t0, params);
+  roboptim::trajectory::Polynomial<N> p_1 (t0, params);
 
   double t = (double)rand () / RAND_MAX;
 
@@ -294,19 +300,19 @@ void test_derivative ()
 template <int N>
 void test_translate ()
 {
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t1 = (double)rand () / RAND_MAX;
-  Polynomial<N> p_1 (t0, params);
-  Polynomial<N> p_2 = p_1.translate (t1);
+  roboptim::trajectory::Polynomial<N> p_1 (t0, params);
+  roboptim::trajectory::Polynomial<N> p_2 = p_1.translate (t1);
 
   BOOST_CHECK_CLOSE (p_1 (0.), p_2 (0.), tol);
 
   poly_props<N>::check_translate (p_1, t1, p_2);
 
   // Test translate in place.
-  Polynomial<N> p_3 = p_1;
+  roboptim::trajectory::Polynomial<N> p_3 = p_1;
   p_3.translateInPlace (t1);
   BOOST_CHECK_CLOSE (p_2.t0 (), p_3.t0 (), tol);
   BOOST_CHECK (allclose (p_2.coefs (), p_3.coefs ()));
@@ -315,23 +321,23 @@ void test_translate ()
 template <int N>
 void test_copy ()
 {
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setRandom ();
 
   // Same degree
-  Polynomial<N> p_0 (3., params);
-  Polynomial<N> p_1 = p_0;
+  roboptim::trajectory::Polynomial<N> p_0 (3., params);
+  roboptim::trajectory::Polynomial<N> p_1 = p_0;
 
   BOOST_CHECK_CLOSE (p_0.t0 (), p_1.t0 (), tol);
   BOOST_CHECK (allclose (p_0.coefs (), p_1.coefs ()));
 
   // Different degrees
-  Polynomial<N+2> p_2 = p_0;
+  roboptim::trajectory::Polynomial<N+2> p_2 = p_0;
   BOOST_CHECK_CLOSE (p_0.t0 (), p_2.t0 (), tol);
   BOOST_CHECK (allclose (p_0.coefs (),
                          p_2.coefs ().template head<N+1> ()));
 
-  Polynomial<N-1> p_3 = p_0;
+  roboptim::trajectory::Polynomial<N-1> p_3 = p_0;
   BOOST_CHECK_CLOSE (p_0.t0 (), p_3.t0 (), tol);
   BOOST_CHECK (allclose (p_3.coefs (),
                          p_0.coefs ().template head<N> ()));
@@ -340,7 +346,7 @@ void test_copy ()
 template <int N>
 void test_evaluate ()
 {
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
   double t = (double)rand () / RAND_MAX;
@@ -350,12 +356,12 @@ void test_evaluate ()
 template <int N>
 void test_roots ()
 {
-  typedef typename Polynomial<N>::value_type value_type;
+  typedef typename roboptim::trajectory::Polynomial<N>::value_type value_type;
 
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setRandom ();
   double t0 = (double)rand () / RAND_MAX;
-  Polynomial<N> p (t0, params);
+  roboptim::trajectory::Polynomial<N> p (t0, params);
 
   std::vector<value_type> roots = p.realRoots ();
   for (typename std::vector<value_type>::const_iterator
@@ -382,10 +388,10 @@ void test_roots ()
 template <int N>
 void test_min ()
 {
-  typedef typename Polynomial<N>::value_type value_type;
-  typedef typename Polynomial<N>::min_t      min_t;
-  typedef typename Polynomial<N>::interval_t interval_t;
-  typedef typename Polynomial<N>::coefs_t    coefs_t;
+  typedef typename roboptim::trajectory::Polynomial<N>::value_type value_type;
+  typedef typename roboptim::trajectory::Polynomial<N>::min_t      min_t;
+  typedef typename roboptim::trajectory::Polynomial<N>::interval_t interval_t;
+  typedef typename roboptim::trajectory::Polynomial<N>::coefs_t    coefs_t;
 
   // Start with some dummy examples
   coefs_t params;
@@ -399,7 +405,7 @@ void test_min ()
   params[2] = 1.;
   interval.first  = -1.;
   interval.second =  1.;
-  Polynomial<N> quadratic (t0, params);
+  roboptim::trajectory::Polynomial<N> quadratic (t0, params);
   res_min = quadratic.min (interval);
   BOOST_CHECK_SMALL (res_min.first, tol);
 
@@ -409,15 +415,15 @@ void test_min ()
   params[3] = 1.;
   interval.first  = 0.;
   interval.second = 1.;
-  Polynomial<N> cubic (t0, params);
+  roboptim::trajectory::Polynomial<N> cubic (t0, params);
   res_min = cubic.min (interval);
   BOOST_CHECK_SMALL (res_min.first, tol);
 
   // Test with a random polynomial
   params.setRandom ();
   t0 = (value_type)rand () / RAND_MAX;
-  Polynomial<N> p (t0, params);
-  Polynomial<N-1> dp = p.template derivative<1> ();
+  roboptim::trajectory::Polynomial<N> p (t0, params);
+  roboptim::trajectory::Polynomial<N-1> dp = p.template derivative<1> ();
 
   interval.first  = -10. * std::abs ((double)rand () / RAND_MAX);
   interval.second =  10. * std::abs ((double)rand () / RAND_MAX);
@@ -441,13 +447,20 @@ void test_min ()
 template <int N>
 void test_misc ()
 {
-  typename Polynomial<N>::coefs_t params;
+  typename roboptim::trajectory::Polynomial<N>::coefs_t params;
   params.setZero ();
-  Polynomial<N> p (1., params);
+  roboptim::trajectory::Polynomial<N> p (1., params);
 
   BOOST_CHECK (p.isConstant ());
   p.coefs ()[1] = 2.;
   BOOST_CHECK (!p.isConstant ());
+
+  typedef typename roboptim::trajectory::Polynomial<N>::polynomialFunction_t
+    polynomialFunction_t;
+  polynomialFunction_t func = p.asFunction ();
+  typename polynomialFunction_t::argument_t x (func.inputSize ());
+  x[0] = 0.4;
+  BOOST_CHECK (func (x)[0] == p (x[0]));
 }
 
 BOOST_AUTO_TEST_CASE (trajectory_polynomial)

@@ -23,6 +23,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   class TMax {};
   static const TMax tMax = TMax ();
 
@@ -65,6 +67,7 @@ namespace roboptim
     return StableTimePoint (alpha);
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_STABLE_TIME_POINT_HH

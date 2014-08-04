@@ -30,10 +30,14 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   namespace visualization
   {
     namespace gnuplot
     {
+      typedef roboptim::visualization::gnuplot::Command Command;
+
       template <typename T>
       Command plot_speeds (const T& traj,
 			   typename T::value_type step = .01);
@@ -43,10 +47,11 @@ namespace roboptim
 			   typename T::value_type step)
       {
 	using boost::format;
+	using namespace ::roboptim::visualization;
+
 	assert (traj.outputSize () == 3);
 	Function::value_type min = Function::getLowerBound (traj.timeRange ());
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
-	Function::discreteInterval_t interval (min, max, step);
 
 	if (min + step > max)
 	  throw std::string ("bad interval");
@@ -105,6 +110,7 @@ namespace roboptim
 
     } // end of namespace gnuplot.
   } // end of namespace visualization.
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_SPEED_HH

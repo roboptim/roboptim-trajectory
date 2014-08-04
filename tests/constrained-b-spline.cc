@@ -32,6 +32,7 @@
 #include <iostream>
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace std;
 
 typedef Function::vector_t   vector_t;

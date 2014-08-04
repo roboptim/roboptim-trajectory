@@ -27,12 +27,14 @@
 # include <roboptim/trajectory/stable-time-point.hh>
 
 # define ROBOPTIM_IMPLEMENT_CLONE(C)		\
-  virtual C* clone () const		\
+  virtual C* clone () const			\
   {						\
     return new C (*this);			\
   }
 
 namespace roboptim
+{
+namespace trajectory
 {
   namespace detail
   {
@@ -288,6 +290,7 @@ namespace roboptim
 
   /// @}
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/trajectory.hxx>

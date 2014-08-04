@@ -28,6 +28,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \addtogroup roboptim_function
   /// @{
 
@@ -68,6 +70,7 @@ namespace roboptim
 
   /// \@
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HH

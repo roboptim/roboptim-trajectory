@@ -25,6 +25,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \brief Takes a vector or argument and differentiate it.
   ///
   /// It is common to have an optimization vector where a pattern is
@@ -109,6 +111,7 @@ namespace roboptim
     return boost::make_shared<VectorInterpolation> (x, outputSize, dt);
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/vector-interpolation.hxx>

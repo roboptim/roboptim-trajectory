@@ -31,6 +31,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   /// \addtogroup roboptim_function
   /// @{
   /// B-Spline trajectory.
@@ -206,6 +208,7 @@ namespace roboptim
 
   /// @}
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 # include <roboptim/trajectory/b-spline.hxx>

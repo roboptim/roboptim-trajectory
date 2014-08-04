@@ -22,6 +22,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   OrthogonalSpeed::OrthogonalSpeed ()
     : DerivableFunction (2 * 3, 1, "orthogonal speed")
   {}
@@ -58,4 +60,5 @@ namespace roboptim
     grad[3] = -std::sin (theta);
     grad[4] = std::cos (theta);
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.

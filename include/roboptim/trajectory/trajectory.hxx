@@ -20,6 +20,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <unsigned dorder>
   Trajectory<dorder>::Trajectory (interval_t tr,
 				  size_type outputSize,
@@ -203,6 +205,7 @@ namespace roboptim
     o << "Generic (abstract) trajectory." << std::endl;
     return o;
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_TRAJECTORY_HXX

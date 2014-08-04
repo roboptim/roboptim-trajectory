@@ -21,6 +21,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
   template <typename P>
   Freeze<P>::Freeze (problem_t& problem)
     : problem_ (problem)
@@ -69,6 +71,7 @@ namespace roboptim
     (*this) (fa);
   }
 
+} // end of namespace trajectory.
 } // end of namespace roboptim.
 
 #endif //! ROBOPTIM_TRAJECTORY_FREEZE_HXX

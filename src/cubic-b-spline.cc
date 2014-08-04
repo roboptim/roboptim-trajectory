@@ -24,6 +24,8 @@
 
 namespace roboptim
 {
+namespace trajectory
+{
 
   //FIXME: defined_lc_in has to be true (false untested).
   CubicBSpline::CubicBSpline (interval_t tr, size_type outputSize,
@@ -473,6 +475,8 @@ namespace roboptim
   std::ostream&
   CubicBSpline::print (std::ostream& o) const
   {
+    using roboptim::operator <<;
+
     o << "Cubic B-spline:" << incindent
       << iendl << "Name: " << getName ()
       << iendl << "Number of parameters per spline function: " << nbp_
@@ -482,4 +486,5 @@ namespace roboptim
       << decindent;
     return o;
   }
+} // end of namespace trajectory.
 } // end of namespace roboptim.

@@ -38,6 +38,7 @@ using boost::format;
 using boost::io::group;
 
 using namespace roboptim;
+using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 
 
@@ -382,14 +383,14 @@ BOOST_AUTO_TEST_CASE (trajectory_free_time_trajectory)
 
     std::cout << "Checking StableTimePoint scaling." << std::endl;
     BOOST_CHECK (isAlmostEqual
-		 ((0. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmin));
+		 ((0. * roboptim::trajectory::tMax).getTime (freeTimeTraj.timeRange ()), tmin));
     BOOST_CHECK (isAlmostEqual
-		 ((1. * roboptim::tMax).getTime (freeTimeTraj.timeRange ()), tmax));
+		 ((1. * roboptim::trajectory::tMax).getTime (freeTimeTraj.timeRange ()), tmax));
     BOOST_CHECK (isAlmostEqual
-		 ((.5 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
+		 ((.5 * roboptim::trajectory::tMax).getTime (freeTimeTraj.timeRange ()),
 		  (tmax - tmin) / 2.));
     BOOST_CHECK (isAlmostEqual
-		 ((.25 * roboptim::tMax).getTime (freeTimeTraj.timeRange ()),
+		 ((.25 * roboptim::trajectory::tMax).getTime (freeTimeTraj.timeRange ()),
 		  (tmax - tmin) / 4.));
 
   }
