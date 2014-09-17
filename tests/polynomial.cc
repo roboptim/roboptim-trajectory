@@ -409,6 +409,17 @@ void test_min ()
   value_type t0 = 0.;
   min_t res_min;
 
+  // Linear: 1+x on [-1,1]
+  params.setZero ();
+  params[0] = 1.;
+  params[1] = 1.;
+  interval.first  = -1.;
+  interval.second =  1.;
+  roboptim::trajectory::Polynomial<N> linear (t0, params);
+  res_min = linear.min (interval);
+  BOOST_CHECK_CLOSE (res_min.first, -1, tol);
+  BOOST_CHECK_SMALL (res_min.second, tol);
+
   // Quadratic: 1+x² on [-1,1]
   params.setZero ();
   params[0] = 1.;
@@ -461,9 +472,28 @@ void test_misc ()
   params.setZero ();
   roboptim::trajectory::Polynomial<N> p (1., params);
 
+  BOOST_CHECK (p.isNull ());
   BOOST_CHECK (p.isConstant ());
+  BOOST_CHECK (p.isLinear ());
+  BOOST_CHECK (p.trueOrder () == 0);
+
+  p.coefs ()[0] = 2.;
+  BOOST_CHECK (!p.isNull ());
+  BOOST_CHECK (p.isConstant ());
+  BOOST_CHECK (p.isLinear ());
+  BOOST_CHECK (p.trueOrder () == 0);
+
   p.coefs ()[1] = 2.;
+  BOOST_CHECK (!p.isNull ());
   BOOST_CHECK (!p.isConstant ());
+  BOOST_CHECK (p.isLinear ());
+  BOOST_CHECK (p.trueOrder () == 1);
+
+  p.coefs ()[2] = 2.;
+  BOOST_CHECK (!p.isNull ());
+  BOOST_CHECK (!p.isConstant ());
+  BOOST_CHECK (!p.isLinear ());
+  BOOST_CHECK (p.trueOrder () == 2);
 
   typedef typename roboptim::trajectory::Polynomial<N>::polynomialFunction_t
     polynomialFunction_t;

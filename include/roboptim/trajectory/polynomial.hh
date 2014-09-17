@@ -19,6 +19,8 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
+# include <boost/static_assert.hpp>
+
 # include <roboptim/core/function.hh>
 # include <roboptim/core/function/polynomial.hh>
 
@@ -26,7 +28,7 @@ namespace roboptim
 {
 namespace trajectory
 {
-  /// \brief Polynomial of degree at most N.
+  /// \brief Polynomial of degree at most N (N >= 0).
   ///
   /// \f[
   /// P (t) = \sum_{i=0}^{N} a_i (t-t_0)^i
@@ -39,6 +41,9 @@ namespace trajectory
     typedef Function::value_type              value_type;
     typedef Function::vector_t                vector_t;
     typedef Function::interval_t              interval_t;
+
+    /// Polynomial degree >= 0.
+    BOOST_STATIC_ASSERT (N >= 0);
 
     /// \brief Type of the vector of roots.
     typedef std::vector<value_type> roots_t;
@@ -171,10 +176,25 @@ namespace trajectory
     /// This can be tested before calling min().
     min_t min (const interval_t& interval) const;
 
+    /// \brief Return whether the polynomial is null.
+    /// \param epsilon epsilon used.
+    /// \return true if the polynomial is null, false otherwise.
+    bool isNull (value_type epsilon = Function::epsilon ()) const;
+
     /// \brief Return whether the polynomial is constant.
     /// \param epsilon epsilon used.
     /// \return true if the polynomial is constant, false otherwise.
     bool isConstant (value_type epsilon = Function::epsilon ()) const;
+
+    /// \brief Return whether the polynomial is linear.
+    /// \param epsilon epsilon used.
+    /// \return true if the polynomial is linear, false otherwise.
+    bool isLinear (value_type epsilon = Function::epsilon ()) const;
+
+    /// \brief Return the "true" order of the polynomial.
+    /// Leading coefficients may be null, which c
+    /// \return degree for the highest exponent with a nonzero coeffcient.
+    int trueOrder (value_type epsilon = Function::epsilon ()) const;
 
     /// \brief Return the order of such a polynomial.
     /// \return order of such a polynomial.

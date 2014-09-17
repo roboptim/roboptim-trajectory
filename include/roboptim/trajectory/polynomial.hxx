@@ -342,35 +342,35 @@ namespace trajectory
     // Thus, we compute the roots of the "translated" polynomial:
     // P(u) = Σ α_i u^i
     // Note: the leading coefficient has to be different than 0
-    vector_t::Index n = static_cast<vector_t::Index> (N+1);
+    vector_t::Index n = static_cast<vector_t::Index> (N);
 
     // Usual case: leading coefficient ≠ 0 (i.e. known polynomial size)
-    if (std::abs (coefs_[n-1]) >= eps)
-      {
-	Eigen::PolynomialSolver<value_type, N> solver (coefs_);
-	solver.realRoots (roots);
-      }
+    if (std::abs (coefs_[n]) >= eps)
+    {
+      Eigen::PolynomialSolver<value_type, N> solver (coefs_);
+      solver.realRoots (roots);
+    }
     else // leading coefficient = 0, i.e. dynamic size
-      {
-	while (n > 0 && std::abs (coefs_[n-1]) < eps)
-	  n--;
+    {
+      // Get the "true" order of the polynomial
+      n = trueOrder (eps);
 
-	if (n < 2)
-	  throw std::runtime_error ("solver cannot process null or constant "
-				    "polynomials.");
-	// Note: PolynomialSolver with linear polynomials leads to a segv in
-	// Eigen 3.2, so we deal with it ourselves until the patch is released
-	// (cf. Eigen PR #64).
-	else if (n == 2)
-	  {
-	    roots.push_back (-coefs_[0]/coefs_[1]);
-	  }
-	else
-	  {
-	    Eigen::PolynomialSolver<value_type, Eigen::Dynamic> solver (coefs_.head (n));
-	    solver.realRoots (roots);
-	  }
+      if (n == 0)
+        throw std::runtime_error ("solver cannot process null or constant "
+                                  "polynomials.");
+      // Note: PolynomialSolver with linear polynomials leads to a segv in
+      // Eigen 3.2, so we deal with it ourselves until the patch is released
+      // (cf. Eigen PR #64).
+      else if (n == 1)
+      {
+        roots.push_back (-coefs_[0]/coefs_[1]);
       }
+      else
+      {
+        Eigen::PolynomialSolver<value_type, Eigen::Dynamic> solver (coefs_.head (n+1));
+        solver.realRoots (roots);
+      }
+    }
 
     // Then we shift the roots to get the roots of the actual polynomial:
     // u = t - t₀
@@ -391,14 +391,21 @@ namespace trajectory
 
     roots_t roots;
 
-    // If the polynomial is not constant, compute the roots of the first
+    // If the polynomial is not linear, compute the roots of the first
     // derivative, which are the critical points of the polynomial.
-    if (!isConstant (eps))
+    if (!isLinear (eps))
+    {
       // Compute the real roots of poly
       roots = derivative<1> ().realRoots (eps);
-    // We could also simply return its value with the center of the interval.
-    else throw std::runtime_error ("constant polynomial has an infinite number"
-                                   " of minimum values.");
+    }
+    // The polynomial is constant, we cannot provide a critical point.
+    else if (isConstant (eps))
+      throw std::runtime_error ("constant polynomial has an infinite"
+                                " number of critical points.");
+
+    // If the polynomial is linear: since we have an interval, we can provide
+    // a min (at the lower or upper bound). We simply need to have an empty
+    // "roots" vector.
 
     // Set the critical points + bound values
     values_t crit_points (2);
@@ -431,11 +438,43 @@ namespace trajectory
   }
 
   template <int N>
+  bool Polynomial<N>::isNull (value_type epsilon) const
+  {
+    // Check whether all coefs are null
+    return coefs_.template lpNorm<Eigen::Infinity> () < epsilon;
+  }
+
+  template <int N>
   bool Polynomial<N>::isConstant (value_type epsilon) const
   {
+    if (N == 0)
+      return true;
+
     // Check whether all coefs after the first one are null
     return coefs_.template tail<N> ().template lpNorm<Eigen::Infinity> ()
       < epsilon;
+  }
+
+  template <int N>
+  bool Polynomial<N>::isLinear (value_type epsilon) const
+  {
+    if (N <= 1)
+      return true;
+
+    // Check whether all coefs after the second one are null
+    return coefs_.template tail<N-1> ().template lpNorm<Eigen::Infinity> ()
+      < epsilon;
+  }
+
+  template <int N>
+  int Polynomial<N>::trueOrder (value_type epsilon) const
+  {
+    int n = N;
+
+    while (n > 0 && std::abs (coefs_[n]) < epsilon)
+      n--;
+
+    return n;
   }
 
   template <int N>
