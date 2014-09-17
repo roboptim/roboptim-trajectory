@@ -334,9 +334,8 @@ namespace trajectory
 
   template <int N>
   typename Polynomial<N>::roots_t
-  Polynomial<N>::realRoots () const
+  Polynomial<N>::realRoots (value_type eps) const
   {
-    const value_type eps = 1e-6;
     roots_t roots;
 
     // Eigen expects a polynomial in the form: Σ α_i t^i
@@ -346,7 +345,7 @@ namespace trajectory
     vector_t::Index n = static_cast<vector_t::Index> (N+1);
 
     // Usual case: leading coefficient ≠ 0 (i.e. known polynomial size)
-    if (std::abs (coefs_[n-1]) > eps)
+    if (std::abs (coefs_[n-1]) >= eps)
       {
 	Eigen::PolynomialSolver<value_type, N> solver (coefs_);
 	solver.realRoots (roots);
@@ -388,12 +387,15 @@ namespace trajectory
   {
     typedef std::vector<value_type> values_t;
 
+    const value_type eps = 1e-6;
+
     roots_t roots;
 
-    // If the polynomial is not constant, compute the roots
-    if (!isConstant ())
+    // If the polynomial is not constant, compute the roots of the first
+    // derivative, which are the critical points of the polynomial.
+    if (!isConstant (eps))
       // Compute the real roots of poly
-      roots = derivative<1> ().realRoots ();
+      roots = derivative<1> ().realRoots (eps);
     // We could also simply return its value with the center of the interval.
     else throw std::runtime_error ("constant polynomial has an infinite number"
                                    " of minimum values.");

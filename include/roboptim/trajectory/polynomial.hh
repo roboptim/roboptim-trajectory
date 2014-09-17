@@ -157,14 +157,18 @@ namespace trajectory
     /// \brief Return the real roots of the polynomial.
     /// \warning This function relies on Eigen's experimental polynomial
     /// solver. The polynomial should not be null or constant.
+    /// \param epsilon epsilon used for testing constant polynomials.
     /// \return vector of the real roots of the polynomial.
-    /// \throw std::runtime_error invalid polynomial (e.g. null).
-    roots_t realRoots () const;
+    /// \throw std::runtime_error invalid polynomial (e.g. null/constant).
+    roots_t realRoots (value_type epsilon = 1e-6) const;
 
     /// \brief Compute the minimum of the polynomial on an interval.
     /// \param interval time interval.
     /// \return pair containing t_min and the associated minimum of the
     /// polynomial on the interval.
+    /// \throw std::runtime_error invalid polynomial. This is the case for
+    /// constant polynomials since there is an infinity of critical points.
+    /// This can be tested before calling min().
     min_t min (const interval_t& interval) const;
 
     /// \brief Return whether the polynomial is constant.

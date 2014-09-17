@@ -383,6 +383,16 @@ void test_roots ()
   roots.clear ();
   p.coefs ().setZero ();
   BOOST_CHECK_THROW (roots = p.realRoots (), std::runtime_error);
+
+  // Test constant polynomial
+  p.coefs ()[0] = 12.;
+  BOOST_CHECK_THROW (roots = p.realRoots (), std::runtime_error);
+
+  // Test linear polynomial
+  p.coefs ()[1] = 3.;
+  BOOST_CHECK_NO_THROW (roots = p.realRoots ());
+  BOOST_CHECK (roots.size () == 1);
+  BOOST_CHECK_CLOSE (roots[0], t0-4, 1e-12);
 }
 
 template <int N>
