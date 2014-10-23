@@ -84,38 +84,40 @@ namespace trajectory
   }
 
   template <int N>
-  std::ostream& operator<< (std::ostream& stream, const Polynomial<N>& p)
+  std::ostream& Polynomial<N>::print (std::ostream& o) const
   {
-    typedef typename Polynomial<N>::value_type value_type;
-    typedef typename Polynomial<N>::coefs_t coefs_t;
-    const coefs_t& coefs = p.coefs ();
-
-    stream << "f = ";
+    o << "f = ";
     bool printed_before = false;
     for (int idx = N; idx > 0; idx--)
       {
-	if (std::abs (coefs[idx])
+	if (std::abs (coefs_[idx])
 	    > std::numeric_limits<value_type>::epsilon ())
 	  {
 	    if (printed_before)
-	      stream << " + ";
-	    stream << coefs[idx] << " * x**" << idx;
+	      o << " + ";
+	    o << coefs_[idx] << " * x**" << idx;
 	    printed_before = true;
 	  }
       }
-    if (std::abs (coefs[0])
+    if (std::abs (coefs_[0])
         > std::numeric_limits<value_type>::epsilon ())
       {
 	if (printed_before)
-	  stream << " + ";
-	stream << coefs[0];
+	  o << " + ";
+	o << coefs_[0];
       }
     else if (!printed_before)
       {
-	stream << coefs[0];
+	o << coefs_[0];
       }
-    stream << "\t" << "( x = t - " << p.t0 () << " )";
-    return stream;
+    o << "\t" << "( x = t - " << t0_ << " )";
+    return o;
+  }
+
+  template <int N>
+  std::ostream& operator<< (std::ostream& o, const Polynomial<N>& p)
+  {
+    return p.print (o);
   }
 
   template <int N>

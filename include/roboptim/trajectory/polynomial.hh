@@ -19,6 +19,9 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
+
+# include <ostream>
+
 # include <boost/static_assert.hpp>
 
 # include <roboptim/core/function.hh>
@@ -209,6 +212,11 @@ namespace trajectory
     /// \return Polynomial function with the appropriate coefficients set.
     polynomialFunction_t asFunction () const;
 
+    /// \brief Print the polynomial.
+    /// \param o output stream.
+    /// \return output stream.
+    virtual std::ostream& print (std::ostream& o) const;
+
   private:
 
     /// \brief vector of polynomial coefficients (ordered from lowest to
@@ -254,6 +262,14 @@ namespace trajectory
   public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   }; // class Polynomial
+
+  /// \brief Print a polynomial to a given output stream.
+  /// \tparam N polynomial degree.
+  /// \param o output stream.
+  /// \param p polynomial.
+  /// \return output stream.
+  template <int N>
+  std::ostream& operator<< (std::ostream& stream, const Polynomial<N>& p);
 
   template <int N>
   Polynomial<N> operator* (typename Polynomial<N>::value_type lambda,
