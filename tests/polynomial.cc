@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "shared-tests/common.hh"
+#include "shared-tests/fixture.hh"
 
 #include <roboptim/trajectory/polynomial.hh>
 #include <roboptim/trajectory/polynomial-3.hh>
@@ -503,6 +503,35 @@ void test_misc ()
   BOOST_CHECK (func (x)[0] == p (x[0]));
 }
 
+void test_print ()
+{
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern ("polynomial");
+
+  typedef roboptim::trajectory::Polynomial<3> poly3_t;
+
+  typename poly3_t::coefs_t params;
+  params.setZero ();
+
+  poly3_t null (1., params);
+  (*output) << null << std::endl;
+
+  params[0] = 42;
+  poly3_t constant (2., params);
+  (*output) << constant << std::endl;
+
+  params[1] = 1;
+  poly3_t linear1 (0., params);
+  (*output) << linear1 << std::endl;
+
+  poly3_t linear2 (3., params);
+  (*output) << linear2 << std::endl;
+
+  std::cout << output->str () << std::endl;
+
+  BOOST_CHECK (output->match_pattern ());
+}
+
 BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 {
   srand (static_cast<unsigned int> (time (NULL)));
@@ -530,6 +559,8 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 
   test_misc<3> ();
   test_misc<5> ();
+
+  test_print ();
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

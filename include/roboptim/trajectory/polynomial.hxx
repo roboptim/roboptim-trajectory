@@ -86,8 +86,8 @@ namespace trajectory
   template <int N>
   std::ostream& Polynomial<N>::print (std::ostream& o) const
   {
-    o << "f = ";
     bool printed_before = false;
+
     for (int idx = N; idx > 0; idx--)
       {
 	if (std::abs (coefs_[idx])
@@ -110,7 +110,16 @@ namespace trajectory
       {
 	o << coefs_[0];
       }
-    o << "\t" << "( x = t - " << t0_ << " )";
+
+    if (printed_before)
+    {
+      if (std::abs (t0_)
+          > std::numeric_limits<value_type>::epsilon ())
+        o << " (x = t - " << t0_ << ")";
+      else
+        o << " (x = t)";
+    }
+
     return o;
   }
 
