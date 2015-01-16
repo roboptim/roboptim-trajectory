@@ -44,6 +44,7 @@ namespace trajectory
 
     typedef std::vector<polynomials3vector_t> polynomials3vectors_t;
 
+    typedef std::vector <value_type> knots_t;
 
     /// \brief Instantiate a cubic B-Spline from its definition.
     ///
@@ -193,7 +194,7 @@ namespace trajectory
     size_type nbp_;
 
     /// \brief Vector of knots.
-    std::vector <value_type> knots_;
+    knots_t knots_;
 
     /// \brief Basis polynomials.
     /// basisPolynomials_[i][j] = B_{i,i+j}
