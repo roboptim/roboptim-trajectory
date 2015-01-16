@@ -59,6 +59,19 @@ namespace trajectory
 		  const vector_t& parameters,
 		  const std::string name = "cubic B-Spline");
 
+    /// \brief Instantiate a cubic B-Spline from its definition.
+    ///
+    /// \param dimension spline dimension: \f$n\f$
+    /// \param knots vector of knots,
+    /// \param parameters vector of parameters defining control points
+    /// \param name function title
+    ///
+    /// The number of control points is inferred from the dimension of
+    /// the parameter vector.
+    CubicBSpline (size_type dimension, const knots_t& knots,
+		  const vector_t& parameters,
+		  const std::string name = "cubic B-Spline");
+
     /// \brief Copy constructor.
     /// \param spline spline that will be copied
     CubicBSpline (const CubicBSpline& spline);

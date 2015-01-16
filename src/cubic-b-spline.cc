@@ -54,6 +54,24 @@ namespace trajectory
     computeBasisPolynomials ();
   }
 
+  CubicBSpline::CubicBSpline (size_type outputSize, const knots_t& knots,
+			      const vector_t& p, std::string name)
+    : Trajectory<3> (std::make_pair (knots [3], knots [knots.size ()-4]),
+		     outputSize, p, name), nbp_ (p.size () / outputSize),
+      knots_ (knots), uniform_ (false)
+  {
+    // Parameter size should be a multiple of spline dimension.
+    assert (parameters_.size () % outputSize == 0);
+
+    // Number of control points should be at least 4.
+    assert (nbp_ >= 4);
+
+    // Fill vector of regularly spaced knots.
+    assert (knots_.size () - (nbp_ + 4) == 0);
+    setParameters (p);
+    computeBasisPolynomials ();
+  }
+
   CubicBSpline::CubicBSpline (const CubicBSpline& spline)
     : Trajectory<3> (spline.timeRange (), spline.outputSize (),
                      spline.parameters (), spline.getName ()),
