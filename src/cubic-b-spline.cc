@@ -125,7 +125,7 @@ namespace trajectory
 	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t1);
 
 	Polynomial3 B2 =
-	  1./((t3-t0)*(t3-t1)*(t2-t1))
+	  1./((t3-t0)*(t3-t1)*(t3-t2))
 	  * Monomial3 (t0) * Monomial3 (t3)
 	  * Monomial3 (t3)
 	  + 1./((t4-t1)*(t3-t1)*(t3-t2))
