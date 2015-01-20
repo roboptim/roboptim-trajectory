@@ -50,6 +50,8 @@ namespace trajectory
       knots_.push_back (ti);
       ti += delta_t;
     }
+    // interval lower bound should be rigorously equal to knot 3.
+    knots_ [3] = tr.first;
     setParameters (p);
     computeBasisPolynomials ();
   }
@@ -180,41 +182,26 @@ namespace trajectory
     t = detail::fixTime (t, *this);
     typedef boost::numeric::converter<size_type, double> Double2SizeType;
 
-    // t_3
-    double tmin = timeRange ().first;
     size_type imin = 3;
-
-    // t_{m-4}
-    double tmax = timeRange ().second;
     size_type imax = knots_.size () - 5;
 
     unsigned int count = 0;
     bool found = false;
     size_type i = 1;
     std::size_t i_ = static_cast<std::size_t> (i);
-    size_type iPrev = 0;
 
-    while (!found && iPrev != i)
+    while (!found)
       {
 	i = Double2SizeType::convert
-	  (std::floor (static_cast<double> (imin) + (t - tmin)
-		       / (tmax - tmin) * static_cast<double> (imax - imin)));
+	  (std::floor (static_cast<double> (.5*(imin + imax)+.5)));
 	i_ = static_cast<std::size_t> (i);
-
 	if (t < knots_ [i_])
 	  {
-	    tmax = knots_ [i_ - 1];
 	    imax = i - 1;
 	  }
 	else if (t >= knots_ [i_ + 1])
 	  {
-	    if (t < knots_ [i_ + 2])
-	      {
-		i = i + 1;
-		found = true;
-	      }
 	    imin = i + 1;
-	    tmin = knots_ [i_ + 1];
 	  }
 	else
 	  {
@@ -222,12 +209,13 @@ namespace trajectory
 	  }
 	++count;
 	assert (count < 10000);
-	iPrev = i;
       }
     if (i > nbp_ - 1)
       i = nbp_-1;
     if (i < 3)
       i = 3;
+    assert (knots_ [i] <= t);
+    assert (t <= knots_ [i+1]);
     return i;
   }
 
