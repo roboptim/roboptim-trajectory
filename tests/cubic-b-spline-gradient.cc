@@ -17,6 +17,9 @@
 
 #undef NDEBUG
 
+#include <iostream>
+#include <fstream>
+
 #include <roboptim/trajectory/sys.hh>
 
 #include <boost/format.hpp>
@@ -39,20 +42,49 @@ using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
 
+typedef CubicBSpline::value_type value_type;
+typedef CubicBSpline::size_type size_type;
+typedef std::vector < std::vector < value_type > > matrix_t;
+
+matrix_t getReference (const std::string& file)
+{
+  matrix_t result;
+  size_type nbRows = 0;
+
+  std::ifstream f; f.open (file.c_str ());
+  std::string line;
+
+  while (f.good ()) {
+    std::vector <value_type> data;
+    std::getline (f, line);
+    std::stringstream ss (line);
+    std::copy (std::istream_iterator< value_type > (ss),
+	       std::istream_iterator< value_type > (),
+	       std::back_inserter (data));
+    ++nbRows;
+    result.push_back (data);
+  }
+  return result;
+}
+
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 {
   using namespace roboptim::visualization::gnuplot;
-
-  boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern("cubic-b-spline-gradient");
+  size_type nbRows = 0;
+  matrix_t reference = getReference ("cubic-b-spline-gradient.stdout");
+  if (reference.size () == 0) {
+    throw std::runtime_error
+      ("failed to open file \"cubic-b-spline-gradient.stdout\"");
+  }
+  double tol = 1e-6;
 
   CubicBSpline::vector_t params (7);
 
   for (unsigned x = 0; x < 7; ++x)
     {
-      (*output)
+      std::cout
 	<<
 	(boost::format
 	 ("set term wxt persist title 'Spline: base functions' %1% font ',5'")
@@ -68,7 +100,6 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
       // Build a cubic spline of dimension 1
       CubicBSpline spline (std::make_pair (0., 4.), 1, params);
       discreteInterval_t window (0., 4., 0.01);
-      std::cerr << spline << std::endl;
 
       // Loop over the order of derivation
       for (unsigned i = 0; i < 3; ++i)
@@ -89,17 +120,19 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 	      assert (0);
 	    }
 
-          (*output) << "plot '-' title '"<< title <<"' with line\n"
+          std::cout << "plot '-' title '"<< title <<"' with line\n"
 		    << std::endl;
 	  // Loop over the interval of definition
 	  for (double t = boost::get<0> (window); t < boost::get<1> (window);
 	       t += boost::get<2> (window))
 	    {
 	      CubicBSpline::vector_t grad = spline.derivative (t, i);
-              (*output) << (boost::format ("%1.2f %2.4f\n")
+              std::cout << (boost::format ("%1.2f %2.4f\n")
 			    % normalize (t)
 			    % normalize (grad (0))).str ();
-
+	      BOOST_CHECK_SMALL (t - reference [nbRows][0], tol);
+	      BOOST_CHECK_SMALL (grad (0) - reference [nbRows][1], tol);
+	      ++nbRows;
 	      try
 		{
 		  // Check gradient
@@ -116,7 +149,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 		  std::cerr << "t=" << t << ", spline=" << spline << std::endl;
 		}
 	    }
-          (*output) << "e" << std::endl;
+          std::cout << "e" << std::endl;
 	}
 
       // Loop over control points
@@ -141,7 +174,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 	      }
 	    title.append ((boost::format (" (%1%)") % j).str ());
 
-            (*output)
+            std::cout
 	      << "plot '-' title '"<< title
 	      << "' with line\n" << std::endl;
 	    // Loop over the interval of definition
@@ -150,19 +183,17 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 	      {
 		CubicBSpline::matrix_t jac =
 		  spline.variationDerivWrtParam (t, i);
-                (*output) << (boost::format ("%1.2f %2.4f\n")
+                std::cout << (boost::format ("%1.2f %2.4f\n")
 			      % normalize (t)
 			      % normalize (jac (0, j))).str ();
+		BOOST_CHECK_SMALL (t - reference [nbRows][0], tol);
+		BOOST_CHECK_SMALL (jac (0, j) - reference [nbRows][1], tol);
+		++nbRows;
 	      }
-            (*output) << "e" << std::endl;
+            std::cout << "e" << std::endl;
 	  }
-      (*output) << "unset multiplot" << std::endl;
+      std::cout << "unset multiplot" << std::endl;
     }
-
-
-  std::cout << output->str () << std::endl;
-
-  BOOST_CHECK (output->match_pattern ());
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
