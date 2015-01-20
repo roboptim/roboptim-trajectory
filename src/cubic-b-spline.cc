@@ -186,7 +186,7 @@ namespace trajectory
 
     // t_{m-4}
     double tmax = timeRange ().second;
-    size_type imax = nbp_;
+    size_type imax = knots_.size () - 5;
 
     unsigned int count = 0;
     bool found = false;
