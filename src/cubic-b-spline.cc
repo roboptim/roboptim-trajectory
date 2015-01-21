@@ -50,6 +50,26 @@ namespace trajectory
       knots_.push_back (ti);
       ti += delta_t;
     }
+    // interval lower bound should be rigorously equal to knot 3.
+    knots_ [3] = tr.first;
+    setParameters (p);
+    computeBasisPolynomials ();
+  }
+
+  CubicBSpline::CubicBSpline (size_type outputSize, const knots_t& knots,
+			      const vector_t& p, std::string name)
+    : Trajectory<3> (std::make_pair (knots [3], knots [knots.size ()-4]),
+		     outputSize, p, name), nbp_ (p.size () / outputSize),
+      knots_ (knots), uniform_ (false)
+  {
+    // Parameter size should be a multiple of spline dimension.
+    assert (parameters_.size () % outputSize == 0);
+
+    // Number of control points should be at least 4.
+    assert (nbp_ >= 4);
+
+    // Fill vector of regularly spaced knots.
+    assert (knots_.size () - (nbp_ + 4) == 0);
     setParameters (p);
     computeBasisPolynomials ();
   }
@@ -107,7 +127,7 @@ namespace trajectory
 	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t1);
 
 	Polynomial3 B2 =
-	  1./((t3-t0)*(t3-t1)*(t2-t1))
+	  1./((t3-t0)*(t3-t1)*(t3-t2))
 	  * Monomial3 (t0) * Monomial3 (t3)
 	  * Monomial3 (t3)
 	  + 1./((t4-t1)*(t3-t1)*(t3-t2))
@@ -162,41 +182,26 @@ namespace trajectory
     t = detail::fixTime (t, *this);
     typedef boost::numeric::converter<size_type, double> Double2SizeType;
 
-    // t_3
-    double tmin = timeRange ().first;
     size_type imin = 3;
-
-    // t_{m-4}
-    double tmax = timeRange ().second;
-    size_type imax = nbp_;
+    size_type imax = knots_.size () - 5;
 
     unsigned int count = 0;
     bool found = false;
     size_type i = 1;
     std::size_t i_ = static_cast<std::size_t> (i);
-    size_type iPrev = 0;
 
-    while (!found && iPrev != i)
+    while (!found)
       {
 	i = Double2SizeType::convert
-	  (std::floor (static_cast<double> (imin) + (t - tmin)
-		       / (tmax - tmin) * static_cast<double> (imax - imin)));
+	  (std::floor (.5 * static_cast<double> (imin + imax) + .5));
 	i_ = static_cast<std::size_t> (i);
-
 	if (t < knots_ [i_])
 	  {
-	    tmax = knots_ [i_ - 1];
 	    imax = i - 1;
 	  }
 	else if (t >= knots_ [i_ + 1])
 	  {
-	    if (t < knots_ [i_ + 2])
-	      {
-		i = i + 1;
-		found = true;
-	      }
 	    imin = i + 1;
-	    tmin = knots_ [i_ + 1];
 	  }
 	else
 	  {
@@ -204,12 +209,13 @@ namespace trajectory
 	  }
 	++count;
 	assert (count < 10000);
-	iPrev = i;
       }
     if (i > nbp_ - 1)
       i = nbp_-1;
     if (i < 3)
       i = 3;
+    assert (knots_ [i] <= t);
+    assert (t <= knots_ [i+1]);
     return i;
   }
 

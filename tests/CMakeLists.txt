@@ -111,6 +111,11 @@ ROBOPTIM_TRAJECTORY_TEST(state-function)
 
 # Spline.
 ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline)
+CONFIGURE_FILE ("cubic-b-spline-gradient.stdout"
+  "cubic-b-spline-gradient.stdout")
+ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-2)
+CONFIGURE_FILE ("cubic-b-spline-2.stdout"
+  "cubic-b-spline-2.stdout")
 ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-gradient)
 ROBOPTIM_TRAJECTORY_TEST(b-spline)
 ROBOPTIM_TRAJECTORY_TEST(constrained-b-spline)

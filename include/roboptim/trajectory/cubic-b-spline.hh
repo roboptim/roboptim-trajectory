@@ -44,6 +44,7 @@ namespace trajectory
 
     typedef std::vector<polynomials3vector_t> polynomials3vectors_t;
 
+    typedef std::vector <value_type> knots_t;
 
     /// \brief Instantiate a cubic B-Spline from its definition.
     ///
@@ -55,6 +56,19 @@ namespace trajectory
     /// The number of control points is inferred from the dimension of
     /// the parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
+		  const vector_t& parameters,
+		  const std::string name = "cubic B-Spline");
+
+    /// \brief Instantiate a cubic B-Spline from its definition.
+    ///
+    /// \param dimension spline dimension: \f$n\f$
+    /// \param knots vector of knots,
+    /// \param parameters vector of parameters defining control points
+    /// \param name function title
+    ///
+    /// The number of control points is inferred from the dimension of
+    /// the parameter vector.
+    CubicBSpline (size_type dimension, const knots_t& knots,
 		  const vector_t& parameters,
 		  const std::string name = "cubic B-Spline");
 
@@ -193,7 +207,7 @@ namespace trajectory
     size_type nbp_;
 
     /// \brief Vector of knots.
-    std::vector <value_type> knots_;
+    knots_t knots_;
 
     /// \brief Basis polynomials.
     /// basisPolynomials_[i][j] = B_{i,i+j}
