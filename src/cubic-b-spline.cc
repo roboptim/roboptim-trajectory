@@ -193,7 +193,7 @@ namespace trajectory
     while (!found)
       {
 	i = Double2SizeType::convert
-	  (std::floor (static_cast<double> (.5*(imin + imax)+.5)));
+	  (std::floor (.5 * static_cast<double> (imin + imax) + .5));
 	i_ = static_cast<std::size_t> (i);
 	if (t < knots_ [i_])
 	  {
