@@ -94,8 +94,11 @@ namespace trajectory
 	    > std::numeric_limits<value_type>::epsilon ())
 	  {
 	    if (printed_before)
-	      o << " + ";
-	    o << coefs_[idx] << " * x**" << idx;
+	      o << ((coefs_[idx] >= 0.) ? " + " : " - ")
+	        << std::abs (coefs_[idx]);
+      else
+	      o << coefs_[idx];
+      o << " * x**" << idx;
 	    printed_before = true;
 	  }
       }
@@ -103,8 +106,10 @@ namespace trajectory
         > std::numeric_limits<value_type>::epsilon ())
       {
 	if (printed_before)
-	  o << " + ";
-	o << coefs_[0];
+	      o << ((coefs_[0] >= 0.) ? " + " : " - ")
+	        << std::abs (coefs_[0]);
+  else
+	      o << coefs_[0];
       }
     else if (!printed_before)
       {
@@ -115,9 +120,9 @@ namespace trajectory
     {
       if (std::abs (t0_)
           > std::numeric_limits<value_type>::epsilon ())
-        o << " (x = t - " << t0_ << ")";
+	      o << " (x = t - " << t0_ << ")";
       else
-        o << " (x = t)";
+	      o << " (x = t)";
     }
 
     return o;

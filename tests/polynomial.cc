@@ -516,6 +516,10 @@ void test_print ()
   poly3_t null (1., params);
   (*output) << null << std::endl;
 
+  params[0] = -42;
+  poly3_t negative_constant (2., params);
+  (*output) << negative_constant << std::endl;
+
   params[0] = 42;
   poly3_t constant (2., params);
   (*output) << constant << std::endl;
@@ -526,6 +530,18 @@ void test_print ()
 
   poly3_t linear2 (3., params);
   (*output) << linear2 << std::endl;
+
+  params[0] = -42;
+  poly3_t linear3 (0., params);
+  (*output) << linear3 << std::endl;
+
+  params[1] = -1;
+  poly3_t linear4 (3., params);
+  (*output) << linear4 << std::endl;
+
+  params[0] = 42;
+  poly3_t linear5 (3., params);
+  (*output) << linear5 << std::endl;
 
   std::cout << output->str () << std::endl;
 
