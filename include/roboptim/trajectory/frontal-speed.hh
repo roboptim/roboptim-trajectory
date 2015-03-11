@@ -32,8 +32,8 @@ namespace trajectory
     ~FrontalSpeed ();
 
   protected:
-    void impl_compute (result_t& res, const argument_t& t) const;
-    void impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
+    void impl_compute (result_ref res, const_argument_ref t) const;
+    void impl_gradient (gradient_ref grad, const_argument_ref t, size_type i)
       const;
   };
 } // end of namespace trajectory.

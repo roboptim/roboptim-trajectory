@@ -47,13 +47,13 @@ namespace trajectory
 
     /// \brief see B-Spline constructors for documentation
     ConstrainedBSpline (interval_t timeRange, size_type dimension,
-			const vector_t& parameters,
+			const_vector_ref parameters,
 			const std::string name = "Constrained B-Spline");
 
     /// \brief see B-Spline constructors for documentation
     ConstrainedBSpline (interval_t tr, size_type dimension,
-			const vector_t& parameters,
-			const vector_t& knots,
+			const_vector_ref parameters,
+			const_vector_ref knots,
 			std::string name = "Constrained B-Spline");
 
     /// \brief Destructor of constrained B-spline.
@@ -89,11 +89,11 @@ namespace trajectory
 
     /// Overloaded parameters method from Trajectory<N>.
     /// Returns only the tunable parameters.
-    const vector_t& parameters () const;
+    const_vector_ref parameters () const;
 
     /// Overloaded setParameters method from Trajectory<N>.
     /// Given the free parameters, it calculates the spline parameters.
-    void setParameters (const vector_t&);
+    void setParameters (const_vector_ref);
 
     /// \brief Clone and resize a trajectory.
     /// \param timeRange new time range.

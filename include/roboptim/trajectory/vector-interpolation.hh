@@ -53,7 +53,7 @@ namespace trajectory
     /// \brief Vector interpolation constructor.
     /// \throw std::runtime_error
     explicit VectorInterpolation
-    (const vector_t& x, size_type outputSize, value_type dt);
+    (const_vector_ref x, size_type outputSize, value_type dt);
     ~VectorInterpolation ();
 
     VectorInterpolation (const VectorInterpolation& vi);
@@ -61,7 +61,7 @@ namespace trajectory
     /// \brief Store parameters and update coefficients.
     /// \param vector_t vector of parameters.
     /// \throw std::runtime_error
-    void setParameters (const vector_t&);
+    void setParameters (const_vector_ref);
 
     size_type numFrames () const;
 
@@ -91,11 +91,11 @@ namespace trajectory
     trim (size_type start, size_type length) const;
 
   protected:
-    void impl_compute (result_t& result, double t) const;
-    void impl_derivative (gradient_t& derivative,
+    void impl_compute (result_ref result, double t) const;
+    void impl_derivative (gradient_ref derivative,
 			  double argument,
 			  size_type order = 1) const;
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
     Trajectory<3>* resize (interval_t timeRange)
       const;

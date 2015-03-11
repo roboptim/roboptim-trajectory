@@ -91,7 +91,7 @@ namespace trajectory
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    virtual void setParameters (const vector_t&);
+    virtual void setParameters (const_vector_ref);
 
     /// \brief Get time scale factor.
     /// \return time scale factor.
@@ -169,10 +169,10 @@ namespace trajectory
       const;
 
   protected:
-    void impl_compute (result_t&, double) const;
-    void impl_derivative (gradient_t& g, double x, size_type order)
+    void impl_compute (result_ref, double) const;
+    void impl_derivative (gradient_ref g, double x, size_type order)
       const;
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
   private:
     /// \brief Input fixed time trajectory.
@@ -185,13 +185,13 @@ namespace trajectory
   /// @}
 
   Function::vector_t
-  addScaleToParameters (const Function::vector_t& p,
+  addScaleToParameters (Function::const_vector_ref p,
 			Function::value_type t = 1.);
   Function::vector_t
-  removeScaleFromParameters (const Function::vector_t& v);
+  removeScaleFromParameters (Function::const_vector_ref v);
 
   inline Function::vector_t
-  addScaleToParameters (const Function::vector_t& p,
+  addScaleToParameters (Function::const_vector_ref p,
 			Function::value_type t)
   {
 
@@ -202,7 +202,7 @@ namespace trajectory
   }
 
   inline Function::vector_t
-  removeScaleFromParameters (const Function::vector_t& p)
+  removeScaleFromParameters (Function::const_vector_ref p)
   {
     Function::vector_t res (p.size () - 1);
     res = p.segment( 1, p.size () - 1);

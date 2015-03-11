@@ -69,7 +69,7 @@ namespace trajectory
     ///
     /// \param t0 polynomial of (t-t₀).
     /// \param coefs polynomial coefficients.
-    Polynomial (value_type t0, const vector_t& coefs);
+    Polynomial (value_type t0, const_vector_ref coefs);
 
     /// \brief Variadic constructor.
     /// Note: this is a legacy constructor used to keep Polynomial3's API.

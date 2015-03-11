@@ -26,7 +26,7 @@ namespace trajectory
 {
   inline
   VectorInterpolation::VectorInterpolation
-  (const vector_t& x, size_type outputSize, value_type dt)
+  (const_vector_ref x, size_type outputSize, value_type dt)
     : roboptim::trajectory::Trajectory<3>
       (makeInterval (0., dt * static_cast<value_type> (x.size ())
                      / static_cast<value_type> (outputSize)),
@@ -83,7 +83,7 @@ namespace trajectory
   inline
   void
   VectorInterpolation::impl_compute
-  (result_t& result, double t)
+  (result_ref result, double t)
     const
   {
     // Fix evaluation if we only have one frame
@@ -117,7 +117,7 @@ namespace trajectory
 
   inline
   void
-  VectorInterpolation::setParameters (const vector_t& x)
+  VectorInterpolation::setParameters (const_vector_ref x)
   {
     if (x.size () % this->outputSize () != 0)
       {
@@ -234,7 +234,7 @@ namespace trajectory
 
   inline
   void
-  VectorInterpolation::impl_derivative (gradient_t& gradient,
+  VectorInterpolation::impl_derivative (gradient_ref gradient,
 					double t,
 					size_type order)
     const
@@ -269,7 +269,7 @@ namespace trajectory
 
   inline
   void
-  VectorInterpolation::impl_derivative (gradient_t& derivative,
+  VectorInterpolation::impl_derivative (gradient_ref derivative,
 					StableTimePoint stp,
 					size_type order)
     const

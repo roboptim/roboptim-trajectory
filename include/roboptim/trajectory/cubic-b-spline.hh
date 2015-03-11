@@ -56,7 +56,7 @@ namespace trajectory
     /// The number of control points is inferred from the dimension of
     /// the parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
-		  const vector_t& parameters,
+		  const_vector_ref parameters,
 		  const std::string name = "cubic B-Spline");
 
     /// \brief Instantiate a cubic B-Spline from its definition.
@@ -69,7 +69,7 @@ namespace trajectory
     /// The number of control points is inferred from the dimension of
     /// the parameter vector.
     CubicBSpline (size_type dimension, const knots_t& knots,
-		  const vector_t& parameters,
+		  const_vector_ref parameters,
 		  const std::string name = "cubic B-Spline");
 
     /// \brief Copy constructor.
@@ -79,7 +79,7 @@ namespace trajectory
     virtual ~CubicBSpline ();
 
     /// \brief Modify spline parameters.
-    virtual void setParameters (const vector_t&);
+    virtual void setParameters (const_vector_ref);
 
     virtual jacobian_t variationConfigWrtParam (double t) const;
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)
@@ -181,10 +181,10 @@ namespace trajectory
 
   protected:
     using Trajectory<3>::impl_compute;
-    void impl_compute (result_t&, double) const;
-    void impl_derivative (gradient_t& g, double x, size_type order)
+    void impl_compute (result_ref, double) const;
+    void impl_derivative (gradient_ref g, double x, size_type order)
       const;
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
 
     /// \brief Find the index of the interval in which t is.

@@ -73,7 +73,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::impl_compute (result_t& res , double t)
+  FreeTimeTrajectory<T>::impl_compute (result_ref res , double t)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
@@ -85,7 +85,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
+  FreeTimeTrajectory<T>::impl_derivative (gradient_ref derivative,
 					  double t,
 					  size_type order) const
   {
@@ -100,7 +100,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::impl_derivative (gradient_t& derivative,
+  FreeTimeTrajectory<T>::impl_derivative (gradient_ref derivative,
 					  StableTimePoint stp,
 					  size_type order) const
   {
@@ -240,7 +240,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::setParameters (const vector_t& p)
+  FreeTimeTrajectory<T>::setParameters (const_vector_ref p)
   {
     //FIXME: is this ok?
     vector_t p_ = p;

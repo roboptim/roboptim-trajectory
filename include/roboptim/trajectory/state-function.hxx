@@ -64,8 +64,8 @@ namespace trajectory
 
   template <typename T>
   void
-  StateFunction<T>::impl_compute (result_t& res,
-				  const argument_t& p) const
+  StateFunction<T>::impl_compute (result_ref res,
+				  const_argument_ref p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
@@ -79,8 +79,8 @@ namespace trajectory
 
   template <typename T>
   void
-  StateFunction<T>::impl_gradient (gradient_t& grad,
-				   const argument_t& p,
+  StateFunction<T>::impl_gradient (gradient_ref grad,
+				   const_argument_ref p,
 				   size_type i) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION

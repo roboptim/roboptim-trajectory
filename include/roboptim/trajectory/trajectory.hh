@@ -89,11 +89,17 @@ namespace trajectory
     /// \brief Import size type.
     typedef typename parent_t::size_type size_type;
     /// \brief Import vector type.
-    typedef typename parent_t::vector_t vector_t;
+    typedef typename parent_t::vector_t         vector_t;
+    typedef typename parent_t::vector_ref       vector_ref;
+    typedef typename parent_t::const_vector_ref const_vector_ref;
     /// \brief Import result type.
-    typedef typename parent_t::result_t result_t;
+    typedef typename parent_t::result_t         result_t;
+    typedef typename parent_t::result_ref       result_ref;
+    typedef typename parent_t::const_result_ref const_result_ref;
     /// \brief Import gradient type.
-    typedef typename parent_t::gradient_t gradient_t;
+    typedef typename parent_t::gradient_t         gradient_t;
+    typedef typename parent_t::gradient_ref       gradient_ref;
+    typedef typename parent_t::const_gradient_ref const_gradient_ref;
     /// \brief Import jacobian type.
     typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Import interval type.
@@ -104,12 +110,12 @@ namespace trajectory
     /// \name Accessing parameters, and state.
     /// \{
 
-    const vector_t& parameters () const;
+    const_vector_ref parameters () const;
 
     /// \brief Set parameters.
     /// \param vector_t parameters.
     /// \throw std::runtime_error
-    virtual void setParameters (const vector_t&);
+    virtual void setParameters (const_vector_ref);
 
     interval_t timeRange () const;
     value_type length () const;
@@ -210,7 +216,7 @@ namespace trajectory
       return result;
     }
 
-    void operator () (result_t& result, StableTimePoint argument) const
+    void operator () (result_ref result, StableTimePoint argument) const
     {
       assert (this->isValidResult (result));
       this->impl_compute (result, argument);
@@ -225,7 +231,7 @@ namespace trajectory
       return derivative;
     }
 
-    void derivative (gradient_t& derivative,
+    void derivative (gradient_ref derivative,
 		     StableTimePoint argument,
 		     size_type order = 1) const
     {
@@ -266,12 +272,12 @@ namespace trajectory
 
     virtual std::ostream& print (std::ostream&) const;
   protected:
-    void impl_compute (result_t&, StableTimePoint) const;
+    void impl_compute (result_ref, StableTimePoint) const;
     virtual void
-    impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const = 0;
 
-    Trajectory (interval_t, size_type, const vector_t&,
+    Trajectory (interval_t, size_type, const_vector_ref,
 		std::string name = std::string ());
 
     /// \brief Internal version of normalizeAngles allowing an optional offset.

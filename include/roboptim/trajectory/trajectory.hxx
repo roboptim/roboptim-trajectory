@@ -25,7 +25,7 @@ namespace trajectory
   template <unsigned dorder>
   Trajectory<dorder>::Trajectory (interval_t tr,
 				  size_type outputSize,
-				  const vector_t& p,
+				  const_vector_ref p,
 				  std::string name)
     : parent_t (outputSize, name),
       timeRange_ (tr),
@@ -45,7 +45,7 @@ namespace trajectory
 
 
   template <unsigned dorder>
-  const typename Trajectory<dorder>::vector_t&
+  typename Trajectory<dorder>::const_vector_ref
   Trajectory<dorder>::parameters () const
   {
     return parameters_;
@@ -54,7 +54,7 @@ namespace trajectory
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::setParameters (const vector_t& p)
+  Trajectory<dorder>::setParameters (const_vector_ref p)
   {
     parameters_ = p;
   }
@@ -145,7 +145,7 @@ namespace trajectory
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::impl_compute (result_t& res , StableTimePoint stp)
+  Trajectory<dorder>::impl_compute (result_ref res , StableTimePoint stp)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION

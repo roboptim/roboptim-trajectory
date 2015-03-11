@@ -67,8 +67,8 @@ namespace trajectory
     }
 
   protected:
-    void impl_compute (result_t& res, const argument_t& p) const;
-    void impl_gradient (gradient_t& grad, const argument_t& p, size_type i)
+    void impl_compute (result_ref res, const_argument_ref p) const;
+    void impl_gradient (gradient_ref grad, const_argument_ref p, size_type i)
       const;
   private:
     value_type alpha3 (value_type deltaTheta, value_type dsquare) const;

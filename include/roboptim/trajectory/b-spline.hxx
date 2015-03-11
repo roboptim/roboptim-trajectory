@@ -29,7 +29,7 @@ namespace trajectory
   //FIXME: defined_lc_in has to be true (false untested).
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
-                       const vector_t& p,
+                       const_vector_ref p,
                        std::string name)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
@@ -60,7 +60,7 @@ namespace trajectory
 
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
-                       const vector_t& p, const vector_t& knots,
+                       const_vector_ref p, const_vector_ref knots,
                        std::string name)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), knots_ (knots), uniform_ (false)
@@ -259,14 +259,14 @@ namespace trajectory
   }
 
   template <int N>
-  void BSpline<N>::setParameters (const vector_t& p)
+  void BSpline<N>::setParameters (const_vector_ref p)
   {
     assert (p.size () == this->parameters_.size ());
     this->parameters_ = p;
   }
 
   template <int N>
-  void BSpline<N>::impl_compute (result_t& derivative, value_type t) const
+  void BSpline<N>::impl_compute (result_ref derivative, value_type t) const
   {
     t = detail::fixTime (t, *this);
     assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
@@ -356,7 +356,7 @@ namespace trajectory
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_t& derivative, value_type t,
+  BSpline<N>::impl_derivative (gradient_ref derivative, value_type t,
 			       size_type order)
     const
   {
@@ -375,7 +375,7 @@ namespace trajectory
 	const std::size_t k_ = static_cast<std::size_t> (k);
 	const std::size_t idx_ = static_cast<std::size_t> (idx);
 
-        const vector_t& P_seg = this->parameters_.segment ((k - idx) * n, n);
+        const_vector_ref P_seg = this->parameters_.segment ((k - idx) * n, n);
         const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
 
 # ifndef NDEBUG
@@ -395,7 +395,7 @@ namespace trajectory
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_t& derivative,
+  BSpline<N>::impl_derivative (gradient_ref derivative,
 			       StableTimePoint stp,
 			       size_type order) const
   {
@@ -491,7 +491,7 @@ namespace trajectory
   }
 
   template <int N>
-  const typename BSpline<N>::vector_t& BSpline<N>::knotVector () const
+  const typename BSpline<N>::vector_ref BSpline<N>::knotVector () const
   {
     return this->knots_;
   }

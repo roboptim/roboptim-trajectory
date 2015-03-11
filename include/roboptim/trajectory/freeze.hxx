@@ -60,7 +60,7 @@ namespace trajectory
   template <typename P>
   void
   Freeze<P>::operator () (const std::vector<Function::size_type>& indices,
-			  const Function::vector_t& values)
+			  Function::const_vector_ref values)
   {
     frozenArguments_t fa;
     for (unsigned i = 0; i < indices.size (); ++i)

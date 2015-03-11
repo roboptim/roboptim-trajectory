@@ -66,7 +66,7 @@ struct ConfigWrtParam : public DerivableFunction
   }
 
   void
-  impl_compute (result_t& res, const argument_t& p) const
+  impl_compute (result_ref res, const_argument_ref p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -78,7 +78,7 @@ struct ConfigWrtParam : public DerivableFunction
   }
 
   void
-  impl_gradient (gradient_t& grad, const argument_t& p, size_type)
+  impl_gradient (gradient_ref grad, const_argument_ref p, size_type)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
@@ -108,7 +108,7 @@ struct DerivWrtParam : public DerivableFunction
   {}
 
   void
-  impl_compute (result_t& res, const argument_t& t) const
+  impl_compute (result_ref res, const_argument_ref t) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -119,7 +119,7 @@ struct DerivWrtParam : public DerivableFunction
   }
 
   void
-  impl_gradient (gradient_t& grad, const argument_t& t, size_type i)
+  impl_gradient (gradient_ref grad, const_argument_ref t, size_type i)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION

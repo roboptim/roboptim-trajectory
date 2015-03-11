@@ -29,7 +29,7 @@ namespace trajectory
 
   //FIXME: defined_lc_in has to be true (false untested).
   CubicBSpline::CubicBSpline (interval_t tr, size_type outputSize,
-			      const vector_t& p,
+			      const_vector_ref p,
 			      std::string name)
     : Trajectory<3> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
@@ -57,7 +57,7 @@ namespace trajectory
   }
 
   CubicBSpline::CubicBSpline (size_type outputSize, const knots_t& knots,
-			      const vector_t& p, std::string name)
+			      const_vector_ref p, std::string name)
     : Trajectory<3> (std::make_pair (knots [3], knots [knots.size ()-4]),
 		     outputSize, p, name), nbp_ (p.size () / outputSize),
       knots_ (knots), uniform_ (false)
@@ -151,14 +151,14 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::setParameters (const vector_t& p)
+  CubicBSpline::setParameters (const_vector_ref p)
   {
     assert (p.size () == parameters_.size ());
     parameters_ = p;
   }
 
   void
-  CubicBSpline::impl_compute (result_t& derivative, double t) const
+  CubicBSpline::impl_compute (result_ref derivative, double t) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     Eigen::internal::set_is_malloc_allowed (true);
@@ -281,7 +281,7 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::impl_derivative (gradient_t& derivative, double t,
+  CubicBSpline::impl_derivative (gradient_ref derivative, double t,
 				 size_type order)
     const
   {
@@ -294,10 +294,10 @@ namespace trajectory
     const std::size_t k_ = static_cast<std::size_t> (k);
     const size_type n = outputSize ();
 
-    const vector_t& P_k_3 = parameters().segment((k - 3) * n,n);
-    const vector_t& P_k_2 = parameters().segment((k - 2) * n,n);
-    const vector_t& P_k_1 = parameters().segment((k - 1) * n,n);
-    const vector_t& P_k   = parameters().segment((k - 0) * n,n);
+    const_vector_ref P_k_3 = parameters().segment((k - 3) * n,n);
+    const_vector_ref P_k_2 = parameters().segment((k - 2) * n,n);
+    const_vector_ref P_k_1 = parameters().segment((k - 1) * n,n);
+    const_vector_ref P_k   = parameters().segment((k - 0) * n,n);
 
     const Polynomial3& B_k_3_k = basisPolynomials_[k_ - 3][3];
     const Polynomial3& B_k_2_k = basisPolynomials_[k_ - 2][2];
@@ -393,7 +393,7 @@ namespace trajectory
 
 
   void
-  CubicBSpline::impl_derivative (gradient_t& derivative,
+  CubicBSpline::impl_derivative (gradient_ref derivative,
 				 StableTimePoint stp,
 				 size_type order) const
   {

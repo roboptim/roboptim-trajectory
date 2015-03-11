@@ -49,7 +49,7 @@ namespace trajectory
     struct SumLengthGrad
     {
       SumLengthGrad (const CubicBSpline& traj,
-		     SplineLength::gradient_t& grad)
+		     SplineLength::gradient_ref grad)
 	: traj_ (traj),
 	  grad_ (grad)
       {}
@@ -62,7 +62,7 @@ namespace trajectory
 
     private:
       const CubicBSpline& traj_;
-      SplineLength::gradient_t& grad_;
+      SplineLength::gradient_ref grad_;
     };
 
   }
@@ -81,7 +81,7 @@ namespace trajectory
   }
 
   void
-  SplineLength::impl_compute (result_t& res, const argument_t& p)
+  SplineLength::impl_compute (result_ref res, const_argument_ref p)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
@@ -102,7 +102,7 @@ namespace trajectory
   }
 
   void
-  SplineLength::impl_gradient (gradient_t& grad, const argument_t& p,
+  SplineLength::impl_gradient (gradient_ref grad, const_argument_ref p,
 			       size_type ONLY_DEBUG (i))
     const
   {
