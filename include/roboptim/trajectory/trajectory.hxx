@@ -25,7 +25,7 @@ namespace trajectory
   template <unsigned dorder>
   Trajectory<dorder>::Trajectory (interval_t tr,
 				  size_type outputSize,
-				  const_vector_ref p,
+				  const vector_t& p,
 				  std::string name)
     : parent_t (outputSize, name),
       timeRange_ (tr),
@@ -45,7 +45,7 @@ namespace trajectory
 
 
   template <unsigned dorder>
-  typename Trajectory<dorder>::const_vector_ref
+  const typename Trajectory<dorder>::vector_t&
   Trajectory<dorder>::parameters () const
   {
     return parameters_;
@@ -54,7 +54,7 @@ namespace trajectory
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::setParameters (const_vector_ref p)
+  Trajectory<dorder>::setParameters (const vector_t& p)
   {
     parameters_ = p;
   }

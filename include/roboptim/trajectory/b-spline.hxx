@@ -29,7 +29,7 @@ namespace trajectory
   //FIXME: defined_lc_in has to be true (false untested).
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
-                       const_vector_ref p,
+                       const vector_t& p,
                        std::string name)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
@@ -60,7 +60,7 @@ namespace trajectory
 
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
-                       const_vector_ref p, const_vector_ref knots,
+                       const vector_t& p, const_vector_ref knots,
                        std::string name)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), knots_ (knots), uniform_ (false)
@@ -259,7 +259,7 @@ namespace trajectory
   }
 
   template <int N>
-  void BSpline<N>::setParameters (const_vector_ref p)
+  void BSpline<N>::setParameters (const vector_t& p)
   {
     assert (p.size () == this->parameters_.size ());
     this->parameters_ = p;
@@ -491,7 +491,7 @@ namespace trajectory
   }
 
   template <int N>
-  const typename BSpline<N>::vector_ref BSpline<N>::knotVector () const
+  const typename BSpline<N>::vector_t& BSpline<N>::knotVector () const
   {
     return this->knots_;
   }

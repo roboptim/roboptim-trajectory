@@ -110,12 +110,12 @@ namespace trajectory
     /// \name Accessing parameters, and state.
     /// \{
 
-    const_vector_ref parameters () const;
+    const vector_t& parameters () const;
 
     /// \brief Set parameters.
     /// \param vector_t parameters.
     /// \throw std::runtime_error
-    virtual void setParameters (const_vector_ref);
+    virtual void setParameters (const vector_t&);
 
     interval_t timeRange () const;
     value_type length () const;
@@ -277,7 +277,7 @@ namespace trajectory
     impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const = 0;
 
-    Trajectory (interval_t, size_type, const_vector_ref,
+    Trajectory (interval_t, size_type, const vector_t&,
 		std::string name = std::string ());
 
     /// \brief Internal version of normalizeAngles allowing an optional offset.

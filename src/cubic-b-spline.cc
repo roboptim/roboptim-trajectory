@@ -29,7 +29,7 @@ namespace trajectory
 
   //FIXME: defined_lc_in has to be true (false untested).
   CubicBSpline::CubicBSpline (interval_t tr, size_type outputSize,
-			      const_vector_ref p,
+			      const vector_t& p,
 			      std::string name)
     : Trajectory<3> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
@@ -57,7 +57,7 @@ namespace trajectory
   }
 
   CubicBSpline::CubicBSpline (size_type outputSize, const knots_t& knots,
-			      const_vector_ref p, std::string name)
+			      const vector_t& p, std::string name)
     : Trajectory<3> (std::make_pair (knots [3], knots [knots.size ()-4]),
 		     outputSize, p, name), nbp_ (p.size () / outputSize),
       knots_ (knots), uniform_ (false)
@@ -151,7 +151,7 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::setParameters (const_vector_ref p)
+  CubicBSpline::setParameters (const vector_t& p)
   {
     assert (p.size () == parameters_.size ());
     parameters_ = p;

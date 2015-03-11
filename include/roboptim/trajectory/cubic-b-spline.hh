@@ -56,7 +56,7 @@ namespace trajectory
     /// The number of control points is inferred from the dimension of
     /// the parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
-		  const_vector_ref parameters,
+		  const vector_t& parameters,
 		  const std::string name = "cubic B-Spline");
 
     /// \brief Instantiate a cubic B-Spline from its definition.
@@ -69,7 +69,7 @@ namespace trajectory
     /// The number of control points is inferred from the dimension of
     /// the parameter vector.
     CubicBSpline (size_type dimension, const knots_t& knots,
-		  const_vector_ref parameters,
+		  const vector_t& parameters,
 		  const std::string name = "cubic B-Spline");
 
     /// \brief Copy constructor.
@@ -79,7 +79,7 @@ namespace trajectory
     virtual ~CubicBSpline ();
 
     /// \brief Modify spline parameters.
-    virtual void setParameters (const_vector_ref);
+    virtual void setParameters (const vector_t&);
 
     virtual jacobian_t variationConfigWrtParam (double t) const;
     virtual jacobian_t variationDerivWrtParam (double t, size_type order)

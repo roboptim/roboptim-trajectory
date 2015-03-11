@@ -240,7 +240,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::setParameters (const_vector_ref p)
+  FreeTimeTrajectory<T>::setParameters (const vector_t& p)
   {
     //FIXME: is this ok?
     vector_t p_ = p;

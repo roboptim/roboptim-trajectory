@@ -49,7 +49,7 @@ static double tol = 1e-6;
 /// Start and end values of the spline are fixed through constraints.
 template <int N>
 void check_evaluate (interval_t interval,
-                     int dimension, const_vector_ref params, int order)
+                     int dimension, const vector_t& params, int order)
 {
   ConstrainedBSpline<N> spline (interval, dimension, params);
 

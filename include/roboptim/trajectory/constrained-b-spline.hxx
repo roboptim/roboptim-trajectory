@@ -30,7 +30,7 @@ namespace trajectory
   template <int N>
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
-					     const_vector_ref parameters,
+					     const vector_t& parameters,
 					     const std::string name)
     : BSpline<N> (timeRange, dimension, parameters, name),
       constraints_ (0, parameters.rows ()),
@@ -43,7 +43,7 @@ namespace trajectory
   template <int N>
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
-					     const_vector_ref parameters,
+					     const vector_t& parameters,
 					     const_vector_ref knots,
 					     const std::string name)
     : BSpline<N> (timeRange, dimension, parameters, knots, name),
@@ -128,14 +128,14 @@ namespace trajectory
 
 
   template <int N>
-  const typename ConstrainedBSpline<N>::vector_ref
+  const typename ConstrainedBSpline<N>::vector_t&
   ConstrainedBSpline<N>::parameters () const
   {
     return tunables_;
   }
 
   template <int N>
-  void ConstrainedBSpline<N>::setParameters (const_vector_ref parameters_in)
+  void ConstrainedBSpline<N>::setParameters (const vector_t& parameters_in)
   {
     assert (tunables_.rows () == parameters_in.rows ());
     tunables_ = parameters_in;

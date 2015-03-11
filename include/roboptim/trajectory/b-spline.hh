@@ -80,7 +80,7 @@ namespace trajectory
     /// Number of control points is inferred from dimension of dimenion of
     /// parameter vector.
     BSpline (interval_t timeRange, size_type dimension,
-             const_vector_ref parameters,
+             const vector_t& parameters,
              const std::string name = "B-Spline");
 
     /// \brief Instantiate a B-Spline with parameters and knot points.
@@ -97,7 +97,7 @@ namespace trajectory
     /// The rest of the knot point must lie before the
     /// end of the spline interval.
     BSpline (interval_t tr, size_type dimension,
-             const_vector_ref parameters,
+             const vector_t& parameters,
              const_vector_ref knots,
              std::string name = "B-Spline");
 
@@ -108,7 +108,7 @@ namespace trajectory
     virtual ~BSpline () {};
 
     /// \brief Modify spline parameters.
-    virtual void setParameters (const_vector_ref);
+    virtual void setParameters (const vector_t&);
 
     virtual jacobian_t variationConfigWrtParam (value_type t) const;
     virtual jacobian_t variationDerivWrtParam (value_type t, size_type order)
@@ -137,7 +137,7 @@ namespace trajectory
 
     /// \brief Return the knot vector of the spline.
     /// \return knot vector of the spline (const).
-    const_vector_ref knotVector () const;
+    const vector_t& knotVector () const;
 
     size_type interval (value_type t) const;
 
