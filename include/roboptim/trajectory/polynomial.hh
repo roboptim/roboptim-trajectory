@@ -40,9 +40,8 @@ namespace trajectory
   class Polynomial
   {
   public:
-    typedef Function::size_type               size_type;
-    typedef Function::value_type              value_type;
-    typedef Function::vector_t                vector_t;
+    ROBOPTIM_FUNCTION_FWD_TYPEDEFS_ (Function);
+
     typedef Function::interval_t              interval_t;
 
     /// Polynomial degree >= 0.

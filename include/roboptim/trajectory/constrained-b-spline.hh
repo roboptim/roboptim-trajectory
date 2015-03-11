@@ -37,13 +37,10 @@ namespace trajectory
   class ConstrainedBSpline : public BSpline<N>
   {
   public:
-    typedef BSpline<N> parent_t;
+    /// \brief Parent type and imports.
+    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+      (BSpline<N>);
     typedef typename parent_t::interval_t interval_t;
-    typedef typename parent_t::size_type size_type;
-    typedef typename parent_t::value_type value_type;
-    typedef typename parent_t::vector_t vector_t;
-    typedef typename parent_t::matrix_t matrix_t;
-    typedef typename parent_t::jacobian_t jacobian_t;
 
     /// \brief see B-Spline constructors for documentation
     ConstrainedBSpline (interval_t timeRange, size_type dimension,

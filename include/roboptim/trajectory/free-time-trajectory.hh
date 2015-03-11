@@ -43,26 +43,15 @@ namespace trajectory
 			 <Trajectory<T::derivabilityOrder>, T>::value));
 
   public:
-    /// \brief Parent type.
-    typedef Trajectory<T::derivabilityOrder> parent_t;
+    /// \brief Parent type and imports.
+    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+      (Trajectory<T::derivabilityOrder>);
     /// \brief Fixed point trajectory type.
     typedef T fixedTimeTrajectory_t;
     /// \brief Self type.
     typedef FreeTimeTrajectory<T> self_t;
 
 
-    /// \brief Import value type.
-    typedef typename parent_t::value_type value_type;
-    /// \brief Import size type.
-    typedef typename parent_t::size_type size_type;
-    /// \brief Import result type.
-    typedef typename parent_t::result_t result_t;
-    /// \brief Import gradient type.
-    typedef typename parent_t::gradient_t gradient_t;
-    /// \brief Import vector type.
-    typedef typename parent_t::vector_t vector_t;
-    /// \brief Import jacobian type.
-    typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 

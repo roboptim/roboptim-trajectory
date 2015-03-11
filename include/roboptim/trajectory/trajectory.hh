@@ -76,32 +76,15 @@ namespace trajectory
   class Trajectory : public NTimesDerivableFunction<DerivabilityOrder>
   {
   public:
-    /// \brief Parent type.
-    typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
+    /// \brief Parent type and imports.
+    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+      (NTimesDerivableFunction<DerivabilityOrder>);
 
     using parent_t::operator ();
     using parent_t::derivative;
     using parent_t::impl_compute;
     using parent_t::impl_derivative;
 
-    /// \brief Import value type.
-    typedef typename parent_t::value_type value_type;
-    /// \brief Import size type.
-    typedef typename parent_t::size_type size_type;
-    /// \brief Import vector type.
-    typedef typename parent_t::vector_t         vector_t;
-    typedef typename parent_t::vector_ref       vector_ref;
-    typedef typename parent_t::const_vector_ref const_vector_ref;
-    /// \brief Import result type.
-    typedef typename parent_t::result_t         result_t;
-    typedef typename parent_t::result_ref       result_ref;
-    typedef typename parent_t::const_result_ref const_result_ref;
-    /// \brief Import gradient type.
-    typedef typename parent_t::gradient_t         gradient_t;
-    typedef typename parent_t::gradient_ref       gradient_ref;
-    typedef typename parent_t::const_gradient_ref const_gradient_ref;
-    /// \brief Import jacobian type.
-    typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
