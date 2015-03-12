@@ -55,6 +55,8 @@
 using namespace roboptim;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
+using namespace roboptim::trajectory;
+using namespace roboptim::trajectory::visualization::gnuplot;
 
 typedef Solver<DifferentiableFunction,
 	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
