@@ -68,8 +68,10 @@ namespace trajectory
     // Number of control points should be at least 4.
     assert (nbp_ >= 4);
 
+    ROBOPTIM_DEBUG_ONLY(size_t nbp = static_cast<size_t> (nbp_);)
+
     // Fill vector of regularly spaced knots.
-    assert (knots_.size () - (nbp_ + 4) == 0);
+    assert (knots_.size () - (nbp + 4) == 0);
     setParameters (p);
     computeBasisPolynomials ();
   }
@@ -183,7 +185,7 @@ namespace trajectory
     typedef boost::numeric::converter<size_type, double> Double2SizeType;
 
     size_type imin = 3;
-    size_type imax = knots_.size () - 5;
+    size_type imax = static_cast<size_type> (knots_.size () - 5);
 
     unsigned int count = 0;
     bool found = false;
@@ -214,8 +216,9 @@ namespace trajectory
       i = nbp_-1;
     if (i < 3)
       i = 3;
-    assert (knots_ [i] <= t);
-    assert (t <= knots_ [i+1]);
+    ROBOPTIM_DEBUG_ONLY(i_ = static_cast<std::size_t> (i);)
+    assert (knots_ [i_] <= t);
+    assert (t <= knots_ [i_+1]);
     return i;
   }
 

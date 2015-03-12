@@ -367,9 +367,7 @@ namespace trajectory
 
     derivative.setZero();
 
-# ifndef NDEBUG
-    value_type polynomial_sum = 0.;
-# endif //! NDEBUG
+    ROBOPTIM_DEBUG_ONLY(value_type polynomial_sum = 0.;)
     for (size_type idx = 0; idx < order_ + 1; ++idx)
       {
 	const std::size_t k_ = static_cast<std::size_t> (k);
@@ -378,9 +376,7 @@ namespace trajectory
         const_vector_ref P_seg = this->parameters_.segment ((k - idx) * n, n);
         const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
 
-# ifndef NDEBUG
-        polynomial_sum += B.derivative (t, order);
-# endif //! NDEBUG
+        ROBOPTIM_DEBUG_ONLY(polynomial_sum += B.derivative (t, order);)
 
         derivative +=  B.derivative (t, order) * P_seg;
       }

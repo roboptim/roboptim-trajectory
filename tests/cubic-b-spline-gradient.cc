@@ -130,8 +130,9 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
               std::cout << (boost::format ("%1.2f %2.4f\n")
 			    % normalize (t)
 			    % normalize (grad (0))).str ();
-	      BOOST_CHECK_SMALL (t - reference [nbRows][0], tol);
-	      BOOST_CHECK_SMALL (grad (0) - reference [nbRows][1], tol);
+	      std::size_t nbRows_ = static_cast<std::size_t>(nbRows);
+	      BOOST_CHECK_SMALL (t - reference [nbRows_][0], tol);
+	      BOOST_CHECK_SMALL (grad (0) - reference [nbRows_][1], tol);
 	      ++nbRows;
 	      try
 		{
@@ -186,8 +187,9 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
                 std::cout << (boost::format ("%1.2f %2.4f\n")
 			      % normalize (t)
 			      % normalize (jac (0, j))).str ();
-		BOOST_CHECK_SMALL (t - reference [nbRows][0], tol);
-		BOOST_CHECK_SMALL (jac (0, j) - reference [nbRows][1], tol);
+		std::size_t nbRows_ = static_cast<std::size_t>(nbRows);
+		BOOST_CHECK_SMALL (t - reference [nbRows_][0], tol);
+		BOOST_CHECK_SMALL (jac (0, j) - reference [nbRows_][1], tol);
 		++nbRows;
 	      }
             std::cout << "e" << std::endl;
