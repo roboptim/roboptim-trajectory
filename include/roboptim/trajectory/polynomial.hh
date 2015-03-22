@@ -40,9 +40,8 @@ namespace trajectory
   class Polynomial
   {
   public:
-    typedef Function::size_type               size_type;
-    typedef Function::value_type              value_type;
-    typedef Function::vector_t                vector_t;
+    ROBOPTIM_FUNCTION_FWD_TYPEDEFS_ (Function);
+
     typedef Function::interval_t              interval_t;
 
     /// Polynomial degree >= 0.
@@ -69,7 +68,7 @@ namespace trajectory
     ///
     /// \param t0 polynomial of (t-t₀).
     /// \param coefs polynomial coefficients.
-    Polynomial (value_type t0, const vector_t& coefs);
+    Polynomial (value_type t0, const_vector_ref coefs);
 
     /// \brief Variadic constructor.
     /// Note: this is a legacy constructor used to keep Polynomial3's API.

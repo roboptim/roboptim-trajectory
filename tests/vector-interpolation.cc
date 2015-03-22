@@ -53,7 +53,7 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
   {}
 
   virtual void
-  impl_compute (result_t& result, const argument_t& x)
+  impl_compute (result_ref result, const_argument_ref x)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
@@ -68,8 +68,8 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
   }
 
   virtual void
-  impl_gradient (gradient_t& gradient,
-		 const argument_t& x,
+  impl_gradient (gradient_ref gradient,
+		 const_argument_ref x,
 		 size_type functionId = 0)
     const
   {

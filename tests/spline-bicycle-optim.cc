@@ -43,6 +43,7 @@ using namespace roboptim;
 using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 using namespace roboptim::visualization::gnuplot;
+using namespace roboptim::trajectory::visualization::gnuplot;
 
 // Solver type different from the test suite's solver_t
 typedef Solver<DifferentiableFunction,
@@ -66,7 +67,7 @@ public:
   {
   }
 
-  void impl_compute(result_t& res, const argument_t& x) const
+  void impl_compute(result_ref res, const_argument_ref x) const
   {
 #ifdef BICYCLE_COST_FUNCTION
     res[0] = std::max(0., m*x[3]);
@@ -79,7 +80,7 @@ public:
 #endif
   }
 
-  void impl_gradient(gradient_t& grad, const argument_t& x,
+  void impl_gradient(gradient_ref grad, const_argument_ref x,
 		     size_type functionId = 0) const
   {
     assert (functionId == 0);

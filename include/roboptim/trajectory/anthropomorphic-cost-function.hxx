@@ -61,7 +61,7 @@ namespace trajectory
     struct ComputeIntegral
     {
       ComputeIntegral (const T& traj,
-		       const Function::vector_t& alpha,
+		       Function::const_vector_ref alpha,
 		       const double& alpha3,
 		       double& res)
 	: traj_ (traj),
@@ -88,7 +88,7 @@ namespace trajectory
 
     private:
       const T& traj_;
-      const Function::vector_t& alpha_;
+      Function::const_vector_ref alpha_;
       const double& alpha3_;
       double& res_;
     };
@@ -96,8 +96,8 @@ namespace trajectory
 
   template <typename T>
   void
-  AnthropomorphicCostFunction<T>::impl_compute (result_t& res,
-						const argument_t& p)
+  AnthropomorphicCostFunction<T>::impl_compute (result_ref res,
+						const_argument_ref p)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
@@ -118,8 +118,8 @@ namespace trajectory
 
   template <typename T>
   void
-  AnthropomorphicCostFunction<T>::impl_gradient (gradient_t& grad,
-						 const argument_t& p,
+  AnthropomorphicCostFunction<T>::impl_gradient (gradient_ref grad,
+						 const_argument_ref p,
 						 size_type)
     const
   {

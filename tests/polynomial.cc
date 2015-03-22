@@ -510,7 +510,7 @@ void test_print ()
 
   typedef roboptim::trajectory::Polynomial<3> poly3_t;
 
-  typename poly3_t::coefs_t params;
+  poly3_t::coefs_t params;
   params.setZero ();
 
   poly3_t null (1., params);

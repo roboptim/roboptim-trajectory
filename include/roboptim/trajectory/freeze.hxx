@@ -47,20 +47,20 @@ namespace trajectory
 	assert (it->first < problem_.function ().inputSize ());
 
 	Function::interval_t& interval =
-	  this->problem_.argumentBounds()[it->first];
+	  this->problem_.argumentBounds()[static_cast<std::size_t>(it->first)];
 
 	Function::value_type min =
 	  std::max (Function::getLowerBound (interval), it->second);
 	Function::value_type max =
 	  std::min (Function::getUpperBound (interval), it->second);
-	this->problem_.argumentBounds()[it->first] = Function::makeInterval (min, max);
+	this->problem_.argumentBounds()[static_cast<std::size_t>(it->first)] = Function::makeInterval (min, max);
       }
   }
 
   template <typename P>
   void
   Freeze<P>::operator () (const std::vector<Function::size_type>& indices,
-			  const Function::vector_t& values)
+			  Function::const_vector_ref values)
   {
     frozenArguments_t fa;
     for (unsigned i = 0; i < indices.size (); ++i)

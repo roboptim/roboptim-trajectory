@@ -41,7 +41,7 @@ namespace trajectory
   }
 
   template <int N>
-  Polynomial<N>::Polynomial (value_type t0, const vector_t& coefs)
+  Polynomial<N>::Polynomial (value_type t0, const_vector_ref coefs)
     : t0_ (t0)
   {
     assert (coefs.rows () == N + 1);

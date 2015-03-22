@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_optimization)
   gnuplot
     << set ("multiplot layout 1,2")
     << set ("grid")
-    << plot_xy (spline);
+    << plot_xy (spline, interval);
 
   // Optimize.
   SplineLength cost (spline);
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_optimization)
 	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
 	showSpline (optimizedSpline);
 	params = result.x;
-	gnuplot << plot_xy (optimizedSpline);
+	gnuplot << plot_xy (optimizedSpline, interval);
 	break;
       }
 
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_optimization)
 	showSpline (optimizedSpline);
 	params = result.x;
 	std::cerr << result << std::endl;
-	gnuplot << plot_xy (optimizedSpline);
+	gnuplot << plot_xy (optimizedSpline, interval);
 	break;
       }
 

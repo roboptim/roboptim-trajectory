@@ -44,7 +44,7 @@ namespace trajectory
   ConstrainedBSpline<N>::ConstrainedBSpline (interval_t timeRange,
 					     size_type dimension,
 					     const vector_t& parameters,
-					     const vector_t& knots,
+					     const_vector_ref knots,
 					     const std::string name)
     : BSpline<N> (timeRange, dimension, parameters, knots, name),
       constraints_ (0, parameters.rows ()),

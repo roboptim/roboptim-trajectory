@@ -76,26 +76,15 @@ namespace trajectory
   class Trajectory : public NTimesDerivableFunction<DerivabilityOrder>
   {
   public:
-    /// \brief Parent type.
-    typedef NTimesDerivableFunction<DerivabilityOrder> parent_t;
+    /// \brief Parent type and imports.
+    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+      (NTimesDerivableFunction<DerivabilityOrder>);
 
     using parent_t::operator ();
     using parent_t::derivative;
     using parent_t::impl_compute;
     using parent_t::impl_derivative;
 
-    /// \brief Import value type.
-    typedef typename parent_t::value_type value_type;
-    /// \brief Import size type.
-    typedef typename parent_t::size_type size_type;
-    /// \brief Import vector type.
-    typedef typename parent_t::vector_t vector_t;
-    /// \brief Import result type.
-    typedef typename parent_t::result_t result_t;
-    /// \brief Import gradient type.
-    typedef typename parent_t::gradient_t gradient_t;
-    /// \brief Import jacobian type.
-    typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
@@ -210,7 +199,7 @@ namespace trajectory
       return result;
     }
 
-    void operator () (result_t& result, StableTimePoint argument) const
+    void operator () (result_ref result, StableTimePoint argument) const
     {
       assert (this->isValidResult (result));
       this->impl_compute (result, argument);
@@ -225,7 +214,7 @@ namespace trajectory
       return derivative;
     }
 
-    void derivative (gradient_t& derivative,
+    void derivative (gradient_ref derivative,
 		     StableTimePoint argument,
 		     size_type order = 1) const
     {
@@ -266,9 +255,9 @@ namespace trajectory
 
     virtual std::ostream& print (std::ostream&) const;
   protected:
-    void impl_compute (result_t&, StableTimePoint) const;
+    void impl_compute (result_ref, StableTimePoint) const;
     virtual void
-    impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const = 0;
 
     Trajectory (interval_t, size_type, const vector_t&,

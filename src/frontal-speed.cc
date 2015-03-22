@@ -35,7 +35,7 @@ namespace trajectory
 
 
   void
-  FrontalSpeed::impl_compute (result_t& res, const argument_t& x) const
+  FrontalSpeed::impl_compute (result_ref res, const_argument_ref x) const
   {
     const value_type& theta = x[2];
 
@@ -46,8 +46,8 @@ namespace trajectory
 
 
   void
-  FrontalSpeed::impl_gradient (gradient_t& grad,
-			       const argument_t& arg,
+  FrontalSpeed::impl_gradient (gradient_ref grad,
+			       const_argument_ref arg,
 			       size_type ONLY_DEBUG (i))
     const
   {

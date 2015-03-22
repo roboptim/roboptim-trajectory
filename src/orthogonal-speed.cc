@@ -32,7 +32,7 @@ namespace trajectory
   {}
 
   void
-  OrthogonalSpeed::impl_compute (result_t& res, const argument_t& x) const
+  OrthogonalSpeed::impl_compute (result_ref res, const_argument_ref x) const
   {
     const value_type& theta = x[2];
 
@@ -43,7 +43,7 @@ namespace trajectory
 
 
   void
-  OrthogonalSpeed::impl_gradient (gradient_t& grad, const argument_t& arg, size_type)
+  OrthogonalSpeed::impl_gradient (gradient_ref grad, const_argument_ref arg, size_type)
     const
   {
     //const value_type& x = arg[0];

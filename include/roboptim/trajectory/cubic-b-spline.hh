@@ -181,10 +181,10 @@ namespace trajectory
 
   protected:
     using Trajectory<3>::impl_compute;
-    void impl_compute (result_t&, double) const;
-    void impl_derivative (gradient_t& g, double x, size_type order)
+    void impl_compute (result_ref, double) const;
+    void impl_derivative (gradient_ref g, double x, size_type order)
       const;
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
 
     /// \brief Find the index of the interval in which t is.

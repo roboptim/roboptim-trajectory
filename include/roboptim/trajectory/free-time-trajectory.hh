@@ -43,26 +43,15 @@ namespace trajectory
 			 <Trajectory<T::derivabilityOrder>, T>::value));
 
   public:
-    /// \brief Parent type.
-    typedef Trajectory<T::derivabilityOrder> parent_t;
+    /// \brief Parent type and imports.
+    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+      (Trajectory<T::derivabilityOrder>);
     /// \brief Fixed point trajectory type.
     typedef T fixedTimeTrajectory_t;
     /// \brief Self type.
     typedef FreeTimeTrajectory<T> self_t;
 
 
-    /// \brief Import value type.
-    typedef typename parent_t::value_type value_type;
-    /// \brief Import size type.
-    typedef typename parent_t::size_type size_type;
-    /// \brief Import result type.
-    typedef typename parent_t::result_t result_t;
-    /// \brief Import gradient type.
-    typedef typename parent_t::gradient_t gradient_t;
-    /// \brief Import vector type.
-    typedef typename parent_t::vector_t vector_t;
-    /// \brief Import jacobian type.
-    typedef typename parent_t::jacobian_t jacobian_t;
     /// \brief Import interval type.
     typedef typename parent_t::interval_t interval_t;
 
@@ -169,10 +158,10 @@ namespace trajectory
       const;
 
   protected:
-    void impl_compute (result_t&, double) const;
-    void impl_derivative (gradient_t& g, double x, size_type order)
+    void impl_compute (result_ref, double) const;
+    void impl_derivative (gradient_ref g, double x, size_type order)
       const;
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
   private:
     /// \brief Input fixed time trajectory.
@@ -185,13 +174,13 @@ namespace trajectory
   /// @}
 
   Function::vector_t
-  addScaleToParameters (const Function::vector_t& p,
+  addScaleToParameters (Function::const_vector_ref p,
 			Function::value_type t = 1.);
   Function::vector_t
-  removeScaleFromParameters (const Function::vector_t& v);
+  removeScaleFromParameters (Function::const_vector_ref v);
 
   inline Function::vector_t
-  addScaleToParameters (const Function::vector_t& p,
+  addScaleToParameters (Function::const_vector_ref p,
 			Function::value_type t)
   {
 
@@ -202,7 +191,7 @@ namespace trajectory
   }
 
   inline Function::vector_t
-  removeScaleFromParameters (const Function::vector_t& p)
+  removeScaleFromParameters (Function::const_vector_ref p)
   {
     Function::vector_t res (p.size () - 1);
     res = p.segment( 1, p.size () - 1);

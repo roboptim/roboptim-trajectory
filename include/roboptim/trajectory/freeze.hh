@@ -71,7 +71,7 @@ namespace trajectory
     /// \param indices Vector of parameters index that will be frozen.
     /// \param values Vector of parameters values.
     void operator () (const std::vector<Function::size_type>& indices,
-		      const Function::vector_t& values);
+		      Function::const_vector_ref values);
 
   private:
     /// \brief Reference to the problem that will be modified.

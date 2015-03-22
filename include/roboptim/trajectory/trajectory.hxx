@@ -145,7 +145,7 @@ namespace trajectory
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::impl_compute (result_t& res , StableTimePoint stp)
+  Trajectory<dorder>::impl_compute (result_ref res , StableTimePoint stp)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION

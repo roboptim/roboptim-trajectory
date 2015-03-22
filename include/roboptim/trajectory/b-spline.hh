@@ -42,16 +42,11 @@ namespace trajectory
   class BSpline : public Trajectory<N>
   {
   public:
-    typedef Trajectory<N> parent_t;
+    /// \brief Parent type and imports.
+    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+      (Trajectory<N>);
 
     typedef typename parent_t::interval_t interval_t;
-    typedef typename parent_t::size_type size_type;
-    typedef typename parent_t::value_type value_type;
-    typedef typename parent_t::vector_t vector_t;
-    typedef typename parent_t::matrix_t matrix_t;
-    typedef typename parent_t::result_t result_t;
-    typedef typename parent_t::gradient_t gradient_t;
-    typedef typename parent_t::jacobian_t jacobian_t;
 
     typedef Polynomial<N> polynomial_t;
     typedef Monomial<N> monomial_t;
@@ -98,7 +93,7 @@ namespace trajectory
     /// end of the spline interval.
     BSpline (interval_t tr, size_type dimension,
              const vector_t& parameters,
-             const vector_t& knots,
+             const_vector_ref knots,
              std::string name = "B-Spline");
 
     /// \brief Copy constructor.
@@ -164,10 +159,10 @@ namespace trajectory
 
     using Trajectory<N>::impl_compute;
 
-    void impl_compute (result_t&, value_type) const;
-    void impl_derivative (gradient_t& g, value_type x, size_type order)
+    void impl_compute (result_ref, value_type) const;
+    void impl_derivative (gradient_ref g, value_type x, size_type order)
       const;
-    void impl_derivative (gradient_t& g, StableTimePoint, size_type order)
+    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
 
     vector_t basisFunctions (value_type t, size_type order) const

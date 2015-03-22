@@ -60,7 +60,7 @@ namespace trajectory
 
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
-                       const vector_t& p, const vector_t& knots,
+                       const vector_t& p, const_vector_ref knots,
                        std::string name)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), knots_ (knots), uniform_ (false)
@@ -266,7 +266,7 @@ namespace trajectory
   }
 
   template <int N>
-  void BSpline<N>::impl_compute (result_t& derivative, value_type t) const
+  void BSpline<N>::impl_compute (result_ref derivative, value_type t) const
   {
     t = detail::fixTime (t, *this);
     assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
@@ -356,7 +356,7 @@ namespace trajectory
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_t& derivative, value_type t,
+  BSpline<N>::impl_derivative (gradient_ref derivative, value_type t,
 			       size_type order)
     const
   {
@@ -367,20 +367,16 @@ namespace trajectory
 
     derivative.setZero();
 
-# ifndef NDEBUG
-    value_type polynomial_sum = 0.;
-# endif //! NDEBUG
+    ROBOPTIM_DEBUG_ONLY(value_type polynomial_sum = 0.;)
     for (size_type idx = 0; idx < order_ + 1; ++idx)
       {
 	const std::size_t k_ = static_cast<std::size_t> (k);
 	const std::size_t idx_ = static_cast<std::size_t> (idx);
 
-        const vector_t& P_seg = this->parameters_.segment ((k - idx) * n, n);
+        const_vector_ref P_seg = this->parameters_.segment ((k - idx) * n, n);
         const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
 
-# ifndef NDEBUG
-        polynomial_sum += B.derivative (t, order);
-# endif //! NDEBUG
+        ROBOPTIM_DEBUG_ONLY(polynomial_sum += B.derivative (t, order);)
 
         derivative +=  B.derivative (t, order) * P_seg;
       }
@@ -395,7 +391,7 @@ namespace trajectory
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_t& derivative,
+  BSpline<N>::impl_derivative (gradient_ref derivative,
 			       StableTimePoint stp,
 			       size_type order) const
   {

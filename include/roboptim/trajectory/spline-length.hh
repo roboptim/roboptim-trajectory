@@ -58,8 +58,8 @@ namespace trajectory
     virtual ~SplineLength ();
 
   protected:
-    void impl_compute (result_t&, const argument_t&) const;
-    void impl_gradient (gradient_t&, const argument_t&, size_type) const;
+    void impl_compute (result_ref, const_argument_ref) const;
+    void impl_gradient (gradient_ref, const_argument_ref, size_type) const;
 
   private:
     /// \brief Interval on which the length is computed.
