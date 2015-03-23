@@ -25,9 +25,9 @@
 #include <iostream>
 
 #include <roboptim/core/io.hh>
-#include <roboptim/core/filter/derivative.hh>
-#include <roboptim/core/filter/map.hh>
-#include <roboptim/core/filter/selection.hh>
+#include <roboptim/core/operator/derivative.hh>
+#include <roboptim/core/operator/map.hh>
+#include <roboptim/core/operator/selection.hh>
 #include <roboptim/core/function/cos.hh>
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
