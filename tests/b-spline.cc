@@ -146,6 +146,17 @@ void test_instantiate ()
   {
     BSpline<N> spline (interval, 1, params);
     std::cout << spline << std::endl;
+
+    const vector_t& kv = spline.knotVector ();
+
+    // Check intervals
+    for (size_t i = 0; i <= 10; ++i)
+    {
+      value_type t = i * 0.099;
+      size_t k = static_cast<size_t> (spline.interval (t));
+      BOOST_CHECK (kv[k] <= t);
+      BOOST_CHECK (t <= kv[k+1]);
+    }
   }
 
   vector_t knots (params.size () + N + 1);

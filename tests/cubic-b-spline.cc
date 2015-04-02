@@ -147,6 +147,18 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   CubicBSpline spline_1d_1 (std::make_pair (0., 5.), 1,
                             params_1d, "Cubic B-spline 1D (1)");
 
+  // Check intervals
+  const CubicBSpline::knots_t& kv = spline_1d_1.knotVector ();
+
+  // Check intervals
+  for (size_t i = 0; i <= 10; ++i)
+  {
+    value_type t = i * 0.49;
+    size_t k = static_cast<size_t> (spline_1d_1.interval (t));
+    BOOST_CHECK (kv[k] <= t);
+    BOOST_CHECK (t <= kv[k+1]);
+  }
+
   // Second 1D spline (change some parameters)
   params_1d[0] = 30.;
   params_1d[3] = 75.;

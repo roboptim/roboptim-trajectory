@@ -151,6 +151,11 @@ namespace trajectory
       return basisPolynomials_;
     }
 
+    /// \brief Find the index of the interval in which t is.
+    /// \param t instant considered.
+    /// \return index of the interval in which t is.
+    size_type interval (value_type t) const;
+
     /// \brief Get the number of control points of the spline.
     /// \return Number of control points of the spline.
     size_type getNumberControlPoints() const
@@ -160,7 +165,7 @@ namespace trajectory
 
     /// \brief Return the knot vector of the spline.
     /// \return knot vector of the spline (const).
-    const std::vector <value_type>& knotVector () const
+    const knots_t& knotVector () const
     {
       return knots_;
     }
@@ -186,11 +191,6 @@ namespace trajectory
       const;
     void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
       const;
-
-    /// \brief Find the index of the interval in which t is.
-    /// \param t instant considered.
-    /// \return index of the interval in which t is.
-    size_type interval (value_type t) const;
 
     /// \brief Compute the basis polynomials for the cubic B-spline.
     void computeBasisPolynomials ();
