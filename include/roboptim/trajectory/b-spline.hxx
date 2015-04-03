@@ -311,53 +311,61 @@ namespace trajectory
     t = detail::fixTime (t, *this);
     typedef boost::numeric::converter<size_type, value_type> Double2SizeType;
 
-    // t_{order]
-    value_type tmin = this->timeRange ().first;
+    size_type i = 0;
     size_type imin = order_;
-
-    // t_{m-?}
-    value_type tmax = this->timeRange ().second;
     size_type imax = nbp_;
 
-    unsigned int count = 0;
-    bool found = false;
-    size_type i = 1;
-    size_type iPrev = 0;
-
-    while (!found && iPrev != i)
+    // In the uniform case, we can access the interval directly
+    if (uniform_)
       {
-	value_type imin_ = static_cast<value_type> (imin);
-	value_type imax_ = static_cast<value_type> (imax);
-	value_type d =
-	  std::floor (imin_ + (t - tmin) / (tmax - tmin) * (imax_ - imin_));
-	i = Double2SizeType::convert (d);
-	if (t < knots_ [i])
+        double delta_t = (this->timeRange ().second
+                          - this->timeRange ().first)
+	  / (static_cast<double> (nbp_ - order_));
+
+        i = imin + Double2SizeType::convert
+          (std::floor ((t - this->timeRange ().first)/delta_t));
+      }
+    else
+      {
+	bool found = false;
+
+	while (!found)
 	  {
-	    tmax = knots_ [i - 1];
-	    imax = i - 1;
-	  }
-	else if (t >= knots_ [i + 1])
-	  {
-	    if (t < knots_ [i + 2])
+	    i = Double2SizeType::convert
+	      (std::floor (.5 * static_cast<double> (imin + imax) + .5));
+
+	    if (t < knots_ [i])
 	      {
-		i = i + 1;
+		imax = i - 1;
+	      }
+	    else if (t >= knots_ [i + 1])
+	      {
+		if (t < knots_ [i + 2])
+		  {
+		    i = i + 1;
+		    found = true;
+		  }
+		else
+		  {
+		    imin = i + 1;
+		  }
+	      }
+	    else
+	      {
 		found = true;
 	      }
-	    imin = i + 1;
-	    tmin = knots_ [i + 1];
+	    assert (imin <= imax);
 	  }
-	else
-	  {
-	    found = true;
-	  }
-	count++;
-	assert (count < 10000);
-	iPrev = i;
       }
+
     if (i > nbp_ - 1)
       i = nbp_ - 1;
     if (i < order_)
       i = order_;
+
+    assert (knots_ [i] <= t);
+    assert (t <= knots_ [i+1]);
+
     return i;
   }
 
