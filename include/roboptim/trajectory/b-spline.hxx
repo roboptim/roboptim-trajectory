@@ -477,6 +477,8 @@ namespace trajectory
   template <int N> std::ostream&
   BSpline<N>::print (std::ostream& o) const
   {
+    using roboptim::operator <<;
+
     o << "Order " << order_ << " B-spline:" << incindent
       << iendl << "Number of parameters per spline function: " << nbp_
       << iendl << "Length: " << this->length ()
