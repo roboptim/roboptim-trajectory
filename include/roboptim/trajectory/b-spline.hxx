@@ -30,7 +30,7 @@ namespace trajectory
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
                        const vector_t& p,
-                       std::string name)
+                       std::string name, bool clamped)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
   {
@@ -47,13 +47,36 @@ namespace trajectory
       (tr.second - tr.first)
       / static_cast<value_type> (m - order_ - 1 - order_);
 
-    value_type ti = tr.first - order_ * delta_t;
     knots_.resize (m);
-    for (size_type i = 0; i < m; i++)
+
+    // Clamped B-spline.
+    if (clamped)
       {
-	knots_ (i) = ti;
-	ti += delta_t;
+	// The first order_+1 knots should be equal to tr.first.
+	// The last one will be added in the main loop.
+	for (size_type i = 0; i < order_; i++) {
+	  knots_ (i) = tr.first;
+	}
+
+	// Note: we do not use an accumulator to get improved numerical precision
+	for (size_type i = 0; i < nbp_ - order_; i++) {
+	  knots_ (order_ + i) = tr.first + static_cast<double> (i) * delta_t;
+	}
+
+	// The last order_+1 knots should be equal to tr.second.
+	// The 1st one was added in the main loop.
+	for (size_type i = m-order_; i < m; i++) {
+	  knots_ (i) = tr.second;
+	}
       }
+    else
+      {
+	for (size_type i = 0; i < m; i++)
+	  {
+	    knots_ (i) = tr.first + (i-order_) * delta_t;
+	  }
+      }
+
     setParameters (p);
     computeBasisPolynomials ();
   }
