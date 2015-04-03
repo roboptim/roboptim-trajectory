@@ -45,13 +45,14 @@ namespace trajectory
 
     double delta_t = (tr.second - tr.first) / (static_cast<double> (m) - 7.);
 
-    double ti = tr.first - 3*delta_t;
+    // Note: we do not use an accumulator to get improved numerical precision
     for (size_type i = 0; i < m; i++) {
-      knots_.push_back (ti);
-      ti += delta_t;
+      knots_.push_back (tr.first + static_cast<double> (i-3) * delta_t);
     }
+
     // interval lower bound should be rigorously equal to knot 3.
-    knots_ [3] = tr.first;
+    assert (knots_ [3] == tr.first);
+
     setParameters (p);
     computeBasisPolynomials ();
   }
@@ -182,43 +183,59 @@ namespace trajectory
   CubicBSpline::interval (value_type t) const
   {
     t = detail::fixTime (t, *this);
-    typedef boost::numeric::converter<size_type, double> Double2SizeType;
 
+    size_type i = 0;
     size_type imin = 3;
     size_type imax = static_cast<size_type> (knots_.size () - 5);
 
-    unsigned int count = 0;
-    bool found = false;
-    size_type i = 1;
-    std::size_t i_ = static_cast<std::size_t> (i);
+    typedef boost::numeric::converter<size_type, double> Double2SizeType;
 
-    while (!found)
+    // In the uniform case, we can access the interval directly
+    if (uniform_)
       {
-	i = Double2SizeType::convert
-	  (std::floor (.5 * static_cast<double> (imin + imax) + .5));
-	i_ = static_cast<std::size_t> (i);
-	if (t < knots_ [i_])
-	  {
-	    imax = i - 1;
-	  }
-	else if (t >= knots_ [i_ + 1])
-	  {
-	    imin = i + 1;
-	  }
-	else
-	  {
-	    found = true;
-	  }
-	++count;
-	assert (count < 10000);
+	size_type m = nbp_ + 4;
+	double delta_t = (timeRange ().second - timeRange ().first) / (static_cast<double> (m) - 7.);
+
+	i = imin + Double2SizeType::convert (std::floor ((t - timeRange ().first)/delta_t));
       }
+    else // Default case: use dichotomy
+      {
+	unsigned int count = 0;
+	bool found = false;
+
+	std::size_t i_ = static_cast<std::size_t> (i);
+
+	while (!found)
+	  {
+	    i = Double2SizeType::convert
+	      (std::floor (.5 * static_cast<double> (imin + imax) + .5));
+	    i_ = static_cast<std::size_t> (i);
+	    if (t < knots_ [i_])
+	      {
+		imax = i - 1;
+	      }
+	    else if (t >= knots_ [i_ + 1])
+	      {
+		imin = i + 1;
+	      }
+	    else
+	      {
+		found = true;
+	      }
+	    ++count;
+	    assert (count < 10000);
+	  }
+      }
+
     if (i > nbp_ - 1)
       i = nbp_-1;
     if (i < 3)
       i = 3;
-    ROBOPTIM_DEBUG_ONLY(i_ = static_cast<std::size_t> (i);)
+
+    ROBOPTIM_DEBUG_ONLY(std::size_t i_ = static_cast<std::size_t> (i);)
     assert (knots_ [i_] <= t);
     assert (t <= knots_ [i_+1]);
+
     return i;
   }
 

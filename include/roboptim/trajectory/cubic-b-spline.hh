@@ -214,7 +214,7 @@ namespace trajectory
     polynomials3vectors_t basisPolynomials_;
 
     /// \brief Whether the B-spline is uniform.
-    /// Note: for backward compatibility only.
+    /// Note: used for faster interval lookup.
     bool uniform_;
 
   public:
