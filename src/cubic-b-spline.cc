@@ -200,7 +200,6 @@ namespace trajectory
       }
     else // Default case: use dichotomy
       {
-	unsigned int count = 0;
 	bool found = false;
 
 	std::size_t i_ = static_cast<std::size_t> (i);
@@ -222,8 +221,7 @@ namespace trajectory
 	      {
 		found = true;
 	      }
-	    ++count;
-	    assert (count < 10000);
+	    assert (imin <= imax);
 	  }
       }
 
