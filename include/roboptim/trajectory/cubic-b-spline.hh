@@ -46,18 +46,19 @@ namespace trajectory
 
     typedef std::vector <value_type> knots_t;
 
-    /// \brief Instantiate a cubic B-Spline from its definition.
+    /// \brief Instantiate a uniform cubic B-Spline from its definition.
     ///
     /// \param timeRange spline time range: $\f$[t_3,t_n]\f$
     /// \param dimension spline dimension: \f$n\f$
     /// \param parameters vector of parameters defining control points
     /// \param name function title
+    /// \param clamped whether the spline should be clamped
     ///
     /// The number of control points is inferred from the dimension of
     /// the parameter vector.
     CubicBSpline (interval_t timeRange, size_type dimension,
 		  const vector_t& parameters,
-		  const std::string name = "cubic B-Spline");
+		  const std::string name = "cubic B-Spline", bool clamped = false);
 
     /// \brief Instantiate a cubic B-Spline from its definition.
     ///

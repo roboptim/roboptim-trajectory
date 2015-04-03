@@ -30,7 +30,7 @@ namespace trajectory
   //FIXME: defined_lc_in has to be true (false untested).
   CubicBSpline::CubicBSpline (interval_t tr, size_type outputSize,
 			      const vector_t& p,
-			      std::string name)
+			      std::string name, bool clamped)
     : Trajectory<3> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
   {
@@ -45,10 +45,33 @@ namespace trajectory
 
     double delta_t = (tr.second - tr.first) / (static_cast<double> (m) - 7.);
 
-    // Note: we do not use an accumulator to get improved numerical precision
-    for (size_type i = 0; i < m; i++) {
-      knots_.push_back (tr.first + static_cast<double> (i-3) * delta_t);
-    }
+    // Clamped B-spline.
+    if (clamped)
+      {
+	// The first 4 knots should be equal to tr.first.
+	// The 4th one will be added in the main loop.
+	for (size_type i = 0; i < 3; i++) {
+	  knots_.push_back (tr.first);
+	}
+
+	// Note: we do not use an accumulator to get improved numerical precision
+	for (size_type i = 0; i < nbp_ - 3; i++) {
+	  knots_.push_back (tr.first + static_cast<double> (i) * delta_t);
+	}
+
+	// The last 4 knots should be equal to tr.second.
+	// The 1st one was added in the main loop.
+	for (size_type i = 0; i < 3; i++) {
+	  knots_.push_back (tr.second);
+	}
+      }
+    else // Default case.
+      {
+	// Note: we do not use an accumulator to get improved numerical precision
+	for (size_type i = 0; i < m; i++) {
+	  knots_.push_back (tr.first + static_cast<double> (i-3) * delta_t);
+	}
+      }
 
     // interval lower bound should be rigorously equal to knot 3.
     assert (knots_ [3] == tr.first);
