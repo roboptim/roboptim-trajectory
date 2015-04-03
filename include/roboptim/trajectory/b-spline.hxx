@@ -72,7 +72,7 @@ namespace trajectory
       {
 	for (size_type i = 0; i < m; i++)
 	  {
-	    knots_ (i) = tr.first + (i-order_) * delta_t;
+	    knots_ (i) = tr.first + static_cast<value_type> (i-order_) * delta_t;
 	  }
       }
 
