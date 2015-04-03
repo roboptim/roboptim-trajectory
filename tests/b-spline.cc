@@ -234,13 +234,17 @@ void test_plot ()
   std::stringstream name;
   name << "B-spline (order " << N << ")";
   BSpline<N> spline (interval, 1, params, name.str ());
+  name.str ("");
+
+  name << "Clamped B-spline (order " << N << ")";
+  BSpline<N> clamped_spline (interval, 1, params, name.str (), true);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t plot_interval (interval.first, interval.second, 0.01);
 
   // Use RobOptim's gnuplot functions
   (*output) << (gnuplot
-		<< set ("multiplot layout 1,1")
+		<< set ("multiplot layout 1,2")
 
 		<< comment (spline)
 
@@ -258,7 +262,25 @@ void test_plot ()
 		<< comment (spline.derivative (0., 2))
 		<< comment (spline.derivative (2.5, 2))
 		<< comment (spline.derivative (5., 2))
-		<< plot (spline, plot_interval));
+		<< plot (spline, plot_interval)
+
+		<< comment (clamped_spline)
+
+		<< comment ("Values:")
+		<< comment (clamped_spline (0.))
+		<< comment (clamped_spline (2.5))
+		<< comment (clamped_spline (5.))
+
+		<< comment ("1st derivative:")
+		<< comment (clamped_spline.derivative (0., 1))
+		<< comment (clamped_spline.derivative (2.5, 1))
+		<< comment (clamped_spline.derivative (5., 1))
+
+		<< comment ("2nd derivative:")
+		<< comment (clamped_spline.derivative (0., 2))
+		<< comment (clamped_spline.derivative (2.5, 2))
+		<< comment (clamped_spline.derivative (5., 2))
+		<< plot (clamped_spline, plot_interval));
 
   std::cout << output->str () << std::endl;
 
