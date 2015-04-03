@@ -209,7 +209,6 @@ void test_1d_clamped (TestData& data)
   data.spline_1d_2_clamped = boost::make_shared<CubicBSpline>
     (std::make_pair (0., 5.), 1,
      params_1d, "Clamped Cubic B-spline 1D (2)", true);
-  CubicBSpline& spline_1d_2_clamped = *(data.spline_1d_2_clamped);
 }
 
 void test_2d (TestData& data)
@@ -233,7 +232,6 @@ void test_2d (TestData& data)
   data.spline_2d_1 = boost::make_shared<CubicBSpline>
     (std::make_pair (0., 5.), 2,
      params, "Cubic B-spline 2D (1)");
-  CubicBSpline& spline_2d_1 = *(data.spline_2d_1);
 
   // Second 2D spline (change some parameters)
   params[7] = 75.;

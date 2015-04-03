@@ -42,6 +42,7 @@ static double tol = 1e-6;
 typedef Function::vector_t vector_t;
 typedef DifferentiableFunction::gradient_t gradient_t;
 typedef Function::value_type value_type;
+typedef Function::size_type size_type;
 
 template <int N>
 struct spline_checks
@@ -152,8 +153,8 @@ void test_instantiate ()
     // Check intervals
     for (size_t i = 0; i <= 10; ++i)
     {
-      value_type t = i * 0.099;
-      size_t k = static_cast<size_t> (spline.interval (t));
+      value_type t = static_cast<value_type> (i) * 0.099;
+      size_type k = static_cast<size_type> (spline.interval (t));
       BOOST_CHECK (kv[k] <= t);
       BOOST_CHECK (t <= kv[k+1]);
     }
