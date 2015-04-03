@@ -19,6 +19,8 @@
 
 #include "shared-tests/fixture.hh"
 
+#include <boost/shared_ptr.hpp>
+
 #include <roboptim/core/finite-difference-gradient.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
@@ -78,56 +80,29 @@ private:
   value_type t_;
 };
 
-BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+typedef Function::value_type value_type;
 
-BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
+struct TestData
 {
-  using namespace roboptim::visualization::gnuplot;
+  boost::shared_ptr<CubicBSpline> spline_1d_1;
+  boost::shared_ptr<CubicBSpline> spline_1d_2;
+  boost::shared_ptr<CubicBSpline> spline_1d_3;
+  boost::shared_ptr<CubicBSpline> spline_1d_4;
+  boost::shared_ptr<CubicBSpline> spline_2d_1;
+  boost::shared_ptr<CubicBSpline> spline_2d_2;
+};
 
-  typedef Function::value_type value_type;
-
-  boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern("cubic-b-spline");
-
-  CubicBSpline::vector_t params (16);
-
-  // Initial position.
-  params[0] = 0.,  params[1] = 0.;
-  params[2] = 0.,  params[3] = 0.;
-  params[4] = 0.,  params[5] = 0.;
-  // Control point 3.
-  params[6] = 25.,  params[7] = 50.;
-  // Control point 4.
-  params[8] = 50.,  params[9] = 25.;
-  // Final position.
-  params[10] = 100., params[11] = 100.;
-  params[12] = 100., params[13] = 100.;
-  params[14] = 100., params[15] = 100.;
-
-  // First 2D spline
-  CubicBSpline spline_2d_1 (std::make_pair (0., 5.), 2,
-                            params, "Cubic B-spline 2D (1)");
-
-  // Second 2D spline (change some parameters)
-  params[7] = 75.;
-  CubicBSpline spline_2d_2 (std::make_pair (0., 5.), 2,
-                            params, "Cubic B-spline 2D (2)");
-
-  boost::shared_ptr<CubicBSpline>
-    spline_2d_2_copy =
-    boost::shared_ptr<CubicBSpline> (spline_2d_2.clone ());
-  for (CubicBSpline::vector_t::Index i = 0;
-       i < params.size (); ++i)
-    BOOST_CHECK_SMALL
-      (spline_2d_2.parameters ()[i]-
-       spline_2d_2_copy->parameters ()[i], 1e-8);
+#define LOAD_REFS(DATA) \
+  const CubicBSpline& spline_1d_1 = *(DATA.spline_1d_1); \
+  const CubicBSpline& spline_1d_2 = *(DATA.spline_1d_2); \
+  const CubicBSpline& spline_1d_3 = *(DATA.spline_1d_3); \
+  const CubicBSpline& spline_1d_4 = *(DATA.spline_1d_4); \
+  const CubicBSpline& spline_2d_1 = *(DATA.spline_2d_1); \
+  const CubicBSpline& spline_2d_2 = *(DATA.spline_2d_2)
 
 
-  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
-  discreteInterval_t interval (0., 5., 0.01);
-
-  // FIRST PART: TEST 1D CUBIC B-SPLINES
-
+void test_1d (TestData& data)
+{
   CubicBSpline::vector_t params_1d (8);
 
   // Initial position.
@@ -144,8 +119,10 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   params_1d[7] = 0.;
 
   // First 1D spline
-  CubicBSpline spline_1d_1 (std::make_pair (0., 5.), 1,
-                            params_1d, "Cubic B-spline 1D (1)");
+  data.spline_1d_1 = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 5.), 1,
+     params_1d, "Cubic B-spline 1D (1)");
+  CubicBSpline& spline_1d_1 = *(data.spline_1d_1);
 
   // Check intervals
   const CubicBSpline::knots_t& kv = spline_1d_1.knotVector ();
@@ -153,7 +130,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   // Check intervals
   for (size_t i = 0; i <= 10; ++i)
   {
-    value_type t = i * 0.49;
+    value_type t = static_cast<double> (i) * 0.49;
     size_t k = static_cast<size_t> (spline_1d_1.interval (t));
     BOOST_CHECK (kv[k] <= t);
     BOOST_CHECK (t <= kv[k+1]);
@@ -164,18 +141,93 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   params_1d[3] = 75.;
   params_1d[4] = 25.;
   params_1d[7] = 30.;
-  CubicBSpline spline_1d_2 (std::make_pair (0., 5.), 1,
-                            params_1d, "Cubic B-spline 1D (2)");
+  data.spline_1d_2 = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 5.), 1,
+     params_1d, "Cubic B-spline 1D (2)");
+  CubicBSpline& spline_1d_2 = *(data.spline_1d_2);
 
   // Test spline additions
-  CubicBSpline spline_1d_3 = spline_1d_1 + spline_1d_2;
-  CubicBSpline spline_1d_4 = spline_1d_1;
+  data.spline_1d_3 = boost::make_shared<CubicBSpline> (spline_1d_1 + spline_1d_2);
+  data.spline_1d_4 = boost::make_shared<CubicBSpline> (spline_1d_1);
+  CubicBSpline& spline_1d_3 = *(data.spline_1d_3);
+  CubicBSpline& spline_1d_4 = *(data.spline_1d_4);
   spline_1d_4 += spline_1d_2;
 
+  discreteInterval_t window (0., 5., 0.01);
+  for (value_type t = boost::get<0> (window); t < boost::get<1> (window);
+       t += boost::get<2> (window))
+    {
+      BOOST_CHECK_SMALL (std::abs (spline_1d_3 (t)[0]
+				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
+			 1e-8);
+      BOOST_CHECK_SMALL (std::abs (spline_1d_4 (t)[0]
+				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
+			 1e-8);
+    }
+
+}
+
+void test_2d (TestData& data)
+{
+  CubicBSpline::vector_t params (16);
+
+  // Initial position.
+  params[0] = 0.,  params[1] = 0.;
+  params[2] = 0.,  params[3] = 0.;
+  params[4] = 0.,  params[5] = 0.;
+  // Control point 3.
+  params[6] = 25.,  params[7] = 50.;
+  // Control point 4.
+  params[8] = 50.,  params[9] = 25.;
+  // Final position.
+  params[10] = 100., params[11] = 100.;
+  params[12] = 100., params[13] = 100.;
+  params[14] = 100., params[15] = 100.;
+
+  // First 2D spline
+  data.spline_2d_1 = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 5.), 2,
+     params, "Cubic B-spline 2D (1)");
+  CubicBSpline& spline_2d_1 = *(data.spline_2d_1);
+
+  // Second 2D spline (change some parameters)
+  params[7] = 75.;
+  data.spline_2d_2 = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 5.), 2,
+     params, "Cubic B-spline 2D (2)");
+  CubicBSpline& spline_2d_2 = *(data.spline_2d_2);
+
+  boost::shared_ptr<CubicBSpline>
+    spline_2d_2_copy =
+    boost::shared_ptr<CubicBSpline> (spline_2d_2.clone ());
+  for (CubicBSpline::vector_t::Index i = 0;
+       i < params.size (); ++i)
+    BOOST_CHECK_SMALL
+      (spline_2d_2.parameters ()[i]-
+       spline_2d_2_copy->parameters ()[i], 1e-8);
+
   BOOST_CHECK_THROW
-    (CubicBSpline spline_1d_5 = spline_1d_1 + spline_2d_2;
+    (CubicBSpline spline_1d_5 = *(data.spline_1d_1) + spline_2d_2;
      std::cout << spline_1d_5 << std::endl,
      std::runtime_error);
+
+  // Non-regression test (compilation)
+  std::vector<CubicBSpline> vec;
+  vec.push_back(CubicBSpline (std::make_pair (0., 5.), 2, params,
+			      "cubic-b-spline"));
+}
+
+void test_plot (const TestData& data)
+{
+  LOAD_REFS (data);
+
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern("cubic-b-spline");
+
+  using namespace roboptim::visualization::gnuplot;
+
+  Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
+  discreteInterval_t interval (0., 5., 0.01);
 
   // Gnuplot export and compare to pattern
   (*output)
@@ -226,13 +278,16 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
 
         << unset ("multiplot"));
 
-
   std::cout << output->str () << std::endl;
 
   BOOST_CHECK (output->match_pattern ());
+}
+
+void test_fd (const TestData& data)
+{
+  CubicBSpline spline_2d_1 = *(data.spline_2d_1);
 
   // Check gradients with finite-differences
-
   for (value_type t = 0.5; t < 5.; t += 0.5)
     {
       try
@@ -268,23 +323,18 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
       if (std::fabs (spline_2d_1 (0.)[0] - x) >= 1e-8)
         std::cout << "# " << spline_2d_1 (0.)[0] << " != " << x << std::endl;
     }
+}
 
-  discreteInterval_t window (0., 5., 0.01);
-  for (value_type t = boost::get<0> (window); t < boost::get<1> (window);
-       t += boost::get<2> (window))
-    {
-      BOOST_CHECK_SMALL (std::abs (spline_1d_3 (t)[0]
-				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
-			 1e-8);
-      BOOST_CHECK_SMALL (std::abs (spline_1d_4 (t)[0]
-				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
-			 1e-8);
-    }
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
-  // Non-regression test (compilation)
-  std::vector<CubicBSpline> vec;
-  vec.push_back(CubicBSpline (std::make_pair (0., 5.), 2, params,
-			      "cubic-b-spline"));
+BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
+{
+  TestData data;
+
+  test_1d (data);
+  test_2d (data);
+  test_plot (data);
+  test_fd (data);
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
