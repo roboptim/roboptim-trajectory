@@ -88,6 +88,10 @@ struct TestData
   boost::shared_ptr<CubicBSpline> spline_1d_2;
   boost::shared_ptr<CubicBSpline> spline_1d_3;
   boost::shared_ptr<CubicBSpline> spline_1d_4;
+
+  boost::shared_ptr<CubicBSpline> spline_1d_1_clamped;
+  boost::shared_ptr<CubicBSpline> spline_1d_2_clamped;
+
   boost::shared_ptr<CubicBSpline> spline_2d_1;
   boost::shared_ptr<CubicBSpline> spline_2d_2;
 };
@@ -97,6 +101,8 @@ struct TestData
   const CubicBSpline& spline_1d_2 = *(DATA.spline_1d_2); \
   const CubicBSpline& spline_1d_3 = *(DATA.spline_1d_3); \
   const CubicBSpline& spline_1d_4 = *(DATA.spline_1d_4); \
+  const CubicBSpline& spline_1d_1_clamped = *(DATA.spline_1d_1_clamped); \
+  const CubicBSpline& spline_1d_2_clamped = *(DATA.spline_1d_2_clamped); \
   const CubicBSpline& spline_2d_1 = *(DATA.spline_2d_1); \
   const CubicBSpline& spline_2d_2 = *(DATA.spline_2d_2)
 
@@ -104,19 +110,16 @@ struct TestData
 void test_1d (TestData& data)
 {
   CubicBSpline::vector_t params_1d (8);
+  params_1d.setZero ();
 
   // Initial position.
-  params_1d[0] = 0.;
-  params_1d[1] = 0.;
-  params_1d[2] = 0.;
+  params_1d[0] = params_1d[1] = params_1d[2] = 0.;
   // Control point 3.
   params_1d[3] = 50.;
   // Control point 4.
   params_1d[4] = 50.;
   // Final position.
-  params_1d[5] = 0.;
-  params_1d[6] = 0.;
-  params_1d[7] = 0.;
+  params_1d[5] = params_1d[6] = params_1d[7] = 0.;
 
   // First 1D spline
   data.spline_1d_1 = boost::make_shared<CubicBSpline>
@@ -136,11 +139,11 @@ void test_1d (TestData& data)
     BOOST_CHECK (t <= kv[k+1]);
   }
 
-  // Second 1D spline (change some parameters)
-  params_1d[0] = 30.;
+  // Second 1D spline (change some parameters but keep it clamped)
+  params_1d[0] = params_1d[1] = params_1d[2] = 30.;
   params_1d[3] = 75.;
   params_1d[4] = 25.;
-  params_1d[7] = 30.;
+  params_1d[5] = params_1d[6] = params_1d[7] = 30.;
   data.spline_1d_2 = boost::make_shared<CubicBSpline>
     (std::make_pair (0., 5.), 1,
      params_1d, "Cubic B-spline 1D (2)");
@@ -164,7 +167,49 @@ void test_1d (TestData& data)
 				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
 			 1e-8);
     }
+}
 
+void test_1d_clamped (TestData& data)
+{
+  CubicBSpline::vector_t params_1d (8);
+  params_1d.setZero ();
+
+  // Initial position.
+  params_1d[0] = params_1d[1] = params_1d[2] = 0.;
+  // Control point 3.
+  params_1d[3] = 50.;
+  // Control point 4.
+  params_1d[4] = 50.;
+  // Final position.
+  params_1d[5] = params_1d[6] = params_1d[7] = 0.;
+
+  // First clamped 1D spline
+  data.spline_1d_1_clamped = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 5.), 1,
+     params_1d, "Clamped Cubic B-spline 1D (1)", true);
+  CubicBSpline& spline_1d_1_clamped = *(data.spline_1d_1_clamped);
+
+  // Check intervals
+  const CubicBSpline::knots_t& kv = spline_1d_1_clamped.knotVector ();
+
+  // Check intervals
+  for (size_t i = 0; i <= 10; ++i)
+  {
+    value_type t = static_cast<double> (i) * 0.49;
+    size_t k = static_cast<size_t> (spline_1d_1_clamped.interval (t));
+    BOOST_CHECK (kv[k] <= t);
+    BOOST_CHECK (t <= kv[k+1]);
+  }
+
+  // Second 1D spline (change some parameters)
+  params_1d[0] = params_1d[1] = params_1d[2] = 30.;
+  params_1d[3] = 75.;
+  params_1d[4] = 25.;
+  params_1d[5] = params_1d[6] = params_1d[7] = 30.;
+  data.spline_1d_2_clamped = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 5.), 1,
+     params_1d, "Clamped Cubic B-spline 1D (2)", true);
+  CubicBSpline& spline_1d_2_clamped = *(data.spline_1d_2_clamped);
 }
 
 void test_2d (TestData& data)
@@ -232,7 +277,7 @@ void test_plot (const TestData& data)
   // Gnuplot export and compare to pattern
   (*output)
     << (gnuplot
-        << set ("multiplot layout 3,2")
+        << set ("multiplot layout 4,2")
 
         << comment (spline_2d_1)
 
@@ -275,6 +320,9 @@ void test_plot (const TestData& data)
 
         << plot (spline_1d_3, interval)
         << plot (spline_1d_4, interval)
+
+        << plot (spline_1d_1_clamped, interval)
+        << plot (spline_1d_2_clamped, interval)
 
         << unset ("multiplot"));
 
@@ -332,6 +380,7 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   TestData data;
 
   test_1d (data);
+  test_1d_clamped (data);
   test_2d (data);
   test_plot (data);
   test_fd (data);
