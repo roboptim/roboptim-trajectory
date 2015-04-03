@@ -42,10 +42,9 @@ namespace trajectory
     // Fill vector of regularly spaced knots
     size_type m = nbp_ + order_ + 1;
 
-    //FIXME: check this
     value_type delta_t =
       (tr.second - tr.first)
-      / static_cast<value_type> (m - order_ - 1 - order_);
+      / static_cast<value_type> (nbp_ - order_);
 
     knots_.resize (m);
 
@@ -59,14 +58,14 @@ namespace trajectory
 	}
 
 	// Note: we do not use an accumulator to get improved numerical precision
-	for (size_type i = 0; i < nbp_ - order_; i++) {
+	for (size_type i = 0; i < nbp_ - order_ + 1; i++) {
 	  knots_ (order_ + i) = tr.first + static_cast<double> (i) * delta_t;
 	}
 
 	// The last order_+1 knots should be equal to tr.second.
 	// The 1st one was added in the main loop.
-	for (size_type i = m-order_; i < m; i++) {
-	  knots_ (i) = tr.second;
+	for (size_type i = 0; i < order_; i++) {
+	  knots_ (m-1-i) = tr.second;
 	}
       }
     else

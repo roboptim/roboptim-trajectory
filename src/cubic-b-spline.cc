@@ -55,7 +55,7 @@ namespace trajectory
 	}
 
 	// Note: we do not use an accumulator to get improved numerical precision
-	for (size_type i = 0; i < nbp_ - 3; i++) {
+	for (size_type i = 0; i < nbp_ - 2; i++) {
 	  knots_.push_back (tr.first + static_cast<double> (i) * delta_t);
 	}
 
@@ -72,6 +72,8 @@ namespace trajectory
 	  knots_.push_back (tr.first + static_cast<double> (i-3) * delta_t);
 	}
       }
+
+    assert (knots_.size () == static_cast<size_t> (m));
 
     // interval lower bound should be rigorously equal to knot 3.
     assert (knots_ [3] == tr.first);
