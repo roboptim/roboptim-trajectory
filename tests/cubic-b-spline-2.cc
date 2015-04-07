@@ -19,7 +19,10 @@
 
 #include <iostream>
 #include <fstream>
+
 #include <boost/format.hpp>
+#include <boost/filesystem.hpp>
+
 #include "shared-tests/fixture.hh"
 
 #include <roboptim/core/finite-difference-gradient.hh>
@@ -43,12 +46,16 @@ typedef CubicBSpline::value_type value_type;
 
 typedef std::vector < std::vector < value_type > > matrix_t;
 
-matrix_t getReference (const std::string& file)
+typedef boost::filesystem::path path_t;
+
+matrix_t getReference (const path_t& file)
 {
   matrix_t result;
   size_type nbRows = 0;
 
-  std::ifstream f; f.open (file.c_str ());
+  path_t full_path = path_t (TESTS_DATA_DIR) / file;
+
+  std::ifstream f; f.open (full_path.c_str ());
   std::string line;
 
   while (f.good ()) {

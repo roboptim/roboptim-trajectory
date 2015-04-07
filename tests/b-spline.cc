@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "shared-tests/common.hh"
+#include "shared-tests/fixture.hh"
 
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/b-spline.hh>
@@ -42,6 +42,7 @@ static double tol = 1e-6;
 typedef Function::vector_t vector_t;
 typedef DifferentiableFunction::gradient_t gradient_t;
 typedef Function::value_type value_type;
+typedef Function::size_type size_type;
 
 template <int N>
 struct spline_checks
@@ -145,14 +146,23 @@ void test_instantiate ()
   typename BSpline<N>::interval_t interval = std::make_pair (0., 1.);
   {
     BSpline<N> spline (interval, 1, params);
-    std::cout << spline << std::endl;
+
+    const vector_t& kv = spline.knotVector ();
+
+    // Check intervals
+    for (size_t i = 0; i <= 10; ++i)
+      {
+	value_type t = static_cast<value_type> (i) * 0.099;
+	size_type k = static_cast<size_type> (spline.interval (t));
+	BOOST_CHECK (kv[k] <= t);
+	BOOST_CHECK (t <= kv[k+1]);
+      }
   }
 
   vector_t knots (params.size () + N + 1);
   knots.setLinSpaced (0., 1.);
   {
     BSpline<N> spline (interval, 1, params, knots);
-    std::cout << spline << std::endl;
   }
 }
 
@@ -206,30 +216,75 @@ void test_plot ()
   using namespace roboptim::visualization;
   using namespace roboptim::visualization::gnuplot;
 
-  std::pair<value_type, value_type> interval = std::make_pair (0., 1.);
+  std::stringstream filename;
+  filename << "b-spline-" << N;
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern (filename.str ());
+
+  std::pair<value_type, value_type> interval = std::make_pair (0., 5.);
 
   int params_c = N + 1 + N;
   vector_t params (params_c);
-  params.setRandom();
-  params *= 10.;
 
-  BSpline<N> spline (interval, 1, params);
+  for (size_type i = 0; i < params_c; ++i)
+    {
+      params (i) = std::pow (-1, i) * static_cast<value_type> (i);
+    }
+
+  std::stringstream name;
+  name << "B-spline (order " << N << ")";
+  BSpline<N> spline (interval, 1, params, name.str ());
+  name.str ("");
+
+  name << "Clamped B-spline (order " << N << ")";
+  BSpline<N> clamped_spline (interval, 1, params, name.str (), true);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t plot_interval (interval.first, interval.second, 0.01);
 
-  // TODO: use RobOptim's gnuplot functions
-  std::cout << "set terminal wxt persist" << std::endl;
-  std::cout << "plot '-' title 'B-Spline' with line, \\" << std::endl;
-  std::cout << "'-' title 'interval' with line" << std::endl;
-  for (value_type t = interval.first; t < interval.second; t += 1e-2)
-    std::cout << t << " " << spline (t)[0] << std::endl;
+  // Use RobOptim's gnuplot functions
+  (*output) << (gnuplot
+		<< set ("multiplot layout 1,2")
 
-  std::cout << "e" << std::endl;
-  for (value_type t = interval.first; t < interval.second; t += 1e-2)
-    std::cout << t << " " <<  spline.interval (t) << std::endl;
+		<< comment (spline)
 
-  std::cout << "e" << std::endl;
+		<< comment ("Values:")
+		<< comment (spline (0.))
+		<< comment (spline (2.5))
+		<< comment (spline (5.))
+
+		<< comment ("1st derivative:")
+		<< comment (spline.derivative (0., 1))
+		<< comment (spline.derivative (2.5, 1))
+		<< comment (spline.derivative (5., 1))
+
+		<< comment ("2nd derivative:")
+		<< comment (spline.derivative (0., 2))
+		<< comment (spline.derivative (2.5, 2))
+		<< comment (spline.derivative (5., 2))
+		<< plot (spline, plot_interval)
+
+		<< comment (clamped_spline)
+
+		<< comment ("Values:")
+		<< comment (clamped_spline (0.))
+		<< comment (clamped_spline (2.5))
+		<< comment (clamped_spline (5.))
+
+		<< comment ("1st derivative:")
+		<< comment (clamped_spline.derivative (0., 1))
+		<< comment (clamped_spline.derivative (2.5, 1))
+		<< comment (clamped_spline.derivative (5., 1))
+
+		<< comment ("2nd derivative:")
+		<< comment (clamped_spline.derivative (0., 2))
+		<< comment (clamped_spline.derivative (2.5, 2))
+		<< comment (clamped_spline.derivative (5., 2))
+		<< plot (clamped_spline, plot_interval));
+
+  std::cout << output->str () << std::endl;
+
+  BOOST_CHECK (output->match_pattern ());
 }
 
 

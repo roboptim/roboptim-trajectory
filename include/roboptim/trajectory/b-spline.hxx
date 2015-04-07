@@ -30,7 +30,7 @@ namespace trajectory
   template <int N>
   BSpline<N>::BSpline (interval_t tr, size_type outputSize,
                        const vector_t& p,
-                       std::string name)
+                       std::string name, bool clamped)
     : Trajectory<N> (tr, outputSize, p, name),
       nbp_ (p.size () / outputSize), uniform_ (true)
   {
@@ -42,18 +42,40 @@ namespace trajectory
     // Fill vector of regularly spaced knots
     size_type m = nbp_ + order_ + 1;
 
-    //FIXME: check this
     value_type delta_t =
       (tr.second - tr.first)
-      / static_cast<value_type> (m - order_ - 1 - order_);
+      / static_cast<value_type> (nbp_ - order_);
 
-    value_type ti = tr.first - order_ * delta_t;
     knots_.resize (m);
-    for (size_type i = 0; i < m; i++)
+
+    // Clamped B-spline.
+    if (clamped)
       {
-	knots_ (i) = ti;
-	ti += delta_t;
+	// The first order_+1 knots should be equal to tr.first.
+	// The last one will be added in the main loop.
+	for (size_type i = 0; i < order_; i++) {
+	  knots_ (i) = tr.first;
+	}
+
+	// Note: we do not use an accumulator to get improved numerical precision
+	for (size_type i = 0; i < nbp_ - order_ + 1; i++) {
+	  knots_ (order_ + i) = tr.first + static_cast<double> (i) * delta_t;
+	}
+
+	// The last order_+1 knots should be equal to tr.second.
+	// The 1st one was added in the main loop.
+	for (size_type i = 0; i < order_; i++) {
+	  knots_ (m-1-i) = tr.second;
+	}
       }
+    else
+      {
+	for (size_type i = 0; i < m; i++)
+	  {
+	    knots_ (i) = tr.first + static_cast<value_type> (i-order_) * delta_t;
+	  }
+      }
+
     setParameters (p);
     computeBasisPolynomials ();
   }
@@ -288,53 +310,61 @@ namespace trajectory
     t = detail::fixTime (t, *this);
     typedef boost::numeric::converter<size_type, value_type> Double2SizeType;
 
-    // t_{order]
-    value_type tmin = this->timeRange ().first;
+    size_type i = 0;
     size_type imin = order_;
-
-    // t_{m-?}
-    value_type tmax = this->timeRange ().second;
     size_type imax = nbp_;
 
-    unsigned int count = 0;
-    bool found = false;
-    size_type i = 1;
-    size_type iPrev = 0;
-
-    while (!found && iPrev != i)
+    // In the uniform case, we can access the interval directly
+    if (uniform_)
       {
-	value_type imin_ = static_cast<value_type> (imin);
-	value_type imax_ = static_cast<value_type> (imax);
-	value_type d =
-	  std::floor (imin_ + (t - tmin) / (tmax - tmin) * (imax_ - imin_));
-	i = Double2SizeType::convert (d);
-	if (t < knots_ [i])
+        double delta_t = (this->timeRange ().second
+                          - this->timeRange ().first)
+	  / (static_cast<double> (nbp_ - order_));
+
+        i = imin + Double2SizeType::convert
+          (std::floor ((t - this->timeRange ().first)/delta_t));
+      }
+    else
+      {
+	bool found = false;
+
+	while (!found)
 	  {
-	    tmax = knots_ [i - 1];
-	    imax = i - 1;
-	  }
-	else if (t >= knots_ [i + 1])
-	  {
-	    if (t < knots_ [i + 2])
+	    i = Double2SizeType::convert
+	      (std::floor (.5 * static_cast<double> (imin + imax) + .5));
+
+	    if (t < knots_ [i])
 	      {
-		i = i + 1;
+		imax = i - 1;
+	      }
+	    else if (t >= knots_ [i + 1])
+	      {
+		if (t < knots_ [i + 2])
+		  {
+		    i = i + 1;
+		    found = true;
+		  }
+		else
+		  {
+		    imin = i + 1;
+		  }
+	      }
+	    else
+	      {
 		found = true;
 	      }
-	    imin = i + 1;
-	    tmin = knots_ [i + 1];
+	    assert (imin <= imax);
 	  }
-	else
-	  {
-	    found = true;
-	  }
-	count++;
-	assert (count < 10000);
-	iPrev = i;
       }
+
     if (i > nbp_ - 1)
       i = nbp_ - 1;
     if (i < order_)
       i = order_;
+
+    assert (knots_ [i] <= t);
+    assert (t <= knots_ [i+1]);
+
     return i;
   }
 
@@ -477,7 +507,10 @@ namespace trajectory
   template <int N> std::ostream&
   BSpline<N>::print (std::ostream& o) const
   {
+    using roboptim::operator <<;
+
     o << "Order " << order_ << " B-spline:" << incindent
+      << iendl << "Name: " << this->getName ()
       << iendl << "Number of parameters per spline function: " << nbp_
       << iendl << "Length: " << this->length ()
       << iendl << "Knot vector: " << knots_

@@ -71,12 +71,14 @@ namespace trajectory
     /// \param dimension spline dimension: \f$n\f$
     /// \param parameters vector of parameters defining control points
     /// \param name function title
+    /// \param clamped whether the spline should be clamped
     ///
     /// Number of control points is inferred from dimension of dimenion of
     /// parameter vector.
     BSpline (interval_t timeRange, size_type dimension,
              const vector_t& parameters,
-             const std::string name = "B-Spline");
+             const std::string name = "B-Spline",
+             bool clamped = false);
 
     /// \brief Instantiate a B-Spline with parameters and knot points.
     ///
@@ -186,7 +188,8 @@ namespace trajectory
     /// \brief basisPolynomials_[i][j] = B_{i,i+j}
     basisPolynomialsVector_t basisPolynomials_;
 
-    /// \brief For backward compatibility only.
+    /// \brief Whether the B-spline is uniform.
+    /// Note: used for faster interval lookup.
     bool uniform_;
 
   protected:
