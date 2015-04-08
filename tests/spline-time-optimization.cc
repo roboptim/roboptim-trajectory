@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#undef NDEBUG
+#include "shared-tests/fixture.hh"
 
 #include <roboptim/trajectory/sys.hh>
 
@@ -40,8 +40,6 @@
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include <roboptim/trajectory/visualization/limit-speed.hh>
-
-#include "shared-tests/common.hh"
 
 using namespace roboptim;
 using namespace roboptim::trajectory;
@@ -69,6 +67,9 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
 {
   using namespace boost;
   using namespace boost::assign;
+
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern ("spline-time-optimization");
 
   const double finalPos = 200.;
   CubicBSpline::vector_t params (nControlPoints);
@@ -109,7 +110,6 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   LimitSpeed<FreeTimeTrajectory<CubicBSpline> >::addToProblem
     (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
 
-  std::ofstream limitSpeedStream ("limit-speed.gp");
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
 
   gnuplot
@@ -118,12 +118,8 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
     << set ("grid");
   gnuplot << plot_limitSpeed (freeTimeTraj, vMax);
 
-
   SolverFactory<test_solver_t> factory (TESTSUITE_SOLVER, problem);
   test_solver_t& solver = factory ();
-
-  // Set optional log file for debugging
-  SET_LOG_FILE(solver);
 
   // Ipopt-specific parameters
   // WARNING: these parameters may not be relevant! These are only set to
@@ -133,7 +129,9 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   solver.parameters()["ipopt.acceptable_tol"].value = 5e-2;
   solver.parameters()["ipopt.mu_strategy"].value = "adaptive";
 
-  std::cout << solver << std::endl;
+  std::stringstream ss;
+  ss << solver;
+  gnuplot << comment (ss.str ());
 
   test_solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
@@ -164,7 +162,11 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
     }
 
   gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
-  limitSpeedStream << (gnuplot << unset ("multiplot"));
+  (*output) << (gnuplot << unset ("multiplot"));
+
+  std::cout << output->str () << std::endl;
+
+  BOOST_CHECK (output->match_pattern ());
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

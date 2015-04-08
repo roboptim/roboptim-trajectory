@@ -66,7 +66,7 @@ namespace trajectory
     updatedTrajectory.setParameters (p);
 
     // Loop over sample points.
-    vector_t cost (1);
+    result_t cost (1);
     cost.setZero ();
 
     value_type min =
