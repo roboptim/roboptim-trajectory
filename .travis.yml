@@ -21,10 +21,10 @@ notifications:
     rooms:
       secure: X+ZM9zdIE0uAXC6FcGszec+DYxgzkuNkwmDJmofwbTFFhzhoWQxu2EbvGnyBe06MVRzlfIisWBXUgln/dCxMTqbXy0jFxU5L2clQawUXQFtD17hgjeQ1ZO6wdBXqfFTbh1oWr6yKEvz1q2EE6FVEXGllejVVC4HTkynZPSFsukI=
 before_install:
-- ./.travis/dependencies/eigen-3.2.0
+- ./.travis/dependencies/eigen-3.2
 - ./.travis/run  before_install
 script:
-  - export LD_LIBRARY_PATH=`pkg-config --variable=plugindir roboptim-core`:$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt"; ./.travis/run build
+  - export LD_LIBRARY_PATH="/tmp/_travis/install/lib/roboptim-core/":$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt"; ./.travis/run build
 after_failure: ./.travis/run after_failure
 after_success: ./.travis/run after_success
 branches:
