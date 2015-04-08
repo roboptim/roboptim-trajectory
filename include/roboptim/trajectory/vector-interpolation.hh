@@ -43,7 +43,7 @@ namespace trajectory
   class VectorInterpolation : public Trajectory<3>
   {
   public:
-    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS
+    ROBOPTIM_NTIMES_DERIVABLE_FUNCTION_FWD_TYPEDEFS
     (Trajectory<3>);
 
     ROBOPTIM_IMPLEMENT_CLONE (VectorInterpolation);
@@ -92,10 +92,10 @@ namespace trajectory
 
   protected:
     void impl_compute (result_ref result, double t) const;
-    void impl_derivative (gradient_ref derivative,
+    void impl_derivative (derivative_ref derivative,
 			  double argument,
 			  size_type order = 1) const;
-    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
+    void impl_derivative (derivative_ref g, StableTimePoint, size_type order)
       const;
     Trajectory<3>* resize (interval_t timeRange)
       const;

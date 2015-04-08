@@ -44,7 +44,7 @@ namespace trajectory
 
   public:
     /// \brief Parent type and imports.
-    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+    ROBOPTIM_NTIMES_DERIVABLE_FUNCTION_FWD_TYPEDEFS_
       (Trajectory<T::derivabilityOrder>);
     /// \brief Fixed point trajectory type.
     typedef T fixedTimeTrajectory_t;
@@ -159,9 +159,9 @@ namespace trajectory
 
   protected:
     void impl_compute (result_ref, double) const;
-    void impl_derivative (gradient_ref g, double x, size_type order)
+    void impl_derivative (derivative_ref g, double x, size_type order)
       const;
-    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
+    void impl_derivative (derivative_ref g, StableTimePoint, size_type order)
       const;
   private:
     /// \brief Input fixed time trajectory.

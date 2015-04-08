@@ -234,7 +234,7 @@ namespace trajectory
 
   inline
   void
-  VectorInterpolation::impl_derivative (gradient_ref gradient,
+  VectorInterpolation::impl_derivative (derivative_ref gradient,
 					double t,
 					size_type order)
     const
@@ -269,7 +269,7 @@ namespace trajectory
 
   inline
   void
-  VectorInterpolation::impl_derivative (gradient_ref derivative,
+  VectorInterpolation::impl_derivative (derivative_ref derivative,
 					StableTimePoint stp,
 					size_type order)
     const

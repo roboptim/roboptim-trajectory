@@ -43,7 +43,7 @@ namespace trajectory
   {
   public:
     /// \brief Parent type and imports.
-    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+    ROBOPTIM_NTIMES_DERIVABLE_FUNCTION_FWD_TYPEDEFS_
       (Trajectory<N>);
 
     typedef typename parent_t::interval_t interval_t;
@@ -162,9 +162,9 @@ namespace trajectory
     using Trajectory<N>::impl_compute;
 
     void impl_compute (result_ref, value_type) const;
-    void impl_derivative (gradient_ref g, value_type x, size_type order)
+    void impl_derivative (derivative_ref g, value_type x, size_type order)
       const;
-    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
+    void impl_derivative (derivative_ref g, StableTimePoint, size_type order)
       const;
 
     vector_t basisFunctions (value_type t, size_type order) const

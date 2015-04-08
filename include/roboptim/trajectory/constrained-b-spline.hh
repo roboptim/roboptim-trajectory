@@ -38,7 +38,7 @@ namespace trajectory
   {
   public:
     /// \brief Parent type and imports.
-    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+    ROBOPTIM_NTIMES_DERIVABLE_FUNCTION_FWD_TYPEDEFS_
       (BSpline<N>);
     typedef typename parent_t::interval_t interval_t;
 

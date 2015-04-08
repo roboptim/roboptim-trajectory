@@ -188,9 +188,9 @@ namespace trajectory
   protected:
     using Trajectory<3>::impl_compute;
     void impl_compute (result_ref, double) const;
-    void impl_derivative (gradient_ref g, double x, size_type order)
+    void impl_derivative (derivative_ref g, double x, size_type order)
       const;
-    void impl_derivative (gradient_ref g, StableTimePoint, size_type order)
+    void impl_derivative (derivative_ref g, StableTimePoint, size_type order)
       const;
 
     /// \brief Compute the basis polynomials for the cubic B-spline.

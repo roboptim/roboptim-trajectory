@@ -386,7 +386,7 @@ namespace trajectory
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_ref derivative, value_type t,
+  BSpline<N>::impl_derivative (derivative_ref derivative, value_type t,
 			       size_type order)
     const
   {
@@ -421,7 +421,7 @@ namespace trajectory
   }
 
   template <int N> void
-  BSpline<N>::impl_derivative (gradient_ref derivative,
+  BSpline<N>::impl_derivative (derivative_ref derivative,
 			       StableTimePoint stp,
 			       size_type order) const
   {

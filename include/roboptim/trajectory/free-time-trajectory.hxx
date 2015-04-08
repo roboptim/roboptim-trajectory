@@ -85,7 +85,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::impl_derivative (gradient_ref derivative,
+  FreeTimeTrajectory<T>::impl_derivative (derivative_ref derivative,
 					  double t,
 					  size_type order) const
   {
@@ -100,7 +100,7 @@ namespace trajectory
 
   template <typename T>
   void
-  FreeTimeTrajectory<T>::impl_derivative (gradient_ref derivative,
+  FreeTimeTrajectory<T>::impl_derivative (derivative_ref derivative,
 					  StableTimePoint stp,
 					  size_type order) const
   {

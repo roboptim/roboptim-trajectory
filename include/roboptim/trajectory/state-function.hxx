@@ -91,7 +91,7 @@ namespace trajectory
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
     grad = function_->gradient
-      (updatedTrajectory->state (tpt_, this->order_), i).adjoint () *
+      (updatedTrajectory->state (tpt_, this->order_), i) *
       updatedTrajectory->variationStateWrtParam (tpt_, this->order_);
   }
 

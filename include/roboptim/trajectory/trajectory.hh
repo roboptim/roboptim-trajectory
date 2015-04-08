@@ -77,7 +77,7 @@ namespace trajectory
   {
   public:
     /// \brief Parent type and imports.
-    ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
+    ROBOPTIM_NTIMES_DERIVABLE_FUNCTION_FWD_TYPEDEFS_
       (NTimesDerivableFunction<DerivabilityOrder>);
 
     using parent_t::operator ();
@@ -206,15 +206,15 @@ namespace trajectory
       assert (this->isValidResult (result));
     }
 
-    gradient_t derivative (StableTimePoint argument, size_type order = 1) const
+    derivative_t derivative (StableTimePoint argument, size_type order = 1) const
     {
-      gradient_t derivative (this->derivativeSize ());
+      derivative_t derivative (this->derivativeSize ());
       derivative.setZero ();
       this->derivative (derivative, argument, order);
       return derivative;
     }
 
-    void derivative (gradient_ref derivative,
+    void derivative (derivative_ref derivative,
 		     StableTimePoint argument,
 		     size_type order = 1) const
     {
@@ -257,7 +257,7 @@ namespace trajectory
   protected:
     void impl_compute (result_ref, StableTimePoint) const;
     virtual void
-    impl_derivative (gradient_ref g, StableTimePoint, size_type order)
+    impl_derivative (derivative_ref g, StableTimePoint, size_type order)
       const = 0;
 
     Trajectory (interval_t, size_type, const vector_t&,

@@ -324,7 +324,7 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::impl_derivative (gradient_ref derivative, double t,
+  CubicBSpline::impl_derivative (derivative_ref derivative, double t,
 				 size_type order)
     const
   {
@@ -436,7 +436,7 @@ namespace trajectory
 
 
   void
-  CubicBSpline::impl_derivative (gradient_ref derivative,
+  CubicBSpline::impl_derivative (derivative_ref derivative,
 				 StableTimePoint stp,
 				 size_type order) const
   {

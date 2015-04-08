@@ -90,11 +90,11 @@ namespace trajectory
     const value_type t = tpt_.getTime (updatedTrajectory->timeRange ());
     grad =
       function_->gradient
-      (updatedTrajectory->state (t, this->order_), i).adjoint ()
+      (updatedTrajectory->state (t, this->order_), i)
       * updatedTrajectory->variationStateWrtParam (t, this->order_);
 
     // Compute derivatives w.r.t p_0.
-    const vector_t df_dstate =
+    const gradient_t df_dstate =
       function_->gradient (updatedTrajectory->state (tpt_, this->order_), i);
     const vector_t dgamma_dt =
       updatedTrajectory->getFixedTimeTrajectory ().state (tpt_, this->order_);

@@ -109,7 +109,7 @@ namespace trajectory
     for (value_type t = min; t < max; t += step)
       {
 	gr = function_->gradient
-	  (updatedTrajectory.state (t, this->order_), i).adjoint () *
+	  (updatedTrajectory.state (t, this->order_), i) *
 	  updatedTrajectory.variationStateWrtParam (t, this->order_);
 	grad += gr;
       }

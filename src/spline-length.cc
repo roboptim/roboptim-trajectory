@@ -56,7 +56,7 @@ namespace trajectory
 
       void operator () (const double& t)
       {
-	grad_ += traj_.derivative (t, 1).adjoint ()
+	grad_ += traj_.derivative (t, 1)
 	  * traj_.variationDerivWrtParam (t, 1);
       }
 
