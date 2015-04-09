@@ -73,6 +73,9 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   using namespace boost;
   using namespace boost::assign;
 
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
+
   boost::shared_ptr<boost::test_tools::output_test_stream>
     output = retrievePattern ("spline-time-optimization");
 

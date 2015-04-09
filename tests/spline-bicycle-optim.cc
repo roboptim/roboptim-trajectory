@@ -111,6 +111,9 @@ BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE (trajectory_spline_bibycle_optim)
 {
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
+
   using namespace boost::assign;
   CubicBSpline::vector_t params (22);
 

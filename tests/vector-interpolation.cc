@@ -122,6 +122,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_test, T,
   // Display initial and final trajectory.
   VectorInterpolation::discreteInterval_t intervalS (0., 10., 0.01);
   using namespace roboptim::visualization::gnuplot;
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
 
   std::ofstream f ("/tmp/vector-interpolation-0.gp");
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
@@ -168,6 +170,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_interpolation_nonscalar_test,
 
   // Display initial and final trajectory.
   using namespace roboptim::visualization::gnuplot;
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
+
   std::ofstream f ("/tmp/vector-interpolation-1.gp");
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
 
@@ -216,6 +221,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (filter_vector_derivWrtParams_test, T,
 
   // Display initial and final trajectory.
   using namespace roboptim::visualization::gnuplot;
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
+
   std::ofstream f ("/tmp/vector-interpolation-2.gp");
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
 

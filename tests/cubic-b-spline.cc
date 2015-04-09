@@ -269,6 +269,9 @@ void test_plot (const TestData& data)
 
   using namespace roboptim::visualization::gnuplot;
 
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
+
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t interval (0., 5., 0.01);
 
