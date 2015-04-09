@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
       ("failed to open file \"spline-time-optimization.dat\"");
   }
 
-  double tol = 1e-6;
+  double tol = 5e-5;
 
   const double finalPos = 200.;
   CubicBSpline::vector_t params (nControlPoints);
