@@ -21,7 +21,6 @@
 #include <fstream>
 
 #include <boost/format.hpp>
-#include <boost/filesystem.hpp>
 
 #include "shared-tests/fixture.hh"
 
@@ -43,33 +42,12 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CubicBSpline::size_type size_type;
 typedef CubicBSpline::value_type value_type;
+typedef CubicBSpline::interval_t interval_t;
 
-typedef std::vector < std::vector < value_type > > matrix_t;
+typedef Eigen::MatrixXd matrix_t;
 
-typedef boost::filesystem::path path_t;
-
-matrix_t getReference (const path_t& file)
-{
-  matrix_t result;
-  size_type nbRows = 0;
-
-  path_t full_path = path_t (TESTS_DATA_DIR) / file;
-
-  std::ifstream f; f.open (full_path.c_str ());
-  std::string line;
-
-  while (f.good ()) {
-    std::vector <value_type> data;
-    std::getline (f, line);
-    std::stringstream ss (line);
-    std::copy (std::istream_iterator< value_type > (ss),
-	       std::istream_iterator< value_type > (),
-	       std::back_inserter (data));
-    ++nbRows;
-    result.push_back (data);
-  }
-  return result;
-}
+// Limited data => use full precision serialization
+typedef matrix_t store_t;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
@@ -77,10 +55,12 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
 {
   using namespace roboptim::visualization::gnuplot;
   size_type nbRows = 0;
-  matrix_t reference = getReference ("cubic-b-spline-2.stdout");
+
+  matrix_t reference = readMatrix<store_t> ("cubic-b-spline-2.dat");
+
   if (reference.size () == 0) {
     throw std::runtime_error
-      ("failed to open file \"cubic-b-spline-2.stdout\"");
+      ("failed to open file \"cubic-b-spline-2.dat\"");
   }
   double tol = 1e-6;
 
@@ -99,39 +79,56 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
     params [i][i_] = 1;
   }
 
-  std::ofstream f; f.open ("output");
-  for (std::size_t i=0; i<(std::size_t)nbKnots-4; ++i) {
-    CubicBSpline spline (1, knots, params [i], "Cubic B-spline");
+  interval_t interval = std::make_pair (knots [3], knots[knots.size ()-4]);
+  value_type eval_step = 0.002;
+  size_type n_eval = static_cast<size_type> (std::floor ((interval.second - interval.first)/eval_step)+1);
+  size_type total_n_eval = (nbKnots - 4) * n_eval;
+  matrix_t spline_data (total_n_eval, 2);
+  spline_data.setZero ();
 
-    discreteInterval_t interval (spline.timeRange ().first,
-				 spline.timeRange ().second, 0.002);
+  for (std::size_t i = 0; i < (std::size_t)nbKnots - 4; ++i)
+    {
+      CubicBSpline spline (1, knots, params [i], "Cubic B-spline");
 
-    std::cout
-      <<
-      (boost::format
-       ("set term wxt persist title 'Spline: base functions' %1% font ',5'")
-       % i) << std::endl
-      << "set grid xtics noytics linewidth 0.5" << std::endl
-      << "set xlabel 't'" << std::endl
-      << "set ylabel 'value'" << std::endl;
-    std::string title ("spline");
-    std::cout << "plot '-' title '"<< title <<"' with line\n";
+      discreteInterval_t interval (spline.timeRange ().first,
+				   spline.timeRange ().second, eval_step);
 
-    spline (0.95);
-    // Loop over the interval of definition
-    for (double t = boost::get<0> (interval); t < boost::get<1> (interval);
-	 t += boost::get<2> (interval)) {
-      CubicBSpline::vector_t value = spline (t);
-      std::cout << (boost::format ("%1.3f %2.8f\n")
-		    % normalize (t)
-		    % normalize (value (0))).str ();
-      std::size_t nbRows_ = static_cast<std::size_t>(nbRows);
-      BOOST_CHECK_SMALL (t - reference [nbRows_][0], tol);
-      BOOST_CHECK_SMALL (value (0) - reference [nbRows_][1], tol);
-      ++nbRows;
+      std::cout
+	<<
+	(boost::format
+	 ("set term wxt persist title 'Spline: base functions' %1% font ',5'")
+	 % i) << std::endl
+	<< "set grid xtics noytics linewidth 0.5" << std::endl
+	<< "set xlabel 't'" << std::endl
+	<< "set ylabel 'value'" << std::endl;
+      std::string title ("spline");
+      std::cout << "plot '-' title '"<< title <<"' with line\n";
+
+      spline (0.95);
+
+      // Loop over the interval of definition
+      for (double t = boost::get<0> (interval); t < boost::get<1> (interval);
+	   t += boost::get<2> (interval))
+	{
+	  CubicBSpline::vector_t value = spline (t);
+	  std::cout << (boost::format ("%1.3f %2.8f\n")
+			% normalize (t)
+			% normalize (value (0))).str ();
+	  BOOST_CHECK_SMALL (t - reference (nbRows, 0), tol);
+	  BOOST_CHECK_SMALL (value (0) - reference (nbRows, 1), tol);
+	  spline_data.row (nbRows) << t, value (0);
+	  ++nbRows;
+	}
+
+      std::cout << "e" << std::endl;
     }
-    std::cout << "e" << std::endl;
-  }
+
+  // Generate the archive
+  //writeMatrix<matrix_t> ("cubic-b-spline-2.dat", spline_data);
+
+  // Compare data
+  BOOST_CHECK (allclose (spline_data, reference, tol));
+
   std::cout << "unset multiplot" << std::endl;
 }
 BOOST_AUTO_TEST_SUITE_END ()

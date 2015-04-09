@@ -75,6 +75,8 @@ SETUP_PROJECT()
 PKG_CONFIG_APPEND_LIBS(roboptim-trajectory)
 
 # Search for dependencies.
+SET(BOOST_COMPONENTS
+  filesystem system thread program_options unit_test_framework serialization)
 SEARCH_FOR_BOOST()
 
 # Libtool dynamic loading

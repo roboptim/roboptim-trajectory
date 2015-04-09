@@ -45,32 +45,14 @@ using namespace roboptim::visualization::gnuplot;
 
 typedef CubicBSpline::value_type value_type;
 typedef CubicBSpline::size_type size_type;
-typedef std::vector < std::vector < value_type > > matrix_t;
+typedef CubicBSpline::interval_t interval_t;
+
+typedef Eigen::MatrixXd matrix_t;
+
+// Store data as float to reduce data size
+typedef Eigen::MatrixXf store_t;
 
 typedef boost::filesystem::path path_t;
-
-matrix_t getReference (const path_t& file)
-{
-  matrix_t result;
-  size_type nbRows = 0;
-
-  path_t full_path = path_t (TESTS_DATA_DIR) / file;
-
-  std::ifstream f; f.open (full_path.c_str ());
-  std::string line;
-
-  while (f.good ()) {
-    std::vector <value_type> data;
-    std::getline (f, line);
-    std::stringstream ss (line);
-    std::copy (std::istream_iterator< value_type > (ss),
-	       std::istream_iterator< value_type > (),
-	       std::back_inserter (data));
-    ++nbRows;
-    result.push_back (data);
-  }
-  return result;
-}
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
@@ -78,14 +60,23 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
 {
   using namespace roboptim::visualization::gnuplot;
   size_type nbRows = 0;
-  matrix_t reference = getReference ("cubic-b-spline-gradient.stdout");
+
+  matrix_t reference = readMatrix<store_t> ("cubic-b-spline-gradient.dat").cast<double> ();
+
   if (reference.size () == 0) {
     throw std::runtime_error
-      ("failed to open file \"cubic-b-spline-gradient.stdout\"");
+      ("failed to open file \"cubic-b-spline-gradient.dat\"");
   }
   double tol = 1e-6;
 
   CubicBSpline::vector_t params (7);
+
+  interval_t interval = std::make_pair (0., 4.);
+  value_type eval_step = 0.01;
+  size_type n_eval = static_cast<size_type> (std::floor ((interval.second - interval.first)/eval_step)+1);
+  size_type total_n_eval = (1 + params.size ()) * params.size () * 3 * n_eval;
+  matrix_t eval_data (total_n_eval, 2);
+  eval_data.setZero ();
 
   for (unsigned x = 0; x < 7; ++x)
     {
@@ -103,8 +94,8 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
       params[x] = 1.;
 
       // Build a cubic spline of dimension 1
-      CubicBSpline spline (std::make_pair (0., 4.), 1, params);
-      discreteInterval_t window (0., 4., 0.01);
+      CubicBSpline spline (interval, 1, params);
+      discreteInterval_t window (interval.first, interval.second, eval_step);
 
       // Loop over the order of derivation
       for (unsigned i = 0; i < 3; ++i)
@@ -135,9 +126,9 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
               std::cout << (boost::format ("%1.2f %2.4f\n")
 			    % normalize (t)
 			    % normalize (grad (0))).str ();
-	      std::size_t nbRows_ = static_cast<std::size_t>(nbRows);
-	      BOOST_CHECK_SMALL (t - reference [nbRows_][0], tol);
-	      BOOST_CHECK_SMALL (grad (0) - reference [nbRows_][1], tol);
+	      BOOST_CHECK_SMALL (t - reference (nbRows, 0), tol);
+	      BOOST_CHECK_SMALL (grad (0) - reference (nbRows, 1), tol);
+	      eval_data.row (nbRows) << t, grad (0);
 	      ++nbRows;
 	      try
 		{
@@ -192,15 +183,23 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
                 std::cout << (boost::format ("%1.2f %2.4f\n")
 			      % normalize (t)
 			      % normalize (jac (0, j))).str ();
-		std::size_t nbRows_ = static_cast<std::size_t>(nbRows);
-		BOOST_CHECK_SMALL (t - reference [nbRows_][0], tol);
-		BOOST_CHECK_SMALL (jac (0, j) - reference [nbRows_][1], tol);
+		BOOST_CHECK_SMALL (t - reference (nbRows, 0), tol);
+		BOOST_CHECK_SMALL (jac (0, j) - reference (nbRows, 1), tol);
+		eval_data.row (nbRows) << t, jac (0, j);
 		++nbRows;
 	      }
             std::cout << "e" << std::endl;
 	  }
+
       std::cout << "unset multiplot" << std::endl;
     }
+
+  // Generate the archive
+  //writeMatrix<store_t> ("cubic-b-spline-gradient.dat",
+  //                       eval_data.cast<float> ());
+
+  // Compare data
+  BOOST_CHECK (allclose (eval_data, reference, tol));
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

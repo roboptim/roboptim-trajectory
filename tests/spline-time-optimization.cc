@@ -54,7 +54,12 @@ test_solver_t;
 
 typedef test_solver_t::problem_t::constraints_t constraint_t;
 typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
+typedef CubicBSpline::size_type size_type;
 
+typedef Eigen::MatrixXd matrix_t;
+
+// Limited data => use full precision serialization
+typedef matrix_t store_t;
 
 // Problem parameters.
 const unsigned nControlPoints = 6;
@@ -70,6 +75,16 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
 
   boost::shared_ptr<boost::test_tools::output_test_stream>
     output = retrievePattern ("spline-time-optimization");
+
+  size_type row_iter = 0;
+
+  matrix_t reference = readMatrix<store_t> ("spline-time-optimization.dat");
+  if (reference.size () == 0) {
+    throw std::runtime_error
+      ("failed to open file \"spline-time-optimization.dat\"");
+  }
+
+  double tol = 1e-6;
 
   const double finalPos = 200.;
   CubicBSpline::vector_t params (nControlPoints);
@@ -129,9 +144,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   solver.parameters()["ipopt.acceptable_tol"].value = 5e-2;
   solver.parameters()["ipopt.mu_strategy"].value = "adaptive";
 
-  std::stringstream ss;
-  ss << solver;
-  gnuplot << comment (ss.str ());
+  (*output) << solver;
 
   test_solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
@@ -162,11 +175,35 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
     }
 
   gnuplot << plot_limitSpeed (optimizedTrajectory, vMax);
-  (*output) << (gnuplot << unset ("multiplot"));
+  // Do not embed Gnuplot data for comparison because of numerical
+  // differences
+  std::cout << (gnuplot << unset ("multiplot"));
 
   std::cout << output->str () << std::endl;
 
   BOOST_CHECK (output->match_pattern ());
+
+  // Loop over the interval of definition
+  double eval_step = 0.01;
+  size_type n_eval = static_cast<size_type> (std::floor ((timeRange.second - timeRange.first)/eval_step)+1);
+  matrix_t eval_data (n_eval, 2);
+  eval_data.setZero ();
+
+  for (double t = timeRange.first; t < timeRange.second;
+       t += eval_step)
+    {
+      double res = optimizedTrajectory (t)[0];
+      BOOST_CHECK_SMALL (t - reference (row_iter, 0), tol);
+      BOOST_CHECK_SMALL (res - reference (row_iter, 1), tol);
+      eval_data.row (row_iter) << t, res;
+      ++row_iter;
+    }
+
+  // Generate the archive
+  //writeMatrix<matrix_t> ("spline-time-optimization.dat", eval_data);
+
+  // Compare data
+  BOOST_CHECK (allclose (eval_data, reference, tol));
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

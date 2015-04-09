@@ -95,7 +95,7 @@ MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
   TARGET_LINK_LIBRARIES(${NAME} roboptim-trajectory)
 
   # Link against Boost.
-  TARGET_LINK_LIBRARIES(${NAME} ${Boost_LIBRARIES})
+  TARGET_LINK_LIBRARIES(${NAME} ${Boost_LIBRARIES} boost_serialization)
 
   PKG_CONFIG_USE_DEPENDENCY(${NAME} roboptim-core)
 ENDMACRO(ROBOPTIM_TRAJECTORY_TEST)
@@ -111,11 +111,9 @@ ROBOPTIM_TRAJECTORY_TEST(state-function)
 
 # Spline.
 ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline)
-CONFIGURE_FILE ("cubic-b-spline-gradient.stdout"
-  "cubic-b-spline-gradient.stdout")
+CONFIGURE_FILE ("cubic-b-spline-gradient.dat" "cubic-b-spline-gradient.dat")
 ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-2)
-CONFIGURE_FILE ("cubic-b-spline-2.stdout"
-  "cubic-b-spline-2.stdout")
+CONFIGURE_FILE ("cubic-b-spline-2.dat" "cubic-b-spline-2.dat")
 ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-gradient)
 ROBOPTIM_TRAJECTORY_TEST(b-spline)
 ROBOPTIM_TRAJECTORY_TEST(constrained-b-spline)
@@ -129,6 +127,7 @@ IF(TESTSUITE_SOLVER)
   #ROBOPTIM_TRAJECTORY_TEST(spline-bicycle-optim)
   #ROBOPTIM_TRAJECTORY_TEST(spline-optimization)
   ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)
+  CONFIGURE_FILE ("spline-time-optimization.dat" "spline-time-optimization.dat")
 ENDIF()
 
 # Anthropomorphic cost function.
