@@ -1046,6 +1046,12 @@ plot '-' title 'Cubic B-spline 2D (2)' with line
 100.00000000 100.00000000
 e
 
+# Cubic B-spline:
+#   Name: Cubic B-spline 1D (1)
+#   Number of parameters per spline function: 8
+#   Length: 5
+#   Parameters: [8](0,0,0,50,50,0,0,0)
+#   Knot vector: -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8
 plot '-' title 'Cubic B-spline 1D (1)' with line
 0.00000000 0.00000000
 0.01000000 0.00000833
@@ -1550,6 +1556,12 @@ plot '-' title 'Cubic B-spline 1D (1)' with line
 5.00000000 0.00000000
 e
 
+# Cubic B-spline:
+#   Name: Cubic B-spline 1D (2)
+#   Number of parameters per spline function: 8
+#   Length: 5
+#   Parameters: [8](30,30,30,75,25,30,30,30)
+#   Knot vector: -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8
 plot '-' title 'Cubic B-spline 1D (2)' with line
 0.00000000 30.00000000
 0.01000000 30.00000750
@@ -2054,6 +2066,12 @@ plot '-' title 'Cubic B-spline 1D (2)' with line
 5.00000000 30.00000000
 e
 
+# Cubic B-spline:
+#   Name: Cubic B-spline 1D (1) + Cubic B-spline 1D (2)
+#   Number of parameters per spline function: 8
+#   Length: 5
+#   Parameters: [8](30,30,30,125,75,30,30,30)
+#   Knot vector: -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8
 plot '-' title 'Cubic B-spline 1D (1) + Cubic B-spline 1D (2)' with line
 0.00000000 30.00000000
 0.01000000 30.00001583
@@ -2558,6 +2576,12 @@ plot '-' title 'Cubic B-spline 1D (1) + Cubic B-spline 1D (2)' with line
 5.00000000 30.00000000
 e
 
+# Cubic B-spline:
+#   Name: Cubic B-spline 1D (1)
+#   Number of parameters per spline function: 8
+#   Length: 5
+#   Parameters: [8](30,30,30,125,75,30,30,30)
+#   Knot vector: -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8
 plot '-' title 'Cubic B-spline 1D (1)' with line
 0.00000000 30.00000000
 0.01000000 30.00001583
@@ -3062,6 +3086,12 @@ plot '-' title 'Cubic B-spline 1D (1)' with line
 5.00000000 30.00000000
 e
 
+# Cubic B-spline:
+#   Name: Clamped Cubic B-spline 1D (1)
+#   Number of parameters per spline function: 8
+#   Length: 5
+#   Parameters: [8](0,0,0,50,50,0,0,0)
+#   Knot vector: 0, 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 5
 plot '-' title 'Clamped Cubic B-spline 1D (1)' with line
 0.00000000 0.00000000
 0.01000000 0.00000833
@@ -3566,6 +3596,12 @@ plot '-' title 'Clamped Cubic B-spline 1D (1)' with line
 5.00000000 0.00000000
 e
 
+# Cubic B-spline:
+#   Name: Clamped Cubic B-spline 1D (2)
+#   Number of parameters per spline function: 8
+#   Length: 5
+#   Parameters: [8](30,30,30,75,25,30,30,30)
+#   Knot vector: 0, 0, 0, 0, 1, 2, 3, 4, 5, 5, 5, 5
 plot '-' title 'Clamped Cubic B-spline 1D (2)' with line
 0.00000000 30.00000000
 0.01000000 30.00000750

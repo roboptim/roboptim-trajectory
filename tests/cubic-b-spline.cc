@@ -316,13 +316,22 @@ void test_plot (const TestData& data)
         << comment (spline_2d_2.derivative (5., 2))
         << plot_xy (spline_2d_2, interval)
 
+        << comment (spline_1d_1)
         << plot (spline_1d_1, interval)
+
+        << comment (spline_1d_2)
         << plot (spline_1d_2, interval)
 
+        << comment (spline_1d_3)
         << plot (spline_1d_3, interval)
+
+        << comment (spline_1d_4)
         << plot (spline_1d_4, interval)
 
+        << comment (spline_1d_1_clamped)
         << plot (spline_1d_1_clamped, interval)
+
+        << comment (spline_1d_2_clamped)
         << plot (spline_1d_2_clamped, interval)
 
         << unset ("multiplot"));
