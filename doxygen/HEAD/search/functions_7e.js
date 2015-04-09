@@ -10,7 +10,7 @@ var searchData=
   ['_7elimitomega',['~LimitOmega',['../a00012.html#a6c6d612d26ef73913364b67e4b51825a',1,'roboptim::trajectory::LimitOmega']]],
   ['_7elimitspeed',['~LimitSpeed',['../a00013.html#a53d164748c05534f6f26986189d922c6',1,'roboptim::trajectory::LimitSpeed']]],
   ['_7eorthogonalspeed',['~OrthogonalSpeed',['../a00016.html#a1b41f6aabfaf95a9e13f34e03827ebf1',1,'roboptim::trajectory::OrthogonalSpeed']]],
-  ['_7esplinelength',['~SplineLength',['../a00089.html#gaaeb5489d6b6677ab9f565d19878aeb38',1,'roboptim::trajectory::SplineLength']]],
+  ['_7esplinelength',['~SplineLength',['../a00090.html#gaaeb5489d6b6677ab9f565d19878aeb38',1,'roboptim::trajectory::SplineLength']]],
   ['_7establepointstatefunction',['~StablePointStateFunction',['../a00021.html#af90f5e9766ec0de7b1b635976ae94f61',1,'roboptim::trajectory::StablePointStateFunction']]],
   ['_7estatefunction',['~StateFunction',['../a00023.html#a441978cb5600775e3995ecfebfcce43c',1,'roboptim::trajectory::StateFunction']]],
   ['_7etrajectory',['~Trajectory',['../a00025.html#aeba253605e193b009a2761ee66f6c92f',1,'roboptim::trajectory::Trajectory']]],
