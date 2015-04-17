@@ -83,7 +83,8 @@ namespace trajectory
   template <typename T>
   void
   LimitSpeed<T>::impl_gradient
-  (gradient_ref grad, const_argument_ref p, size_type i) const
+  (gradient_ref grad, const_argument_ref p,
+   size_type ROBOPTIM_DEBUG_ONLY(i)) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
       Eigen::internal::set_is_malloc_allowed (true);
