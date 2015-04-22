@@ -49,10 +49,7 @@ struct spline_checks
 {
   static void
   check_evaluate (std::pair<value_type, value_type>,
-		  int, vector_t const&, int)
-  {
-    // do nothing
-  };
+		  int, vector_t const&, int);
 
   static void check_non_uniform
   (std::pair<value_type, value_type> interval, int dimension,
