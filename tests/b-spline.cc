@@ -169,7 +169,7 @@ void test_instantiate ()
 template <int N>
 void test_evaluate ()
 {
-  for (int derivative = 0; derivative <= 0; derivative++)
+  for (int derivative = 0; derivative <= N; derivative++)
     {
       for (int dimension = 1; dimension < 2; dimension++)
         {
@@ -188,7 +188,7 @@ void test_evaluate ()
 template <int N>
 void test_non_uniform ()
 {
-  for (int derivative = 0; derivative <= 2; derivative++)
+  for (int derivative = 0; derivative <= N; derivative++)
     {
       for (int dimension = 1; dimension < 4; dimension++)
         {
