@@ -92,6 +92,52 @@ namespace trajectory
   }
 
   template <int N>
+  BSpline<N>::BSpline (ConstructionMode mode,
+                       const interval_t& tr, size_type outputSize,
+                       const vector_t& p,
+                       std::string name, bool clamped)
+    : Trajectory<N> (tr, outputSize, p, name),
+    nbp_ (p.size () / outputSize),
+    knots_ (),
+    basisPolynomials_ (),
+    uniform_ (true)
+  {
+    // Parameter size should be a multiple of spline dimension
+    assert (this->parameters_.size () % this->outputSize () == 0);
+    // number of control points should be at least 6.
+    assert (nbp_ >= order_ + 1);
+
+    setParameters (p);
+
+    if (mode == NORMAL)
+      {
+	initializeKnots (clamped);
+	computeBasisPolynomials ();
+      }
+  }
+
+  template <int N>
+  template <int M>
+  BSpline<N> BSpline<N>::derivative () const
+  {
+    assert (M > 0);
+
+    // Copy interval, dimension, name, number of control points, knots
+    // and compute the basis polynomials by simple derivation
+    std::string name = (boost::format ("%s (order %i derivative)")
+			% this->getName () % M).str ();
+
+    // TODO: deduce basis polynomials instead
+    BSpline<N> ds (UNINITIALIZED,
+		   this->timeRange (), this->outputSize (),
+		   this->parameters_, name);
+    ds.knots_ = this->knots_;
+    ds.basisPolynomials_ = this->deriveBasisPolynomials<M> ();
+
+    return ds;
+  }
+
+  template <int N>
   Trajectory<N>* BSpline<N>::resize (interval_t timeRange) const
   {
     return new BSpline<N> (timeRange,
@@ -141,6 +187,30 @@ namespace trajectory
 	    knots_ (i) = tr.first + static_cast<value_type> (i-order_) * delta_t;
 	  }
       }
+  }
+
+
+  template <int N>
+  template <int M>
+  typename BSpline<N>::basisPolynomialsVector_t
+  BSpline<N>::deriveBasisPolynomials () const
+  {
+    basisPolynomialsVector_t result (static_cast<size_t> (nbp_));
+    assert (result.size () == basisPolynomials_.size ());
+
+    for (size_t i = 0; i < basisPolynomials_.size (); ++i)
+      {
+	const basisPolynomials_t& polynomials = basisPolynomials_[i];
+	for (typename basisPolynomials_t::const_iterator
+	       p  = polynomials.begin ();
+	     p != polynomials.end (); ++p)
+	  {
+	    // Conversion to proper polynomial degree done automatically
+	    result[i].push_back (p->template derivative<M> ());
+	  }
+      }
+
+    return result;
   }
 
 
@@ -416,9 +486,11 @@ namespace trajectory
     // this is true for any knot vector (FIXME: reference)
     if (order == 0)
       {
+        // Note: if we deal with derived splines, then the
+        // sum is 0.
         assert
-          (std::abs ( polynomial_sum - 1.)
-           < std::numeric_limits<value_type>::epsilon() * 1e6);
+          (std::abs (polynomial_sum - 1.) < 1e-8
+           || std::abs (polynomial_sum) < 1e-8);
       }
   }
 

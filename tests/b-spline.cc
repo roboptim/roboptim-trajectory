@@ -48,11 +48,16 @@ template <int N>
 struct spline_checks
 {
   static void
-  check_evaluate (std::pair<value_type, value_type>,
+  check_evaluate (const std::pair<value_type, value_type>&,
 		  int, vector_t const&, int);
 
+  template <int ORDER>
+  static void
+  check_derivative (const std::pair<value_type, value_type>&,
+		    int, vector_t const&);
+
   static void check_non_uniform
-  (std::pair<value_type, value_type> interval, int dimension,
+  (const std::pair<value_type, value_type>& interval, int dimension,
    vector_t const& params, vector_t const& knots, int order);
 };
 
@@ -63,7 +68,7 @@ struct spline_checks
 template <>
 void
 spline_checks<3>::check_evaluate
-(std::pair<value_type, value_type> interval, int dimension,
+(const std::pair<value_type, value_type>& interval, int dimension,
  vector_t const& params, int order)
 {
   CubicBSpline old_spline (interval, dimension, params);
@@ -85,7 +90,7 @@ spline_checks<3>::check_evaluate
 
 template <>
 void spline_checks<5>::check_evaluate
-(std::pair<value_type, value_type> interval, int dimension,
+(const std::pair<value_type, value_type>& interval, int dimension,
  vector_t const& params, int order)
 {
   BSpline<5> new_spline (interval, dimension, params);
@@ -109,9 +114,25 @@ void spline_checks<5>::check_evaluate
 }
 
 template <int N>
+template <int ORDER>
+void
+spline_checks<N>::check_derivative
+(const std::pair<value_type, value_type>& interval, int dimension,
+ vector_t const& params)
+{
+  BSpline<N> spline (interval, dimension, params);
+  BSpline<N> deriv = spline.template derivative<ORDER> ();
+
+  for (value_type t = interval.first; t < interval.second; t += 1e-3)
+    {
+      BOOST_CHECK (allclose (deriv (t), spline.derivative (t, ORDER), tol));
+    }
+}
+
+template <int N>
 void
 spline_checks<N>::check_non_uniform
-(std::pair<value_type, value_type> interval, int dimension,
+(const std::pair<value_type, value_type>& interval, int dimension,
  vector_t const& params, vector_t const& knots, int order)
 {
   BSpline<N> new_spline (interval, dimension, params, knots);
@@ -182,6 +203,21 @@ void test_evaluate ()
     }
 }
 
+template <int N, int ORDER>
+void test_derivative ()
+{
+  for (int dimension = 1; dimension < 2; dimension++)
+    {
+      std::pair<value_type, value_type> interval = std::make_pair (0., 1.);
+      int min_params = N + 1 + 10;
+      vector_t params (dimension * min_params);
+      params.setRandom ();
+      params *= 10.;
+
+      spline_checks<N>::template check_derivative<ORDER> (interval, dimension, params);
+    }
+}
+
 template <int N>
 void test_non_uniform ()
 {
@@ -234,17 +270,19 @@ void test_plot ()
   std::stringstream name;
   name << "B-spline (order " << N << ")";
   BSpline<N> spline (interval, 1, params, name.str ());
+  BSpline<N> deriv = spline.template derivative<1> ();
   name.str ("");
 
   name << "Clamped B-spline (order " << N << ")";
   BSpline<N> clamped_spline (interval, 1, params, name.str (), true);
+  BSpline<N> clamped_deriv = clamped_spline.template derivative<1> ();
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t plot_interval (interval.first, interval.second, 0.01);
 
   // Use RobOptim's gnuplot functions
   (*output) << (gnuplot
-		<< set ("multiplot layout 1,2")
+		<< set ("multiplot layout 2,2")
 
 		<< comment (spline)
 
@@ -263,6 +301,7 @@ void test_plot ()
 		<< comment (spline.derivative (2.5, 2))
 		<< comment (spline.derivative (5., 2))
 		<< plot (spline, plot_interval)
+		<< plot (deriv, plot_interval)
 
 		<< comment (clamped_spline)
 
@@ -280,7 +319,8 @@ void test_plot ()
 		<< comment (clamped_spline.derivative (0., 2))
 		<< comment (clamped_spline.derivative (2.5, 2))
 		<< comment (clamped_spline.derivative (5., 2))
-		<< plot (clamped_spline, plot_interval));
+		<< plot (clamped_spline, plot_interval)
+		<< plot (clamped_deriv, plot_interval));
 
   std::cout << output->str () << std::endl;
 
@@ -301,6 +341,11 @@ BOOST_AUTO_TEST_CASE (trajectory_bspline)
 
   test_evaluate<3> ();
   test_evaluate<5> ();
+
+  test_derivative<3,1> ();
+  test_derivative<3,2> ();
+  test_derivative<5,1> ();
+  test_derivative<5,3> ();
 
   test_non_uniform<3> ();
   test_non_uniform<4> ();

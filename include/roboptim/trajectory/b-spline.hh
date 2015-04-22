@@ -102,6 +102,18 @@ namespace trajectory
     /// \param spline spline that will be copied.
     BSpline (const BSpline<N>& spline);
 
+    /// \brief Compute the derivative of the B-spline for a given order.
+    ///
+    /// Note: here we return a spline of the same degree for simplicity (we
+    /// keep the same knot vector), but the basis polynomials are M degrees
+    /// lower.
+    ///
+    /// \tparam M derivation order (M ≥ 0).
+    ///
+    /// \return derived spline.
+    template <int M>
+    BSpline<N> derivative () const;
+
     /// \brief Virtual destructor.
     virtual ~BSpline () {};
 
@@ -158,7 +170,33 @@ namespace trajectory
       return basisPolynomials_;
     }
 
+    using Trajectory<N>::derivative;
+
   protected:
+
+    /// \brief Enum for special constructors.
+    enum ConstructionMode
+      {
+        /// \brief Automatically generate basis functions and knot vector.
+        NORMAL = 0,
+        /// \brief Do not generate basis functions or knot vector
+        /// automatically.
+        UNINITIALIZED = 1
+      };
+
+    /// \brief Special constructor used internally for specific
+    /// cases (e.g. spline derivation).
+    ///
+    /// \param timeRange time range of the spline.
+    /// \param dimension output dimension.
+    /// \param parameters control point vector.
+    /// \param name name of the spline.
+    /// \param clamped whether the spline is clamped.
+    BSpline (ConstructionMode mode,
+             const interval_t& timeRange, size_type dimension,
+             const vector_t& parameters,
+             const std::string name = "B-Spline",
+             bool clamped = false);
 
     using Trajectory<N>::impl_compute;
 
@@ -173,6 +211,12 @@ namespace trajectory
 
     /// \brief Compute the basis polynomials.
     void computeBasisPolynomials ();
+
+    /// \brief Derive basis polynomials, but express the result as
+    /// polynomials of BSpline<N> instead of BSpline<N-M>.
+    /// \tparam M derivation order.
+    template <int M>
+    basisPolynomialsVector_t deriveBasisPolynomials () const;
 
     /// \brief Order of the B-Spline
     static const size_type order_ = N;
