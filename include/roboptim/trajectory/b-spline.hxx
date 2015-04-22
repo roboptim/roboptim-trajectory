@@ -532,7 +532,7 @@ namespace trajectory
 	const std::size_t k_ = static_cast<std::size_t> (k);
 	const Polynomial<N>& B = basisPolynomials_[k_ - idx][idx];
 
-	jac.middleCols ((k - order_) * n, n) =
+	jac.middleCols ((k - static_cast<size_type> (idx)) * n, n) =
 	  B.derivative (t, order) * In;
       }
 
