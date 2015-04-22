@@ -41,8 +41,9 @@ using namespace roboptim;
 using namespace roboptim::trajectory;
 using namespace roboptim::visualization;
 
+typedef CubicBSpline spline_t;
 
-typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
+typedef FreeTimeTrajectory<spline_t> freeTime_t;
 
 template <typename T>
 bool isAlmostEqual (const T& x, const T& y, const T& epsilon = 1e10-8)
@@ -134,9 +135,9 @@ struct DerivWrtParam : public DerivableFunction
 };
 
 
-void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj);
+void printTable (const spline_t& spline, const freeTime_t& freeTimeTraj);
 
-void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
+void printTable (const spline_t& spline, const freeTime_t& freeTimeTraj)
 {
   double tmin = Function::getLowerBound (spline.timeRange ());
   double tmax = Function::getUpperBound (spline.timeRange ());
@@ -198,7 +199,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
       if (t > fttTmax)
 	t = fttTmax;
 
-      CubicBSpline::vector_t x (1);
+      spline_t::vector_t x (1);
       x[0] = t;
 
       try
@@ -227,7 +228,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 
       if (tmin <= t && t <= tmax)
 	{
-	  CubicBSpline::jacobian_t splineVarConfig =
+	  spline_t::jacobian_t splineVarConfig =
 	    spline.variationConfigWrtParam (t);
 	  fmterConfig % normalize (splineVarConfig);
 	}
@@ -262,7 +263,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 
       if (tmin <= t && t <= tmax)
 	{
-	  CubicBSpline::jacobian_t splineVarDeriv =
+	  spline_t::jacobian_t splineVarDeriv =
 	    spline.variationDerivWrtParam (t, 1);
 	  fmterDeriv % normalize (splineVarDeriv);
 	}
@@ -277,7 +278,7 @@ void printTable (const CubicBSpline& spline, const freeTime_t& freeTimeTraj)
 	   gradientId < freeTimeTraj.parameters ().size (); ++gradientId)
 	try
 	  {
-	    CubicBSpline::vector_t t_ (1);
+	    spline_t::vector_t t_ (1);
 	    t_[0] = t;
 	    DerivWrtParam derivWrtParam (freeTimeTraj);
 	    checkGradientAndThrow (derivWrtParam, gradientId, t_);
@@ -299,8 +300,8 @@ BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE (trajectory_free_time_trajectory)
 {
-  typedef CubicBSpline::value_type value_type;
-  CubicBSpline::vector_t params (9);
+  typedef spline_t::value_type value_type;
+  spline_t::vector_t params (9);
 
   // Scale.
   params[0] = 1.;
@@ -318,10 +319,10 @@ BOOST_AUTO_TEST_CASE (trajectory_free_time_trajectory)
   params[8] = 100.;
 
   // Make trajectories.
-  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 4.);
-  CubicBSpline spline (timeRange, 1, removeScaleFromParameters (params),
+  spline_t::interval_t timeRange = spline_t::makeInterval (0., 4.);
+  spline_t spline (timeRange, 1, removeScaleFromParameters (params),
 		       "before");
-  FreeTimeTrajectory<CubicBSpline> freeTimeTraj (spline, 1.);
+  FreeTimeTrajectory<spline_t> freeTimeTraj (spline, 1.);
 
   BOOST_CHECK (freeTimeTraj.inputSize () == 1);
   BOOST_CHECK (freeTimeTraj.outputSize () == 1);
