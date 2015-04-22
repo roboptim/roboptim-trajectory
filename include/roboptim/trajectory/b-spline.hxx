@@ -28,27 +28,93 @@ namespace trajectory
 {
   //FIXME: defined_lc_in has to be true (false untested).
   template <int N>
-  BSpline<N>::BSpline (interval_t tr, size_type outputSize,
+  BSpline<N>::BSpline (const interval_t& tr, size_type outputSize,
                        const vector_t& p,
                        std::string name, bool clamped)
     : Trajectory<N> (tr, outputSize, p, name),
-      nbp_ (p.size () / outputSize), uniform_ (true)
+    nbp_ (p.size () / outputSize),
+    knots_ (),
+    basisPolynomials_ (),
+    uniform_ (true)
   {
     //Parameter size should be a multiple of spline dimension
     assert (this->parameters_.size () % outputSize == 0);
     // number of control points should be at least order + 1 so that
     // there is at least one segment in spline
     assert (nbp_ >= order_ + 1);
+
+    // Initialize the knot vector
+    initializeKnots (clamped);
+
+    setParameters (p);
+    computeBasisPolynomials ();
+  }
+
+  template <int N>
+  BSpline<N>::BSpline (const interval_t& tr, size_type outputSize,
+                       const vector_t& p, const_vector_ref knots,
+                       std::string name)
+    : Trajectory<N> (tr, outputSize, p, name),
+    nbp_ (p.size () / outputSize), knots_ (knots), uniform_ (false)
+  {
+    //Parameter size should be a multiple of spline dimension
+    assert (this->parameters_.size () % outputSize == 0);
+    // number of control points should be at least 6.
+    assert (nbp_ >= order_ + 1);
+    // calculated number of control points must match the recieved
+    // control point set
+    assert (nbp_ + order_  + 1 == knots.size());
+    // control points must be a monotonically increasing series
+    for (size_type idx = 0; idx < knots.size () - 1; idx++)
+      assert (knots[idx] <= knots[idx + 1]);
+
+    // not more then the order_ of knot points with the same value are allowed
+
+    setParameters (p);
+    computeBasisPolynomials ();
+  }
+
+  template <int N>
+  BSpline<N>::BSpline (const BSpline<N>& spline)
+    : Trajectory<N> (spline.timeRange (), spline.outputSize (),
+		     spline.parameters_),
+    nbp_ (spline.parameters_.size () / spline.outputSize ()),
+    knots_ (spline.knots_),
+    basisPolynomials_ (spline.basisPolynomials_),
+    uniform_ (spline.uniform_)
+  {
+    // Parameter size should be a multiple of spline dimension
+    assert (this->parameters_.size () % this->outputSize () == 0);
+    // number of control points should be at least 6.
+    assert (nbp_ >= order_ + 1);
+
+    setParameters (spline.parameters ());
+  }
+
+  template <int N>
+  Trajectory<N>* BSpline<N>::resize (interval_t timeRange) const
+  {
+    return new BSpline<N> (timeRange,
+                           this->outputSize (),
+                           this->parameters (),
+                           this->knots_,
+                           this->getName());
+  }
+
+
+  template <int N>
+  void BSpline<N>::initializeKnots (bool clamped)
+  {
     // Fill vector of regularly spaced knots
     size_type m = nbp_ + order_ + 1;
+    knots_.resize (m);
+
+    const interval_t& tr = this->timeRange ();
 
     value_type delta_t =
       (tr.second - tr.first)
       / static_cast<value_type> (nbp_ - order_);
 
-    knots_.resize (m);
-
-    // Clamped B-spline.
     if (clamped)
       {
 	// The first order_+1 knots should be equal to tr.first.
@@ -75,73 +141,9 @@ namespace trajectory
 	    knots_ (i) = tr.first + static_cast<value_type> (i-order_) * delta_t;
 	  }
       }
-
-    setParameters (p);
-    computeBasisPolynomials ();
-  }
-
-  template <int N>
-  BSpline<N>::BSpline (interval_t tr, size_type outputSize,
-                       const vector_t& p, const_vector_ref knots,
-                       std::string name)
-    : Trajectory<N> (tr, outputSize, p, name),
-      nbp_ (p.size () / outputSize), knots_ (knots), uniform_ (false)
-  {
-    //Parameter size should be a multiple of spline dimension
-    assert (this->parameters_.size () % outputSize == 0);
-    // number of control points should be at least 6.
-    assert (nbp_ >= order_ + 1);
-    // calculated number of control points must match the recieved
-    // control point set
-    assert (nbp_ + order_  + 1 == knots.size());
-    // control points must be a monotonically increasing series
-    for (size_type idx = 0; idx < knots.size () - 1; idx++)
-      assert (knots[idx] <= knots[idx + 1]);
-
-    // not more then the order_ of knot points with the same value are allowed
-
-    setParameters (p);
-    computeBasisPolynomials ();
-  }
-
-  template <int N>
-  BSpline<N>::BSpline (const BSpline<N>& spline)
-    : Trajectory<N> (spline.timeRange (), spline.outputSize (),
-		     spline.parameters_),
-      nbp_ (spline.parameters_.size () / spline.outputSize ()),
-      knots_ (spline.knots_),
-      basisPolynomials_ (spline.basisPolynomials_),
-      uniform_ (spline.uniform_)
-  {
-    // Parameter size should be a multiple of spline dimension
-    assert (this->parameters_.size () % this->outputSize () == 0);
-    // number of control points should be at least 6.
-    assert (nbp_ >= order_ + 1);
-
-    setParameters (spline.parameters ());
-  }
-
-  template <int N>
-  Trajectory<N>* BSpline<N>::resize (interval_t timeRange) const
-  {
-    return new BSpline<N> (timeRange,
-                           this->outputSize (),
-                           this->parameters (),
-                           this->knots_,
-                           this->getName());
   }
 
 
-  /// \brief Generate base polynomial set
-  /// For the basic spline formula noted in the pdf from the docs section,
-  /// this implements (3), the recursion formula. It returns the results as
-  /// factors of b_j,0 where j is the index of the returned map.
-  /// \param j current knot index
-  /// \param n current basis function order
-  /// \return a std::map.
-  /// Call this with j as the index of the knot for which spline segment your
-  /// want to generate the basis function for, and n as the order of your
-  /// spline.
   template <int N>
   typename BSpline<N>::cox_map
   BSpline<N>::cox_de_boor (size_type j, size_type n) const
@@ -397,18 +399,18 @@ namespace trajectory
 
     derivative.setZero();
 
-    ROBOPTIM_DEBUG_ONLY(value_type polynomial_sum = 0.;)
+    ROBOPTIM_DEBUG_ONLY(value_type polynomial_sum = 0.);
     for (size_type idx = 0; idx < order_ + 1; ++idx)
       {
 	const std::size_t k_ = static_cast<std::size_t> (k);
 	const std::size_t idx_ = static_cast<std::size_t> (idx);
 
-        const_vector_ref P_seg = this->parameters_.segment ((k - idx) * n, n);
-        const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
+	const_vector_ref P_seg = this->parameters_.segment ((k - idx) * n, n);
+	const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
 
-        ROBOPTIM_DEBUG_ONLY(polynomial_sum += B.derivative (t, order);)
+	ROBOPTIM_DEBUG_ONLY(polynomial_sum += B.derivative (t, order));
 
-        derivative +=  B.derivative (t, order) * P_seg;
+	derivative +=  B.derivative (t, order) * P_seg;
       }
 
     // this is true for any knot vector (FIXME: reference)

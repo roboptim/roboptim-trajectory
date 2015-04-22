@@ -75,7 +75,7 @@ namespace trajectory
     ///
     /// Number of control points is inferred from dimension of dimenion of
     /// parameter vector.
-    BSpline (interval_t timeRange, size_type dimension,
+    BSpline (const interval_t& timeRange, size_type dimension,
              const vector_t& parameters,
              const std::string name = "B-Spline",
              bool clamped = false);
@@ -93,15 +93,16 @@ namespace trajectory
     /// must lie before the start of the spline.
     /// The rest of the knot point must lie before the
     /// end of the spline interval.
-    BSpline (interval_t tr, size_type dimension,
+    BSpline (const interval_t& tr, size_type dimension,
              const vector_t& parameters,
              const_vector_ref knots,
              std::string name = "B-Spline");
 
     /// \brief Copy constructor.
-    /// \param spline spline that will be copied
+    /// \param spline spline that will be copied.
     BSpline (const BSpline<N>& spline);
 
+    /// \brief Virtual destructor.
     virtual ~BSpline () {};
 
     /// \brief Modify spline parameters.
@@ -170,12 +171,27 @@ namespace trajectory
     vector_t basisFunctions (value_type t, size_type order) const
       ROBOPTIM_TRAJECTORY_DEPRECATED;
 
+    /// \brief Compute the basis polynomials.
     void computeBasisPolynomials ();
 
-    /// order of the B-Spline
+    /// \brief Order of the B-Spline
     static const size_type order_ = N;
 
+    /// \brief Generate base polynomial set
+    /// For the basic spline formula noted in the pdf from the docs section,
+    /// this implements (3), the recursion formula. It returns the results as
+    /// factors of b_j,0 where j is the index of the returned map.
+    /// \param j current knot index
+    /// \param n current basis function order
+    /// \return a std::map.
+    /// Call this with j as the index of the knot for which spline segment your
+    /// want to generate the basis function for, and n as the order of your
+    /// spline.
     cox_map cox_de_boor (size_type j, size_type n) const;
+
+    /// \brief Initialize the knot vector.
+    /// \param clamped whether the spline is clamped.
+    void initializeKnots (bool clamped);
 
   private:
 
