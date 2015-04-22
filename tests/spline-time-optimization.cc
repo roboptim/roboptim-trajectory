@@ -52,9 +52,10 @@ typedef Solver<DifferentiableFunction,
 	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
 test_solver_t;
 
+typedef CubicBSpline spline_t;
 typedef test_solver_t::problem_t::constraints_t constraint_t;
-typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;
-typedef CubicBSpline::size_type size_type;
+typedef FreeTimeTrajectory<spline_t> freeTime_t;
+typedef spline_t::size_type size_type;
 
 typedef Eigen::MatrixXd matrix_t;
 
@@ -90,7 +91,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   double tol = 5e-5;
 
   const double finalPos = 200.;
-  CubicBSpline::vector_t params (nControlPoints);
+  spline_t::vector_t params (nControlPoints);
 
   params[0] = 0;
   params[1] = 0;
@@ -100,8 +101,8 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   params[nControlPoints-1] = finalPos;
 
   // Make trajectories.
-  CubicBSpline::interval_t timeRange = CubicBSpline::makeInterval (0., 4.);
-  CubicBSpline spline (timeRange, 1, params, "before");
+  spline_t::interval_t timeRange = spline_t::makeInterval (0., 4.);
+  spline_t spline (timeRange, 1, params, "before");
   freeTime_t freeTimeTraj (spline, 1.);
 
   // Define cost.
@@ -125,7 +126,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   spline.freezeCurveEnd (problem, 1);
 
   Function::interval_t vRange = Function::makeUpperInterval (.5 * vMax * vMax);
-  LimitSpeed<FreeTimeTrajectory<CubicBSpline> >::addToProblem
+  LimitSpeed<FreeTimeTrajectory<spline_t> >::addToProblem
     (freeTimeTraj, problem, vRange, nControlPoints * nConstraintsPerCtrlPts);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
@@ -152,7 +153,7 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   test_solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
 
-  FreeTimeTrajectory<CubicBSpline> optimizedTrajectory =
+  FreeTimeTrajectory<spline_t> optimizedTrajectory =
     freeTimeTraj;
 
   switch (solver.minimumType ())
