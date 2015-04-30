@@ -66,6 +66,7 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/visualization/limit-speed.hh
   ${CSD}/include/roboptim/trajectory/visualization/speed.hh
   ${CSD}/include/roboptim/trajectory/visualization/trajectory.hh
+  ${CSD}/include/roboptim/trajectory/visualization/cubic-b-spline-matplotlib.hh
   ${CSD}/include/roboptim/trajectory.hh
 )
 

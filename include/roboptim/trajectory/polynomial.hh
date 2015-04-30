@@ -54,6 +54,12 @@ namespace trajectory
     /// degree).
     typedef Eigen::Matrix<value_type, N+1, 1> coefs_t;
 
+    /// \brief Type of the critical points
+    typedef std::vector<value_type> values_t;
+
+    /// \brief Type of a maximum query: (t_max, P(t_max))
+    typedef std::pair<value_type, value_type> max_t;
+
     /// \brief Type of a minimum query: (t_min, P(t_min))
     typedef std::pair<value_type, value_type> min_t;
 
@@ -169,6 +175,15 @@ namespace trajectory
     /// \throw std::runtime_error invalid polynomial (e.g. null/constant).
     roots_t realRoots (value_type epsilon = 1e-6) const;
 
+    /// \brief Compute the critical values of the polynomial on an interval.
+    /// \param interval time interval.
+    /// \return vector containing the critical values of the
+    /// polynomial on the interval. Used by the min and max function.
+    /// \throw std::runtime_error invalid polynomial. This is the case for
+    /// constant polynomials since there is an infinity of critical points.
+    /// This can be tested before calling min().
+    values_t critPoints (const interval_t& interval) const;
+
     /// \brief Compute the minimum of the polynomial on an interval.
     /// \param interval time interval.
     /// \return pair containing t_min and the associated minimum of the
@@ -177,6 +192,15 @@ namespace trajectory
     /// constant polynomials since there is an infinity of critical points.
     /// This can be tested before calling min().
     min_t min (const interval_t& interval) const;
+
+    /// \brief Compute the maximum of the polynomial on an interval.
+    /// \param interval time interval.
+    /// \return pair containing t_max and the associated maximum of the
+    /// polynomial on the interval.
+    /// \throw std::runtime_error invalid polynomial. This is the case for
+    /// constant polynomials since there is an infinity of critical points.
+    /// This can be tested before calling max().
+    max_t max (const interval_t& interval) const;
 
     /// \brief Return whether the polynomial is null.
     /// \param epsilon epsilon used.

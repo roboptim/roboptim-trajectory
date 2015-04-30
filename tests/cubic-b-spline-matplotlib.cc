@@ -1,0 +1,119 @@
+// Copyright (C) 2015 by Félix Darricau, AIST, CNRS, EPITA.
+//
+// This file is part of the roboptim.
+//
+// roboptim is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// roboptim is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <iostream>
+#include <fstream>
+
+#include <boost/format.hpp>
+
+#include "shared-tests/fixture.hh"
+
+#include <roboptim/core/io.hh>
+
+#include <roboptim/core/finite-difference-gradient.hh>
+
+#include <roboptim/trajectory/visualization/cubic-b-spline-matplotlib.hh>
+
+#include <roboptim/trajectory/fwd.hh>
+#include <roboptim/trajectory/cubic-b-spline.hh>
+
+#include <roboptim/core/visualization/matplotlib-function.hh>
+
+using namespace roboptim;
+using namespace roboptim::visualization;
+using namespace roboptim::visualization::matplotlib;
+using namespace roboptim::trajectory;
+using namespace roboptim::trajectory::visualization::matplotlib;
+
+typedef CubicBSpline::size_type size_type;
+typedef CubicBSpline::value_type value_type;
+typedef CubicBSpline::interval_t interval_t;
+typedef CubicBSpline::polynomials3vector_t polynomials3vector_t;
+
+BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
+
+BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_matplotlib)
+{
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern ("cubic-b-spline-matplotlib");
+
+  CubicBSpline::vector_t params (2*11);
+  params << 0  , 1. ,
+    0.5, 8. ,
+    1. , 10.,
+    1.5, 8. ,
+    2. , 5. ,
+    2.5, 10.,
+    3  , 0. ,
+    3.5, 2. ,
+    4. , 5. ,
+    4.5, 10.,
+    5  , 0. ;
+
+  CubicBSpline::vector_t params2 (2*11);
+  params2 << 0  , 1. ,
+    0.5, 8. ,
+    1. , 10.,
+    1.5, 8. ,
+    2. , 5. ,
+    2.5, 1. ,
+    3  , 0. ,
+    3.5, 2. ,
+    4. , 5. ,
+    4.5, 10.,
+    5  , 0. ;
+
+  CubicBSpline::vector_t params3 (2*11);
+  params3 << 0  , 1. ,
+    0.5, 8. ,
+    1. , 10.,
+    1.5, 8. ,
+    2. , 5. ,
+    2.5, 15.,
+    3  , 0. ,
+    3.5, 2. ,
+    4. , 5. ,
+    4.5, 10.,
+    5  , 0. ;
+
+  boost::shared_ptr<CubicBSpline> spline = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 1.), 2, params, "Spline1", true);
+
+  boost::shared_ptr<CubicBSpline> spline2 = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 1.), 2, params2, "Spline2", true);
+
+  boost::shared_ptr<CubicBSpline> spline3 = boost::make_shared<CubicBSpline>
+    (std::make_pair (0., 1.), 2, params3, "Spline3", true);
+
+  Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 1));
+  CubicBSpline::value_type step = 0.005;
+
+  (*output)
+    << (matplotlib
+        << plot_spline (*spline, step)
+        << title ("Spline, with P4 = {2.5, 10}")
+        << plot_spline (*spline2, step)
+        << title ("Spline, with P4 = {2.5, 1}")
+        << plot_spline (*spline3, step)
+        << title ("Spline, with P4 = {2.5, 15}")
+	);
+
+
+  std::cout << output->str() << std::endl;
+  BOOST_CHECK (output->match_pattern ());
+}
+BOOST_AUTO_TEST_SUITE_END ()

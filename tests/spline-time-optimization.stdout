@@ -186,7 +186,7 @@ Solver:
     ipopt.dual_inf_tol (desired threshold for the dual infeasibility): 1
     ipopt.expect_infeasible_problem (enable heuristics to quickly detect an infeasible problem): no
     ipopt.file_print_level (verbosity level for output file): 5
-    ipopt.hessian_approximation (): limited-memory
+    ipopt.hessian_approximation: limited-memory
     ipopt.linear_solver (linear solver): mumps
     ipopt.mu_strategy (update strategy for barrier parameter): adaptive
     ipopt.nlp_scaling_max_gradient (maximum gradient after NLP scaling): 100

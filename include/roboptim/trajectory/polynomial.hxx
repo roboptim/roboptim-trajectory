@@ -398,11 +398,9 @@ namespace trajectory
   }
 
   template <int N>
-  typename Polynomial<N>::min_t
-  Polynomial<N>::min (const interval_t& interval) const
+  typename Polynomial<N>::values_t
+  Polynomial<N>::critPoints (const interval_t& interval) const
   {
-    typedef std::vector<value_type> values_t;
-
     const value_type eps = 1e-6;
 
     roots_t roots;
@@ -436,6 +434,15 @@ namespace trajectory
           crit_points.push_back (*root);
       }
 
+    return crit_points;
+  }
+
+  template <int N>
+  typename Polynomial<N>::min_t
+  Polynomial<N>::min (const interval_t& interval) const
+  {
+    values_t crit_points = this->critPoints(interval);
+
     // Compute all the critical values + bound values
     values_t crit_values (crit_points.size ());
     std::transform (crit_points.begin (), crit_points.end (),
@@ -451,6 +458,29 @@ namespace trajectory
     value_type min_time =
       crit_points[static_cast<std::size_t> (min_val - crit_values.begin ())];
     return std::make_pair (min_time, *min_val);
+  }
+
+  template <int N>
+  typename Polynomial<N>::max_t
+  Polynomial<N>::max (const interval_t& interval) const
+  {
+    values_t crit_points = this->critPoints(interval);
+
+    // Compute all the critical values + bound values
+    values_t crit_values (crit_points.size ());
+    std::transform (crit_points.begin (), crit_points.end (),
+		    crit_values.begin (),
+		    boost::bind (&Polynomial<N>::operator (), &(*this), _1));
+
+    // Get the max of the critical values
+    values_t::const_iterator
+      max_val = std::max_element (crit_values.begin (),
+				  crit_values.end ());
+
+    // Return a pair <max time, max value>
+    value_type max_time =
+      crit_points[static_cast<std::size_t> (max_val - crit_values.begin ())];
+    return std::make_pair (max_time, *max_val);
   }
 
   template <int N>
