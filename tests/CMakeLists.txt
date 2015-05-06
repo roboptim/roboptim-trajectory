@@ -118,6 +118,7 @@ ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-gradient)
 ROBOPTIM_TRAJECTORY_TEST(b-spline)
 ROBOPTIM_TRAJECTORY_TEST(constrained-b-spline)
 ROBOPTIM_TRAJECTORY_TEST(spline-length)
+ROBOPTIM_TRAJECTORY_TEST(cubic-b-spline-matplotlib)
 
 # Other
 ROBOPTIM_TRAJECTORY_TEST(vector-interpolation)

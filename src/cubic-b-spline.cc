@@ -377,19 +377,26 @@ namespace trajectory
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     const std::size_t nbp = static_cast<std::size_t> (nbp_);
+    const size_type n = outputSize ();
+    const size_type offset = n - 1;
 
     // Cubic B-spline ---> nbp_-3 intervals (aka segments or bays)
     if (res.size () != nbp - 3)
       res.resize (nbp - 3);
 
+    if (n >= 3)
+    {
+      throw std::string("Invalid use of toPolynomials: dimension must be 1 or 2");
+    }
+
     for (size_type k = 3; k < nbp_; ++k)
       {
 	const std::size_t k_ = static_cast<std::size_t> (k);
 
-	const value_type& P_k_3 = parameters()(k - 3);
-	const value_type& P_k_2 = parameters()(k - 2);
-	const value_type& P_k_1 = parameters()(k - 1);
-	const value_type& P_k   = parameters()(k - 0);
+	const value_type& P_k_3 = parameters()(n * (k - 3) + offset);
+	const value_type& P_k_2 = parameters()(n * (k - 2) + offset);
+	const value_type& P_k_1 = parameters()(n * (k - 1) + offset);
+	const value_type& P_k   = parameters()(n * (k - 0) + offset);
 
 	const Polynomial3& B_k_3_k = basisPolynomials_[k_ - 3][3];
 	const Polynomial3& B_k_2_k = basisPolynomials_[k_ - 2][2];

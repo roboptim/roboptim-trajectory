@@ -143,10 +143,10 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   // Ipopt-specific parameters
   // WARNING: these parameters may not be relevant! These are only set to
   // prevent hour-long unit testing...
-  solver.parameters()["ipopt.linear_solver"].value = IPOPT_LINEAR_SOLVER;
+  solver.parameters()["ipopt.linear_solver"].value = std::string(IPOPT_LINEAR_SOLVER);
   solver.parameters()["ipopt.tol"].value = 1e-3;
   solver.parameters()["ipopt.acceptable_tol"].value = 5e-2;
-  solver.parameters()["ipopt.mu_strategy"].value = "adaptive";
+  solver.parameters()["ipopt.mu_strategy"].value = std::string("adaptive");
 
   (*output) << solver;
 

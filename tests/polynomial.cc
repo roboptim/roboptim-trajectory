@@ -466,6 +466,77 @@ void test_min ()
 }
 
 template <int N>
+void test_max ()
+{
+  typedef typename roboptim::trajectory::Polynomial<N>::value_type value_type;
+  typedef typename roboptim::trajectory::Polynomial<N>::max_t      max_t;
+  typedef typename roboptim::trajectory::Polynomial<N>::interval_t interval_t;
+  typedef typename roboptim::trajectory::Polynomial<N>::coefs_t    coefs_t;
+
+  // Start with some dummy examples
+  coefs_t params;
+  interval_t interval;
+  value_type t0 = 0.;
+  max_t res_max;
+
+  // Linear: 1+x on [-1,1]
+  params.setZero ();
+  params[0] = 1.;
+  params[1] = 1.;
+  interval.first  = -1.;
+  interval.second =  1.;
+  roboptim::trajectory::Polynomial<N> linear (t0, params);
+  res_max = linear.max (interval);
+  BOOST_CHECK_CLOSE (res_max.first, 1, tol);
+  BOOST_CHECK_SMALL (res_max.second, 2 + tol);
+
+  // Quadratic: 1+x² on [-1,1]
+  params.setZero ();
+  params[0] = 1.;
+  params[2] = 1.;
+  interval.first  = -1.;
+  interval.second =  1.;
+  roboptim::trajectory::Polynomial<N> quadratic (t0, params);
+  res_max = quadratic.max (interval);
+  BOOST_CHECK_CLOSE (res_max.second, 2, tol);
+
+  // Cubic: 1+x³ on [0,1]
+  params.setZero ();
+  params[0] = 1.;
+  params[3] = 1.;
+  interval.first  = 0.;
+  interval.second = 1.;
+  roboptim::trajectory::Polynomial<N> cubic (t0, params);
+  res_max = cubic.max (interval);
+  BOOST_CHECK_CLOSE (res_max.first, 1, tol);
+  BOOST_CHECK_CLOSE (res_max.second, 2, tol);
+
+  // Test with a random polynomial
+  params.setRandom ();
+  t0 = (value_type)rand () / RAND_MAX;
+  roboptim::trajectory::Polynomial<N> p (t0, params);
+  roboptim::trajectory::Polynomial<N-1> dp = p.template derivative<1> ();
+
+  interval.first  = -10. * std::abs ((double)rand () / RAND_MAX);
+  interval.second =  10. * std::abs ((double)rand () / RAND_MAX);
+
+  res_max = p.max (interval);
+  // TODO: use a better check (not just dP(t_max) = 0)
+  if (res_max.first != interval.first && res_max.first != interval.second)
+    BOOST_CHECK_SMALL (dp (res_max.first), tol);
+
+  // Test other cases: null leading coefficient or null polynomial
+  p.coefs ()[N] = 0.;
+  dp = p.template derivative<1> ();
+  res_max = p.max (interval);
+  if (res_max.first != interval.first && res_max.first != interval.second)
+    BOOST_CHECK_SMALL (dp (res_max.first), tol);
+
+  p.coefs ().setZero ();
+  BOOST_CHECK_THROW (res_max = p.max (interval), std::runtime_error);
+}
+
+template <int N>
 void test_misc ()
 {
   typename roboptim::trajectory::Polynomial<N>::coefs_t params;
@@ -572,6 +643,9 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial)
 
   test_min<3> ();
   test_min<5> ();
+
+  test_max<3> ();
+  test_max<5> ();
 
   test_misc<3> ();
   test_misc<5> ();
