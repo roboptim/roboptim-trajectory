@@ -186,21 +186,27 @@ namespace trajectory
 
     /// \brief Compute the minimum of the polynomial on an interval.
     /// \param interval time interval.
+    /// \param acceptConstant boolean allowing constant polynomials.
     /// \return pair containing t_min and the associated minimum of the
-    /// polynomial on the interval.
+    /// polynomial on the interval. If the polynomial is constant and
+    /// acceptConstant is not set to false, the call returns a couple of the
+    /// middle of interval and the value of the polynomial.
     /// \throw std::runtime_error invalid polynomial. This is the case for
-    /// constant polynomials since there is an infinity of critical points.
-    /// This can be tested before calling min().
-    min_t min (const interval_t& interval) const;
+    /// constant polynomials if acceptConstant is set to false, since there is
+    /// an infinity of critical points.
+    min_t min (const interval_t& interval, bool acceptConstant = true) const;
 
     /// \brief Compute the maximum of the polynomial on an interval.
     /// \param interval time interval.
+    /// \param acceptConstant boolean allowing constant polynomials.
     /// \return pair containing t_max and the associated maximum of the
-    /// polynomial on the interval.
+    /// polynomial on the interval. If the polynomial is constant and
+    /// acceptConstant is not set to false, the call returns a couple of the
+    /// middle of interval and the value of the polynomial.
     /// \throw std::runtime_error invalid polynomial. This is the case for
-    /// constant polynomials since there is an infinity of critical points.
-    /// This can be tested before calling max().
-    max_t max (const interval_t& interval) const;
+    /// constant polynomials if acceptConstant is set to false, since there is
+    /// an infinity of critical points.
+    max_t max (const interval_t& interval, bool acceptConstant = true) const;
 
     /// \brief Return whether the polynomial is null.
     /// \param epsilon epsilon used.

@@ -462,7 +462,7 @@ void test_min ()
     BOOST_CHECK_SMALL (dp (res_min.first), tol);
 
   p.coefs ().setZero ();
-  BOOST_CHECK_THROW (res_min = p.min (interval), std::runtime_error);
+  BOOST_CHECK_THROW (res_min = p.min (interval, false), std::runtime_error);
 }
 
 template <int N>
@@ -533,7 +533,7 @@ void test_max ()
     BOOST_CHECK_SMALL (dp (res_max.first), tol);
 
   p.coefs ().setZero ();
-  BOOST_CHECK_THROW (res_max = p.max (interval), std::runtime_error);
+  BOOST_CHECK_THROW (res_max = p.max (interval, false), std::runtime_error);
 }
 
 template <int N>

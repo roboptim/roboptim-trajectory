@@ -439,8 +439,13 @@ namespace trajectory
 
   template <int N>
   typename Polynomial<N>::min_t
-  Polynomial<N>::min (const interval_t& interval) const
+  Polynomial<N>::min (const interval_t& interval, bool acceptConstant) const
   {
+    if (acceptConstant && isConstant(1e-6))
+    {
+      value_type index = (interval.first + interval.second)/2;
+      return std::make_pair(index, this->operator() (index));
+    }
     values_t crit_points = this->critPoints(interval);
 
     // Compute all the critical values + bound values
@@ -462,8 +467,13 @@ namespace trajectory
 
   template <int N>
   typename Polynomial<N>::max_t
-  Polynomial<N>::max (const interval_t& interval) const
+  Polynomial<N>::max (const interval_t& interval, bool acceptConstant) const
   {
+    if (acceptConstant && isConstant(1e-6))
+    {
+      value_type index = (interval.first + interval.second)/2;
+      return std::make_pair(index, this->operator() (index));
+    }
     values_t crit_points = this->critPoints(interval);
 
     // Compute all the critical values + bound values
