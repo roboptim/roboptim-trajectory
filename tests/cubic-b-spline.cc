@@ -139,6 +139,11 @@ void test_1d (TestData& data)
     BOOST_CHECK (t <= kv[k+1]);
   }
 
+  CubicBSpline knotDefinedSpline =
+    CubicBSpline(1, kv, params_1d, "Same spline");
+
+  BOOST_CHECK(spline_1d_1(5.) == knotDefinedSpline(5.));
+
   // Second 1D spline (change some parameters but keep it clamped)
   params_1d[0] = params_1d[1] = params_1d[2] = 30.;
   params_1d[3] = 75.;
@@ -200,6 +205,10 @@ void test_1d_clamped (TestData& data)
     BOOST_CHECK (kv[k] <= t);
     BOOST_CHECK (t <= kv[k+1]);
   }
+  CubicBSpline knotDefinedSpline =
+    CubicBSpline(1, kv, params_1d, "Same spline");
+
+  BOOST_CHECK(spline_1d_1_clamped(5.) == knotDefinedSpline(5.));
 
   // Second 1D spline (change some parameters)
   params_1d[0] = params_1d[1] = params_1d[2] = 30.;

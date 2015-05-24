@@ -227,6 +227,10 @@ namespace trajectory
       {
 	bool found = false;
 
+	if (t == knots_[static_cast<size_t>(imax+1)]) //We are exactly at the end of the spline
+	{
+		return imax;
+	}
 	std::size_t i_ = static_cast<std::size_t> (i);
 
 	while (!found)
