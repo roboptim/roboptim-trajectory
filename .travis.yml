@@ -33,4 +33,4 @@ branches:
   - debian
 matrix:
   allow_failures:
-  - compiler: clang
+  - compiler: gcc
