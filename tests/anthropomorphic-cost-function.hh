@@ -30,7 +30,7 @@
 #include <boost/mpl/vector.hpp>
 
 #include <roboptim/core/io.hh>
-#include <roboptim/core/finite-difference-gradient.hh>
+#include <roboptim/core/decorator/finite-difference-gradient.hh>
 #include <roboptim/core/solver-factory.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>

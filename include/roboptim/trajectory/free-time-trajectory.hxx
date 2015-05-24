@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HXX
 # define ROBOPTIM_TRAJECTORY_FREETIMETRAJECTORY_HXX
+
 # include <cmath>
 
 namespace roboptim

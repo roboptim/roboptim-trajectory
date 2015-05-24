@@ -23,7 +23,7 @@
 #include <boost/mpl/vector.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
-#include <roboptim/core/finite-difference-gradient.hh>
+#include <roboptim/core/decorator/finite-difference-gradient.hh>
 #include <roboptim/core/solver-factory.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>

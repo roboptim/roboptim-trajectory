@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_COST_HXX
 # define ROBOPTIM_TRAJECTORY_STABLE_POINT_STATE_COST_HXX
+
 # include <boost/format.hpp>
 
 namespace roboptim

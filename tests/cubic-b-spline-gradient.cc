@@ -26,7 +26,7 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/filesystem.hpp>
 
-#include <roboptim/core/finite-difference-gradient.hh>
+#include <roboptim/core/decorator/finite-difference-gradient.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>

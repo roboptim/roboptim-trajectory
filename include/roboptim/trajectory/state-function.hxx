@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_STATE_COST_HXX
 # define ROBOPTIM_TRAJECTORY_STATE_COST_HXX
+
 # include <stdexcept>
 # include <boost/format.hpp>
 

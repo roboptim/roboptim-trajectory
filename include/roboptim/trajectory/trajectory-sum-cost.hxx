@@ -17,6 +17,7 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX
 # define ROBOPTIM_TRAJECTORY_TRAJECTORY_SUM_COST_HXX
+
 # include <boost/tuple/tuple.hpp>
 
 namespace roboptim
