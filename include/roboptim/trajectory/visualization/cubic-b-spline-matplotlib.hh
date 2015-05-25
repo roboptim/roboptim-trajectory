@@ -49,6 +49,7 @@ namespace roboptim
           double nbp = static_cast<double> (spline.getNumberControlPoints());
           double intervals = nbp - 3;
           CubicBSpline::polynomials3vector_t polynomials;
+          const CubicBSpline::knots_t& kv = spline.knotVector();
           double t;
 
           if (dimension != 2)
@@ -56,13 +57,8 @@ namespace roboptim
 	      throw std::string("This tool is only designed to print 2D splines");
 	    }
 
-          double inc = (end-start)/intervals;
           spline.toPolynomials(polynomials);
 
-          if (inc <= step)
-	    {
-	      throw std::string("Inadapted step, should be much smaller");
-	    }
           ss << data_name << " = np.array ([";
 
           for (t = start; t < end; t += step)
@@ -102,8 +98,11 @@ namespace roboptim
           ss << (boost::format("plt.plot(%1%[:,1], %1%[:,2], label=\"%1%\", color='b')")
                  % data_name).str() << std::endl;
 
-          for (unsigned long i = 0; i < intervals; ++i, start += inc)
+          for (unsigned long i = 0; i < intervals; ++i)
 	    {
+	      double inc = kv[i+4] - kv[i+3]; //Actual inc in time
+	      assert(step < inc);
+
 	      Function::interval_t interval = Function::makeInterval(start, start+inc);
 	      double bound_min = polynomials[i].min(interval).second;
 	      double bound_max = polynomials[i].max(interval).second;
@@ -119,6 +118,7 @@ namespace roboptim
 
 	      ss << (boost::format("plt.axvline(%1%, ls='--', color='gray')")
 		     % spline(interval.first)[0]).str() << std::endl;
+	      start += inc;
 	    }
 
           ss << "plt.plot(CP[:,0], CP[:,1], '*', ls=':', lw=3, color='m', label=\"Control Points\")"
