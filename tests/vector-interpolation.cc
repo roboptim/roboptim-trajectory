@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include <roboptim/core/io.hh>
+#include <roboptim/core/alloc.hh>
 #include <roboptim/core/operator/derivative.hh>
 #include <roboptim/core/operator/map.hh>
 #include <roboptim/core/operator/selection.hh>
@@ -57,7 +58,8 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     VectorInterpolation vectorInterpolation (vectorInterpolation_);
@@ -65,6 +67,10 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
     params[variableId_] = x[0];
     vectorInterpolation.setParameters (params);
     result = vectorInterpolation (t_);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   virtual void
@@ -74,7 +80,8 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     VectorInterpolation vectorInterpolation (vectorInterpolation_);
@@ -84,6 +91,10 @@ struct VectorInterpolationDerivWrtParameters : public DifferentiableFunction
 
     gradient = vectorInterpolation.variationConfigWrtParam (t_).block
       (functionId, variableId_, 1, 1);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
 private:

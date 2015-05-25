@@ -20,6 +20,8 @@
 
 # include <boost/format.hpp>
 
+# include <roboptim/core/alloc.hh>
+
 namespace roboptim
 {
 namespace trajectory
@@ -61,13 +63,18 @@ namespace trajectory
 				  const_argument_ref p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     static boost::shared_ptr<trajectory_t> updatedTrajectory =
       boost::shared_ptr<trajectory_t> (trajectory_.clone ());
     updatedTrajectory->setParameters (p);
     (*function_) (res, updatedTrajectory->state (tpt_, this->order_));
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   template <typename T>
@@ -77,7 +84,8 @@ namespace trajectory
 				   size_type i) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     assert (i == 0);
@@ -100,6 +108,10 @@ namespace trajectory
     const vector_t dgamma_dt =
       updatedTrajectory->getFixedTimeTrajectory ().state (tpt_, this->order_);
     grad[0] = df_dstate.dot (dgamma_dt);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
 } // end of namespace trajectory.

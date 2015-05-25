@@ -21,6 +21,7 @@
 #include <boost/numeric/ublas/vector_expression.hpp>
 #include <boost/optional.hpp>
 
+#include <roboptim/core/alloc.hh>
 #include <roboptim/trajectory/spline-length.hh>
 
 namespace roboptim
@@ -85,7 +86,8 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     trajectory_t traj = trajectory_;
@@ -99,6 +101,10 @@ namespace trajectory
       getUpperBound (interval_) - getLowerBound (interval_);
     res[0] *= delta / (value_type)nDiscretizationPoints_;
     res[0] /= 2.;
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   void
@@ -107,7 +113,8 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     assert (i == 0);
@@ -121,6 +128,10 @@ namespace trajectory
     const value_type delta =
       getUpperBound (interval_) - getLowerBound (interval_);
     grad *= delta / (value_type)nDiscretizationPoints_;
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 } // end of namespace trajectory.
 } // end of namespace roboptim.

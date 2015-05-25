@@ -22,6 +22,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <roboptim/core/decorator/finite-difference-gradient.hh>
+#include <roboptim/core/alloc.hh>
 
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
@@ -52,12 +53,17 @@ struct SplineDerivWrtParameters : public DifferentiableFunction
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     CubicBSpline spline (spline_);
     spline.setParameters (x);
     result = spline (t_);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   virtual void
@@ -67,12 +73,17 @@ struct SplineDerivWrtParameters : public DifferentiableFunction
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     CubicBSpline spline (spline_);
     spline.setParameters (x);
     gradient = spline.variationConfigWrtParam (t_).row (functionId);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
 private:

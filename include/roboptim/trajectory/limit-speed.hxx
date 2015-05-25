@@ -23,6 +23,7 @@
 # include <boost/scoped_ptr.hpp>
 
 # include <roboptim/core/decorator/finite-difference-gradient.hh>
+# include <roboptim/core/alloc.hh>
 
 # include <roboptim/trajectory/trajectory.hh>
 
@@ -67,7 +68,8 @@ namespace trajectory
   LimitSpeed<T>::impl_compute (result_ref res, const_argument_ref p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     res.setZero ();
@@ -78,6 +80,10 @@ namespace trajectory
     res[0] = updatedTrajectory->derivative (timePoint_, 1).adjoint ()
       * updatedTrajectory->derivative (timePoint_, 1);
     res[0] /= 2;
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   template <typename T>
@@ -87,7 +93,8 @@ namespace trajectory
    size_type ROBOPTIM_DEBUG_ONLY(i)) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     assert (i == 0);
@@ -96,6 +103,10 @@ namespace trajectory
     //FIXME: compute gradient analytically.
     GenericFiniteDifferenceGradient<EigenMatrixDense> fdfunction (*this);
     fdfunction.gradient (grad, p, 0);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   template <typename T>

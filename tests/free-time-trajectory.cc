@@ -25,6 +25,7 @@
 #include <roboptim/core/decorator/finite-difference-gradient.hh>
 #include <roboptim/core/io.hh>
 #include <roboptim/core/util.hh>
+#include <roboptim/core/alloc.hh>
 #include <roboptim/core/visualization/gnuplot.hh>
 
 #include <roboptim/trajectory/free-time-trajectory.hh>
@@ -70,12 +71,17 @@ struct ConfigWrtParam : public DerivableFunction
   impl_compute (result_ref res, const_argument_ref p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     res = (*updatedTrajectory) (t_);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   void
@@ -83,13 +89,18 @@ struct ConfigWrtParam : public DerivableFunction
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     boost::scoped_ptr<freeTime_t> updatedTrajectory (traj_.clone ());
     updatedTrajectory->setParameters (p);
     matrix_t tmp = updatedTrajectory->variationDerivWrtParam (t_, 0);
     grad = tmp.row (0);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   const freeTime_t& traj_;
@@ -112,11 +123,16 @@ struct DerivWrtParam : public DerivableFunction
   impl_compute (result_ref res, const_argument_ref t) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 0);
     res = tmp.row (0);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   void
@@ -124,11 +140,16 @@ struct DerivWrtParam : public DerivableFunction
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     matrix_t tmp = traj_->variationDerivWrtParam (t[0], 1);
     grad[0] = tmp(0,i);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   const boost::scoped_ptr<const freeTime_t> traj_;

@@ -19,6 +19,8 @@
 #include <boost/format.hpp>
 
 #include <roboptim/core/indent.hh>
+#include <roboptim/core/alloc.hh>
+
 #include <roboptim/trajectory/sys.hh>
 #include <roboptim/trajectory/cubic-b-spline.hh>
 
@@ -188,10 +190,6 @@ namespace trajectory
   void
   CubicBSpline::impl_compute (result_ref derivative, double t) const
   {
-#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
-#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-
     t = detail::fixTime (t, *this);
     assert (timeRange ().first <= t && t <= timeRange ().second);
     this->derivative (derivative, t, 0);
@@ -333,7 +331,8 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     t = detail::fixTime (t, *this);
@@ -355,6 +354,10 @@ namespace trajectory
       B_k_2_k.derivative(t, order) * P_k_2 +
       B_k_1_k.derivative(t, order) * P_k_1 +
       B_k_k.derivative(t, order) * P_k;
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
 
@@ -377,7 +380,8 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     const std::size_t nbp = static_cast<std::size_t> (nbp_);
@@ -413,6 +417,10 @@ namespace trajectory
 	  + P_k_1 * B_k_1_k
 	  + P_k   * B_k_k;
       }
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
 
@@ -451,10 +459,6 @@ namespace trajectory
 				 StableTimePoint stp,
 				 size_type order) const
   {
-#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-    Eigen::internal::set_is_malloc_allowed (true);
-#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-
     this->impl_derivative (derivative,
 			   stp.getTime (this->timeRange ()),
 			   order);

@@ -23,6 +23,7 @@
 # include <boost/scoped_ptr.hpp>
 
 # include <roboptim/core/decorator/finite-difference-gradient.hh>
+# include <roboptim/core/alloc.hh>
 
 # include <roboptim/trajectory/trajectory.hh>
 
@@ -73,12 +74,17 @@ namespace trajectory
   LimitOmega<T>::impl_compute (result_ref res, const_argument_ref p) const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     static T updatedTrajectory  = trajectory_;
     updatedTrajectory.setParameters (p);
     res[0] = updatedTrajectory.derivative (timePoint_, 1)[2];
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   template <typename T>
@@ -88,11 +94,16 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     GenericFiniteDifferenceGradient<EigenMatrixDense> fd (*this);
     fd.gradient (grad, p, i);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
 } // end of namespace trajectory.

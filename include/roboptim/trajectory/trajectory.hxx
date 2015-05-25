@@ -148,9 +148,6 @@ namespace trajectory
   Trajectory<dorder>::impl_compute (result_ref res , StableTimePoint stp)
     const
   {
-#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
-#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     (*this) (res, stp.getTime (this->timeRange ()));
   }
 

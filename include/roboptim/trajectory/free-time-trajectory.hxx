@@ -77,10 +77,6 @@ namespace trajectory
   FreeTimeTrajectory<T>::impl_compute (result_ref res , double t)
     const
   {
-#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
-#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-
     (*trajectory_) (res, this->scaleTime (t));
   }
 
@@ -90,10 +86,6 @@ namespace trajectory
 					  double t,
 					  size_type order) const
   {
-#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
-#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-
     double scaled = this->scaleTime (t);
     trajectory_->derivative (derivative, scaled, order);
     derivative *= std::pow (this->timeScale (), static_cast<double> (order));
@@ -105,10 +97,6 @@ namespace trajectory
 					  StableTimePoint stp,
 					  size_type order) const
   {
-#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
-#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-
     trajectory_->derivative (derivative, stp, order);
     const double order_ = static_cast<double> (order);
     derivative *= std::pow (this->timeScale (), 0. + order_);

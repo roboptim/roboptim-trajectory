@@ -17,6 +17,9 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_COST_FUNCTION_HXX
 # define ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_COST_FUNCTION_HXX
+
+# include <roboptim/core/alloc.hh>
+
 # include <roboptim/trajectory/frontal-speed.hh>
 # include <roboptim/trajectory/orthogonal-speed.hh>
 
@@ -101,7 +104,8 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     res.setZero();
@@ -114,6 +118,10 @@ namespace trajectory
     foreach (updatedTrajectory.timeRange (), nbDiscretizationPoints, ci);
 
     res[0] *= updatedTrajectory.length () / nbDiscretizationPoints;
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   template <typename T>
@@ -124,11 +132,16 @@ namespace trajectory
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
-      Eigen::internal::set_is_malloc_allowed (true);
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
     GenericFiniteDifferenceGradient<EigenMatrixDense> fdfunction (*this);
     fdfunction.gradient (grad, p, 0);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
   }
 
   template <typename T>
