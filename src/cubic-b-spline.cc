@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <exception>
+
 #include <boost/numeric/conversion/converter.hpp>
 #include <boost/format.hpp>
 
@@ -394,7 +396,8 @@ namespace trajectory
 
     if (n >= 3)
     {
-      throw std::string("Invalid use of toPolynomials: dimension must be 1 or 2");
+      throw std::runtime_error
+        ("Invalid use of toPolynomials: dimension must be 1 or 2");
     }
 
     for (size_type k = 3; k < nbp_; ++k)

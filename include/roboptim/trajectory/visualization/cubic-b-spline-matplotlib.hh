@@ -17,6 +17,9 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_CUBIC_B_SPLINE_MATPLOTLIB_HH
 # define ROBOPTIM_TRAJECTORY_VISUALIZATION_CUBIC_B_SPLINE_MATPLOTLIB_HH
+
+# include <exception>
+
 # include <roboptim/trajectory/sys.hh>
 # include <roboptim/trajectory/cubic-b-spline.hh>
 
@@ -54,7 +57,7 @@ namespace roboptim
 
           if (dimension != 2)
 	    {
-	      throw std::string("This tool is only designed to print 2D splines");
+	      throw std::runtime_error ("This tool is only designed to print 2D splines");
 	    }
 
           spline.toPolynomials(polynomials);

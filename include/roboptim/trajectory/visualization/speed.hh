@@ -17,10 +17,12 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_SPEED_HH
 # define ROBOPTIM_TRAJECTORY_VISUALIZATION_SPEED_HH
-# include <roboptim/trajectory/sys.hh>
+
+# include <exception>
 
 # include <boost/format.hpp>
 
+# include <roboptim/trajectory/sys.hh>
 # include <roboptim/core/visualization/gnuplot.hh>
 # include <roboptim/core/visualization/gnuplot-commands.hh>
 # include <roboptim/trajectory/trajectory.hh>
@@ -54,7 +56,7 @@ namespace trajectory
 	Function::value_type max = Function::getUpperBound (traj.timeRange ());
 
 	if (min + step > max)
-	  throw std::string ("bad interval");
+	  throw std::runtime_error ("invalid interval");
 
 	std::string str =
 	  (boost::format
