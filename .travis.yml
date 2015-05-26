@@ -1,20 +1,20 @@
 language: cpp
 compiler:
-- gcc
-- clang
+  - gcc
+  - clang
 env:
   global:
   - APT_DEPENDENCIES="doxygen doxygen-latex libltdl-dev libboost-all-dev liblog4cxx10-dev coinor-libipopt-dev libblas-dev liblapack-dev libmumps-seq-dev gfortran"
   - GIT_DEPENDENCIES="roboptim/roboptim-core roboptim/roboptim-core-plugin-ipopt"
   - DEBSIGN_KEYID=5AE5CD75
   - PPA_URI="roboptim/ppa"
-  - NSIQCPPSTYLE_FILEFILTERPATH=cmake/filefilter.txt
   - LCOV_IGNORE_RULES="*tests*"
   - GH_USERNAME=thomas-moulard
   - GH_REPO=roboptim/roboptim-trajectory
   - secure: dn2Iai0VINXoHlHTL0s0/+37pIbTTaKI0698dAPYpMBUkE9RIuumcKEjDP1uKqaA9anSPm1dLrtSsSm+kFGaEBk+cviGxsc242KSxqxCBqNP3Bbm4dFCbKnnG4c7I8OTuYUuJJg90xVm2QGAnUNn9vvBnydvTpeCEN850lT+dBM=
   - secure: qFCzChpnDkG00gsaRzNmjbWyBzEaHutoM6BUsm9jxH2BlvDRLQUN/WxVmmIKKB9t8y3d2jPp4zRJiTqTUTJo3DaUuc/5s5XZKEqmL1YgIP+UbIWJpDNaun9EpA2YJxoFatYzun6X1FKm2D7WMSVXatKyRDh1bEVaoW8tqI6Vwq0=
   - secure: GwtCk4WjcY6iyQxmVD4YQ2NkEP7H/zdBv2144UNtLe6jaLxwFsDt0n9mNIela/bCyEq2GQsjI3QofbFol5EAMhv1Dm93mLYsyWCGNcZrRN/OwfjluMcBlq5WMETbYXl/009kw3lxXWddNBHTR6QCEAlnZ9fUmj+3diy/UVvW74c=
+  - secure: "FeD8bUPyJbez7IDLEoNyfyPxgpmxJ008dkwHdBl5gyUh8E9VD5XN/w/9FWIkEey7yqpMmbrHzaDjYKzMQ1pJI6jpcnkcQ9AxZSIJxjFInI99kLMfIK+RClprWtSPqyb4pe1dq2ZKKvUBuc2eyh1ZseVfxoQsU8q/rfDbSYGqRnI="
 notifications:
   email: roboptim@googlegroups.com
   hipchat:
@@ -24,13 +24,26 @@ before_install:
 - ./.travis/dependencies/eigen-3.2
 - ./.travis/run  before_install
 script:
-  - export LD_LIBRARY_PATH="/tmp/_travis/install/lib/roboptim-core/":$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt"; ./.travis/run build
+  - export LD_LIBRARY_PATH="/tmp/_travis/install/lib/roboptim-core/":$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt";
+  - if [ "${COVERITY_SCAN_BRANCH}" != "1" ]; then ./.travis/run build; fi
 after_failure: ./.travis/run after_failure
 after_success: ./.travis/run after_success
 branches:
   only:
   - master
   - debian
+  - travis
+  - coverity_scan
 matrix:
   allow_failures:
-  - compiler: gcc
+    - compiler: gcc
+
+addons:
+  coverity_scan:
+    project:
+      name: "roboptim/roboptim-trajectory"
+      description: "Build submitted via Travis CI"
+    notification_email: roboptim@googlegroups.com
+    build_command_prepend: ". .travis/common.sh && mkdir coverity && cd coverity && cmake .."
+    build_command: "make"
+    branch_pattern: coverity_scan

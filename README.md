@@ -3,6 +3,7 @@ roboptim-trajectory
 
 [![Build Status](https://travis-ci.org/roboptim/roboptim-trajectory.png?branch=master)](https://travis-ci.org/roboptim/roboptim-trajectory)
 [![Coverage Status](https://coveralls.io/repos/roboptim/roboptim-trajectory/badge.png)](https://coveralls.io/r/roboptim/roboptim-trajectory)
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/879/badge.svg)](https://scan.coverity.com/projects/879)
 [![Join the chat at https://gitter.im/roboptim/development](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/roboptim/development?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![LGPL-3](https://www.gnu.org/graphics/lgplv3-88x31.png)
