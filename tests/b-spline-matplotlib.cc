@@ -24,10 +24,10 @@
 
 #include <roboptim/core/io.hh>
 
-#include <roboptim/trajectory/visualization/cubic-b-spline-matplotlib.hh>
+#include <roboptim/trajectory/visualization/b-spline-matplotlib.hh>
 
 #include <roboptim/trajectory/fwd.hh>
-#include <roboptim/trajectory/cubic-b-spline.hh>
+#include <roboptim/trajectory/b-spline.hh>
 
 #include <roboptim/core/visualization/matplotlib-function.hh>
 
@@ -39,13 +39,13 @@ using namespace roboptim::trajectory::visualization::matplotlib;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
-BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_matplotlib)
+BOOST_AUTO_TEST_CASE (trajectory_b_spline_matplotlib)
 {
-typedef CubicBSpline spline_t;
+typedef BSpline<3> spline_t;
 typedef spline_t::value_type value_type;
 
   boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern ("cubic-b-spline-matplotlib");
+    output = retrievePattern ("b-spline-matplotlib");
 
   spline_t::vector_t params (2*11);
   params << 0  , 1. ,
@@ -87,13 +87,13 @@ typedef spline_t::value_type value_type;
     5  , 0. ;
 
   boost::shared_ptr<spline_t> spline = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 2, params, "CubicBSpline1", true);
+    (std::make_pair (0., 1.), 2, params, "BSpline1", true);
 
   boost::shared_ptr<spline_t> spline2 = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 2, params2, "CubicBSpline2", true);
+    (std::make_pair (0., 1.), 2, params2, "BSpline2", true);
 
   boost::shared_ptr<spline_t> spline3 = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 2, params3, "CubicBSpline3", true);
+    (std::make_pair (0., 1.), 2, params3, "BSpline3", true);
 
   Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 1));
   value_type step = 0.005;
@@ -101,15 +101,16 @@ typedef spline_t::value_type value_type;
   (*output)
     << (matplotlib
         << plot_spline (*spline, step)
-        << title ("CubicBSpline, with P4 = {2.5, 10}")
+        << title ("BSpline, with P4 = {2.5, 10}")
         << plot_spline (*spline2, step)
-        << title ("CubicBSpline, with P4 = {2.5, 1}")
+        << title ("BSpline, with P4 = {2.5, 1}")
         << plot_spline (*spline3, step)
-        << title ("CubicBSpline, with P4 = {2.5, 15}")
+        << title ("BSpline, with P4 = {2.5, 15}")
 	);
 
 
   std::cout << output->str() << std::endl;
   BOOST_CHECK (output->match_pattern ());
 }
+
 BOOST_AUTO_TEST_SUITE_END ()
