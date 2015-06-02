@@ -158,6 +158,10 @@ namespace trajectory
       return nbp_;
     }
 
+    /// \brief Return the polynomial expression of the B-spline on each
+    /// time interval.
+    void toPolynomials (basisPolynomials_t& res) const;
+
     /// \brief Constant getter for the basis polynomials of the B-spline.
     ///
     /// Note: computeBasisPolynomials() needs to be called beforehand (which is

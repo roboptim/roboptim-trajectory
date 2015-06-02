@@ -332,6 +332,47 @@ namespace trajectory
   }
 
   template <int N>
+  void BSpline<N>::toPolynomials (basisPolynomials_t& res) const
+  {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+    const std::size_t nbp = static_cast<std::size_t> (nbp_);
+    const size_type n = this->outputSize ();
+    const size_type offset = n - 1;
+
+    // B-spline ---> nbp_-order_ intervals (aka segments or bays)
+    if (res.size () != nbp - order_)
+      res.resize (nbp - order_);
+
+    if (n >= order_)
+    {
+      throw std::runtime_error
+        ("Invalid use of toPolynomials: dimension must be 1 or 2");
+    }
+
+    res.clear();
+
+    for (size_type k = order_; k < nbp_; ++k)
+      {
+	const std::size_t k_ = static_cast<std::size_t> (k);
+
+  for (unsigned long i = 0; i <= order_; ++i)
+  {
+    res[k_ - order_] +=
+      basisPolynomials_[k_-i][i]*this->parameters()(n*(k-static_cast<long>(i))+offset);
+  }
+      }
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+  }
+
+
+  template <int N>
   void BSpline<N>::computeBasisPolynomials ()
   {
     basisPolynomials_.clear();
@@ -400,6 +441,10 @@ namespace trajectory
       {
 	bool found = false;
 
+	if (t == knots_[imax]) //We are exactly at the end of the spline
+	{
+		return imax;
+	}
 	while (!found)
 	  {
 	    i = Double2SizeType::convert
