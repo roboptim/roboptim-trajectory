@@ -299,6 +299,12 @@ namespace trajectory
   }
 
   template <int N>
+  void Polynomial<N>::operator+= (const Polynomial<N>& poly)
+  {
+    coefs() += (poly.translate (t0_).coefs());
+  }
+
+  template <int N>
   typename Polynomial<N>::value_type
   Polynomial<N>::operator () (value_type t) const
   {
