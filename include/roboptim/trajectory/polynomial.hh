@@ -137,6 +137,10 @@ namespace trajectory
     /// \return λP
     Polynomial<N> operator* (value_type lambda) const;
 
+    /// \brief Addition of polynomials.
+    /// \param poly polynomial to add.
+    void operator+= (const Polynomial<N>& poly);
+
     /// \brief Evaluate the polynomial with Horner's method.
     /// \param t point of evaluation.
     /// \return P(t)

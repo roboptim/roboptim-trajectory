@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_CUBIC_B_SPLINE_MATPLOTLIB_HH
-# define ROBOPTIM_TRAJECTORY_VISUALIZATION_CUBIC_B_SPLINE_MATPLOTLIB_HH
+#ifndef ROBOPTIM_TRAJECTORY_VISUALIZATION_B_SPLINE_MATPLOTLIB_HH
+# define ROBOPTIM_TRAJECTORY_VISUALIZATION_B_SPLINE_MATPLOTLIB_HH
 
 # include <exception>
 
 # include <roboptim/trajectory/sys.hh>
-# include <roboptim/trajectory/cubic-b-spline.hh>
+# include <roboptim/trajectory/b-spline.hh>
 
 # include <roboptim/core/visualization/matplotlib.hh>
 # include <roboptim/core/visualization/matplotlib-function.hh>
@@ -37,8 +37,9 @@ namespace roboptim
       {
         typedef roboptim::visualization::matplotlib::Command Command;
 
-        Command plot_spline(const CubicBSpline& spline,
-                            CubicBSpline::value_type step)
+        template <int N>
+        Command plot_spline(const BSpline<N>& spline,
+                            typename BSpline<N>::value_type step)
         {
           using boost::format;
           using namespace detail;
@@ -50,41 +51,41 @@ namespace roboptim
           double start = spline.getLowerBound(spline.timeRange ());
           double end = spline.getUpperBound(spline.timeRange ());
           double nbp = static_cast<double> (spline.getNumberControlPoints());
-          double intervals = nbp - 3;
-          CubicBSpline::polynomials3vector_t polynomials;
-          const CubicBSpline::knots_t& kv = spline.knotVector();
+          double intervals = nbp - N;
+          typename BSpline<N>::basisPolynomials_t polynomials;
+          const typename BSpline<N>::vector_t& kv = spline.knotVector();
           double t;
 
           if (dimension != 2)
-          {
-            throw std::runtime_error ("This tool is only designed to print 2D splines");
-          }
+	    {
+	      throw std::runtime_error ("This tool is only designed to print 2D splines");
+	    }
 
           spline.toPolynomials(polynomials);
 
           ss << data_name << " = np.array ([";
 
           for (t = start; t < end; t += step)
-          {
-            CubicBSpline::vector_t res = spline (t);
+	    {
+	      typename BSpline<N>::vector_t res = spline (t);
 
-            ss << (boost::format ("(%2.8f") % normalize (t)).str ();
+	      ss << (boost::format ("(%2.8f") % normalize (t)).str ();
 
-            for (CubicBSpline::size_type i = 0; i < spline.outputSize(); ++i)
-            {
-              ss << (boost::format (", %2.8f") % normalize (res[i])).str();
-            }
-            ss << "), ";
-          }
+	      for (typename BSpline<N>::size_type i = 0; i < spline.outputSize(); ++i)
+		{
+		  ss << (boost::format (", %2.8f") % normalize (res[i])).str();
+		}
+	      ss << "), ";
+	    }
 
-          CubicBSpline::vector_t res = spline (end);
+          typename BSpline<N>::vector_t res = spline (end);
 
           ss << (boost::format ("(%2.8f") % normalize (end)).str ();
 
-          for (CubicBSpline::size_type i = 0; i < spline.outputSize(); ++i)
-          {
-            ss << (boost::format (", %2.8f") % normalize (res[i])).str();
-          }
+          for (typename BSpline<N>::size_type i = 0; i < spline.outputSize(); ++i)
+	    {
+	      ss << (boost::format (", %2.8f") % normalize (res[i])).str();
+	    }
           ss << ")";
 
           ss << "])" << std::endl;
@@ -102,31 +103,31 @@ namespace roboptim
                  % data_name).str() << std::endl;
 
           for (unsigned long i = 0; i < intervals; ++i)
-          {
-            unsigned long n = i+3;
-            double inc = kv[n+1] - kv[n]; //Actual inc in time
-            assert(step < inc);
+	    {
+        long n = static_cast<long>(i+N);
+	      double inc = kv[n+1] - kv[n]; //Actual inc in time
+	      assert(step < inc);
 
-            Function::interval_t interval = Function::makeInterval(start, start+inc);
-            double bound_min = polynomials[i].min(interval).second;
-            double bound_max = polynomials[i].max(interval).second;
-            ss << (boost::format("plt.hlines(%1%, %2%, %3%, lw=2, color='c')")
-                   % bound_min
-                   % spline(interval.first)[0]
-                   % spline(interval.second)[0]).str() << std::endl;
+	      Function::interval_t interval = Function::makeInterval(start, start+inc);
+	      double bound_min = polynomials[i].min(interval).second;
+	      double bound_max = polynomials[i].max(interval).second;
+	      ss << (boost::format("plt.hlines(%1%, %2%, %3%, lw=2, color='c')")
+		     % bound_min
+		     % spline(interval.first)[0]
+		     % spline(interval.second)[0]).str() << std::endl;
 
-            ss << (boost::format("plt.hlines(%1%, %2%, %3%, lw=2, color='g')")
-                   % bound_max
-                   % spline(interval.first)[0]
-                   % spline(interval.second)[0]).str() << std::endl;
+	      ss << (boost::format("plt.hlines(%1%, %2%, %3%, lw=2, color='g')")
+		     % bound_max
+		     % spline(interval.first)[0]
+		     % spline(interval.second)[0]).str() << std::endl;
 
-            ss << (boost::format("plt.axvline(%1%, ls='--', color='gray')")
-                   % spline(interval.first)[0]).str() << std::endl;
-            start += inc;
-          }
+	      ss << (boost::format("plt.axvline(%1%, ls='--', color='gray')")
+		     % spline(interval.first)[0]).str() << std::endl;
+	      start += inc;
+	    }
 
           ss << "plt.plot(CP[:,0], CP[:,1], '*', ls=':', lw=3, color='m', label=\"Control Points\")"
-            << std::endl;
+	     << std::endl;
 
           return Command(ss.str(), true);
         }
@@ -135,4 +136,4 @@ namespace roboptim
   }
 }
 
-#endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_CUBIC_B_SPLINE_MATPLOTLIB_HH
+#endif //! ROBOPTIM_TRAJECTORY_VISUALIZATION_B_SPLINE_MATPLOTLIB_HH
