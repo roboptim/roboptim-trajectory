@@ -47,18 +47,18 @@ typedef spline_t::value_type value_type;
   boost::shared_ptr<boost::test_tools::output_test_stream>
     output = retrievePattern ("cubic-b-spline-matplotlib");
 
-  spline_t::vector_t params (2*11);
-  params << 0  , 1. ,
-    0.5, 8. ,
-    1. , 10.,
-    1.5, 8. ,
-    2. , 5. ,
-    2.5, 10.,
-    3  , 0. ,
-    3.5, 2. ,
-    4. , 5. ,
-    4.5, 10.,
-    5  , 0. ;
+  spline_t::vector_t params (11);
+  params << 1. ,
+    8. ,
+    10.,
+    8. ,
+    5. ,
+    10.,
+    0. ,
+    2. ,
+    5. ,
+    10.,
+    0. ;
 
   spline_t::vector_t params2 (2*11);
   params2 << 0  , 1. ,
@@ -87,7 +87,7 @@ typedef spline_t::value_type value_type;
     5  , 0. ;
 
   boost::shared_ptr<spline_t> spline = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 2, params, "CubicBSpline1", true);
+    (std::make_pair (0., 1.), 1, params, "CubicBSpline1D", true);
 
   boost::shared_ptr<spline_t> spline2 = boost::make_shared<spline_t>
     (std::make_pair (0., 1.), 2, params2, "CubicBSpline2", true);

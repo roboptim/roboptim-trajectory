@@ -55,9 +55,9 @@ namespace roboptim
           const CubicBSpline::knots_t& kv = spline.knotVector();
           double t;
 
-          if (dimension != 2)
+          if (dimension > 2)
           {
-            throw std::runtime_error ("This tool is only designed to print 2D splines");
+            throw std::runtime_error ("This tool is not designed to print splines of degree > 2");
           }
 
           spline.toPolynomials(polynomials);
@@ -91,42 +91,54 @@ namespace roboptim
 
           ss << "CP = np.array([";
 
-          for (int i = 0; i < nbp; ++i)
-            ss << (boost::format("(%1%, %2%),")
-                   % spline.parameters()[2*i]
-                   % spline.parameters()[2*i+1]).str();
+          if (dimension == 2)
+            for (int i = 0; i < nbp; ++i)
+              ss << (boost::format("(%1%, %2%),")
+                     % spline.parameters()[2*i]
+                     % spline.parameters()[2*i+1]).str();
 
           ss << "])" << std::endl;
 
-          ss << (boost::format("plt.plot(%1%[:,1], %1%[:,2], label=\"%1%\", color='b')")
-                 % data_name).str() << std::endl;
+          if (dimension == 2)
+          {
+            ss << (boost::format("plt.plot(%1%[:,1], %1%[:,2], label=\"%1%\", color='b')")
+                   % data_name).str() << std::endl;
+          }
+          else
+          {
+            ss << (boost::format("plt.plot(%1%[:,0], %1%[:,1], label=\"%1%\", color='b')")
+                   % data_name).str() << std::endl;
+          }
 
           for (unsigned long i = 0; i < intervals; ++i)
           {
-            unsigned long n = i+3;
+            unsigned long n = static_cast<unsigned long>(i+3);
             double inc = kv[n+1] - kv[n]; //Actual inc in time
             assert(step < inc);
 
             Function::interval_t interval = Function::makeInterval(start, start+inc);
             double bound_min = polynomials[i].min(interval).second;
             double bound_max = polynomials[i].max(interval).second;
+
+            double value_min = (dimension==2) ? spline(interval.first)[0] : interval.first;
+            double value_max = (dimension==2) ? spline(interval.second)[0] : interval.second;
             ss << (boost::format("plt.hlines(%1%, %2%, %3%, lw=2, color='c')")
                    % bound_min
-                   % spline(interval.first)[0]
-                   % spline(interval.second)[0]).str() << std::endl;
+                   % value_min
+                   % value_max).str() << std::endl;
 
             ss << (boost::format("plt.hlines(%1%, %2%, %3%, lw=2, color='g')")
                    % bound_max
-                   % spline(interval.first)[0]
-                   % spline(interval.second)[0]).str() << std::endl;
+                   % value_min
+                   % value_max).str() << std::endl;
 
             ss << (boost::format("plt.axvline(%1%, ls='--', color='gray')")
-                   % spline(interval.first)[0]).str() << std::endl;
+                   % value_min).str() << std::endl;
             start += inc;
           }
 
-          ss << "plt.plot(CP[:,0], CP[:,1], '*', ls=':', lw=3, color='m', label=\"Control Points\")"
-            << std::endl;
+          if (dimension == 2)
+            ss << "plt.plot(CP[:,0], CP[:,1], '*', ls=':', lw=3, color='m', label=\"Control Points\")" << std::endl;
 
           return Command(ss.str(), true);
         }
