@@ -359,7 +359,7 @@ namespace trajectory
       {
 	const std::size_t k_ = static_cast<std::size_t> (k);
 
-  for (unsigned long i = 0; i <= order_; ++i)
+  for (unsigned long i = 0; i <= static_cast<unsigned long> (order_); ++i)
   {
     res[k_ - order_] +=
       basisPolynomials_[k_-i][i]*this->parameters()(n*(k-static_cast<long>(i))+offset);
