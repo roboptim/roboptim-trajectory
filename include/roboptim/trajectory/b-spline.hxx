@@ -353,12 +353,11 @@ namespace trajectory
         ("Invalid use of toPolynomials: dimension must be 1 or 2");
     }
 
-    res.clear();
-
     for (size_type k = order_; k < nbp_; ++k)
       {
 	const std::size_t k_ = static_cast<std::size_t> (k);
 
+	res[k_ - order_] = polynomial_t ();
   for (unsigned long i = 0; i <= static_cast<unsigned long> (order_); ++i)
   {
     res[k_ - order_] +=
