@@ -27,6 +27,8 @@
 # include <roboptim/core/visualization/matplotlib-function.hh>
 # include <roboptim/core/visualization/matplotlib-commands.hh>
 
+# include <roboptim/trajectory/visualization/matplotlib.hh>
+
 namespace roboptim
 {
   namespace trajectory
@@ -45,7 +47,7 @@ namespace roboptim
           using namespace ::roboptim::visualization;
 
           std::stringstream ss;
-          std::string data_name = spline.getName();
+          std::string data_name = detail::formattedVarName (spline.getName());
           long dimension = spline.outputSize();
           double start = spline.getLowerBound(spline.timeRange ());
           double end = spline.getUpperBound(spline.timeRange ());
@@ -101,13 +103,13 @@ namespace roboptim
 
           if (dimension == 2)
           {
-            ss << (boost::format("plt.plot(%1%[:,1], %1%[:,2], label=\"%1%\", color='b')")
-                   % data_name).str() << std::endl;
+            ss << (boost::format("plt.plot(%1%[:,1], %1%[:,2], label=\"%2%\", color='b')")
+                   % data_name % spline.getName ()).str() << std::endl;
           }
           else
           {
-            ss << (boost::format("plt.plot(%1%[:,0], %1%[:,1], label=\"%1%\", color='b')")
-                   % data_name).str() << std::endl;
+            ss << (boost::format("plt.plot(%1%[:,0], %1%[:,1], label=\"%2%\", color='b')")
+                   % data_name % spline.getName ()).str() << std::endl;
           }
 
           for (unsigned long i = 0; i < intervals; ++i)

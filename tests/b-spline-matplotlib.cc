@@ -87,13 +87,13 @@ typedef spline_t::value_type value_type;
     5  , 0. ;
 
   boost::shared_ptr<spline_t> spline = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 1, params, "BSpline1D", true);
+    (std::make_pair (0., 1.), 1, params, "B-spline 1 (1D)", true);
 
   boost::shared_ptr<spline_t> spline2 = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 2, params2, "BSpline2", true);
+    (std::make_pair (0., 1.), 2, params2, "B-spline 2 (2D)", true);
 
   boost::shared_ptr<spline_t> spline3 = boost::make_shared<spline_t>
-    (std::make_pair (0., 1.), 2, params3, "BSpline3", true);
+    (std::make_pair (0., 1.), 2, params3, "B-spline 3 (2D)", true);
 
   Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 1));
   value_type step = 0.005;
@@ -101,11 +101,11 @@ typedef spline_t::value_type value_type;
   (*output)
     << (matplotlib
         << plot_spline (*spline, step)
-        << title ("BSpline, with P4 = {2.5, 10}")
+        << title ("B-spline (1D), with P4 = {2.5, 10}")
         << plot_spline (*spline2, step)
-        << title ("BSpline, with P4 = {2.5, 1}")
+        << title ("B-spline (2D), with P4 = {2.5, 1}")
         << plot_spline (*spline3, step)
-        << title ("BSpline, with P4 = {2.5, 15}")
+        << title ("B-spline (2D), with P4 = {2.5, 15}")
 	);
 
 

@@ -17,12 +17,12 @@
 ADD_LIBRARY(roboptim-trajectory SHARED
   ${HEADERS}
   doc.hh
-  orthogonal-speed.cc
-  CMakeLists.txt
-  frontal-speed.cc
-  spline-length.cc
-  debug.hh
   cubic-b-spline.cc
+  debug.hh
+  frontal-speed.cc
+  matplotlib.cc
+  orthogonal-speed.cc
+  spline-length.cc
   )
 PKG_CONFIG_USE_DEPENDENCY(roboptim-trajectory roboptim-core)
 SET_TARGET_PROPERTIES(roboptim-trajectory PROPERTIES SOVERSION 3.1.0)
