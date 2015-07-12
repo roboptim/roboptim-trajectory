@@ -101,10 +101,8 @@ namespace trajectory
     // Number of control points should be at least 4.
     assert (nbp_ >= 4);
 
-    ROBOPTIM_DEBUG_ONLY(size_t nbp = static_cast<size_t> (nbp_);)
-
     // Fill vector of regularly spaced knots.
-    assert (knots_.size () - (nbp + 4) == 0);
+    assert (knots_.size () == nbp_ + 4);
     setParameters (p);
     computeBasisPolynomials ();
   }
