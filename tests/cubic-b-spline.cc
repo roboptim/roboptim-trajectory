@@ -92,6 +92,7 @@ private:
 };
 
 typedef Function::value_type value_type;
+typedef Function::size_type size_type;
 
 struct TestData
 {
@@ -145,7 +146,7 @@ void test_1d (TestData& data)
   for (size_t i = 0; i <= 10; ++i)
   {
     value_type t = static_cast<double> (i) * 0.49;
-    size_t k = static_cast<size_t> (spline_1d_1.interval (t));
+    size_type k = spline_1d_1.interval (t);
     BOOST_CHECK (kv[k] <= t);
     BOOST_CHECK (t <= kv[k+1]);
   }
@@ -212,7 +213,7 @@ void test_1d_clamped (TestData& data)
   for (size_t i = 0; i <= 10; ++i)
   {
     value_type t = static_cast<double> (i) * 0.49;
-    size_t k = static_cast<size_t> (spline_1d_1_clamped.interval (t));
+    size_type k = spline_1d_1_clamped.interval (t);
     BOOST_CHECK (kv[k] <= t);
     BOOST_CHECK (t <= kv[k+1]);
   }

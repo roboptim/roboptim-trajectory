@@ -65,18 +65,18 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
   double tol = 1e-6;
 
   size_type nbKnots = 12;
-  std::size_t nbKnots_ = static_cast<std::size_t> (nbKnots);
-  double knotArray [] =
-    { -3, -2, -1, 0, .2, 1., 1.2, 1.8, 1.9, 2.2, 3.2, 4.2};
-  CubicBSpline::knots_t knots (nbKnots_);
-  for (std::size_t i=0; i<nbKnots_ ; ++i) knots [i] = knotArray [i];
-  std::vector <CubicBSpline::vector_t> params;
 
-  for (std::size_t i=0; i < nbKnots_-4; ++i) {
+  CubicBSpline::knots_t knots (nbKnots);
+  knots << -3, -2, -1, 0, .2, 1., 1.2, 1.8, 1.9, 2.2, 3.2, 4.2;
+
+  std::vector<CubicBSpline::vector_t> params;
+
+  for (size_type i = 0; i < nbKnots-4; ++i)
+  {
     params.push_back (CubicBSpline::vector_t (nbKnots - 4));
-    size_type i_ = static_cast<size_type>(i);
-    params [i].setZero ();
-    params [i][i_] = 1;
+    std::size_t i_ = static_cast<std::size_t> (i);
+    params[i_].setZero ();
+    params[i_][i] = 1;
   }
 
   interval_t interval = std::make_pair (knots [3], knots[knots.size ()-4]);

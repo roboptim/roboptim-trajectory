@@ -45,6 +45,7 @@ namespace roboptim
           using boost::format;
           using namespace detail;
           using namespace ::roboptim::visualization;
+          typedef CubicBSpline::size_type size_type;
 
           std::stringstream ss;
           std::string data_name = detail::formattedVarName (spline.getName());
@@ -53,7 +54,7 @@ namespace roboptim
           double end = spline.getUpperBound(spline.timeRange ());
           double nbp = static_cast<double> (spline.getNumberControlPoints());
           double intervals = nbp - 3;
-          CubicBSpline::polynomials3vector_t polynomials;
+          CubicBSpline::basisPolynomials_t polynomials;
           const CubicBSpline::knots_t& kv = spline.knotVector();
           double t;
 
@@ -114,7 +115,7 @@ namespace roboptim
 
           for (unsigned long i = 0; i < intervals; ++i)
           {
-            unsigned long n = static_cast<unsigned long>(i+3);
+            size_type n = static_cast<size_type> (i+3);
             double inc = kv[n+1] - kv[n]; //Actual inc in time
             assert(step < inc);
 

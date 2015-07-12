@@ -49,35 +49,38 @@ namespace trajectory
 
     double delta_t = (tr.second - tr.first) / (static_cast<double> (m) - 7.);
 
+    knots_.resize (m);
+    size_type kv_iter = 0;
+
     // Clamped B-spline.
     if (clamped)
       {
 	// The first 4 knots should be equal to tr.first.
 	// The 4th one will be added in the main loop.
 	for (size_type i = 0; i < 3; i++) {
-	  knots_.push_back (tr.first);
+	  knots_[kv_iter++] = tr.first;
 	}
 
 	// Note: we do not use an accumulator to get improved numerical precision
 	for (size_type i = 0; i < nbp_ - 2; i++) {
-	  knots_.push_back (tr.first + static_cast<double> (i) * delta_t);
+	  knots_[kv_iter++] = tr.first + static_cast<double> (i) * delta_t;
 	}
 
 	// The last 4 knots should be equal to tr.second.
 	// The 1st one was added in the main loop.
 	for (size_type i = 0; i < 3; i++) {
-	  knots_.push_back (tr.second);
+	  knots_[kv_iter++] = tr.second;
 	}
       }
     else // Default case.
       {
 	// Note: we do not use an accumulator to get improved numerical precision
 	for (size_type i = 0; i < m; i++) {
-	  knots_.push_back (tr.first + static_cast<double> (i-3) * delta_t);
+	  knots_[kv_iter++] = tr.first + static_cast<double> (i-3) * delta_t;
 	}
       }
 
-    assert (knots_.size () == static_cast<size_t> (m));
+    assert (knots_.size () == m);
 
     // interval lower bound should be rigorously equal to knot 3.
     assert (knots_ [3] == tr.first);
@@ -129,20 +132,18 @@ namespace trajectory
     basisPolynomials_.clear();
     for (size_type j = 0; j < nbp_; j++)
       {
-	std::size_t j_ = static_cast<std::size_t> (j);
-
 	basisPolynomials_.push_back
-	  (polynomials3vector_t ());
+	  (basisPolynomials_t ());
 	// t_j
-	double t0 = knots_[j_];
+	double t0 = knots_[j];
 	// t_{j+1}
-	double t1 = knots_[j_ + 1];
+	double t1 = knots_[j + 1];
 	// t_{j+2}
-	double t2 = knots_[j_ + 2];
+	double t2 = knots_[j + 2];
 	// t_{j+3}
-	double t3 = knots_[j_ + 3];
+	double t3 = knots_[j + 3];
 	// t_{j+4}
-	double t4 = knots_[j_ + 4];
+	double t4 = knots_[j + 4];
 
 	Polynomial3 B0 =
 	  1./((t3-t0)*(t2-t0)*(t1-t0))
@@ -227,22 +228,19 @@ namespace trajectory
       {
 	bool found = false;
 
-	if (t == knots_[static_cast<size_t>(imax+1)]) //We are exactly at the end of the spline
+	if (t == knots_[imax+1]) //We are exactly at the end of the spline
 	{
 		return imax;
 	}
-	std::size_t i_ = static_cast<std::size_t> (i);
-
 	while (!found)
 	  {
 	    i = Double2SizeType::convert
 	      (std::floor (.5 * static_cast<double> (imin + imax) + .5));
-	    i_ = static_cast<std::size_t> (i);
-	    if (t < knots_ [i_])
+	    if (t < knots_ [i])
 	      {
 		imax = i - 1;
 	      }
-	    else if (t >= knots_ [i_ + 1])
+	    else if (t >= knots_ [i + 1])
 	      {
 		imin = i + 1;
 	      }
@@ -259,9 +257,8 @@ namespace trajectory
     if (i < 3)
       i = 3;
 
-    ROBOPTIM_DEBUG_ONLY(std::size_t i_ = static_cast<std::size_t> (i);)
-    assert (knots_ [i_] <= t);
-    assert (t <= knots_ [i_+1]);
+    assert (knots_ [i] <= t);
+    assert (t <= knots_ [i+1]);
 
     return i;
   }
@@ -366,11 +363,11 @@ namespace trajectory
   void
   CubicBSpline::translateBasisPolynomials (double t1)
   {
-    for (polynomials3vectors_t::iterator
+    for (basisPolynomialsVector_t::iterator
            it = basisPolynomials_.begin ();
 	 it != basisPolynomials_.end ();
 	 ++it)
-      for (polynomials3vector_t::iterator
+      for (basisPolynomials_t::iterator
 	     p = it->begin ();
 	   p != it->end ();
 	   ++p)
@@ -378,7 +375,7 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::toPolynomials (polynomials3vector_t& res)
+  CubicBSpline::toPolynomials (basisPolynomials_t& res)
     const
   {
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION

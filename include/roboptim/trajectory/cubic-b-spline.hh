@@ -17,6 +17,9 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HH
 # define ROBOPTIM_TRAJECTORY_CUBIC_B_SPLINE_HH
+
+# include <vector>
+
 # include <roboptim/trajectory/sys.hh>
 # include <roboptim/trajectory/deprecated.hh>
 
@@ -38,13 +41,28 @@ namespace trajectory
   class CubicBSpline : public Trajectory<3>
   {
   public:
+
+    /// \brief Polynomial type.
+    typedef Polynomial3 polynomial_t;
+
+    /// \brief Basis polynomials type.
     typedef std::vector<
-    Polynomial3, Eigen::aligned_allocator<Polynomial3> >
-    polynomials3vector_t;
+      polynomial_t, Eigen::aligned_allocator<polynomial_t> >
+      basisPolynomials_t;
 
-    typedef std::vector<polynomials3vector_t> polynomials3vectors_t;
+    /// \brief Basis polynomials vector type.
+    typedef std::vector<basisPolynomials_t> basisPolynomialsVector_t;
 
-    typedef std::vector <value_type> knots_t;
+    /// \brief Legacy typedef.
+    typedef basisPolynomials_t polynomials3vector_t
+      ROBOPTIM_TRAJECTORY_DEPRECATED;
+
+    /// \brief Legacy typedef.
+    typedef basisPolynomialsVector_t polynomials3vectors_t
+      ROBOPTIM_TRAJECTORY_DEPRECATED;
+
+    /// \brief Knot vector type.
+    typedef vector_t knots_t;
 
     /// \brief Instantiate a uniform cubic B-Spline from its definition.
     ///
@@ -139,14 +157,14 @@ namespace trajectory
 
     /// \brief Return the polynomial expression of the cubic B-spline on each
     /// time interval.
-    void toPolynomials (polynomials3vector_t& res) const;
+    void toPolynomials (basisPolynomials_t& res) const;
 
     /// \brief Constant getter for the basis polynomials of the cubic B-spline.
     /// \return constant reference to the basis polynomials.
     ///
     /// Note: computeBasisPolynomials() needs to be called beforehand (which is
     /// done in the CubicBSpline constructor).
-    const polynomials3vectors_t&
+    const basisPolynomialsVector_t&
     basisPolynomials() const
     {
       return basisPolynomials_;
@@ -212,7 +230,7 @@ namespace trajectory
 
     /// \brief Basis polynomials.
     /// basisPolynomials_[i][j] = B_{i,i+j}
-    polynomials3vectors_t basisPolynomials_;
+    basisPolynomialsVector_t basisPolynomials_;
 
     /// \brief Whether the B-spline is uniform.
     /// Note: used for faster interval lookup.
