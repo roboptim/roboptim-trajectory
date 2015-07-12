@@ -79,9 +79,10 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline)
     params[i_][i] = 1;
   }
 
-  interval_t interval = std::make_pair (knots [3], knots[knots.size ()-4]);
+  value_type start = knots[3];
+  value_type end = knots[nbKnots-4];
   value_type eval_step = 0.002;
-  size_type n_eval = static_cast<size_type> (std::floor ((interval.second - interval.first)/eval_step)+1);
+  size_type n_eval = static_cast<size_type> (std::floor ((end - start)/eval_step)+1);
   size_type total_n_eval = (nbKnots - 4) * n_eval;
   matrix_t spline_data (total_n_eval, 2);
   spline_data.setZero ();
