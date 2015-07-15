@@ -16,7 +16,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "shared-tests/common.hh"
+#include "shared-tests/fixture.hh"
 
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/b-spline.hh>
@@ -53,28 +53,38 @@ void check_evaluate (interval_t interval,
 {
   ConstrainedBSpline<N> spline (interval, dimension, params);
 
+  double tol = 1e-6;
+
   // Initial parameters size
   size_type param_size = spline.parameters ().size ();
 
-  // First point of the spline fixed at 0.
-  spline.addFixedConstraint (interval.first, 0, 0);
+  // First point of the spline fixed at 5.
+  spline.addFixedConstraint (interval.first, 0, 5.);
   BOOST_CHECK (spline.parameters ().size () == param_size - 1);
+  BOOST_CHECK_SMALL (spline (interval.first)[0] - 5., tol);
 
   // Mid point of the spline fixed at 1.
   spline.addFixedConstraint (0.5*(interval.first+interval.second), 0, 1.);
   BOOST_CHECK (spline.parameters ().size () == param_size - 2);
+  BOOST_CHECK_SMALL (spline (0.5*(interval.first+interval.second))[0] - 1., tol);
 
-  // Last point of the spline fixed at 0.
-  spline.addFixedConstraint (interval.second, 0, 0);
+  // Last point of the spline fixed at 10.
+  spline.addFixedConstraint (interval.second, 0, 10.);
   BOOST_CHECK (spline.parameters ().size () == param_size - 3);
+  BOOST_CHECK_SMALL (spline (interval.second)[0] - 10., tol);
 
   // Add couple constrained: 0.25 and 0.75 should have the same derivative.
   value_type range = interval.second - interval.first;
-  spline.addCoupledConstraint (interval.first + 0.25 * range, 0,
-                               interval.first + 0.75 * range, 0,
-                               1, 1.);
+  value_type t1 = interval.first + 0.25 * range;
+  value_type t2 = interval.first + 0.75 * range;
+  spline.addCoupledConstraint (t1, 0, t2, 0, 1, 1.);
+  value_type delta = std::abs (spline.derivative (t1, 1)[0]
+                               - spline.derivative (t2, 1) [0]);
+  BOOST_CHECK_SMALL (delta, tol);
+
   BOOST_CHECK (spline.parameters ().size () == param_size - 4);
 
+  // TODO: do we really need a dummy test loop for the derivative?
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
     {
       vector_t res (dimension);
@@ -108,6 +118,11 @@ void test_plot (void)
   using namespace roboptim::visualization;
   using namespace roboptim::visualization::gnuplot;
 
+  std::stringstream filename;
+  filename << "constrained-b-spline-" << N;
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern (filename.str ());
+
   interval_t interval = std::make_pair (0., 1.);
 
   int min_params = N + 1;
@@ -118,56 +133,52 @@ void test_plot (void)
 
   ConstrainedBSpline<N> spline (interval, 1, params);
 
-  // First point of the spline fixed at 0.
-  spline.addFixedConstraint (interval.first, 0, 0);
+  // First point of the spline fixed at 5.
+  spline.addFixedConstraint (interval.first, 0, 5.);
 
   // Mid point of the spline fixed at 1.
   spline.addFixedConstraint (0.5*(interval.first+interval.second), 0, 1.);
 
-  // Last point of the spline fixed at 0.
-  spline.addFixedConstraint (interval.second, 0, 0);
+  // Last point of the spline fixed at 10.
+  spline.addFixedConstraint (interval.second, 0, 10.);
 
   // Add couple constrained: 0.25 and 0.75 should have the same derivative.
   value_type range = interval.second - interval.first;
-  spline.addCoupledConstraint (interval.first + 0.25 * range, 0,
-                               interval.first + 0.75 * range, 0,
-                               1, 1.);
+  value_type t1 = interval.first + 0.25 * range;
+  value_type t2 = interval.first + 0.75 * range;
+  spline.addCoupledConstraint (t1, 0, t2, 0, 1, 1.);
   value_type delta;
-  delta = std::abs (0. - spline.derivative (interval.first, 0) (0));
+  delta = std::abs (5. - spline.derivative (interval.first, 0) (0));
   BOOST_CHECK_SMALL (delta, tol);
 
-  delta = std::abs (0. - spline.derivative (interval.second, 0) (0));
+  delta = std::abs (10. - spline.derivative (interval.second, 0) (0));
   BOOST_CHECK_SMALL (delta, tol);
 
-  delta = std::abs (spline.derivative (interval.first + 0.25 * range, 1) (0)
-		    - spline.derivative (interval.first + 0.75 * range, 1) (0));
+  delta = std::abs (spline.derivative (t1, 1)[0] - spline.derivative (t2, 1)[0]);
   BOOST_CHECK_SMALL (delta, tol);
 
   Gnuplot gnuplot = Gnuplot::make_interactive_gnuplot ();
   discreteInterval_t plot_interval (interval.first, interval.second, 0.01);
 
-  // TODO: use RobOptim's gnuplot interface rather than stdout
-  std::cout << "set terminal wxt persist" << std::endl;
-  std::cout << "set multiplot layout 2,1" << std::endl;
-  std::cout << "set xrange [" << interval.first << ":"
-	    << interval.second << "]" << std::endl;
-  std::cout << "set xtics 0.1" << std::endl;
-  //		<< (gnuplot << plot (spline, plot_interval));
-  std::cout << "plot '-' title 'B-Spline' with line" << std::endl;
-  value_type delta_t = 1e-2;
-  for (value_type t = interval.first; t < interval.second + delta_t;
-       t += delta_t)
-    {
-      std::cout << t << " " << spline.derivative (t, 0)[0] << std::endl;
-    }
-  std::cout << "e" << std::endl;
-  std::cout << "plot '-' title 'B-Spline 1-deriv' with line" << std::endl;
-  for (value_type t = interval.first; t < interval.second + delta_t;
-       t += delta_t)
-    {
-      std::cout << t << " " << spline.derivative (t, 1)[0] << std::endl;
-    }
-  std::cout << "e" << std::endl;
+  BSpline<N> deriv = spline.template derivative<1> ();
+
+  (*output) << (gnuplot
+                << set ("multiplot layout 2,1")
+                << comment (spline)
+                << comment ("Values:")
+                << comment (spline (interval.first))
+                << comment (spline (0.5*(interval.first+interval.second)))
+                << comment (spline (interval.second))
+                << plot (spline, plot_interval)
+                << comment (deriv)
+                << comment ("Values:")
+                << comment (deriv (t1))
+                << comment (deriv (t2))
+                << plot (deriv, plot_interval));
+
+  std::cout << output->str () << std::endl;
+
+  BOOST_CHECK (output->match_pattern ());
 }
 
 BOOST_AUTO_TEST_CASE (trajectory_constrained_bspline)

@@ -73,8 +73,8 @@ namespace trajectory
     /// \param name function title
     /// \param clamped whether the spline should be clamped
     ///
-    /// Number of control points is inferred from dimension of dimenion of
-    /// parameter vector.
+    /// Number of control points is inferred from dimension of parameter
+    /// vector.
     BSpline (const interval_t& timeRange, size_type dimension,
              const vector_t& parameters,
              const std::string name = "B-Spline",
