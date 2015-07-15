@@ -118,6 +118,9 @@ void test_plot (void)
   using namespace roboptim::visualization;
   using namespace roboptim::visualization::gnuplot;
 
+  // Fix clash with std::set
+  using roboptim::visualization::gnuplot::set;
+
   std::stringstream filename;
   filename << "constrained-b-spline-" << N;
   boost::shared_ptr<boost::test_tools::output_test_stream>
