@@ -17,7 +17,6 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_FREEZE_HXX
 # define ROBOPTIM_TRAJECTORY_FREEZE_HXX
-# include <roboptim/core/numeric-linear-function.hh>
 
 namespace roboptim
 {

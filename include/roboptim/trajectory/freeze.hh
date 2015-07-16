@@ -36,9 +36,9 @@ namespace trajectory
   /// associated value.
   ///
   /// For instance, the vector: [(0, 5.), (3, -12.)] forces the first
-  /// parameter to five and the fourth one to minus twelve.
+  /// parameter to 5 and the fourth one to -12.
   ///
-  /// This adds to the problem one linear constraint per frozen parameter.
+  /// This modifies the argument bounds for each frozen parameter.
   template <typename P>
   class Freeze
   {
@@ -52,8 +52,8 @@ namespace trajectory
 
     /// \brief Vector of pairs (argument index, value).
     ///
-    /// This type define what are the frozen arguments and what their
-    /// value.
+    /// This type defines which arguments to freeze and their
+    /// associated values.
     typedef std::vector<frozenArgument_t> frozenArguments_t;
 
     /// \brief Create the constraint from a vector of pairs.
