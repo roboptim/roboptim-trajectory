@@ -29,11 +29,10 @@ namespace roboptim
 {
 namespace trajectory
 {
-  /// \brief Add constraints that freeze parameters.
+  /// \brief Freeze parameters by modifying argument bounds.
   ///
-  /// This constraint expects a vector of pairs (argument id, value) to
-  /// build a function that will freeze the given arguments to their
-  /// associated value.
+  /// This helper class expects a vector of pairs (argument id, value) to
+  /// freeze the given arguments to their associated value.
   ///
   /// For instance, the vector: [(0, 5.), (3, -12.)] forces the first
   /// parameter to 5 and the fourth one to -12.
@@ -56,7 +55,7 @@ namespace trajectory
     /// associated values.
     typedef std::vector<frozenArgument_t> frozenArguments_t;
 
-    /// \brief Create the constraint from a vector of pairs.
+    /// \brief Create the argument bounds from a vector of pairs.
     ///
     /// \param problem problem that will be modified.
     Freeze (problem_t& problem);
