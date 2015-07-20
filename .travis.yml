@@ -4,7 +4,7 @@ compiler:
   - clang
 env:
   global:
-  - APT_DEPENDENCIES="doxygen doxygen-latex libltdl-dev libboost-all-dev liblog4cxx10-dev coinor-libipopt-dev libblas-dev liblapack-dev libmumps-seq-dev gfortran"
+  - APT_DEPENDENCIES="doxygen libltdl-dev libboost-all-dev liblog4cxx10-dev coinor-libipopt-dev libblas-dev liblapack-dev libmumps-seq-dev gfortran"
   - GIT_DEPENDENCIES="roboptim/roboptim-core roboptim/roboptim-core-plugin-ipopt"
   - DEBSIGN_KEYID=5AE5CD75
   - PPA_URI="roboptim/ppa"

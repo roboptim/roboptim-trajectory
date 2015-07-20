@@ -24,6 +24,9 @@ SET(PROJECT_NAME roboptim-trajectory)
 SET(PROJECT_DESCRIPTION "RobOptim trajectory")
 SET(PROJECT_URL "http://github.com/roboptim/roboptim-trajectory")
 
+# Use MathJax for Doxygen formulae
+SET(DOXYGEN_USE_MATHJAX "YES")
+
 SET(CSD ${CMAKE_SOURCE_DIR})
 SET(HEADERS
   ${CSD}/include/roboptim/trajectory/anthropomorphic-cost-function.hh
