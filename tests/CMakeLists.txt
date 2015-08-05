@@ -126,6 +126,7 @@ ROBOPTIM_TRAJECTORY_TEST(vector-interpolation)
 
 IF(TESTSUITE_SOLVER)
   # TODO: fix these tests and re-add them
+  ROBOPTIM_TRAJECTORY_TEST(problem-over-splines)
   #ROBOPTIM_TRAJECTORY_TEST(spline-bicycle-optim)
   #ROBOPTIM_TRAJECTORY_TEST(spline-optimization)
   ROBOPTIM_TRAJECTORY_TEST(spline-time-optimization)

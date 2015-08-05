@@ -203,6 +203,9 @@ namespace trajectory
     /// dimensions.
     void operator+= (const CubicBSpline& s);
 
+    /// \brief Retrieve the dimension of the BSpline
+    int dimension () const;
+
   protected:
     using Trajectory<3>::impl_compute;
     void impl_compute (result_ref, double) const;

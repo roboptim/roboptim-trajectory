@@ -35,6 +35,8 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/b-spline.hxx
   ${CSD}/include/roboptim/trajectory/constrained-b-spline.hh
   ${CSD}/include/roboptim/trajectory/constrained-b-spline.hxx
+  ${CSD}/include/roboptim/trajectory/constraints-over-splines.hh
+  ${CSD}/include/roboptim/trajectory/constraints-over-splines.hxx
   ${CSD}/include/roboptim/trajectory/cubic-b-spline.hh
   ${CSD}/include/roboptim/trajectory/cubic-b-spline.hxx
   ${CSD}/include/roboptim/trajectory/free-time-trajectory.hh
@@ -43,6 +45,8 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/freeze.hxx
   ${CSD}/include/roboptim/trajectory/frontal-speed.hh
   ${CSD}/include/roboptim/trajectory/fwd.hh
+  ${CSD}/include/roboptim/trajectory/jerk-over-splines-factory.hh
+  ${CSD}/include/roboptim/trajectory/jerk-over-splines-factory.hxx
   ${CSD}/include/roboptim/trajectory/limit-omega.hh
   ${CSD}/include/roboptim/trajectory/limit-omega.hxx
   ${CSD}/include/roboptim/trajectory/limit-speed.hh
@@ -51,6 +55,8 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory/polynomial.hh
   ${CSD}/include/roboptim/trajectory/polynomial.hxx
   ${CSD}/include/roboptim/trajectory/polynomial-3.hh
+  ${CSD}/include/roboptim/trajectory/problem-over-splines-factory.hh
+  ${CSD}/include/roboptim/trajectory/problem-over-splines-factory.hxx
   ${CSD}/include/roboptim/trajectory/spline-length.hh
   ${CSD}/include/roboptim/trajectory/stable-point-state-function.hh
   ${CSD}/include/roboptim/trajectory/stable-point-state-function.hxx

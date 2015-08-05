@@ -643,6 +643,12 @@ namespace trajectory
     return this->knots_;
   }
 
+  template <int N>
+  int BSpline<N>::dimension () const
+  {
+    return N;
+  }
+
 } // end of namespace trajectory.
 } // end of namespace roboptim.
 

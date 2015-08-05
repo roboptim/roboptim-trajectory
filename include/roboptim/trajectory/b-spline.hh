@@ -176,6 +176,9 @@ namespace trajectory
 
     using Trajectory<N>::derivative;
 
+    /// \brief Retrieve the dimension of the BSpline
+    int dimension () const;
+
   protected:
 
     /// \brief Enum for special constructors.
