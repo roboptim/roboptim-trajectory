@@ -58,9 +58,7 @@ using namespace roboptim::visualization::gnuplot;
 using namespace roboptim::trajectory;
 using namespace roboptim::trajectory::visualization::gnuplot;
 
-typedef Solver<DifferentiableFunction,
-	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
-test_solver_t;
+typedef Solver<EigenMatrixDense> test_solver_t;
 
 typedef test_solver_t::problem_t::constraints_t constraint_t;
 typedef FreeTimeTrajectory<CubicBSpline> freeTime_t;

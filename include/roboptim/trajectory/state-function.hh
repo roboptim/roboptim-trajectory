@@ -81,11 +81,12 @@ namespace trajectory
 
     size_type order () const;
 
-    template <typename F, typename CLIST>
+    /// \tparam M Eigen matrix type
+    template <typename M>
     static void addToProblem (const trajectory_t& trajectory,
 			      boost::shared_ptr<DerivableFunction> function,
 			      unsigned order,
-			      Problem<F, CLIST>& problem,
+			      Problem<M>& problem,
 			      typename Function::interval_t bounds,
 			      unsigned nConstraints)
     {
@@ -101,12 +102,12 @@ namespace trajectory
 	}
     }
 
-    template <typename F, typename CLIST>
+    template <typename M>
     static void addToProblem
     (const trajectory_t& trajectory,
      boost::shared_ptr<DerivableFunction> function,
      unsigned order,
-     Problem<F, CLIST>& problem,
+     Problem<M>& problem,
      const typename Function::intervals_t& bounds,
      const std::vector<typename Function::value_type>& scales,
      unsigned nConstraints)

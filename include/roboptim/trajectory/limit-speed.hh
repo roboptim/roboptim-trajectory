@@ -39,9 +39,9 @@ namespace trajectory
 
     const T& trajectory () const;
 
-    template <typename F, typename CLIST>
+    template <typename M>
     static void addToProblem (const T&,
-			      Problem<F, CLIST>&,
+			      Problem<M>&,
 			      typename Function::interval_t,
 			      unsigned);
 

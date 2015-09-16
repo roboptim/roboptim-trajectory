@@ -5,7 +5,7 @@ compiler:
 env:
   global:
   - APT_DEPENDENCIES="doxygen libltdl-dev libboost-all-dev liblog4cxx10-dev coinor-libipopt-dev libblas-dev liblapack-dev libmumps-seq-dev gfortran"
-  - GIT_DEPENDENCIES="roboptim/roboptim-core roboptim/roboptim-core-plugin-ipopt"
+  - GIT_DEPENDENCIES="roboptim/roboptim-core:dev roboptim/roboptim-core-plugin-ipopt:dev"
   - DEBSIGN_KEYID=5AE5CD75
   - PPA_URI="roboptim/ppa"
   - LCOV_IGNORE_RULES="*tests*"
@@ -31,6 +31,7 @@ after_success: ./.travis/run after_success
 branches:
   only:
   - master
+  - dev
   - debian
   - travis
   - coverity_scan
