@@ -110,10 +110,10 @@ namespace trajectory
   }
 
   template <typename T>
-  template <typename F, typename CLIST>
+  template <typename M>
   void
   LimitSpeed<T>::addToProblem (const T& trajectory,
-			       Problem<F, CLIST>& problem,
+			       Problem<M>& problem,
 			       typename Function::interval_t vRange,
 			       unsigned nConstraints)
   {

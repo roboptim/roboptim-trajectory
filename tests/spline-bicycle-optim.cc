@@ -46,9 +46,7 @@ using namespace roboptim::visualization::gnuplot;
 using namespace roboptim::trajectory::visualization::gnuplot;
 
 // Solver type different from the test suite's solver_t
-typedef Solver<DifferentiableFunction,
-	       boost::mpl::vector<LinearFunction, DifferentiableFunction> >
-test_solver_t;
+typedef Solver<EigenMatrixDense> test_solver_t;
 typedef test_solver_t::problem_t::constraints_t constraint_t;
 
 typedef TrajectorySumCost<CubicBSpline>::discreteStableTimePointInterval_t

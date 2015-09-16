@@ -37,9 +37,9 @@ namespace trajectory
 		const T& trajectory);
     ~LimitOmega ();
 
-    template <typename F, typename CLIST>
+    template <typename M>
     static void addToProblem (const T& trajectory,
-			      Problem<F, CLIST>& problem,
+			      Problem<M>& problem,
 			      typename Function::interval_t vRange,
 			      unsigned nConstraints);
 
