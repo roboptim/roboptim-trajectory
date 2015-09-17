@@ -91,7 +91,9 @@ namespace trajectory
 
   CubicBSpline::CubicBSpline (size_type outputSize, const knots_t& knots,
 			      const vector_t& p, std::string name)
-    : Trajectory<3> (std::make_pair (knots [3], knots [knots.size ()-4]),
+    // Note: cast to unsigned to avoid strict-overflow warning
+    : Trajectory<3> (std::make_pair (knots[3],
+                                     knots[static_cast<unsigned> (knots.size ()-4)]),
 		     outputSize, p, name), nbp_ (p.size () / outputSize),
       knots_ (knots), uniform_ (false)
   {
@@ -208,11 +210,12 @@ namespace trajectory
   {
     t = detail::fixTime (t, *this);
 
-    size_type i = 0;
-    size_type imin = 3;
-    size_type imax = static_cast<size_type> (knots_.size () - 5);
+    // Use unsigned to avoid strict-overflow warning
+    unsigned i = 0;
+    unsigned imin = 3;
+    unsigned imax = static_cast<unsigned> (knots_.size () - 5);
 
-    typedef boost::numeric::converter<size_type, double> Double2SizeType;
+    typedef boost::numeric::converter<unsigned, double> Double2Unsigned;
 
     // In the uniform case, we can access the interval directly
     if (uniform_)
@@ -220,7 +223,7 @@ namespace trajectory
 	size_type m = nbp_ + 4;
 	double delta_t = (timeRange ().second - timeRange ().first) / (static_cast<double> (m) - 7.);
 
-	i = imin + Double2SizeType::convert (std::floor ((t - timeRange ().first)/delta_t));
+	i = imin + Double2Unsigned::convert (std::floor ((t - timeRange ().first)/delta_t));
       }
     else // Default case: use dichotomy
       {
@@ -232,7 +235,7 @@ namespace trajectory
 	}
 	while (!found)
 	  {
-	    i = Double2SizeType::convert
+	    i = Double2Unsigned::convert
 	      (std::floor (.5 * static_cast<double> (imin + imax) + .5));
 	    if (t < knots_ [i])
 	      {
@@ -251,7 +254,7 @@ namespace trajectory
       }
 
     if (i > nbp_ - 1)
-      i = nbp_-1;
+      i = static_cast<unsigned> (nbp_) - 1;
     if (i < 3)
       i = 3;
 
