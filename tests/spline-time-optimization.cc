@@ -109,7 +109,8 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   a (0, 0) = -1.;
   Function::vector_t b (1);
   b.setZero ();
-  roboptim::NumericLinearFunction cost (a, b);
+  boost::shared_ptr<roboptim::NumericLinearFunction> cost
+    (new roboptim::NumericLinearFunction (a, b));
 
   // Create problem.
   test_solver_t::problem_t problem (cost);
