@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <vector>
+#include <sstream>
 
 #include <boost/filesystem/fstream.hpp>
 
@@ -62,38 +63,121 @@ std::string splineName<roboptim::trajectory::BSpline<3> > ()
   return "b-spline";
 }
 
+template <typename T, typename S>
+void processResult (const typename Solver<T>::result_t& res,
+    boost::shared_ptr<S>& spline,
+    boost::shared_ptr<S>& spline2,
+    Matplotlib& matplotlib,
+    boost::filesystem::ofstream& pythonPlot)
+{
+  typedef typename GenericFunction<T>::value_type value_type;
+  typedef Solver<T> solver_t;
+
+  value_type step = 0.005;
+
+  static int n = 1;
+
+  std::stringstream ss;
+  ss << " after optimization #" << (n++);
+  const std::string title_end = ss.str ();
+
+  switch (res.which ())
+    {
+    case solver_t::SOLVER_VALUE:
+      {
+        // Get the result.
+        Result result = boost::get<Result> (res);
+
+        spline->setParameters (result.x.segment (0, 13));
+        spline2->setParameters (result.x.segment (13, 13));
+
+	pythonPlot
+	  << (matplotlib
+	      << plot_spline (*spline, step)
+	      << title ((spline->getName () + title_end).c_str ())
+	      << plot_spline (*spline2, step)
+	      << title ((spline2->getName () + title_end).c_str ())
+	      ) << std::endl;
+
+        std::cout << result << std::endl;
+        break;
+      }
+
+    case solver_t::SOLVER_VALUE_WARNINGS:
+      {
+        // Get the result.
+        ResultWithWarnings result = boost::get<ResultWithWarnings> (res);
+
+        spline->setParameters (result.x.segment (0, 13));
+        spline2->setParameters (result.x.segment (13, 13));
+	pythonPlot
+	  << (matplotlib
+	      << plot_spline (*spline, step)
+	      << title ((spline->getName () + title_end).c_str ())
+	      << plot_spline (*spline2, step)
+	      << title ((spline2->getName () + title_end).c_str ())
+	      ) << std::endl;
+
+        std::cout << result << std::endl;
+        break;
+      }
+
+    case solver_t::SOLVER_NO_SOLUTION:
+    case solver_t::SOLVER_ERROR:
+      {
+        SolverError err = boost::get<SolverError> (res);
+        std::cout << "A solution should have been found. Failing..."
+		  << std::endl
+		  << err.what ()
+		  << std::endl;
+        Result result = boost::get<Result> (err.lastState ());
+        std::cout << result << std::endl;
+
+        pythonPlot
+          << (matplotlib
+              << plot_spline (*spline, step)
+	      << title ((spline->getName () + " initial state").c_str ())
+              << plot_spline (*spline2, step)
+	      << title ((spline2->getName () + " initial state").c_str ())
+             ) << std::endl;
+
+        BOOST_CHECK (false);
+      }
+    }
+}
+
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
 {
-  boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern ("problem-over-splines");
-
-  std::cout.precision(10);
-
   typedef EigenMatrixSparse T;
   typedef Solver<T> solver_t;
   typedef typename spline_t::vector_t param_t;
-  typedef GenericConstantFunction<T>::value_type value_type;
+  typedef GenericFunction<T>::value_type value_type;
+  typedef boost::shared_ptr<spline_t> splinePtr_t;
+  typedef std::vector<splinePtr_t> splines_t;
+
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern ("problem-over-splines");
 
   std::string spline_name = splineName<spline_t> ();
-  boost::filesystem::ofstream file ("problem-over-splines-" + spline_name + ".py");
+  boost::filesystem::ofstream pythonPlot
+    ("problem-over-splines-" + spline_name + ".py");
 
-  std::vector<boost::shared_ptr<spline_t> > splines;
-  value_type step = 0.005;
+  splines_t splines;
 
   int n = 13;
   param_t params (n);
   params << 40,25,5,0,8,15,0,10,3,-5,15,22,35;
 
-  boost::shared_ptr<spline_t> spline
-    = boost::make_shared<spline_t> (std::make_pair (0,1), 1, params, "First spline", false);
+  splinePtr_t spline = boost::make_shared<spline_t>
+    (std::make_pair (0,1), 1, params, "B-spline 1", false);
   splines.push_back (spline);
 
   param_t params2 (n);
   params2 << 10,12,9,8,25,15,24,20,1,5,12,-12,3;
-  boost::shared_ptr<spline_t> spline2
-    = boost::make_shared<spline_t> (std::make_pair (0,1), 1, params2, "Second spline", true);
+  splinePtr_t spline2 = boost::make_shared<spline_t>
+    (std::make_pair (0,1), 1, params2, "B-spline 2", true);
   splines.push_back (spline2);
 
   // Create the problem
@@ -129,75 +213,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   // Initialize solver
   SolverFactory<solver_t> factory ("ipopt-sparse", problem);
   solver_t& solver = factory ();
-  solver.parameters()["ipopt.tol"].value = 1e-5;
+  solver.parameters()["ipopt.tol"].value = 1e-3;
   solver.parameters()["ipopt.output_file"].value = std::string("test.log");
-  solver.parameters()["ipopt.print_level"].value = 12;
 
-  (*output) << solver << std::endl;
+  (*output) << solver.problem () << std::endl;
+
+  Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 2));
 
   typename solver_t::result_t res = solver.minimum();
-  Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 2));
-  (file)
-    << (matplotlib
-        << plot_spline (*spline, step)
-        << title ("initial B-spline 1")
-        << plot_spline (*spline2, step)
-        << title ("initial B-spline 2")
-        ) << std::endl;
-  switch (res.which ())
-    {
-    case solver_t::SOLVER_VALUE:
-      {
-        // Get the result.
-        roboptim::Result& result = boost::get<roboptim::Result> (res);
+  processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
 
-        spline->setParameters(result.x.segment(0, 13));
-        spline2->setParameters(result.x.segment(13, 13));
-	file
-	  << (matplotlib
-	      << plot_spline (*spline, step)
-	      << title ("initial B-spline 1 after first optimization pass")
-	      << plot_spline (*spline2, step)
-	      << title ("initial B-spline 2 after first optimization pass")
-	      ) << std::endl;
-
-        std::cout << result << std::endl;
-        break;
-      }
-
-    case solver_t::SOLVER_VALUE_WARNINGS:
-      {
-        // Get the result.
-        roboptim::ResultWithWarnings& result = boost::get<roboptim::ResultWithWarnings> (res);
-
-        spline->setParameters(result.x.segment(0, 13));
-        spline2->setParameters(result.x.segment(13, 13));
-	file
-	  << (matplotlib
-	      << plot_spline (*spline, step)
-	      << title ("initial B-spline 1 after first optimization pass")
-	      << plot_spline (*spline2, step)
-	      << title ("initial B-spline 2 after first optimization pass")
-	      ) << std::endl;
-
-        std::cout << result << std::endl;
-        break;
-      }
-
-    case solver_t::SOLVER_NO_SOLUTION:
-    case solver_t::SOLVER_ERROR:
-      {
-        roboptim::SolverError err = boost::get<roboptim::SolverError> (res);
-        std::cout << "A solution should have been found. Failing..."
-		  << std::endl
-		  << err.what ()
-		  << std::endl;
-        roboptim::Result result = boost::get<roboptim::Result> (err.lastState());
-        std::cout << result << std::endl;
-
-        BOOST_CHECK(false);
-      }
-    }
   constraints.updateStartingPoint(0.32);
   range2.clear();
   range2.push_back((*spline)(0.32)[0]);
@@ -218,67 +243,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   SolverFactory<solver_t> newfactory ("ipopt-sparse", newproblem);
   solver_t& newsolver = newfactory ();
 
-  (*output) << newsolver << std::endl;
+  (*output) << newsolver.problem () << std::endl;
+
+  newsolver.parameters() = solver.parameters ();
+  newsolver.parameters()["ipopt.output_file"].value = std::string("test2.log");
+
+  res = newsolver.minimum();
+  processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
 
   std::cout << output->str () << std::endl;
   BOOST_CHECK (output->match_pattern ());
-
-  newsolver.parameters()["ipopt.tol"].value = 1e-5;
-  newsolver.parameters()["ipopt.output_file"].value = std::string("test2.log");
-  res = newsolver.minimum();
-  switch (res.which ())
-    {
-    case solver_t::SOLVER_VALUE:
-      {
-        // Get the result.
-        roboptim::Result& result = boost::get<roboptim::Result> (res);
-
-        spline->setParameters(result.x.segment(0, 13));
-        spline2->setParameters(result.x.segment(13, 13));
-	file
-	  << (matplotlib
-	      << plot_spline (*spline, step)
-	      << title ("initial B-spline 1 after second optimization pass")
-	      << plot_spline (*spline2, step)
-	      << title ("initial B-spline 2 after second optimization pass")
-	      ) << std::endl;
-
-        std::cout << result << std::endl;
-        break;
-      }
-
-    case solver_t::SOLVER_VALUE_WARNINGS:
-      {
-        // Get the result.
-        roboptim::ResultWithWarnings& result = boost::get<roboptim::ResultWithWarnings> (res);
-
-        spline->setParameters(result.x.segment(0, 13));
-        spline2->setParameters(result.x.segment(13, 13));
-	file
-	  << (matplotlib
-	      << plot_spline (*spline, step)
-	      << title ("initial B-spline 1 after first optimization pass")
-	      << plot_spline (*spline2, step)
-	      << title ("initial B-spline 2 after first optimization pass")
-	      ) << std::endl;
-
-        std::cout << result << std::endl;
-        break;
-      }
-
-    case solver_t::SOLVER_NO_SOLUTION:
-    case solver_t::SOLVER_ERROR:
-      {
-        roboptim::SolverError err = boost::get<roboptim::SolverError> (res);
-        std::cout << "A solution should have been found. Failing..."
-		  << std::endl
-		  << err.what ()
-		  << std::endl;
-        roboptim::Result result = boost::get<roboptim::Result> (err.lastState());
-        std::cout << result << std::endl;
-
-        BOOST_CHECK(false);
-      }
-    }
 }
 BOOST_AUTO_TEST_SUITE_END ()
