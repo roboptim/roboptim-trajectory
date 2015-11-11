@@ -16,6 +16,8 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
+#include <vector>
+
 #include <boost/filesystem/fstream.hpp>
 
 #include <roboptim/core/io.hh>
@@ -46,74 +48,93 @@ typedef boost::mpl::list< ::roboptim::trajectory::CubicBSpline,
 			  ::roboptim::trajectory::BSpline<3> > splinesType_t;
 
 template <typename T>
-void splineName(std::string& str);
+std::string splineName();
 
 template <>
-void splineName<roboptim::trajectory::CubicBSpline>(std::string& str)
+std::string splineName<roboptim::trajectory::CubicBSpline> ()
 {
-  str = "cubic-b-spline";
+  return "cubic-b-spline";
 }
 
 template <>
-void splineName<roboptim::trajectory::BSpline<3> >(std::string& str)
+std::string splineName<roboptim::trajectory::BSpline<3> > ()
 {
-  str = "b-spline";
+  return "b-spline";
 }
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
 {
+  boost::shared_ptr<boost::test_tools::output_test_stream>
+    output = retrievePattern ("problem-over-splines");
+
   std::cout.precision(10);
+
   typedef EigenMatrixSparse T;
-  typedef Solver<GenericDifferentiableFunction<T>,
-		 boost::mpl::vector<GenericLinearFunction<T>,
-				    GenericDifferentiableFunction<T> > > solver_t;
+  typedef Solver<T> solver_t;
   typedef typename spline_t::vector_t param_t;
   typedef GenericConstantFunction<T>::value_type value_type;
-  std::string spline_name;
-  splineName<spline_t>(spline_name);
-  boost::filesystem::ofstream file("problem-over-splines-" + spline_name + ".py");
-  value_type step = 0.005;
-  param_t params(13);
-  params << 40,25,5,0,8,15,0,10,3,-5,15,22,35;
-  boost::shared_ptr<spline_t> spline = boost::make_shared<spline_t>(std::make_pair(0,1), 1, params, "First spline", false);
+
+  std::string spline_name = splineName<spline_t> ();
+  boost::filesystem::ofstream file ("problem-over-splines-" + spline_name + ".py");
+
   std::vector<boost::shared_ptr<spline_t> > splines;
-  splines.push_back(spline);
-  param_t params2(13);
+  value_type step = 0.005;
+
+  int n = 13;
+  param_t params (n);
+  params << 40,25,5,0,8,15,0,10,3,-5,15,22,35;
+
+  boost::shared_ptr<spline_t> spline
+    = boost::make_shared<spline_t> (std::make_pair (0,1), 1, params, "First spline", false);
+  splines.push_back (spline);
+
+  param_t params2 (n);
   params2 << 10,12,9,8,25,15,24,20,1,5,12,-12,3;
-  boost::shared_ptr<spline_t> spline2 = boost::make_shared<spline_t>(std::make_pair(0,1), 1, params2, "Second spline", true);
-  splines.push_back(spline2);
+  boost::shared_ptr<spline_t> spline2
+    = boost::make_shared<spline_t> (std::make_pair (0,1), 1, params2, "Second spline", true);
+  splines.push_back (spline2);
+
+  // Create the problem
   solver_t::problem_t::intervals_t range;
   std::vector<value_type> range2;
-  JerkOverSplinesFactory<spline_t, T> jerkFactory(splines, GenericConstantFunction<T>::makeInterval(0, 1));
-  solver_t::problem_t pb (*jerkFactory.getJerk());
-  ProblemOverSplinesFactory<T, spline_t> constraints(splines, pb);
-  BOOST_CHECK(pb.constraints().size() == 0);
-  constraints.updateStartingPoint(0.02);
-  range.clear();
-  range.push_back(std::make_pair<value_type, value_type>(0, 5));
-  range.push_back(std::make_pair<value_type, value_type>(0, 5));
-  constraints.addConstraint(0.02, 0, range);
-  range.clear();
-  range.push_back(std::make_pair<value_type, value_type>(1, 10));
-  range.push_back(std::make_pair<value_type, value_type>(3, 8));
-  constraints.addConstraint(0.62, 1, range);
-  BOOST_CHECK(constraints.getProblem().constraints().size() == 4);
-  solver_t::problem_t problem (constraints.getProblem());
+  JerkOverSplinesFactory<spline_t, T>
+    jerkFactory (splines, Function::makeInterval (0, 1));
+  solver_t::problem_t pb (jerkFactory.getJerk ());
 
-  param_t startingPoint(26);
+  // Create the factory and add some constraints
+  ProblemOverSplinesFactory<T, spline_t> constraints (splines, pb);
+  BOOST_CHECK (pb.constraints().size() == 0);
+
+  constraints.updateStartingPoint (0.02);
+  range.clear();
+  range.push_back (std::make_pair<value_type, value_type> (0, 5));
+  range.push_back (std::make_pair<value_type, value_type> (0, 5));
+
+  constraints.addConstraint (0.02, 0, range);
+  range.clear ();
+  range.push_back (std::make_pair<value_type, value_type> (1, 10));
+  range.push_back (std::make_pair<value_type, value_type> (3, 8));
+  constraints.addConstraint (0.62, 1, range);
+
+  BOOST_CHECK (constraints.getProblem ().constraints ().size () == 4);
+  solver_t::problem_t problem (constraints.getProblem ());
+
+  // Set starting point
+  param_t startingPoint (2*n);
   startingPoint << params, params2;
-  problem.startingPoint() = startingPoint;
+  problem.startingPoint () = startingPoint;
+
+  // Initialize solver
   SolverFactory<solver_t> factory ("ipopt-sparse", problem);
-
   solver_t& solver = factory ();
-
-  std::cout << solver << std::endl;
-
   solver.parameters()["ipopt.tol"].value = 1e-5;
   solver.parameters()["ipopt.output_file"].value = std::string("test.log");
   solver.parameters()["ipopt.print_level"].value = 12;
+
+  (*output) << solver << std::endl;
+
   typename solver_t::result_t res = solver.minimum();
   Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 2));
   (file)
@@ -197,7 +218,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   SolverFactory<solver_t> newfactory ("ipopt-sparse", newproblem);
   solver_t& newsolver = newfactory ();
 
-  std::cout << newsolver << std::endl;
+  (*output) << newsolver << std::endl;
+
+  std::cout << output->str () << std::endl;
+  BOOST_CHECK (output->match_pattern ());
 
   newsolver.parameters()["ipopt.tol"].value = 1e-5;
   newsolver.parameters()["ipopt.output_file"].value = std::string("test2.log");

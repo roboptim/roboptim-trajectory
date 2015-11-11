@@ -23,6 +23,60 @@ namespace roboptim
   namespace trajectory
   {
     template <typename T, typename S>
+    ProblemOverSplinesFactory<T,S>::ProblemOverSplinesFactory (const splines_t& splines, problem_t& problem)
+      : splines_ (splines),
+	dimension_ (),
+	problem_ (boost::make_shared<problem_t>(problem)),
+	t0_ (),
+	range_ (2),
+	inputsize_ (0),
+	factory_ (),
+	constraints_ ()
+    {
+      int dimension = splines[0]->dimension();
+      std::pair<value_type, value_type> timerange = splines[0]->timeRange();
+      for (unsigned long i = 0; i < splines.size(); ++i)
+	{
+	  if (splines[i]->dimension() != dimension || splines[i]->timeRange() != timerange)
+	    throw std::runtime_error ("Splines are not comparable");
+	  else
+	    inputsize_ += splines[i]->getNumberControlPoints();
+	}
+      dimension_ = static_cast<unsigned long>(dimension);
+      t0_ = timerange.first;
+      tmax_ = timerange.second;
+      factory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >(splines_, S::makeInterval(t0_, tmax_));
+    }
+
+    template <typename T, typename S>
+    typename ProblemOverSplinesFactory<T, S>::value_type
+    ProblemOverSplinesFactory<T, S>::t0 () const
+    {
+      return t0_;
+    }
+
+    template <typename T, typename S>
+    typename ProblemOverSplinesFactory<T, S>::value_type&
+    ProblemOverSplinesFactory<T, S>::t0 ()
+    {
+      return t0_;
+    }
+
+    template <typename T, typename S>
+    typename ProblemOverSplinesFactory<T, S>::value_type
+    ProblemOverSplinesFactory<T, S>::tmax () const
+    {
+      return tmax_;
+    }
+
+    template <typename T, typename S>
+    typename ProblemOverSplinesFactory<T, S>::value_type&
+    ProblemOverSplinesFactory<T, S>::tmax ()
+    {
+      return tmax_;
+    }
+
+    template <typename T, typename S>
     void ProblemOverSplinesFactory<T, S>::addSpline (S& spline)
     {
       if (static_cast<unsigned long>(spline.dimension()) == dimension_
@@ -35,12 +89,15 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::updateRange (interval_t newRange, bool buildCostFunction)
+    void ProblemOverSplinesFactory<T, S>::updateRange (interval_t newRange,
+						       bool buildCostFunction)
     {
       assert(newRange.first >= t0_);
       assert(newRange.first < newRange.second);
-      t0 (newRange.first);
-      tmax (newRange.second);
+
+      t0_ = newRange.first;
+      tmax_ = newRange.second;
+
       updateProblem(buildCostFunction);
     }
 
@@ -73,16 +130,25 @@ namespace roboptim
     template <typename T, typename S>
     void ProblemOverSplinesFactory<T, S>::addConstraint(value_type startingPoint, int order, intervals_t range, scalingVect_t scaling)
     {
-      assert (problem_->function().inputSize() == inputsize_);
-      constraints_.resize(constraints_.size() + 1);
-      constraints_.back().first = startingPoint;
-      for (unsigned long i = 0; i < splines_.size(); ++i)
+      assert (problem_->function ().inputSize () == inputsize_);
+      constraints_.resize (constraints_.size () + 1);
+      constraints_.back ().first = startingPoint;
+
+      for (unsigned long i = 0; i < splines_.size (); ++i)
 	{
-	  range_[0] = S::makeLowerInterval(range[i].first);
-	  range_[1] = S::makeUpperInterval(range[i].second);
-	  constraints_.back().second.push_back(boost::make_tuple(boost::make_shared<ConstraintsOverSplines<T, S> >(splines_, i, order, startingPoint, inputsize_), range_, scaling[i]));
+	  range_[0] = S::makeLowerInterval (range[i].first);
+	  range_[1] = S::makeUpperInterval (range[i].second);
+
+	  constraints_.back ().second.push_back
+            (boost::make_tuple (boost::make_shared<splinesConstraint_t>
+                                (splines_, i, order, startingPoint, inputsize_),
+                                range_, scaling[i]));
+
 	  if (startingPoint < tmax_ && startingPoint >= t0_)
-	    problem_->addConstraint(boost::get<0>(boost::get<constraint_t>(constraints_.back().second.back())), range_, scaling[i]);
+	    problem_->addConstraint
+              (boost::get<0> (boost::get<globalConstraint_t>
+                              (constraints_.back ().second.back ())),
+               range_, scaling[i]);
 	}
     }
 
@@ -122,21 +188,26 @@ namespace roboptim
 	  pb = boost::make_shared<problem_t>(problem_->function());
 	  problem_ = pb;
 	}
-      constraint_t c;
+
+      globalConstraint_t g;
       freeze_t f;
-      for (unsigned long i = 0; i < constraints_.size(); ++i)
-        if (constraints_[i].first >= t0_ && constraints_[i].first <= tmax_)
-          for (unsigned long j = 0; j < constraints_[i].second.size(); ++j)
+      for (typename problemConstraints_t::iterator
+	     c = constraints_.begin (); c != constraints_.end (); ++c)
+        if (c->first >= t0_ && c->first <= tmax_)
+          for (typename std::vector<supportedConstraint_t>::iterator
+		 ci  = c->second.begin (); ci != c->second.end (); ++ci)
 	    {
-	      switch (constraints_[i].second[j].which())
+	      switch (ci->which())
 		{
 		case 0 :
-		  c = boost::get<constraint_t>(constraints_[i].second[j]);
-		  problem_->addConstraint(boost::get<0>(c), boost::get<1>(c), boost::get<2>(c));
+		  g = boost::get<globalConstraint_t> (*ci);
+		  problem_->addConstraint (boost::get<0> (g), boost::get<1> (g),
+					   boost::get<2> (g));
 		  break;
 		case 1 :
-		  f = boost::get<freeze_t>(constraints_[i].second[j]);
-		  problem_->addConstraint(boost::get<0>(f), boost::get<1>(f), boost::get<2>(f));
+		  f = boost::get<freeze_t> (*ci);
+		  problem_->addConstraint (boost::get<0>(f), boost::get<1>(f),
+					   boost::get<2>(f));
 		  break;
 		}
 	    }

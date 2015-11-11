@@ -18,80 +18,67 @@
 #ifndef ROBOPTIM_TRAJECTORY_PROBLEM_OVER_SPLINES_FACTORY_HH
 # define ROBOPTIM_TRAJECTORY_PROBLEM_OVER_SPLINES_FACTORY_HH
 
-#include <boost/tuple/tuple.hpp>
-#include <roboptim/core/problem.hh>
-#include <roboptim/core/numeric-linear-function.hh>
-#include <roboptim/trajectory/constraints-over-splines.hh>
-#include <roboptim/trajectory/jerk-over-splines-factory.hh>
+# include <vector>
+
+# include <boost/tuple/tuple.hpp>
+# include <boost/shared_ptr.hpp>
+# include <boost/variant.hpp>
+
+# include <roboptim/core/problem.hh>
+# include <roboptim/core/numeric-linear-function.hh>
+# include <roboptim/trajectory/constraints-over-splines.hh>
+# include <roboptim/trajectory/jerk-over-splines-factory.hh>
 
 namespace roboptim
 {
   namespace trajectory
   {
-    /// \brief Factory of problems over Splines
+    /// \brief Factory of problems over splines.
     ///
-    /// \tparam T Matrix type
-    /// \tparam S Spline type
+    /// \tparam T Matrix type.
+    /// \tparam S Spline type.
     template <typename T, typename S>
     class ProblemOverSplinesFactory
     {
       typedef typename S::value_type value_type;
       typedef typename S::interval_t interval_t;
-      typedef typename GenericNumericLinearFunction<T>::vector_t vector_t;
-      typedef typename GenericNumericLinearFunction<T>::matrix_t matrix_t;
-      typedef roboptim::Problem<GenericDifferentiableFunction<T>,
-				boost::mpl::vector<GenericLinearFunction<T>,
-						   GenericDifferentiableFunction<T> > > problem_t;
+
+      typedef Problem<T> problem_t;
       typedef typename problem_t::scaling_t scaling_t;
       typedef typename problem_t::scalingVect_t scalingVect_t;
       typedef typename problem_t::intervals_t intervals_t;
-      typedef boost::tuple<boost::shared_ptr<ConstraintsOverSplines<T, S> >, intervals_t, scaling_t> constraint_t;
-      typedef boost::tuple<boost::shared_ptr<GenericNumericLinearFunction<T> >,interval_t, value_type> freeze_t;
+      typedef typename problem_t::function_t function_t;
+      typedef typename problem_t::constraint_t constraint_t;
+      typedef std::vector<constraint_t> constraints_t;
+      typedef typename function_t::vector_t vector_t;
+      typedef typename function_t::matrix_t matrix_t;
+
+      typedef ConstraintsOverSplines<T, S> splinesConstraint_t;
+      typedef boost::shared_ptr<splinesConstraint_t> splinesConstraintPtr_t;
+      typedef boost::tuple<splinesConstraintPtr_t, intervals_t, scaling_t>
+      globalConstraint_t;
+
+      typedef GenericNumericLinearFunction<T> numericLinearConstraint_t;
+      typedef boost::shared_ptr<numericLinearConstraint_t> numericLinearConstraintPtr_t;
+      typedef boost::tuple<numericLinearConstraintPtr_t, interval_t, value_type>
+      freeze_t;
+
+      typedef boost::variant<globalConstraint_t, freeze_t> supportedConstraint_t;
+
+      typedef std::vector<boost::shared_ptr<S> > splines_t;
+
+      /// The constraints are stored with their given startingPoint/time.
+      typedef std::vector<std::pair<value_type, std::vector<supportedConstraint_t> > >
+      problemConstraints_t;
+
     public:
-      ProblemOverSplinesFactory (std::vector<boost::shared_ptr<S> >& splines, problem_t& problem)
-        : splines_ (splines),
-	  dimension_ (),
-	  problem_ (boost::make_shared<problem_t>(problem)),
-	  t0_ (),
-	  range_ (2),
-	  inputsize_ (0),
-	  factory_ (),
-	  constraints_ ()
-      {
-        int dimension = splines[0]->dimension();
-        std::pair<value_type, value_type> timerange = splines[0]->timeRange();
-        for (unsigned long i = 0; i < splines.size(); ++i)
-	  {
-	    if (splines[i]->dimension() != dimension || splines[i]->timeRange() != timerange)
-	      throw std::runtime_error ("Splines are not comparable");
-	    else
-	      inputsize_ += splines[i]->getNumberControlPoints();
-	  }
-        dimension_ = static_cast<unsigned long>(dimension);
-        t0_ = timerange.first;
-        tmax_ = timerange.second;
-        factory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >(splines_, S::makeInterval(t0_, tmax_));
-      }
+      ProblemOverSplinesFactory (const splines_t& splines, problem_t& problem);
 
-      value_type t0 ()
-      {
-        return t0_;
-      }
+      value_type t0 () const;
+      value_type& t0 ();
 
-      void t0 (value_type value)
-      {
-        t0_ = value;
-      }
-
-      value_type tmax ()
-      {
-        return tmax_;
-      }
-
-      void tmax (value_type value)
-      {
-        tmax_ = value;
-      }
+      value_type tmax () const;
+      value_type& tmax ();
 
       /// \brief Updates the range of the optimization problem
       ///
@@ -176,7 +163,7 @@ namespace roboptim
       const boost::shared_ptr<GenericNumericLinearFunction<T> > localConstraint(value_type time, int order, value_type value, unsigned long spline);
 
       /// \brief Shared pointers to the splines used in the problem
-      std::vector<boost::shared_ptr<S> >& splines_;
+      splines_t splines_;
 
       /// \brief Dimension of the problem
       unsigned long dimension_;
@@ -197,16 +184,13 @@ namespace roboptim
       long inputsize_;
 
       /// \brief Jerk cost function factory
-      ///
       /// Default behaviour is to use it, since when the range is updated, the
       /// factory also updates the jerk. But if the user wants to provide its
       /// own cost function, it will be ignored
       boost::shared_ptr<JerkOverSplinesFactory<S, T> > factory_;
 
       /// \brief Constraints of the problem
-      ///
-      /// The constraints are stored with their given startingPoint/time.
-      std::vector<std::pair<value_type, std::vector<boost::variant<constraint_t, freeze_t> > > > constraints_;
+      problemConstraints_t constraints_;
     };
   }
 }
