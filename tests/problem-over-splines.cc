@@ -214,7 +214,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   SolverFactory<solver_t> factory ("ipopt-sparse", problem);
   solver_t& solver = factory ();
   solver.parameters()["ipopt.tol"].value = 1e-3;
-  solver.parameters()["ipopt.output_file"].value = std::string("test.log");
+  solver.parameters()["ipopt.linear_solver"].value = std::string (IPOPT_LINEAR_SOLVER);
+  solver.parameters()["ipopt.output_file"].value = std::string ("test.log");
 
   (*output) << solver.problem () << std::endl;
 
