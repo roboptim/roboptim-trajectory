@@ -116,7 +116,8 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addConstraint(value_type time, int order, std::vector<value_type> value, scaling_t scaling)
+    void ProblemOverSplinesFactory<T, S>::addConstraint
+    (value_type time, int order, const std::vector<value_type>& value, scaling_t scaling)
     {
       assert (problem_->function().inputSize() == inputsize_);
       constraints_.resize(constraints_.size() + 1);
@@ -130,7 +131,8 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addConstraint(value_type startingPoint, int order, intervals_t range, scalingVect_t scaling)
+    void ProblemOverSplinesFactory<T, S>::addConstraint
+    (value_type startingPoint, int order, const intervals_t& range, const scalingVect_t& scaling)
     {
       assert (problem_->function ().inputSize () == inputsize_);
       constraints_.resize (constraints_.size () + 1);
@@ -155,7 +157,8 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addConstraint(value_type time, int order, std::vector<value_type> value)
+    void ProblemOverSplinesFactory<T, S>::addConstraint
+    (value_type time, int order, const std::vector<value_type>& value)
     {
       scaling_t scaling (value.size());
       for (unsigned long i = 0; i < scaling.size(); ++i)

@@ -113,7 +113,8 @@ namespace roboptim
       /// \param order Derivation order (0 for no derivation)
       /// \param value Goals of the constraints for each spline
       /// \param scaling Scalings of the constraints for each spline
-      void addConstraint(value_type time, int order, std::vector<value_type> value, scaling_t scaling);
+      void addConstraint (value_type time, int order,
+          const std::vector<value_type>& value, scaling_t scaling);
 
       /// \brief Adds contraints on every spline starting at a given time
       ///
@@ -126,19 +127,21 @@ namespace roboptim
       /// \param order Derivation order (0 for no derivation)
       /// \param range Bounds of the constraint for each spline
       /// \param scaling Scalings of the constraints for each spline
-      void addConstraint(value_type startingPoint, int order, intervals_t range, scalingVect_t scaling);
+      void addConstraint (value_type startingPoint, int order,
+          const intervals_t& range, const scalingVect_t& scaling);
 
       /// \brief Adds freezing contraints on every spline at a given time
       ///
       /// Calls the corresponding addConstraint with a scaling set to 1 for each
       /// spline.
-      void addConstraint(value_type time, int order, std::vector<value_type> value);
+      void addConstraint (value_type time, int order,
+          const std::vector<value_type>& value);
 
       /// \brief Adds contraints on every spline starting at a given time
       ///
       /// Calls the corresponding addConstraint with a scaling set to 1 for each
       /// spline.
-      void addConstraint(value_type startingPoint, int order, intervals_t range);
+      void addConstraint (value_type startingPoint, int order, intervals_t range);
 
       problem_t& getProblem() const
       {
