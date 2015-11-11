@@ -226,16 +226,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
 
   constraints.updateStartingPoint(0.32);
   range2.clear();
-  range2.push_back((*spline)(0.32)[0]);
-  range2.push_back((*spline2)(0.32)[0]);
+  range2.push_back((*spline)(0.32)[0] + 1e-1);
+  range2.push_back((*spline2)(0.32)[0] - 1e-1);
   constraints.addConstraint(0.32, 0, range2);
   range2.clear();
-  range2.push_back(spline->derivative(0.32, 1)[0]);
-  range2.push_back(spline2->derivative(0.32, 1)[0]);
+  range2.push_back(spline->derivative(0.32, 1)[0] + 5.);
+  range2.push_back(spline2->derivative(0.32, 1)[0] - 5.);
   constraints.addConstraint(0.32, 1, range2);
   range2.clear();
-  range2.push_back(spline->derivative(0.32, 2)[0]);
-  range2.push_back(spline2->derivative(0.32, 2)[0]);
+  range2.push_back(spline->derivative(0.32, 2)[0] + 10.);
+  range2.push_back(spline2->derivative(0.32, 2)[0] - 10.);
   constraints.addConstraint(0.32, 2, range2);
   solver_t::problem_t newproblem (constraints.getProblem());
   BOOST_CHECK(newproblem.constraints().size() == 8);
