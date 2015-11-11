@@ -18,6 +18,8 @@
 #ifndef ROBOPTIM_TRAJECTORY_PROBLEM_OVER_SPLINES_FACTORY_HXX
 # define ROBOPTIM_TRAJECTORY_PROBLEM_OVER_SPLINES_FACTORY_HXX
 
+# include <boost/format.hpp>
+
 namespace roboptim
 {
   namespace trajectory
@@ -40,7 +42,7 @@ namespace roboptim
 	  if (splines[i]->dimension() != dimension || splines[i]->timeRange() != timerange)
 	    throw std::runtime_error ("Splines are not comparable");
 	  else
-	    inputsize_ += splines[i]->getNumberControlPoints();
+	    inputsize_ += static_cast<size_type> (splines[i]->getNumberControlPoints ());
 	}
       dimension_ = static_cast<unsigned long>(dimension);
       t0_ = timerange.first;
@@ -84,7 +86,7 @@ namespace roboptim
           && spline.timeRange().second == tmax_)
 	{
 	  splines_.push_back(boost::make_shared<S>(spline));
-	  inputsize_ += spline.getNumberControlPoints();
+	  inputsize_ += static_cast<size_type> (spline.getNumberControlPoints());
 	}
     }
 
@@ -214,19 +216,39 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    const boost::shared_ptr<GenericNumericLinearFunction<T> > ProblemOverSplinesFactory<T, S>::localConstraint(value_type time, int order, value_type value, unsigned long spline)
+    const typename ProblemOverSplinesFactory<T, S>::numericLinearConstraintPtr_t
+    ProblemOverSplinesFactory<T, S>::localConstraint (value_type time,
+						      int order,
+						      value_type value,
+                                                      unsigned long spline_idx)
     {
-      matrix_t A (1, static_cast<int>(inputsize_));
+      matrix_t A (1, static_cast<typename matrix_t::Index> (inputsize_));
       vector_t B (1);
       A.setZero();
       B.coeffRef(0) = -value;
       int splineOffset = 0;
-      for (unsigned long i = 0; i < spline; ++i)
-        splineOffset += static_cast<int>(splines_[i]->getNumberControlPoints());
-      for (int j = 0; j < splines_[spline]->dimension() + 1; ++j)
-	A.coeffRef(0, splineOffset + static_cast<int>(splines_[spline]->interval(time)) - j) =
-	  splines_[spline]->basisPolynomials()[static_cast<unsigned long>(splines_[spline]->interval(time) - j)][static_cast<unsigned long>(j)].derivative(time, order);
-      return boost::make_shared<GenericNumericLinearFunction<T> >(A, B);
+
+      const splinePtr_t& spline = splines_[spline_idx];
+
+      for (unsigned long i = 0; i < spline_idx; ++i)
+        splineOffset += static_cast<int> (splines_[i]->getNumberControlPoints ());
+
+      for (int j = 0; j < spline->dimension() + 1; ++j)
+	{
+	  int col = splineOffset + static_cast<int> (spline->interval(time)) - j;
+	  unsigned long k = static_cast<unsigned long> (spline->interval(time) - j);
+	  A.coeffRef (0, col) = spline->
+	    basisPolynomials()[k][static_cast<unsigned long>(j)].derivative(time, order);
+	}
+
+      std::string name;
+      if (order == 0)
+        name = (boost::format ("f(%.3f) = %.3f (%s)")
+            % time % value % spline->getName ()).str ();
+      else
+        name = (boost::format ("f^(%i) (%.3f) = %.3f (%s)")
+            % order % time % value % spline->getName ()).str ();
+      return boost::make_shared<numericLinearConstraint_t> (A, B, name);
     }
   }
 }

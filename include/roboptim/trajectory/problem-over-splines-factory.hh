@@ -41,6 +41,7 @@ namespace roboptim
     class ProblemOverSplinesFactory
     {
       typedef typename S::value_type value_type;
+      typedef typename S::size_type  size_type;
       typedef typename S::interval_t interval_t;
 
       typedef Problem<T> problem_t;
@@ -65,6 +66,8 @@ namespace roboptim
 
       typedef boost::variant<globalConstraint_t, freeze_t> supportedConstraint_t;
 
+      typedef S spline_t;
+      typedef boost::shared_ptr<spline_t> splinePtr_t;
       typedef std::vector<boost::shared_ptr<S> > splines_t;
 
       /// The constraints are stored with their given startingPoint/time.
@@ -160,7 +163,10 @@ namespace roboptim
       /// \param order Derivation order (0 for no derivation)
       /// \param value Goal of the constraint
       /// \param spline Index of the spline in the vector
-      const boost::shared_ptr<GenericNumericLinearFunction<T> > localConstraint(value_type time, int order, value_type value, unsigned long spline);
+      const numericLinearConstraintPtr_t localConstraint (value_type time,
+          int order,
+          value_type value,
+          unsigned long spline);
 
       /// \brief Shared pointers to the splines used in the problem
       splines_t splines_;
@@ -181,7 +187,7 @@ namespace roboptim
       intervals_t range_;
 
       /// \brief Input size of the cost function
-      long inputsize_;
+      size_type inputsize_;
 
       /// \brief Jerk cost function factory
       /// Default behaviour is to use it, since when the range is updated, the

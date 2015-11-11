@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   BOOST_CHECK(newproblem.constraints().size() == 8);
   startingPoint << spline->parameters(), spline2->parameters();
   newproblem.startingPoint() = startingPoint;
-  SolverFactory<solver_t> newfactory ("ipopt-sparse", newproblem);
+  SolverFactory<solver_t> newfactory (TESTSUITE_SOLVER "-sparse", newproblem);
   solver_t& newsolver = newfactory ();
 
   (*output) << newsolver.problem () << std::endl;
