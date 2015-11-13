@@ -21,6 +21,7 @@
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/b-spline.hh>
 
+#include <roboptim/core/decorator/finite-difference-gradient.hh>
 #include <roboptim/core/visualization/gnuplot.hh>
 #include <roboptim/core/visualization/gnuplot-commands.hh>
 #include <roboptim/core/visualization/gnuplot-function.hh>
@@ -44,6 +45,62 @@ typedef Function::value_type value_type;
 typedef Function::size_type size_type;
 
 static value_type tol = 1e4 * std::numeric_limits<value_type>::epsilon ();
+
+template <int N>
+struct SplineDerivWrtParameters : public DifferentiableFunction
+{
+  typedef BSpline<N> spline_t;
+
+  SplineDerivWrtParameters (const spline_t& spline, value_type t)
+    : DifferentiableFunction
+      (spline.parameters ().size (), spline.outputSize (),
+       "spline differentiable w.r.t parameters"),
+      spline_ (spline),
+      t_ (t)
+  {}
+
+  virtual void
+  impl_compute (result_ref result, const_argument_ref x)
+    const
+  {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+    spline_t spline (spline_);
+    spline.setParameters (x);
+    result = spline (t_);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+  }
+
+  virtual void
+  impl_gradient (gradient_ref gradient,
+		 const_argument_ref x,
+		 size_type functionId = 0)
+    const
+  {
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    bool cur_malloc_allowed = is_malloc_allowed ();
+    set_is_malloc_allowed (true);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+
+    spline_t spline (spline_);
+    spline.setParameters (x);
+    gradient = spline.variationConfigWrtParam (t_).row (functionId);
+
+#ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+    set_is_malloc_allowed (cur_malloc_allowed);
+#endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
+  }
+
+private:
+  const spline_t& spline_;
+  value_type t_;
+};
 
 template <int N>
 struct spline_checks
@@ -214,13 +271,44 @@ void test_derivative ()
 {
   for (int dimension = 1; dimension < 2; dimension++)
     {
-      std::pair<value_type, value_type> interval = std::make_pair (0., 1.);
+      typename BSpline<N>::interval_t interval = std::make_pair (0., 1.);
       int min_params = N + 1 + 10;
       vector_t params (dimension * min_params);
       params.setRandom ();
       params *= 10.;
 
       spline_checks<N>::template check_derivative<ORDER> (interval, dimension, params);
+    }
+}
+
+template <int N>
+void test_fd ()
+{
+  int min_params = N + 1 + 10;
+  vector_t params (min_params);
+  params.setRandom ();
+  params *= 10.;
+
+  typename BSpline<N>::interval_t interval = std::make_pair (0., 1.);
+  BSpline<N> spline (interval, 1, params);
+
+  // Check gradients with finite-differences
+  for (value_type t = 0.; t < 1.; t += 1e-3)
+    {
+      try
+        {
+          vector_t x (1);
+          x[0] = t;
+          checkGradientAndThrow (spline, 0, x);
+
+          SplineDerivWrtParameters<N> splineDerivWrtParams (spline, t);
+          checkGradientAndThrow (splineDerivWrtParams, 0, spline.parameters ());
+        }
+      catch (BadGradient<EigenMatrixDense>& bg)
+        {
+          std::cerr << bg << std::endl;
+          BOOST_CHECK(false);
+        }
     }
 }
 
@@ -352,6 +440,9 @@ BOOST_AUTO_TEST_CASE (trajectory_bspline)
   test_derivative<3,2> ();
   test_derivative<5,1> ();
   test_derivative<5,3> ();
+
+  test_fd<3> ();
+  test_fd<5> ();
 
   test_non_uniform<3> ();
   test_non_uniform<4> ();
