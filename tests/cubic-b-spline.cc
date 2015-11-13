@@ -94,6 +94,8 @@ private:
 typedef Function::value_type value_type;
 typedef Function::size_type size_type;
 
+static value_type tol = 1e4 * std::numeric_limits<value_type>::epsilon ();
+
 struct TestData
 {
   boost::shared_ptr<CubicBSpline> spline_1d_1;
@@ -179,10 +181,10 @@ void test_1d (TestData& data)
     {
       BOOST_CHECK_SMALL (std::abs (spline_1d_3 (t)[0]
 				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
-			 1e-8);
+			 tol);
       BOOST_CHECK_SMALL (std::abs (spline_1d_4 (t)[0]
 				   - (spline_1d_1 (t)[0] + spline_1d_2 (t)[0])),
-			 1e-8);
+			 tol);
     }
 }
 
@@ -268,7 +270,7 @@ void test_2d (TestData& data)
        i < params.size (); ++i)
     BOOST_CHECK_SMALL
       (spline_2d_2.parameters ()[i]-
-       spline_2d_2_copy->parameters ()[i], 1e-8);
+       spline_2d_2_copy->parameters ()[i], tol);
 
   BOOST_CHECK_THROW
     (CubicBSpline spline_1d_5 = *(data.spline_1d_1) + spline_2d_2;
@@ -386,21 +388,22 @@ void test_fd (const TestData& data)
         }
     }
 
+  // Check value at start
   for (value_type x = 0.; x < 10.; x += 0.25)
     {
       Function::vector_t params = spline_2d_1.parameters ();
       params[0 * 2] = 321;
       params[1 * 2] = 123;
-      params[2 * 2] =
-        6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
+      params[2 * 2] = 6. * (x - 1./6. * params[0 * 2] - 2. / 3. * params[1 * 2]);
 
-      assert (1. / 6. * params[0 * 2]
-              + 2. / 3. * params[1 * 2]
-              + 1. / 6. * params[2 * 2] - x < 1e-8);
+      value_type err = std::abs (1. / 6. * params[0 * 2]
+                               + 2. / 3. * params[1 * 2]
+                               + 1. / 6. * params[2 * 2] - x);
+      BOOST_CHECK_SMALL (err, tol);
 
       spline_2d_1.setParameters (params);
-      if (std::fabs (spline_2d_1 (0.)[0] - x) >= 1e-8)
-        std::cout << "# " << spline_2d_1 (0.)[0] << " != " << x << std::endl;
+      err = std::abs (spline_2d_1 (0.)[0] - x);
+      BOOST_CHECK_SMALL (err, tol);
     }
 }
 

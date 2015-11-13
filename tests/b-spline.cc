@@ -31,18 +31,19 @@
 #include <cmath>
 #include <iostream>
 
+#include <boost/test/floating_point_comparison.hpp>
+
 using namespace roboptim;
 using namespace roboptim::trajectory;
-using namespace std;
 
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
-
-static double tol = 1e-6;
 
 typedef Function::vector_t vector_t;
 typedef DifferentiableFunction::gradient_t gradient_t;
 typedef Function::value_type value_type;
 typedef Function::size_type size_type;
+
+static value_type tol = 1e4 * std::numeric_limits<value_type>::epsilon ();
 
 template <int N>
 struct spline_checks
@@ -74,17 +75,18 @@ spline_checks<3>::check_evaluate
   CubicBSpline old_spline (interval, dimension, params);
   BSpline<3> new_spline (interval, dimension, params);
 
+  gradient_t old_res (dimension);
+  gradient_t new_res (dimension);
+  gradient_t delta (dimension);
+
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
     {
-      gradient_t old_res (dimension);
-      gradient_t new_res (dimension);
-      gradient_t delta (dimension);
-
       old_spline.derivative (old_res, t, order);
       new_spline.derivative (new_res, t, order);
       delta = old_res - new_res;
 
-      BOOST_CHECK ((abs (delta.array ()) < tol).any ());
+      value_type max_err = delta.lpNorm<Eigen::Infinity> ();
+      BOOST_CHECK_SMALL (max_err, tol);
     }
 }
 
@@ -122,10 +124,14 @@ spline_checks<N>::check_derivative
 {
   BSpline<N> spline (interval, dimension, params);
   BSpline<N> deriv = spline.template derivative<ORDER> ();
+  gradient_t delta;
 
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
     {
-      BOOST_CHECK (allclose (deriv (t), spline.derivative (t, ORDER), tol));
+      delta = deriv (t) - spline.derivative (t, ORDER);
+
+      value_type max_err = delta.lpNorm<Eigen::Infinity> ();
+      BOOST_CHECK_SMALL (max_err, tol);
     }
 }
 
