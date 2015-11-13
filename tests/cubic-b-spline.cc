@@ -368,28 +368,39 @@ void test_fd (const TestData& data)
 {
   CubicBSpline spline_2d_1 = *(data.spline_2d_1);
 
-  // Check gradients with finite-differences
-  for (value_type t = 0.5; t < 5.; t += 0.5)
+  std::vector<CubicBSpline> splines;
+  splines.push_back (spline_2d_1);
+  splines.push_back (*(data.spline_1d_2_clamped));
+
+  for (std::vector<CubicBSpline>::const_iterator
+       spline  = splines.begin();
+       spline != splines.end();
+       ++spline)
+  {
+    // Check gradients with finite-differences
+    for (value_type t = 0.; t < 1.; t += 1e-3)
     {
       try
-        {
-          Function::vector_t x (1);
-          x[0] = t;
-          checkGradientAndThrow (spline_2d_1, 0, x);
+      {
+        Function::vector_t x (1);
+        x[0] = t;
+        checkGradientAndThrow (*spline, 0, x);
 
-          SplineDerivWrtParameters splineDerivWrtParams (spline_2d_1, t);
-          checkGradientAndThrow
-            (splineDerivWrtParams, 0, spline_2d_1.parameters ());
-        }
+        SplineDerivWrtParameters splineDerivWrtParams (*spline, t);
+        checkGradientAndThrow
+          (splineDerivWrtParams, 0, spline->parameters ());
+      }
       catch (BadGradient<EigenMatrixDense>& bg)
-        {
-          std::cerr << bg << std::endl;
-          BOOST_CHECK(false);
-        }
+      {
+        std::cerr << bg << std::endl;
+        BOOST_CHECK(false);
+      }
     }
+  }
 
+  // TODO: move this test to some other function
   // Check value at start
-  for (value_type x = 0.; x < 10.; x += 0.25)
+  for (value_type x = 0.; x < 1.; x += 1e-3)
     {
       Function::vector_t params = spline_2d_1.parameters ();
       params[0 * 2] = 321;
