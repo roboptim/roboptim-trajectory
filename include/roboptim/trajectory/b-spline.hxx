@@ -631,8 +631,8 @@ namespace trajectory
       << iendl << "Name: " << this->getName ()
       << iendl << "Number of parameters per spline function: " << nbp_
       << iendl << "Length: " << this->length ()
-      << iendl << "Knot vector: " << knots_
       << iendl << "Parameters: " << this->parameters ()
+      << iendl << "Knot vector: " << knots_
       << decindent;
     return o;
   }

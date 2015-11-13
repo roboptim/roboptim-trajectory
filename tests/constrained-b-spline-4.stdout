@@ -6,8 +6,8 @@ set multiplot layout 2,1
 #   Name: Constrained B-Spline
 #   Number of parameters per spline function: 9
 #   Length: 1
-#   Knot vector: [14](-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8)
 #   Parameters: [9](0.81027,13.2459,-2.84902,4.82405,-1.4948,4.76032,2.24148,18.9696,1.91737)
+#   Knot vector: [14](-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8)
 # Values:
 # [1](5)
 # [1](1)
@@ -119,8 +119,8 @@ e
 #   Name: Constrained B-Spline (order 1 derivative)
 #   Number of parameters per spline function: 9
 #   Length: 1
-#   Knot vector: [14](-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8)
 #   Parameters: [9](0.81027,13.2459,-2.84902,4.82405,-1.4948,4.76032,2.24148,18.9696,1.91737)
+#   Knot vector: [14](-0.8,-0.6,-0.4,-0.2,0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8)
 # Values:
 # [1](7.9464)
 # [1](7.9464)

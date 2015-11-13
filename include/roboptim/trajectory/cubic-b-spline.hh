@@ -100,8 +100,8 @@ namespace trajectory
     /// \brief Modify spline parameters.
     virtual void setParameters (const vector_t&);
 
-    virtual jacobian_t variationConfigWrtParam (double t) const;
-    virtual jacobian_t variationDerivWrtParam (double t, size_type order)
+    virtual jacobian_t variationConfigWrtParam (value_type t) const;
+    virtual jacobian_t variationDerivWrtParam (value_type t, size_type order)
       const;
     virtual value_type singularPointAtRank (size_type rank) const;
     virtual vector_t derivBeforeSingularPoint (size_type rank, size_type order)
@@ -153,7 +153,7 @@ namespace trajectory
     ///
     /// This method can be useful when one needs to have all the polynomials
     /// expressed in the same basis (e.g. t1 = 0).
-    void translateBasisPolynomials (double t1);
+    void translateBasisPolynomials (value_type t1);
 
     /// \brief Return the polynomial expression of the cubic B-spline on each
     /// time interval.
@@ -208,8 +208,8 @@ namespace trajectory
 
   protected:
     using Trajectory<3>::impl_compute;
-    void impl_compute (result_ref, double) const;
-    void impl_derivative (derivative_ref g, double x, size_type order)
+    void impl_compute (result_ref, value_type) const;
+    void impl_derivative (derivative_ref g, value_type x, size_type order)
       const;
     void impl_derivative (derivative_ref g, StableTimePoint, size_type order)
       const;

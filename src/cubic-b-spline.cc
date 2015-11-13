@@ -47,7 +47,7 @@ namespace trajectory
     // Fill vector of regularly spaced knots.
     size_type m = nbp_ + 4;
 
-    double delta_t = (tr.second - tr.first) / (static_cast<double> (m) - 7.);
+    value_type delta_t = (tr.second - tr.first) / (static_cast<value_type> (m) - 7.);
 
     knots_.resize (m);
     size_type kv_iter = 0;
@@ -63,7 +63,7 @@ namespace trajectory
 
 	// Note: we do not use an accumulator to get improved numerical precision
 	for (size_type i = 0; i < nbp_ - 2; i++) {
-	  knots_[kv_iter++] = tr.first + static_cast<double> (i) * delta_t;
+	  knots_[kv_iter++] = tr.first + static_cast<value_type> (i) * delta_t;
 	}
 
 	// The last 4 knots should be equal to tr.second.
@@ -76,7 +76,7 @@ namespace trajectory
       {
 	// Note: we do not use an accumulator to get improved numerical precision
 	for (size_type i = 0; i < m; i++) {
-	  knots_[kv_iter++] = tr.first + static_cast<double> (i-3) * delta_t;
+	  knots_[kv_iter++] = tr.first + static_cast<value_type> (i-3) * delta_t;
 	}
       }
 
@@ -135,38 +135,35 @@ namespace trajectory
 	basisPolynomials_.push_back
 	  (basisPolynomials_t ());
 	// t_j
-	double t0 = knots_[j];
+	value_type t0 = knots_[j];
 	// t_{j+1}
-	double t1 = knots_[j + 1];
+	value_type t1 = knots_[j + 1];
 	// t_{j+2}
-	double t2 = knots_[j + 2];
+	value_type t2 = knots_[j + 2];
 	// t_{j+3}
-	double t3 = knots_[j + 3];
+	value_type t3 = knots_[j + 3];
 	// t_{j+4}
-	double t4 = knots_[j + 4];
+	value_type t4 = knots_[j + 4];
 
 	Polynomial3 B0 =
 	  1./((t3-t0)*(t2-t0)*(t1-t0))
-	  * Monomial3(t0) * Monomial3(t0) * Monomial3(t0);
+	  * Monomial3 (t0) * Monomial3 (t0) * Monomial3 (t0);
 
 	Polynomial3 B1 =
 	  -1./((t3-t0)*(t2-t1)*(t2-t0))
-	  * Monomial3 (t0) * Monomial3 (t0)
-	  * Monomial3 (t2)
+	  * Monomial3 (t0) * Monomial3 (t0) * Monomial3 (t2)
 	  -1./((t3-t0)*(t3-t1)*(t2-t1))
-	  * Monomial3 (t0) * Monomial3 (t3)
-	  * Monomial3 (t1)
+	  * Monomial3 (t0) * Monomial3 (t3) * Monomial3 (t1)
 	  -1./((t4-t1)*(t3-t1)*(t2-t1))
 	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t1);
 
 	Polynomial3 B2 =
 	  1./((t3-t0)*(t3-t1)*(t3-t2))
-	  * Monomial3 (t0) * Monomial3 (t3)
-	  * Monomial3 (t3)
+	  * Monomial3 (t0) * Monomial3 (t3) * Monomial3 (t3)
 	  + 1./((t4-t1)*(t3-t1)*(t3-t2))
 	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t3)
 	  + 1./((t4-t1)*(t4-t2)*(t3-t2))
-	  *Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t2);
+	  * Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t2);
 
 	Polynomial3 B3 =
 	  -1./((t4-t1)*(t4-t2)*(t4-t3))

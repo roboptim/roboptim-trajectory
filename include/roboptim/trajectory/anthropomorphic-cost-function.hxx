@@ -51,7 +51,7 @@ namespace trajectory
     const value_type dy = p[p.size () - 2] - p[1 + 1];
     const value_type dtheta = p[p.size () - 1] - p[1 + 2];
 
-    alpha3_ = this->alpha3 (std::fabs (dtheta), dx * dx + dy * dy);
+    alpha3_ = this->alpha3 (std::abs (dtheta), dx * dx + dy * dy);
   }
 
   template <typename T>

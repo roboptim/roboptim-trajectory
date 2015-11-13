@@ -44,8 +44,8 @@ namespace trajectory
 	A (0, offset + i + 1 * outputSize ()) = 2. / 3.;
 	A (0, offset + i + 2 * outputSize ()) = 1. / 6.;
 	b (0) = -parameters ()[i];
-	NumericLinearFunction* boundaryCond = new NumericLinearFunction (A, b);
-	boost::shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
+	boost::shared_ptr<LinearFunction> boundaryCondShPtr
+          (new NumericLinearFunction (A, b));
 	problem.addConstraint (boundaryCondShPtr, interval);
       }
   }
@@ -70,8 +70,8 @@ namespace trajectory
 	A (0, offset + paramSize - 1 - i - 1 * outputSize ()) = 2. / 3.;
 	A (0, offset + paramSize - 1 - i - 2 * outputSize ()) = 1. / 6.;
 	b (0) = -parameters ()[paramSize - 1 - i];
-	NumericLinearFunction* boundaryCond = new NumericLinearFunction (A, b);
-	shared_ptr<LinearFunction> boundaryCondShPtr (boundaryCond);
+	shared_ptr<LinearFunction> boundaryCondShPtr
+          (new NumericLinearFunction (A, b));
 	problem.addConstraint (boundaryCondShPtr, interval);
       }
   }
