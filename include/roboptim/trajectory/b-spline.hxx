@@ -218,20 +218,22 @@ namespace trajectory
   typename BSpline<N>::cox_map
   BSpline<N>::cox_de_boor (size_type j, size_type n) const
   {
-    std::stringstream label;
-    label << "[j=" << j << "/n=" << n << "]";
+    ROBOPTIM_DEBUG_ONLY(std::stringstream label;
+    label << "[j=" << j << "/n=" << n << "]");
 
     if (n == 0) //end of recursion
       {
 	cox_map map;
-	Eigen::Matrix < value_type, N + 1, 1 > temp_params;
+	typename polynomial_t::coefs_t temp_params;
 	temp_params.setZero();
 	temp_params[0] = 1.;
 	std::pair<cox_map_itr_t, bool> ptr =
 	  map.insert (std::make_pair (j, polynomial_t (0., temp_params)));
 
-	LOG4CXX_DEBUG (this->logger, label.str() << "return(end)    : "
-		       << ptr.first->second);
+	ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                            label.str() << "return(end)    : "
+                                                        << ptr.first->second));
+
 	return map;
       }
     else
@@ -246,6 +248,7 @@ namespace trajectory
 	const value_type tn1 = knots_[j + n + 1];
 
 	polynomial_t p_1_rat = 1. / (tn - t0) * monomial_t (t0);
+
 	// http://wolftype.com/ucsb/spatial/bspline.html, uniform b-splines
 	if (std::isinf (p_1_rat.coefs ()[1]))
 	  {
@@ -253,25 +256,26 @@ namespace trajectory
 	    p_1_rat = monomial_t (t0);
 	  }
 
-	LOG4CXX_DEBUG (this->logger,
-		       label.str() << "p_1_rat        : "
-		       << p_1_rat);
+	ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                            label.str() << "p_1_rat        : "
+                                                        << p_1_rat));
 
 	cox_map p_1_cox = cox_de_boor (j, n - 1);
 	cox_map p_1;
 
 	for (cox_map_itr_t itr = p_1_cox.begin (); itr != p_1_cox.end(); itr++)
 	  {
-	    LOG4CXX_DEBUG (this->logger,
-			   label.str()
-			   << "p_1_cox        : " << itr->first
-			   << " : " << itr->second);
+	    ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                                label.str()
+                                                << "p_1_cox        : "
+                                                << itr->first
+                                                << " : " << itr->second));
 
 	    polynomial_t p_prod = itr->second * p_1_rat;
 
-	    LOG4CXX_DEBUG (this->logger,
-			   label.str() << "p_prod (1)     : "
-			   << p_prod);
+	    ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                                label.str() << "p_prod (1)     : "
+                                                            << p_prod));
 	    p_1.insert (std::make_pair (itr->first, p_prod));
 	  }
 
@@ -530,11 +534,12 @@ namespace trajectory
     // this is true for any knot vector (FIXME: reference)
     if (order == 0)
       {
-        // Note: if we deal with derived splines, then the
-        // sum is 0.
+        // Note: if we deal with derived splines, then the sum is 0.
+        // TODO: investigate floating-point errors.
+        ROBOPTIM_DEBUG_ONLY(value_type eps = 1e-8);
         assert
-          (std::abs (polynomial_sum - 1.) < 1e-8
-           || std::abs (polynomial_sum) < 1e-8);
+          (std::abs (polynomial_sum - 1.) < eps
+           || std::abs (polynomial_sum) < eps);
       }
   }
 
@@ -561,7 +566,6 @@ namespace trajectory
   BSpline<N>::variationDerivWrtParam (value_type t, size_type order)
     const
   {
-
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
     const size_type n = this->outputSize ();

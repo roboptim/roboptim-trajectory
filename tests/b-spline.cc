@@ -44,7 +44,8 @@ typedef DifferentiableFunction::gradient_t gradient_t;
 typedef Function::value_type value_type;
 typedef Function::size_type size_type;
 
-static value_type tol = 1e4 * std::numeric_limits<value_type>::epsilon ();
+// TODO: track floating-point errors.
+static value_type tol = 1e8 * std::numeric_limits<value_type>::epsilon ();
 
 template <int N>
 struct SplineDerivWrtParameters : public DifferentiableFunction
@@ -107,7 +108,11 @@ struct spline_checks
 {
   static void
   check_evaluate (const std::pair<value_type, value_type>&,
-		  int, vector_t const&, int);
+		  int, vector_t const&, int, bool);
+
+  static void
+  check_fd (const std::pair<value_type, value_type>&,
+	    vector_t const&, bool);
 
   template <int ORDER>
   static void
@@ -127,10 +132,10 @@ template <>
 void
 spline_checks<3>::check_evaluate
 (const std::pair<value_type, value_type>& interval, int dimension,
- vector_t const& params, int order)
+ vector_t const& params, int order, bool clamped)
 {
-  CubicBSpline old_spline (interval, dimension, params);
-  BSpline<3> new_spline (interval, dimension, params);
+  CubicBSpline old_spline (interval, dimension, params, "", clamped);
+  BSpline<3> new_spline (interval, dimension, params, "", clamped);
 
   gradient_t old_res (dimension);
   gradient_t new_res (dimension);
@@ -150,9 +155,9 @@ spline_checks<3>::check_evaluate
 template <>
 void spline_checks<5>::check_evaluate
 (const std::pair<value_type, value_type>& interval, int dimension,
- vector_t const& params, int order)
+ vector_t const& params, int order, bool clamped)
 {
-  BSpline<5> new_spline (interval, dimension, params);
+  BSpline<5> new_spline (interval, dimension, params, "", clamped);
 
   for (value_type t = interval.first; t < interval.second; t += 1e-3)
     {
@@ -168,6 +173,34 @@ void spline_checks<5>::check_evaluate
 		       && (new_res.array () < max).all ());
 	  // FIXME: very generous assumption - especially for
 	  // multi-dimensional splines
+        }
+    }
+}
+
+template <int N>
+void
+spline_checks<N>::check_fd
+(const std::pair<value_type, value_type>& interval,
+ vector_t const& params, bool clamped)
+{
+  BSpline<N> spline (interval, 1, params, "", clamped);
+
+  // Check gradients with finite-differences
+  for (value_type t = 0.; t < 1.; t += 1e-3)
+    {
+      try
+        {
+          vector_t x (1);
+          x[0] = t;
+          checkGradientAndThrow (spline, 0, x);
+
+          SplineDerivWrtParameters<N> splineDerivWrtParams (spline, t);
+          checkGradientAndThrow (splineDerivWrtParams, 0, spline.parameters ());
+        }
+      catch (BadGradient<EigenMatrixDense>& bg)
+        {
+          std::cerr << bg << std::endl;
+          BOOST_CHECK(false);
         }
     }
 }
@@ -261,7 +294,10 @@ void test_evaluate ()
 	  params *= 10.;
 
 	  spline_checks<N>::check_evaluate
-            (interval, dimension, params, derivative);
+            (interval, dimension, params, derivative, false);
+
+	  spline_checks<N>::check_evaluate
+            (interval, dimension, params, derivative, true);
         }
     }
 }
@@ -290,26 +326,9 @@ void test_fd ()
   params *= 10.;
 
   typename BSpline<N>::interval_t interval = std::make_pair (0., 1.);
-  BSpline<N> spline (interval, 1, params);
 
-  // Check gradients with finite-differences
-  for (value_type t = 0.; t < 1.; t += 1e-3)
-    {
-      try
-        {
-          vector_t x (1);
-          x[0] = t;
-          checkGradientAndThrow (spline, 0, x);
-
-          SplineDerivWrtParameters<N> splineDerivWrtParams (spline, t);
-          checkGradientAndThrow (splineDerivWrtParams, 0, spline.parameters ());
-        }
-      catch (BadGradient<EigenMatrixDense>& bg)
-        {
-          std::cerr << bg << std::endl;
-          BOOST_CHECK(false);
-        }
-    }
+  spline_checks<N>::check_fd (interval, params, false);
+  spline_checks<N>::check_fd (interval, params, true);
 }
 
 template <int N>

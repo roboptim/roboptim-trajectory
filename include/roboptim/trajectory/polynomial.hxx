@@ -24,7 +24,8 @@
 # include <limits> // numeric_limits
 # include <cstdarg> // va_list, va_start, va_arg, va_end
 
-#include <boost/bind.hpp> // bind
+# include <boost/bind.hpp> // bind
+# include <boost/math/special_functions/factorials.hpp>
 
 // Polynomial solver
 # include <unsupported/Eigen/Polynomials>
@@ -144,16 +145,17 @@ namespace trajectory
 
     typename Polynomial<N-K>::coefs_t coefs;
     coefs.setZero ();
-    value_type alpha = 1.;
+    unsigned long alpha = 1.;
 
     for (size_type i = 0; i < coefs.size (); ++i)
       {
-	alpha = 1.;
+        unsigned long ii = static_cast<unsigned long> (i);
+	alpha = 1;
 
-	for (size_type j = i+K; j > i; --j)
-	  alpha *= static_cast<value_type> (j);
+	for (unsigned long j = ii + K; j > ii; --j)
+	  alpha *= j;
 
-	coefs[i] = alpha * coefs_[i+K];
+	coefs[i] = static_cast<value_type> (alpha) * coefs_[i+K];
       }
 
     return Polynomial<N-K> (t0_, coefs);
@@ -170,14 +172,14 @@ namespace trajectory
     else if (order == 0 && start_coef == 0)
       return (*this) (t);
 
-    value_type dt = 1.;
+    value_type u = t - t0_;
+    value_type du = 1.;
     value_type result = 0.;
 
     size_type idx = order;
     if (start_coef > idx)
       {
-	for (int diff = 0; diff < start_coef - idx ; diff++)
-	  dt = dt * (t - t0_);
+	du = std::pow (u, start_coef - idx);
 	idx = start_coef;
       }
 
@@ -187,14 +189,14 @@ namespace trajectory
       {
 	// determine factor of this coefficient for the requested
 	// derivative
-	value_type deriv_coef = 1.;
-	for (size_type foo = 0, exponent = idx;
-	     foo < order; foo++, exponent--)
-	  deriv_coef *= static_cast<value_type> (exponent);
+	unsigned long deriv_coef = 1;
+	for (unsigned long foo = 0, exponent = static_cast<unsigned long> (idx);
+	     foo < static_cast<unsigned long> (order); foo++, exponent--)
+	  deriv_coef *= exponent;
 
-	result += deriv_coef * coefs_[idx] * dt;
+	result += static_cast<value_type> (deriv_coef) * coefs_[idx] * du;
 
-	dt = dt * (t - t0_);
+	du *= u;
       }
     return result;
   }
@@ -203,22 +205,11 @@ namespace trajectory
   typename Polynomial<N>::coefs_t
   Polynomial<N>::impl_translate (typename Polynomial<N>::value_type t1) const
   {
-    coefs_t coefs;
-    for (int order = 0; order <= order_; order++)
+    coefs_t coefs = coefs_;
+    for (unsigned order = 0; order <= order_; order++)
       {
-	coefs[order] = coefs_[order];
-	int factorial = 1;
-	for (int idx = order; idx > 0; idx--)
-	  {
-	    // overflow check
-	    assert ((factorial <= std::numeric_limits<int>::max ()/idx)
-		    && "Overflow detected in factorial computation.");
-	    factorial *= idx; // calculate order!
-	  }
-
-	const value_type remaining_derivs = impl_derivative (t1,
-							     order,
-							     order + 1);
+	value_type remaining_derivs = impl_derivative (t1, order, order + 1);
+	value_type factorial = boost::math::factorial<value_type> (order);
 	coefs[order] += remaining_derivs / factorial;
       }
     return coefs;
