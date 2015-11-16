@@ -18,8 +18,11 @@
 
 #ifndef ROBOPTIM_TRAJECTORY_B_SPLINE_HXX
 # define ROBOPTIM_TRAJECTORY_B_SPLINE_HXX
+
 # include <boost/shared_ptr.hpp>
 # include <boost/numeric/conversion/converter.hpp>
+# include <boost/preprocessor/punctuation/comma.hpp>
+
 # include <roboptim/core/numeric-linear-function.hh>
 
 namespace roboptim
@@ -227,7 +230,7 @@ namespace trajectory
 	typename polynomial_t::coefs_t temp_params;
 	temp_params.setZero();
 	temp_params[0] = 1.;
-	std::pair<cox_map_itr_t, bool> ptr =
+	ROBOPTIM_DEBUG_ONLY (std::pair<cox_map_itr_t BOOST_PP_COMMA() bool> ptr =)
 	  map.insert (std::make_pair (j, polynomial_t (0., temp_params)));
 
 	ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
@@ -288,24 +291,26 @@ namespace trajectory
 	    p_2_rat = Monomial<N> (tn1);
 	  }
 
-	LOG4CXX_DEBUG (this->logger,
-		       label.str() << "p_2_rat        : "
-		       << p_2_rat);
+	ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                            label.str() << "p_2_rat        : "
+                                            << p_2_rat));
 
 	cox_map p_2_cox = cox_de_boor (j + 1, n - 1);
 	cox_map p_2;
 	for (cox_map_itr_t itr = p_2_cox.begin(); itr != p_2_cox.end(); itr++)
 	  {
-	    LOG4CXX_DEBUG (this->logger,
-			   label.str()
-			   << "p_2_cox        : " << itr->first
-			   << " : " << itr->second);
+	    ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                                label.str()
+                                                << "p_2_cox        : "
+                                                << itr->first
+                                                << " : " << itr->second));
 
 	    polynomial_t p_prod = itr->second * p_2_rat;
 
-	    LOG4CXX_DEBUG (this->logger,
-			   label.str()
-			   << "p_prod (2)     : " << p_prod);
+            ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                                label.str()
+                                                << "p_prod (2)     : "
+                                                << p_prod));
 
 	    p_2.insert (std::make_pair (itr->first, p_prod));
 	  }
@@ -321,15 +326,16 @@ namespace trajectory
 	      p.insert (std::make_pair (itr->first, itr->second));
 	  }
 
-        LOG4CXX_DEBUG (this->logger,
-                       label.str() << "result of recursion branch");
+        ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                            label.str()
+                                            << "result of recursion branch"));
 
 	for (cox_map_itr_t itr = p.begin(); itr != p.end(); itr++)
 	  {
-	    LOG4CXX_DEBUG (this->logger,
-			   label.str() << "B_" << j
-			   << "_" << itr->first << "  : "
-			   << itr->second);
+	    ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
+                                                label.str() << "B_" << j
+                                                << "_" << itr->first << "  : "
+                                                << itr->second));
 	  }
 	return p;
       }
