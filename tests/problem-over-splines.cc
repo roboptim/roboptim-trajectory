@@ -45,8 +45,7 @@ using namespace roboptim::visualization::matplotlib;
 using namespace roboptim::trajectory;
 using namespace roboptim::trajectory::visualization::matplotlib;
 
-typedef boost::mpl::list< ::roboptim::trajectory::CubicBSpline,
-			  ::roboptim::trajectory::BSpline<3> > splinesType_t;
+typedef boost::mpl::list<CubicBSpline, BSpline<3> > splinesType_t;
 
 template <typename T>
 std::string splineName();
@@ -61,6 +60,14 @@ template <>
 std::string splineName<roboptim::trajectory::BSpline<3> > ()
 {
   return "b-spline";
+}
+
+template <typename T>
+std::string getOutputFilename ()
+{
+  std::string s = "problem-over-splines-";
+  s += splineName<T> ();
+  return s;
 }
 
 template <typename T, typename S>
@@ -158,11 +165,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   typedef std::vector<splinePtr_t> splines_t;
 
   boost::shared_ptr<boost::test_tools::output_test_stream>
-    output = retrievePattern ("problem-over-splines");
+    output = retrievePattern (getOutputFilename<spline_t> ());
 
   std::string spline_name = splineName<spline_t> ();
   boost::filesystem::ofstream pythonPlot
-    ("problem-over-splines-" + spline_name + ".py");
+    (getOutputFilename<spline_t> () + ".py");
 
   splines_t splines;
 
@@ -179,6 +186,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   splinePtr_t spline2 = boost::make_shared<spline_t>
     (std::make_pair (0,1), 1, params2, "B-spline 2", true);
   splines.push_back (spline2);
+
+  (*output) << *spline << std::endl;
+  (*output) << *spline2 << std::endl;
 
   // Create the problem
   solver_t::problem_t::intervals_t range;
@@ -211,13 +221,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   problem.startingPoint () = startingPoint;
 
   // Initialize solver
-  SolverFactory<solver_t> factory ("ipopt-sparse", problem);
+  SolverFactory<solver_t> factory (TESTSUITE_SOLVER "-sparse", problem);
   solver_t& solver = factory ();
   solver.parameters()["ipopt.tol"].value = 1e-3;
   solver.parameters()["ipopt.linear_solver"].value = std::string (IPOPT_LINEAR_SOLVER);
-  solver.parameters()["ipopt.output_file"].value = std::string ("test.log");
+  solver.parameters()["ipopt.output_file"].value = spline_name + "-test1.log";
 
   (*output) << solver.problem () << std::endl;
+
+  // Note: we compare output here, since different spline types will yield
+  // different results for the following of the computation.
+  std::cout << output->str () << std::endl;
+  BOOST_CHECK (output->match_pattern (true));
 
   Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 2));
 
@@ -237,6 +252,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   range2.push_back(spline->derivative(0.32, 2)[0] + 10.);
   range2.push_back(spline2->derivative(0.32, 2)[0] - 10.);
   constraints.addConstraint(0.32, 2, range2);
+
+  (*output) << *spline << std::endl;
+  (*output) << *spline2 << std::endl;
+
   solver_t::problem_t newproblem (constraints.getProblem());
   BOOST_CHECK(newproblem.constraints().size() == 8);
   startingPoint << spline->parameters(), spline2->parameters();
@@ -247,12 +266,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   (*output) << newsolver.problem () << std::endl;
 
   newsolver.parameters() = solver.parameters ();
-  newsolver.parameters()["ipopt.output_file"].value = std::string("test2.log");
+  newsolver.parameters()["ipopt.output_file"].value = spline_name + "-test2.log";
 
   res = newsolver.minimum();
   processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
 
   std::cout << output->str () << std::endl;
-  BOOST_CHECK (output->match_pattern ());
 }
 BOOST_AUTO_TEST_SUITE_END ()

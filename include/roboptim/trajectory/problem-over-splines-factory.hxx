@@ -124,9 +124,13 @@ namespace roboptim
       constraints_.back().first = time;
       for (unsigned long i = 0; i < splines_.size(); ++i)
 	{
-	  constraints_.back().second.push_back(static_cast<freeze_t>(boost::make_tuple(localConstraint(time, order, value[i], i), S::makeInterval(0, 0), scaling[i])));
+	  constraints_.back().second.push_back
+            (boost::make_tuple (localConstraint (time, order, value[i], i),
+                                S::makeInterval (0, 0),
+                                scaling[i]));
 	  if (time <= tmax_ && time >= t0_)
-	    problem_->addConstraint(boost::get<0>(boost::get<freeze_t>(constraints_.back().second.back())), S::makeInterval(0, 0), scaling[i]);
+	    problem_->addConstraint (boost::get<0> (boost::get<freeze_t> (constraints_.back ().second.back ())),
+				     S::makeInterval (0, 0), scaling[i]);
 	}
     }
 
@@ -247,10 +251,10 @@ namespace roboptim
       std::string name;
       if (order == 0)
         name = (boost::format ("f(%.3f) = %.3f (%s)")
-            % time % value % spline->getName ()).str ();
+		% time % value % spline->getName ()).str ();
       else
         name = (boost::format ("f^(%i) (%.3f) = %.3f (%s)")
-            % order % time % value % spline->getName ()).str ();
+		% order % time % value % spline->getName ()).str ();
       return boost::make_shared<numericLinearConstraint_t> (A, B, name);
     }
   }
