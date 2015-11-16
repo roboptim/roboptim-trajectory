@@ -18,6 +18,8 @@
 #ifndef ROBOPTIM_TRAJECTORY_PROBLEM_OVER_SPLINES_FACTORY_HXX
 # define ROBOPTIM_TRAJECTORY_PROBLEM_OVER_SPLINES_FACTORY_HXX
 
+# include <stdexcept>
+
 # include <boost/format.hpp>
 
 namespace roboptim
@@ -33,6 +35,7 @@ namespace roboptim
 	t0_ (),
 	range_ (2),
 	inputsize_ (0),
+	epsilon_ (0.),
 	factory_ (),
 	constraints_ ()
     {
@@ -77,6 +80,20 @@ namespace roboptim
     ProblemOverSplinesFactory<T, S>::tmax ()
     {
       return tmax_;
+    }
+
+    template <typename T, typename S>
+    typename ProblemOverSplinesFactory<T, S>::value_type
+    ProblemOverSplinesFactory<T, S>::epsilon () const
+    {
+      return epsilon_;
+    }
+
+    template <typename T, typename S>
+    typename ProblemOverSplinesFactory<T, S>::value_type&
+    ProblemOverSplinesFactory<T, S>::epsilon ()
+    {
+      return epsilon_;
     }
 
     template <typename T, typename S>
@@ -125,26 +142,37 @@ namespace roboptim
 
     template <typename T, typename S>
     void ProblemOverSplinesFactory<T, S>::addConstraint
-    (value_type time, int order, const std::vector<value_type>& value, scaling_t scaling)
+    (value_type time, int order, const vector_t& values,
+     const scaling_t& scaling, value_type eps)
     {
-      assert (problem_->function().inputSize() == inputsize_);
+      if (values.size () != static_cast<size_type> (splines_.size ()))
+        throw std::range_error ("invalid number of spline values");
+
+      if (eps < 0.) eps = std::abs (epsilon_);
+
       constraints_.resize(constraints_.size() + 1);
       constraints_.back().first = time;
-      for (unsigned long i = 0; i < splines_.size(); ++i)
+
+      for (size_t i = 0; i < splines_.size(); ++i)
 	{
+          size_type ii = static_cast<size_type> (i);
 	  constraints_.back().second.push_back
-            (boost::make_tuple (localConstraint (time, order, value[i], i),
-                                S::makeInterval (0, 0),
+            (boost::make_tuple (localConstraint (time, order, values[ii], i),
+                                S::makeInterval (-eps, eps),
                                 scaling[i]));
+
 	  if (time <= tmax_ && time >= t0_)
-	    problem_->addConstraint (boost::get<0> (boost::get<freeze_t> (constraints_.back ().second.back ())),
-				     S::makeInterval (0, 0), scaling[i]);
+	    problem_->addConstraint
+              (boost::get<0> (boost::get<freeze_t>
+                              (constraints_.back ().second.back ())),
+               S::makeInterval (-eps, eps), scaling[i]);
 	}
     }
 
     template <typename T, typename S>
     void ProblemOverSplinesFactory<T, S>::addConstraint
-    (value_type startingPoint, int order, const intervals_t& range, const scalingVect_t& scaling)
+    (value_type startingPoint, int order, const intervals_t& range,
+     const scalingVect_t& scaling)
     {
       assert (problem_->function ().inputSize () == inputsize_);
       constraints_.resize (constraints_.size () + 1);
@@ -170,25 +198,18 @@ namespace roboptim
 
     template <typename T, typename S>
     void ProblemOverSplinesFactory<T, S>::addConstraint
-    (value_type time, int order, const std::vector<value_type>& value)
+    (value_type time, int order, const vector_t& values)
     {
-      scaling_t scaling (value.size());
-      for (unsigned long i = 0; i < scaling.size(); ++i)
-        scaling[i] = 1;
-      addConstraint(time, order, value, scaling);
+      scaling_t scaling (static_cast<size_t> (values.size ()), 1.);
+      addConstraint (time, order, values, scaling);
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addConstraint(value_type startingPoint, int order, intervals_t range)
+    void ProblemOverSplinesFactory<T, S>::addConstraint
+    (value_type startingPoint, int order, const intervals_t& range)
     {
-      scalingVect_t scaling (range.size());
-      for (unsigned long i = 0; i < scaling.size(); ++i)
-	{
-	  scaling[i] = scaling_t(2);
-	  scaling[i][0] = 1;
-	  scaling[i][1] = 1;
-	}
-      addConstraint(startingPoint, order, range, scaling);
+      scalingVect_t scaling (range.size (), scaling_t (2, 1.));
+      addConstraint (startingPoint, order, range, scaling);
     }
 
     template <typename T, typename S>

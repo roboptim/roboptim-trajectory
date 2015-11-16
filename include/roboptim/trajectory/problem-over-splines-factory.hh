@@ -87,6 +87,9 @@ namespace roboptim
       value_type tmax () const;
       value_type& tmax ();
 
+      value_type epsilon () const;
+      value_type& epsilon ();
+
       /// \brief Updates the range of the optimization problem
       ///
       /// \param newRange desired timeRange
@@ -117,8 +120,10 @@ namespace roboptim
       /// \param order Derivation order (0 for no derivation)
       /// \param value Goals of the constraints for each spline
       /// \param scaling Scalings of the constraints for each spline
+      /// \param eps Epsilon used for the equality constraints
       void addConstraint (value_type time, int order,
-          const std::vector<value_type>& value, scaling_t scaling);
+          const vector_t& value, const scaling_t& scaling,
+          value_type eps = -1.);
 
       /// \brief Adds contraints on every spline starting at a given time
       ///
@@ -138,14 +143,14 @@ namespace roboptim
       ///
       /// Calls the corresponding addConstraint with a scaling set to 1 for each
       /// spline.
-      void addConstraint (value_type time, int order,
-          const std::vector<value_type>& value);
+      void addConstraint (value_type time, int order, const vector_t& value);
 
       /// \brief Adds contraints on every spline starting at a given time
       ///
       /// Calls the corresponding addConstraint with a scaling set to 1 for each
       /// spline.
-      void addConstraint (value_type startingPoint, int order, intervals_t range);
+      void addConstraint (value_type startingPoint, int order,
+          const intervals_t& range);
 
       /// \brief Return a reference to the stored problem.
       const problem_t& problem () const;
@@ -193,6 +198,9 @@ namespace roboptim
 
       /// \brief Input size of the cost function
       size_type inputsize_;
+
+      /// \brief Default epsilon
+      value_type epsilon_;
 
       /// \brief Jerk cost function factory
       /// Default behaviour is to use it, since when the range is updated, the

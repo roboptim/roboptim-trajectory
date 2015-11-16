@@ -160,6 +160,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   typedef EigenMatrixSparse T;
   typedef Solver<T> solver_t;
   typedef typename spline_t::vector_t param_t;
+  typedef typename spline_t::vector_t vector_t;
   typedef GenericFunction<T>::value_type value_type;
   typedef boost::shared_ptr<spline_t> splinePtr_t;
   typedef std::vector<splinePtr_t> splines_t;
@@ -191,8 +192,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   (*output) << *spline2 << std::endl;
 
   // Create the problem
-  solver_t::problem_t::intervals_t range;
-  std::vector<value_type> range2;
+  solver_t::problem_t::intervals_t ineq_range;
   JerkOverSplinesFactory<spline_t, T>
     jerkFactory (splines, Function::makeInterval (0, 1));
   solver_t::problem_t pb (jerkFactory.getJerk ());
@@ -203,15 +203,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 0);
 
   constraint_factory.updateStartingPoint (0.02);
-  range.clear();
-  range.push_back (std::make_pair<value_type, value_type> (0, 5));
-  range.push_back (std::make_pair<value_type, value_type> (0, 5));
+  ineq_range.clear();
+  ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));
+  ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));
+  constraint_factory.addConstraint (0.02, 0, ineq_range);
 
-  constraint_factory.addConstraint (0.02, 0, range);
-  range.clear ();
-  range.push_back (std::make_pair<value_type, value_type> (1, 10));
-  range.push_back (std::make_pair<value_type, value_type> (3, 8));
-  constraint_factory.addConstraint (0.62, 1, range);
+  ineq_range.clear ();
+  ineq_range.push_back (std::make_pair<value_type, value_type> (1, 10));
+  ineq_range.push_back (std::make_pair<value_type, value_type> (3, 8));
+  constraint_factory.addConstraint (0.62, 1, ineq_range);
 
   BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 4);
   solver_t::problem_t problem (constraint_factory.problem ());
@@ -241,18 +241,22 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
 
   constraint_factory.updateStartingPoint(0.32);
-  range2.clear();
-  range2.push_back((*spline)(0.32)[0] + 1e-1);
-  range2.push_back((*spline2)(0.32)[0] - 1e-1);
-  constraint_factory.addConstraint(0.32, 0, range2);
-  range2.clear();
-  range2.push_back(spline->derivative(0.32, 1)[0] + 5.);
-  range2.push_back(spline2->derivative(0.32, 1)[0] - 5.);
-  constraint_factory.addConstraint(0.32, 1, range2);
-  range2.clear();
-  range2.push_back(spline->derivative(0.32, 2)[0] + 10.);
-  range2.push_back(spline2->derivative(0.32, 2)[0] - 10.);
-  constraint_factory.addConstraint(0.32, 2, range2);
+
+  vector_t eq_range (2);
+  eq_range[0] = (*spline)(0.32)[0] + 1e-1;
+  eq_range[1] = (*spline2)(0.32)[0] - 1e-1;
+  constraint_factory.addConstraint (0.32, 0, eq_range);
+
+  eq_range[0] = spline->derivative (0.32, 1)[0] + 5.;
+  eq_range[1] = spline2->derivative (0.32, 1)[0] - 5.;
+  constraint_factory.addConstraint (0.32, 1, eq_range);
+
+  eq_range[0] = spline->derivative (0.32, 2)[0] + 10.;
+  eq_range[1] = spline2->derivative (0.32, 2)[0] - 10.;
+  constraint_factory.addConstraint (0.32, 2, eq_range);
+
+  BOOST_CHECK_THROW (constraint_factory.addConstraint (0., 0, vector_t (3)),
+                     std::range_error);
 
   (*output) << *spline << std::endl;
   (*output) << *spline2 << std::endl;
