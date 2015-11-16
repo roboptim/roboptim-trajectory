@@ -1,21 +1,21 @@
 Solver:
   Plugin: ipopt
   Problem:
-    Numeric linear function
+    Numeric linear function:
       A = [7](-1,0,0,0,0,0,0)
       B = [1](0)
     Arguments bounds: (0, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf), (-inf, inf)
     Arguments scaling: 1, 1, 1, 1, 1, 1, 1
     Number of constraints: 32
     Constraint 0
-        Numeric linear function
+        Numeric linear function:
           A = [7](0,0.166667,0.666667,0.166667,0,0,0)
           B = [1](-0)
         Bounds: (0, 0)
         Scaling: 1
         Initial value: [1](0)
     Constraint 1
-        Numeric linear function
+        Numeric linear function:
           A = [7](0,0,0,0,0.166667,0.666667,0.166667)
           B = [1](-200)
         Bounds: (0, 0)
@@ -179,7 +179,7 @@ Solver:
     ipopt.acceptable_constr_viol_tol ("acceptance" threshold for the constraint violation): 0.01
     ipopt.acceptable_dual_inf_tol ("acceptance" threshold for the dual infeasibility): 1e+10
     ipopt.acceptable_iter (number of "acceptable" iterates before triggering termination): 15
-    ipopt.acceptable_tol ("acceptable" convergence tolerance (relative)): 0.05
+    ipopt.acceptable_tol ("acceptable" convergence tolerance (relative)): 1e-06
     ipopt.compl_inf_tol (desired threshold for the complementarity conditions): 0.0001
     ipopt.constr_viol_tol (desired threshold for the constraint violation): 0.0001
     ipopt.derivative_test (enable derivative checker): none
@@ -197,5 +197,5 @@ Solver:
     ipopt.print_options_documentation (switch to print all algorithmic options): no
     ipopt.print_user_options (print all options set by the user): no
     ipopt.start_with_resto (tells algorithm to switch to restoration phase in first iteration): no
-    ipopt.tol (desired convergence tolerance (relative)): 0.001
+    ipopt.tol (desired convergence tolerance (relative)): 1e-08
     max-iterations (number of iterations): 3000

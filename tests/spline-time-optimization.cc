@@ -139,6 +139,8 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   SolverFactory<test_solver_t> factory (TESTSUITE_SOLVER, problem);
   test_solver_t& solver = factory ();
 
+  (*output) << solver;
+
   // Ipopt-specific parameters
   // WARNING: these parameters may not be relevant! These are only set to
   // prevent hour-long unit testing...
@@ -146,8 +148,6 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   solver.parameters()["ipopt.tol"].value = 1e-3;
   solver.parameters()["ipopt.acceptable_tol"].value = 5e-2;
   solver.parameters()["ipopt.mu_strategy"].value = std::string("adaptive");
-
-  (*output) << solver;
 
   test_solver_t::result_t res = solver.minimum ();
   std::cerr << res << std::endl;
@@ -183,7 +183,6 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
   std::cout << (gnuplot << unset ("multiplot"));
 
   std::cout << output->str () << std::endl;
-
   BOOST_CHECK (output->match_pattern ());
 
   // Loop over the interval of definition
