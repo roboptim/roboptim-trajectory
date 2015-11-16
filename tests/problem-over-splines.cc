@@ -196,24 +196,25 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   JerkOverSplinesFactory<spline_t, T>
     jerkFactory (splines, Function::makeInterval (0, 1));
   solver_t::problem_t pb (jerkFactory.getJerk ());
+  BOOST_CHECK (pb.constraints ().size () == 0);
 
   // Create the factory and add some constraints
-  ProblemOverSplinesFactory<T, spline_t> constraints (splines, pb);
-  BOOST_CHECK (pb.constraints().size() == 0);
+  ProblemOverSplinesFactory<T, spline_t> constraint_factory (splines, pb);
+  BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 0);
 
-  constraints.updateStartingPoint (0.02);
+  constraint_factory.updateStartingPoint (0.02);
   range.clear();
   range.push_back (std::make_pair<value_type, value_type> (0, 5));
   range.push_back (std::make_pair<value_type, value_type> (0, 5));
 
-  constraints.addConstraint (0.02, 0, range);
+  constraint_factory.addConstraint (0.02, 0, range);
   range.clear ();
   range.push_back (std::make_pair<value_type, value_type> (1, 10));
   range.push_back (std::make_pair<value_type, value_type> (3, 8));
-  constraints.addConstraint (0.62, 1, range);
+  constraint_factory.addConstraint (0.62, 1, range);
 
-  BOOST_CHECK (constraints.getProblem ().constraints ().size () == 4);
-  solver_t::problem_t problem (constraints.getProblem ());
+  BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 4);
+  solver_t::problem_t problem (constraint_factory.problem ());
 
   // Set starting point
   param_t startingPoint (2*n);
@@ -239,24 +240,24 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   typename solver_t::result_t res = solver.minimum();
   processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
 
-  constraints.updateStartingPoint(0.32);
+  constraint_factory.updateStartingPoint(0.32);
   range2.clear();
   range2.push_back((*spline)(0.32)[0] + 1e-1);
   range2.push_back((*spline2)(0.32)[0] - 1e-1);
-  constraints.addConstraint(0.32, 0, range2);
+  constraint_factory.addConstraint(0.32, 0, range2);
   range2.clear();
   range2.push_back(spline->derivative(0.32, 1)[0] + 5.);
   range2.push_back(spline2->derivative(0.32, 1)[0] - 5.);
-  constraints.addConstraint(0.32, 1, range2);
+  constraint_factory.addConstraint(0.32, 1, range2);
   range2.clear();
   range2.push_back(spline->derivative(0.32, 2)[0] + 10.);
   range2.push_back(spline2->derivative(0.32, 2)[0] - 10.);
-  constraints.addConstraint(0.32, 2, range2);
+  constraint_factory.addConstraint(0.32, 2, range2);
 
   (*output) << *spline << std::endl;
   (*output) << *spline2 << std::endl;
 
-  solver_t::problem_t newproblem (constraints.getProblem());
+  solver_t::problem_t newproblem (constraint_factory.problem());
   BOOST_CHECK(newproblem.constraints().size() == 8);
   startingPoint << spline->parameters(), spline2->parameters();
   newproblem.startingPoint() = startingPoint;

@@ -75,7 +75,11 @@ namespace roboptim
       problemConstraints_t;
 
     public:
-      ProblemOverSplinesFactory (const splines_t& splines, problem_t& problem);
+      /// \brief Constructor.
+      ///
+      /// \param splines vector of splines considered.
+      /// \param problem optimization problem.
+      ProblemOverSplinesFactory (const splines_t& splines, const problem_t& problem);
 
       value_type t0 () const;
       value_type& t0 ();
@@ -143,10 +147,8 @@ namespace roboptim
       /// spline.
       void addConstraint (value_type startingPoint, int order, intervals_t range);
 
-      problem_t& getProblem() const
-      {
-        return *problem_;
-      }
+      /// \brief Return a reference to the stored problem.
+      const problem_t& problem () const;
 
     private:
       /// \brief Generate a new problem, given the actual range and constraints

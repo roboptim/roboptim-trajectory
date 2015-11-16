@@ -25,7 +25,8 @@ namespace roboptim
   namespace trajectory
   {
     template <typename T, typename S>
-    ProblemOverSplinesFactory<T,S>::ProblemOverSplinesFactory (const splines_t& splines, problem_t& problem)
+    ProblemOverSplinesFactory<T,S>::ProblemOverSplinesFactory
+    (const splines_t& splines, const problem_t& problem)
       : splines_ (splines),
 	dimension_ (),
 	problem_ (boost::make_shared<problem_t>(problem)),
@@ -76,6 +77,13 @@ namespace roboptim
     ProblemOverSplinesFactory<T, S>::tmax ()
     {
       return tmax_;
+    }
+
+    template <typename T, typename S>
+    const typename ProblemOverSplinesFactory<T, S>::problem_t&
+    ProblemOverSplinesFactory<T, S>::problem () const
+    {
+      return *problem_;
     }
 
     template <typename T, typename S>
