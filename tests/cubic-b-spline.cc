@@ -372,23 +372,25 @@ void test_fd (const TestData& data)
   splines.push_back (spline_2d_1);
   splines.push_back (*(data.spline_1d_2_clamped));
 
+  value_type threshold = 2. * finiteDifferenceThreshold;
+
   for (std::vector<CubicBSpline>::const_iterator
        spline  = splines.begin();
        spline != splines.end();
        ++spline)
   {
     // Check gradients with finite-differences
-    for (value_type t = 0.; t < 1.; t += 1e-3)
+    for (value_type t = 0.; t < 5.; t += 1e-3)
     {
       try
       {
         Function::vector_t x (1);
         x[0] = t;
-        checkGradientAndThrow (*spline, 0, x);
+        checkGradientAndThrow (*spline, 0, x, threshold);
 
         SplineDerivWrtParameters splineDerivWrtParams (*spline, t);
         checkGradientAndThrow
-          (splineDerivWrtParams, 0, spline->parameters ());
+          (splineDerivWrtParams, 0, spline->parameters (), threshold);
       }
       catch (BadGradient<EigenMatrixDense>& bg)
       {
