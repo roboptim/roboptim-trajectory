@@ -28,7 +28,8 @@ namespace roboptim
   {
     template <typename T, typename S>
     ProblemOverSplinesFactory<T,S>::ProblemOverSplinesFactory
-    (const splines_t& splines, const problem_t& problem)
+    (const splines_t& splines, const problem_t& problem,
+     CostType cost)
       : splines_ (splines),
 	dimension_ (),
 	problem_ (boost::make_shared<problem_t>(problem)),
@@ -36,22 +37,30 @@ namespace roboptim
 	tmax_ (),
 	inputsize_ (0),
 	epsilon_ (0.),
-	factory_ (),
+	jerkFactory_ (),
 	constraints_ ()
     {
       int dimension = splines[0]->dimension();
       std::pair<value_type, value_type> timerange = splines[0]->timeRange();
+
       for (unsigned long i = 0; i < splines.size(); ++i)
 	{
-	  if (splines[i]->dimension() != dimension || splines[i]->timeRange() != timerange)
+	  if (splines[i]->dimension () != dimension
+              || splines[i]->timeRange () != timerange)
 	    throw std::runtime_error ("splines are not comparable");
 	  else
-	    inputsize_ += static_cast<size_type> (splines[i]->getNumberControlPoints ());
+	    inputsize_ += static_cast<size_type>
+              (splines[i]->getNumberControlPoints ());
 	}
+
       dimension_ = static_cast<size_type> (dimension);
+
       t0_ = timerange.first;
       tmax_ = timerange.second;
-      factory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >(splines_, S::makeInterval(t0_, tmax_));
+
+      if (cost == COST_JERK)
+        jerkFactory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >
+          (splines_, S::makeInterval (t0_, tmax_));
     }
 
     template <typename T, typename S>
@@ -116,8 +125,8 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::updateRange (interval_t newRange,
-						       bool buildCostFunction)
+    void ProblemOverSplinesFactory<T, S>::updateRange (const interval_t& newRange,
+						       CostType cost)
     {
       assert(newRange.first >= t0_);
       assert(newRange.first < newRange.second);
@@ -125,19 +134,21 @@ namespace roboptim
       t0_ = newRange.first;
       tmax_ = newRange.second;
 
-      updateProblem(buildCostFunction);
+      updateProblem (cost);
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::updateStartingPoint (value_type startingPoint, bool buildCostFunction)
+    void ProblemOverSplinesFactory<T, S>::updateStartingPoint
+    (value_type startingPoint, CostType cost)
     {
-      updateRange(S::makeInterval(startingPoint, tmax_), buildCostFunction);
+      updateRange(S::makeInterval(startingPoint, tmax_), cost);
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::updateEndingPoint (value_type endingPoint, bool buildCostFunction)
+    void ProblemOverSplinesFactory<T, S>::updateEndingPoint
+    (value_type endingPoint, CostType cost)
     {
-      updateRange(S::makeInterval(t0_, endingPoint), buildCostFunction);
+      updateRange(S::makeInterval(t0_, endingPoint), cost);
     }
 
     template <typename T, typename S>
@@ -216,17 +227,18 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::updateProblem(bool buildCostFunction)
+    void ProblemOverSplinesFactory<T, S>::updateProblem (CostType cost)
     {
       boost::shared_ptr<problem_t> pb;
-      if (buildCostFunction)
+
+      if (cost == COST_JERK)
 	{
-	  factory_->updateRange(S::makeInterval(t0_, tmax_));
-	  problem_ = boost::make_shared<problem_t>(*(factory_->getJerk()));
+	  jerkFactory_->updateRange (S::makeInterval (t0_, tmax_));
+	  problem_ = boost::make_shared<problem_t> (*(jerkFactory_->getJerk ()));
 	}
       else
 	{
-	  pb = boost::make_shared<problem_t>(problem_->function());
+	  pb = boost::make_shared<problem_t> (problem_->function ());
 	  problem_ = pb;
 	}
 

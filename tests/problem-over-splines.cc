@@ -165,6 +165,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   typedef typename spline_t::vector_t vector_t;
   typedef boost::shared_ptr<spline_t> splinePtr_t;
   typedef std::vector<splinePtr_t> splines_t;
+  typedef ProblemOverSplinesFactory<T, spline_t> problemFactory_t;
 
   boost::shared_ptr<boost::test_tools::output_test_stream>
     output = retrievePattern (getOutputFilename<spline_t> ());
@@ -200,10 +201,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   BOOST_CHECK (pb.constraints ().size () == 0);
 
   // Create the factory and add some constraints
-  ProblemOverSplinesFactory<T, spline_t> constraint_factory (splines, pb);
+  problemFactory_t constraint_factory (splines, pb, problemFactory_t::COST_JERK);
   BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 0);
 
-  constraint_factory.updateStartingPoint (0.02);
+  constraint_factory.updateStartingPoint (0.02, problemFactory_t::COST_JERK);
   ineq_range.clear();
   ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));
   ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));

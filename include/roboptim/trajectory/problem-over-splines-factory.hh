@@ -40,6 +40,7 @@ namespace roboptim
     template <typename T, typename S>
     class ProblemOverSplinesFactory
     {
+    public:
       typedef typename S::value_type value_type;
       typedef typename S::size_type  size_type;
       typedef typename S::interval_t interval_t;
@@ -74,12 +75,22 @@ namespace roboptim
       typedef std::vector<std::pair<value_type, std::vector<supportedConstraint_t> > >
       problemConstraints_t;
 
+      /// \brief Cost functions supported.
+      enum CostType
+      {
+        COST_DEFAULT, // use default cost given by the user
+        COST_JERK     // jerk cost function
+      };
+
     public:
       /// \brief Constructor.
       ///
       /// \param splines vector of splines considered.
       /// \param problem optimization problem.
-      ProblemOverSplinesFactory (const splines_t& splines, const problem_t& problem);
+      /// \param cost type of cost function.
+      ProblemOverSplinesFactory (const splines_t& splines,
+                                 const problem_t& problem,
+                                 CostType cost = COST_DEFAULT);
 
       value_type t0 () const;
       value_type& t0 ();
@@ -93,14 +104,14 @@ namespace roboptim
       /// \brief Updates the range of the optimization problem
       ///
       /// \param newRange desired timeRange
-      /// \param buildCostFunction whether we want to build a new Jerk
-      void updateRange(interval_t newRange, bool buildCostFunction = true);
+      /// \param cost new function we want to use (or DEFAULT if keep the same one).
+      void updateRange (const interval_t& newRange, CostType cost = COST_DEFAULT);
 
       /// \brief Updates the startingPoint of the problem, using updateRange
-      void updateStartingPoint(value_type startingPoint, bool buildCostFunction = true);
+      void updateStartingPoint(value_type startingPoint, CostType cost = COST_DEFAULT);
 
       /// \brief Updates the endingPoint of the problem, using updateRange
-      void updateEndingPoint(value_type endingPoint, bool buildCostFunction = true);
+      void updateEndingPoint(value_type endingPoint, CostType cost = COST_DEFAULT);
 
       /// \brief Adds a spline to the problem
       ///
@@ -163,8 +174,8 @@ namespace roboptim
       /// on the previous one (determined by buildCostFunction) and adds to it
       /// the constraints corresponding to the new range.
       ///
-      /// \param buildCostFunction whether we want to build a new Jerk
-      void updateProblem(bool buildCostFunction);
+      /// \param cost keep the same cost function (DEFAULT) or used a new one.
+      void updateProblem (CostType cost);
 
       /// \brief Creates and retrieves a new equality constraint on a spline
       ///
@@ -203,7 +214,7 @@ namespace roboptim
       /// Default behaviour is to use it, since when the range is updated, the
       /// factory also updates the jerk. But if the user wants to provide its
       /// own cost function, it will be ignored
-      boost::shared_ptr<JerkOverSplinesFactory<S, T> > factory_;
+      boost::shared_ptr<JerkOverSplinesFactory<S, T> > jerkFactory_;
 
       /// \brief Constraints of the problem
       problemConstraints_t constraints_;
