@@ -323,7 +323,7 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::impl_derivative (derivative_ref derivative, double t,
+  CubicBSpline::impl_derivative (derivative_ref derivative, value_type t,
 				 size_type order)
     const
   {

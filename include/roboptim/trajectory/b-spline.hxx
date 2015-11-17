@@ -413,7 +413,7 @@ namespace trajectory
   void BSpline<N>::impl_compute (result_ref derivative, value_type t) const
   {
     t = detail::fixTime (t, *this);
-    assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
+    assert (timeRange ().first <= t && t <= timeRange ().second);
     this->derivative (derivative, t, 0);
   }
 
@@ -516,9 +516,9 @@ namespace trajectory
 			       size_type order)
     const
   {
-
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
+    const std::size_t k_ = static_cast<std::size_t> (k);
     const size_type n = this->outputSize ();
 
     derivative.setZero();
@@ -526,15 +526,14 @@ namespace trajectory
     ROBOPTIM_DEBUG_ONLY(value_type polynomial_sum = 0.);
     for (size_type idx = 0; idx < order_ + 1; ++idx)
       {
-	const std::size_t k_ = static_cast<std::size_t> (k);
 	const std::size_t idx_ = static_cast<std::size_t> (idx);
 
-	const_vector_ref P_seg = this->parameters_.segment ((k - idx) * n, n);
+	const_vector_ref P = this->parameters ().segment ((k - idx) * n, n);
 	const Polynomial<N>& B = basisPolynomials_[k_ - idx_][idx_];
 
 	ROBOPTIM_DEBUG_ONLY(polynomial_sum += B.derivative (t, order));
 
-	derivative +=  B.derivative (t, order) * P_seg;
+	derivative +=  B.derivative (t, order) * P;
       }
 
     // this is true for any knot vector (FIXME: reference)
@@ -574,6 +573,7 @@ namespace trajectory
   {
     t = detail::fixTime (t, *this);
     const size_type k = interval (t);
+    const std::size_t k_ = static_cast<std::size_t> (k);
     const size_type n = this->outputSize ();
 
     jacobian_t jac (n, nbp_ * n);
@@ -583,11 +583,10 @@ namespace trajectory
 
     for (std::size_t idx = 0; idx < static_cast<std::size_t> (order_ + 1); ++idx)
       {
-	const std::size_t k_ = static_cast<std::size_t> (k);
+	const size_type idx_ = static_cast<size_type> (idx);
 	const Polynomial<N>& B = basisPolynomials_[k_ - idx][idx];
 
-	jac.middleCols ((k - static_cast<size_type> (idx)) * n, n) =
-	  B.derivative (t, order) * In;
+	jac.middleCols ((k - idx_) * n, n) = B.derivative (t, order) * In;
       }
 
     return jac;
