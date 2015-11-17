@@ -108,7 +108,7 @@ namespace roboptim
       /// it can therefore break your optimization problem.
       ///
       /// It is best practice to give all the splines to the constructor.
-      void addSpline(S& spline);
+      void addSpline (const S& spline);
 
       /// \brief Adds freezing contraints on every spline at a given time
       ///
@@ -182,7 +182,7 @@ namespace roboptim
       splines_t splines_;
 
       /// \brief Dimension of the problem
-      unsigned long dimension_;
+      size_type dimension_;
 
       /// \brief Shared pointer to the built problem
       boost::shared_ptr<problem_t> problem_;
@@ -192,9 +192,6 @@ namespace roboptim
 
       /// \brief Ending point of the problem
       value_type tmax_;
-
-      /// \brief Intervals used to get the true range for bounds constraints
-      intervals_t range_;
 
       /// \brief Input size of the cost function
       size_type inputsize_;

@@ -33,7 +33,7 @@ namespace roboptim
 	dimension_ (),
 	problem_ (boost::make_shared<problem_t>(problem)),
 	t0_ (),
-	range_ (2),
+	tmax_ (),
 	inputsize_ (0),
 	epsilon_ (0.),
 	factory_ (),
@@ -44,11 +44,11 @@ namespace roboptim
       for (unsigned long i = 0; i < splines.size(); ++i)
 	{
 	  if (splines[i]->dimension() != dimension || splines[i]->timeRange() != timerange)
-	    throw std::runtime_error ("Splines are not comparable");
+	    throw std::runtime_error ("splines are not comparable");
 	  else
 	    inputsize_ += static_cast<size_type> (splines[i]->getNumberControlPoints ());
 	}
-      dimension_ = static_cast<unsigned long>(dimension);
+      dimension_ = static_cast<size_type> (dimension);
       t0_ = timerange.first;
       tmax_ = timerange.second;
       factory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >(splines_, S::makeInterval(t0_, tmax_));
@@ -104,9 +104,9 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addSpline (S& spline)
+    void ProblemOverSplinesFactory<T, S>::addSpline (const S& spline)
     {
-      if (static_cast<unsigned long>(spline.dimension()) == dimension_
+      if (static_cast<size_type> (spline.dimension ()) == dimension_
           && spline.timeRange().first == t0_
           && spline.timeRange().second == tmax_)
 	{
@@ -175,24 +175,27 @@ namespace roboptim
      const scalingVect_t& scaling)
     {
       assert (problem_->function ().inputSize () == inputsize_);
+
       constraints_.resize (constraints_.size () + 1);
       constraints_.back ().first = startingPoint;
 
-      for (unsigned long i = 0; i < splines_.size (); ++i)
+      intervals_t ranges (2);
+
+      for (size_t i = 0; i < splines_.size (); ++i)
 	{
-	  range_[0] = S::makeLowerInterval (range[i].first);
-	  range_[1] = S::makeUpperInterval (range[i].second);
+	  ranges[0] = S::makeLowerInterval (range[i].first);
+	  ranges[1] = S::makeUpperInterval (range[i].second);
 
 	  constraints_.back ().second.push_back
             (boost::make_tuple (boost::make_shared<splinesConstraint_t>
                                 (splines_, i, order, startingPoint, inputsize_),
-                                range_, scaling[i]));
+                                ranges, scaling[i]));
 
 	  if (startingPoint < tmax_ && startingPoint >= t0_)
 	    problem_->addConstraint
               (boost::get<0> (boost::get<globalConstraint_t>
                               (constraints_.back ().second.back ())),
-               range_, scaling[i]);
+               ranges, scaling[i]);
 	}
     }
 

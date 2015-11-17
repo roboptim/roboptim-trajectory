@@ -46,6 +46,9 @@ using namespace roboptim::trajectory;
 using namespace roboptim::trajectory::visualization::matplotlib;
 
 typedef boost::mpl::list<CubicBSpline, BSpline<3> > splinesType_t;
+typedef Function::value_type value_type;
+
+static value_type tol = 1e-6;
 
 template <typename T>
 std::string splineName();
@@ -77,7 +80,6 @@ void processResult (const typename Solver<T>::result_t& res,
     Matplotlib& matplotlib,
     boost::filesystem::ofstream& pythonPlot)
 {
-  typedef typename GenericFunction<T>::value_type value_type;
   typedef Solver<T> solver_t;
 
   value_type step = 0.005;
@@ -161,7 +163,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   typedef Solver<T> solver_t;
   typedef typename spline_t::vector_t param_t;
   typedef typename spline_t::vector_t vector_t;
-  typedef GenericFunction<T>::value_type value_type;
   typedef boost::shared_ptr<spline_t> splinePtr_t;
   typedef std::vector<splinePtr_t> splines_t;
 
@@ -240,20 +241,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   typename solver_t::result_t res = solver.minimum();
   processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
 
-  constraint_factory.updateStartingPoint(0.32);
+  value_type t = 0.32;
+  constraint_factory.updateStartingPoint (t);
 
-  vector_t eq_range (2);
-  eq_range[0] = (*spline)(0.32)[0] + 1e-1;
-  eq_range[1] = (*spline2)(0.32)[0] - 1e-1;
-  constraint_factory.addConstraint (0.32, 0, eq_range);
+  vector_t eq_range_q (2);
+  eq_range_q[0] = (*spline)(t)[0] + 0.1;
+  eq_range_q[1] = (*spline2)(t)[0] - 0.1;
+  constraint_factory.addConstraint (t, 0, eq_range_q);
 
-  eq_range[0] = spline->derivative (0.32, 1)[0] + 5.;
-  eq_range[1] = spline2->derivative (0.32, 1)[0] - 5.;
-  constraint_factory.addConstraint (0.32, 1, eq_range);
+  vector_t eq_range_dq (2);
+  eq_range_dq[0] = spline->derivative (t, 1)[0] + 5.;
+  eq_range_dq[1] = spline2->derivative (t, 1)[0] - 5.;
+  constraint_factory.addConstraint (t, 1, eq_range_dq);
 
-  eq_range[0] = spline->derivative (0.32, 2)[0] + 10.;
-  eq_range[1] = spline2->derivative (0.32, 2)[0] - 10.;
-  constraint_factory.addConstraint (0.32, 2, eq_range);
+  vector_t eq_range_ddq (2);
+  eq_range_ddq[0] = spline->derivative (t, 2)[0] + 10.;
+  eq_range_ddq[1] = spline2->derivative (t, 2)[0] - 10.;
+  constraint_factory.addConstraint (t, 2, eq_range_ddq);
 
   BOOST_CHECK_THROW (constraint_factory.addConstraint (0., 0, vector_t (3)),
                      std::range_error);
@@ -275,6 +279,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
 
   res = newsolver.minimum();
   processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
+
+  BOOST_CHECK_CLOSE ((*spline) (t)[0], eq_range_q[0], tol);
+  BOOST_CHECK_CLOSE ((*spline2) (t)[0], eq_range_q[1], tol);
+  BOOST_CHECK_CLOSE (spline->derivative (t, 1)[0], eq_range_dq[0], tol);
+  BOOST_CHECK_CLOSE (spline2->derivative (t, 1)[0], eq_range_dq[1], tol);
+  BOOST_CHECK_CLOSE (spline->derivative (t, 2)[0], eq_range_ddq[0], tol);
+  BOOST_CHECK_CLOSE (spline2->derivative (t, 2)[0], eq_range_ddq[1], tol);
 
   std::cout << output->str () << std::endl;
 }
