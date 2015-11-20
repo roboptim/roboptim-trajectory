@@ -49,7 +49,7 @@ namespace roboptim
             }
 
       A_ *= scale_;
-      f_ = boost::make_shared<numericQuadraticFunction_t> (A_, B_);
+      f_ = boost::make_shared<numericQuadraticFunction_t> (A_, B_, "Jerk");
     }
 
     template <typename S, typename T>
@@ -79,7 +79,7 @@ namespace roboptim
 
       range_ = range;
       A_ *= scale_;
-      f_ = boost::make_shared<numericQuadraticFunction_t> (A_, B_);
+      f_ = boost::make_shared<numericQuadraticFunction_t> (A_, B_, "Jerk");
     }
 
     template <typename S, typename T>
