@@ -35,7 +35,6 @@ namespace roboptim
 	problem_ (boost::make_shared<problem_t>(problem)),
 	t0_ (),
 	tmax_ (),
-	inputsize_ (0),
 	epsilon_ (0.),
 	jerkFactory_ (),
 	constraints_ ()
@@ -48,9 +47,6 @@ namespace roboptim
 	  if (splines[i]->dimension () != dimension
               || splines[i]->timeRange () != timerange)
 	    throw std::runtime_error ("splines are not comparable");
-	  else
-	    inputsize_ += static_cast<size_type>
-              (splines[i]->getNumberControlPoints ());
 	}
 
       dimension_ = static_cast<size_type> (dimension);
@@ -120,7 +116,6 @@ namespace roboptim
           && spline.timeRange().second == tmax_)
 	{
 	  splines_.push_back(boost::make_shared<S>(spline));
-	  inputsize_ += static_cast<size_type> (spline.getNumberControlPoints());
 	}
     }
 
@@ -185,7 +180,7 @@ namespace roboptim
     (value_type startingPoint, int order, const intervals_t& range,
      const scalingVect_t& scaling)
     {
-      assert (problem_->function ().inputSize () == inputsize_);
+      size_type inputSize = problem_->function ().inputSize ();
 
       constraints_.resize (constraints_.size () + 1);
       constraints_.back ().first = startingPoint;
@@ -199,7 +194,7 @@ namespace roboptim
 
 	  constraints_.back ().second.push_back
             (boost::make_tuple (boost::make_shared<splinesConstraint_t>
-                                (splines_, i, order, startingPoint, inputsize_),
+                                (splines_, i, order, startingPoint, inputSize),
                                 ranges, scaling[i]));
 
 	  if (startingPoint < tmax_ && startingPoint >= t0_)
@@ -268,12 +263,13 @@ namespace roboptim
 
     template <typename T, typename S>
     const typename ProblemOverSplinesFactory<T, S>::numericLinearConstraintPtr_t
-    ProblemOverSplinesFactory<T, S>::localConstraint (value_type time,
+    ProblemOverSplinesFactory<T, S>::localConstraint (value_type t,
 						      int order,
 						      value_type value,
-                                                      unsigned long spline_idx)
+                                                      size_t spline_idx)
     {
-      matrix_t A (1, static_cast<typename matrix_t::Index> (inputsize_));
+      size_type inputSize = problem_->function ().inputSize ();
+      matrix_t A (1, static_cast<typename matrix_t::Index> (inputSize));
       vector_t B (1);
       A.setZero();
       B.coeffRef(0) = -value;
@@ -281,24 +277,26 @@ namespace roboptim
 
       const splinePtr_t& spline = splines_[spline_idx];
 
-      for (unsigned long i = 0; i < spline_idx; ++i)
+      for (size_t i = 0; i < spline_idx; ++i)
         splineOffset += static_cast<int> (splines_[i]->getNumberControlPoints ());
 
+      size_type int_idx = static_cast<size_type> (spline->interval (t));
       for (int j = 0; j < spline->dimension() + 1; ++j)
 	{
-	  int col = splineOffset + static_cast<int> (spline->interval(time)) - j;
-	  unsigned long k = static_cast<unsigned long> (spline->interval(time) - j);
+	  int col = splineOffset + static_cast<int> (int_idx) - j;
+	  size_t k = static_cast<size_t> (int_idx - j);
 	  A.coeffRef (0, col) = spline->
-	    basisPolynomials()[k][static_cast<unsigned long>(j)].derivative(time, order);
+	    basisPolynomials()[k][static_cast<size_t> (j)].derivative (t, order);
 	}
 
       std::string name;
       if (order == 0)
         name = (boost::format ("f(%.3f) = %.3f (%s)")
-		% time % value % spline->getName ()).str ();
+		% t % value % spline->getName ()).str ();
       else
         name = (boost::format ("f^(%i) (%.3f) = %.3f (%s)")
-		% order % time % value % spline->getName ()).str ();
+		% order % t % value % spline->getName ()).str ();
+
       return boost::make_shared<numericLinearConstraint_t> (A, B, name);
     }
   }

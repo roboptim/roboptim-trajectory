@@ -204,9 +204,6 @@ namespace roboptim
       /// \brief Ending point of the problem
       value_type tmax_;
 
-      /// \brief Input size of the cost function
-      size_type inputsize_;
-
       /// \brief Default epsilon
       value_type epsilon_;
 
