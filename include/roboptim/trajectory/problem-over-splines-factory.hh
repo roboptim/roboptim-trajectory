@@ -41,10 +41,6 @@ namespace roboptim
     class ProblemOverSplinesFactory
     {
     public:
-      typedef typename S::value_type value_type;
-      typedef typename S::size_type  size_type;
-      typedef typename S::interval_t interval_t;
-
       typedef Problem<T> problem_t;
       typedef typename problem_t::scaling_t scaling_t;
       typedef typename problem_t::scalingVect_t scalingVect_t;
@@ -52,6 +48,10 @@ namespace roboptim
       typedef typename problem_t::function_t function_t;
       typedef typename problem_t::constraint_t constraint_t;
       typedef std::vector<constraint_t> constraints_t;
+
+      typedef typename function_t::value_type value_type;
+      typedef typename function_t::size_type size_type;
+      typedef typename function_t::interval_t interval_t;
       typedef typename function_t::vector_t vector_t;
       typedef typename function_t::matrix_t matrix_t;
 
