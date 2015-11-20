@@ -177,6 +177,9 @@ namespace roboptim
       /// \param cost keep the same cost function (DEFAULT) or used a new one.
       void updateProblem (CostType cost);
 
+      /// \brief Initialize the jerk factory.
+      void initializeJerkFactory ();
+
       /// \brief Creates and retrieves a new equality constraint on a spline
       ///
       /// \returns shared pointer to the constraint

@@ -204,7 +204,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   problemFactory_t constraint_factory (splines, pb, problemFactory_t::COST_JERK);
   BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 0);
 
-  constraint_factory.updateStartingPoint (0.02, problemFactory_t::COST_JERK);
   ineq_range.clear();
   ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));
   ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));

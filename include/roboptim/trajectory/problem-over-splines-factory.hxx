@@ -21,6 +21,7 @@
 # include <stdexcept>
 
 # include <boost/format.hpp>
+# include <boost/make_shared.hpp>
 
 namespace roboptim
 {
@@ -28,11 +29,10 @@ namespace roboptim
   {
     template <typename T, typename S>
     ProblemOverSplinesFactory<T,S>::ProblemOverSplinesFactory
-    (const splines_t& splines, const problem_t& problem,
-     CostType cost)
+    (const splines_t& splines, const problem_t& problem, CostType cost)
       : splines_ (splines),
 	dimension_ (),
-	problem_ (boost::make_shared<problem_t>(problem)),
+	problem_ (),
 	t0_ (),
 	tmax_ (),
 	epsilon_ (0.),
@@ -42,7 +42,7 @@ namespace roboptim
       int dimension = splines[0]->dimension();
       std::pair<value_type, value_type> timerange = splines[0]->timeRange();
 
-      for (unsigned long i = 0; i < splines.size(); ++i)
+      for (size_t i = 0; i < splines.size(); ++i)
 	{
 	  if (splines[i]->dimension () != dimension
               || splines[i]->timeRange () != timerange)
@@ -55,8 +55,14 @@ namespace roboptim
       tmax_ = timerange.second;
 
       if (cost == COST_JERK)
-        jerkFactory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >
-          (splines_, S::makeInterval (t0_, tmax_));
+      {
+        initializeJerkFactory ();
+        problem_ = boost::make_shared<problem_t> (*(jerkFactory_->getJerk ()));
+      }
+      else
+      {
+        problem_ = boost::make_shared<problem_t> (problem);
+      }
     }
 
     template <typename T, typename S>
@@ -228,6 +234,7 @@ namespace roboptim
 
       if (cost == COST_JERK)
 	{
+	  if (!jerkFactory_) initializeJerkFactory ();
 	  jerkFactory_->updateRange (S::makeInterval (t0_, tmax_));
 	  problem_ = boost::make_shared<problem_t> (*(jerkFactory_->getJerk ()));
 	}
@@ -259,6 +266,13 @@ namespace roboptim
 		  break;
 		}
 	    }
+    }
+
+    template <typename T, typename S>
+    void ProblemOverSplinesFactory<T, S>::initializeJerkFactory ()
+    {
+      jerkFactory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >
+        (splines_, S::makeInterval (t0_, tmax_));
     }
 
     template <typename T, typename S>
