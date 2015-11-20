@@ -19,8 +19,8 @@ namespace roboptim
     {
       assert (splines[0]->dimension () == 3);
       ROBOPTIM_DEBUG_ONLY
-        (size_type nbp_ = splines[0]->getNumberControlPoints();
-         for (size_type i = 1; i < static_cast<size_type> (splines.size()); ++i)
+        (typename spline_t::size_type nbp_ = splines[0]->getNumberControlPoints();
+         for (size_t i = 1; i < splines.size (); ++i)
            assert (nbp_ == splines[i]->getNumberControlPoints());
         );
 

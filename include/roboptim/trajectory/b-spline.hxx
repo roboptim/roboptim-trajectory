@@ -413,7 +413,7 @@ namespace trajectory
   void BSpline<N>::impl_compute (result_ref derivative, value_type t) const
   {
     t = detail::fixTime (t, *this);
-    assert (timeRange ().first <= t && t <= timeRange ().second);
+    assert (this->timeRange ().first <= t && t <= this->timeRange ().second);
     this->derivative (derivative, t, 0);
   }
 
