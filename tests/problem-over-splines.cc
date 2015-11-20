@@ -198,11 +198,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   JerkOverSplinesFactory<spline_t, T>
     jerkFactory (splines, Function::makeInterval (0, 1));
   solver_t::problem_t pb (jerkFactory.getJerk ());
-  BOOST_CHECK (pb.constraints ().size () == 0);
+  BOOST_CHECK_EQUAL (pb.constraints ().size (), 0);
 
   // Create the factory and add some constraints
   problemFactory_t constraint_factory (splines, pb, problemFactory_t::COST_JERK);
-  BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 0);
+  BOOST_CHECK_EQUAL (constraint_factory.problem ().constraints ().size (), 0);
 
   ineq_range.clear();
   ineq_range.push_back (std::make_pair<value_type, value_type> (0, 5));
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   ineq_range.push_back (std::make_pair<value_type, value_type> (3, 8));
   constraint_factory.addConstraint (0.62, 1, ineq_range);
 
-  BOOST_CHECK (constraint_factory.problem ().constraints ().size () == 4);
+  BOOST_CHECK_EQUAL (constraint_factory.problem ().constraints ().size (), 4);
   solver_t::problem_t problem (constraint_factory.problem ());
 
   // Set starting point
@@ -266,9 +266,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   (*output) << *spline2 << std::endl;
 
   solver_t::problem_t newproblem (constraint_factory.problem());
-  BOOST_CHECK(newproblem.constraints().size() == 8);
+  BOOST_CHECK_EQUAL (newproblem.constraints ().size (), 8);
   startingPoint << spline->parameters(), spline2->parameters();
   newproblem.startingPoint() = startingPoint;
+
   SolverFactory<solver_t> newfactory (TESTSUITE_SOLVER "-sparse", newproblem);
   solver_t& newsolver = newfactory ();
 

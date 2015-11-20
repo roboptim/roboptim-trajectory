@@ -236,12 +236,12 @@ namespace roboptim
 	{
 	  if (!jerkFactory_) initializeJerkFactory ();
 	  jerkFactory_->updateRange (S::makeInterval (t0_, tmax_));
-	  problem_ = boost::make_shared<problem_t> (*(jerkFactory_->getJerk ()));
+	  problem_ = boost::make_shared<problem_t> (jerkFactory_->getJerk ());
 	}
       else
 	{
-	  pb = boost::make_shared<problem_t> (problem_->function ());
-	  problem_ = pb;
+	  // Reinitialize the constraints.
+	  problem_->clearConstraints ();
 	}
 
       globalConstraint_t g;

@@ -167,12 +167,15 @@ namespace roboptim
       const problem_t& problem () const;
 
     private:
-      /// \brief Generate a new problem, given the actual range and constraints
+      /// \brief Generate a new problem, given the actual range and constraints.
       ///
       /// This function is called when the time range is updated.
       /// It creates a new problem with, either on a new Jerk cost function or
       /// on the previous one (determined by buildCostFunction) and adds to it
       /// the constraints corresponding to the new range.
+      ///
+      /// **WARNING** Constraints that were not added with this factory will be
+      /// lost.
       ///
       /// \param cost keep the same cost function (DEFAULT) or used a new one.
       void updateProblem (CostType cost);
