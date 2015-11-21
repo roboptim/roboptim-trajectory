@@ -57,7 +57,7 @@ namespace roboptim
       if (cost == COST_JERK)
       {
         initializeJerkFactory ();
-        problem_ = boost::make_shared<problem_t> (*(jerkFactory_->getJerk ()));
+        problem_ = boost::make_shared<problem_t> (jerkFactory_->getJerk ());
       }
       else
       {
