@@ -18,6 +18,7 @@ namespace roboptim
     template <typename S, typename T>
     class JerkOverSplinesFactory
     {
+    public:
       typedef S spline_t;
       typedef boost::shared_ptr<spline_t> splinePtr_t;
 
@@ -34,14 +35,21 @@ namespace roboptim
       /// \brief Constructor.
       /// \param splines vector of splines.
       /// \param range time interval on which the jerk is computed.
+      /// \param scaling scaling factor.
       JerkOverSplinesFactory (const std::vector<splinePtr_t>& splines,
-                              const interval_t& range);
+                              const interval_t& range,
+                              value_type scaling = -1.);
 
       /// \brief Updates the time range on which we do the optimization.
       void updateRange (const interval_t& range);
 
       /// \brief Retrieves the cost function.
       numericQuadraticFunctionPtr_t getJerk();
+
+    protected:
+
+      /// \brief Try to find a "good" scaling factor.
+      value_type chooseScaling () const;
 
     private:
       /// \brief Shared pointers to the splines of the problem
@@ -60,7 +68,7 @@ namespace roboptim
       vector_t B_;
 
       /// \brief Scaling of the Jerk.
-      value_type scale_;
+      value_type scaling_;
 
       /// \brief Shared pointer to the cost function.
       numericQuadraticFunctionPtr_t f_;

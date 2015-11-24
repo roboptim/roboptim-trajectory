@@ -7,14 +7,15 @@ namespace roboptim
   {
     template <typename S, typename T>
     JerkOverSplinesFactory<S, T>::JerkOverSplinesFactory
-    (const std::vector<splinePtr_t>& splines, const interval_t& range)
+    (const std::vector<splinePtr_t>& splines, const interval_t& range,
+     value_type scaling)
       : splines_ (splines),
         range_ (range),
         inputSize_ (static_cast<size_type> (splines.size ())
                     * static_cast<size_type> (splines[0]->getNumberControlPoints ())),
         A_ (inputSize_, inputSize_),
         B_ (inputSize_),
-        scale_ (1e-6),
+        scaling_ (scaling > 0 ? scaling : chooseScaling ()),
         f_ ()
     {
       assert (splines[0]->dimension () == 3);
@@ -27,9 +28,9 @@ namespace roboptim
       A_.setZero ();
       B_.setZero ();
 
-      assert (range.first < range.second);
-      size_t start = static_cast<size_t> (splines[0]->interval (range.first));
-      size_t end = static_cast<size_t> (splines[0]->interval (range.second));
+      assert (range_.first < range_.second);
+      size_t start = static_cast<size_t> (splines[0]->interval (range_.first));
+      size_t end = static_cast<size_t> (splines[0]->interval (range_.second));
 
       size_t N = static_cast<size_t> (splines[0]->dimension ());
       size_t nbParameters = static_cast<size_t> (splines[0]->getNumberControlPoints());
@@ -44,11 +45,11 @@ namespace roboptim
                            static_cast<size_type> (i + n*nbParameters - k))
                 += splines_[n]->basisPolynomials ()[i-j][j].derivative (0,3) *
                    splines_[n]->basisPolynomials ()[i-k][k].derivative (0,3) *
-                   (std::min (splines_[n]->knotVector ()[ii+1], range.second)
-                    - std::max (splines_[n]->knotVector ()[ii], range.first));
+                   (std::min (splines_[n]->knotVector ()[ii+1], range_.second)
+                    - std::max (splines_[n]->knotVector ()[ii], range_.first));
             }
 
-      A_ *= scale_;
+      A_ *= scaling_;
       f_ = boost::make_shared<numericQuadraticFunction_t> (A_, B_, "Jerk");
     }
 
@@ -56,9 +57,10 @@ namespace roboptim
     void JerkOverSplinesFactory<S, T>::updateRange (const interval_t& range)
     {
       assert (range.first < range.second);
+      range_ = range;
 
-      size_t newStart = static_cast<size_t> (splines_[0]->interval (range.first));
-      size_t newEnd = static_cast<size_t> (splines_[0]->interval (range.second));
+      size_t newStart = static_cast<size_t> (splines_[0]->interval (range_.first));
+      size_t newEnd = static_cast<size_t> (splines_[0]->interval (range_.second));
       size_t N = static_cast<size_t> (splines_[0]->dimension ());
       size_t nbParameters = static_cast<size_t> (splines_[0]->getNumberControlPoints ());
       A_.setZero ();
@@ -73,12 +75,11 @@ namespace roboptim
                            static_cast<size_type> (i + n*nbParameters - k))
                 += splines_[n]->basisPolynomials ()[i-j][j].derivative (0,3) *
                    splines_[n]->basisPolynomials ()[i-k][k].derivative (0,3) *
-                   (std::min (splines_[n]->knotVector ()[ii+1], range.second)
-                    - std::max (splines_[n]->knotVector ()[ii], range.first));
+                   (std::min (splines_[n]->knotVector ()[ii+1], range_.second)
+                    - std::max (splines_[n]->knotVector ()[ii], range_.first));
             }
 
-      range_ = range;
-      A_ *= scale_;
+      A_ *= scaling_;
       f_ = boost::make_shared<numericQuadraticFunction_t> (A_, B_, "Jerk");
     }
 
@@ -87,6 +88,15 @@ namespace roboptim
     JerkOverSplinesFactory<S, T>::getJerk ()
     {
       return f_;
+    }
+
+    template <typename S, typename T>
+    typename JerkOverSplinesFactory<S, T>::value_type
+    JerkOverSplinesFactory<S, T>::chooseScaling () const
+    {
+      value_type length = range_.second - range_.first;
+      size_t n = splines_.size ();
+      return 1. / static_cast<value_type> (n * length * 1e7);
     }
   }
 }

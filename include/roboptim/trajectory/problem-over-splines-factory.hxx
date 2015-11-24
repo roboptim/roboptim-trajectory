@@ -29,7 +29,8 @@ namespace roboptim
   {
     template <typename T, typename S>
     ProblemOverSplinesFactory<T,S>::ProblemOverSplinesFactory
-    (const splines_t& splines, const problem_t& problem, CostType cost)
+    (const splines_t& splines, const problem_t& problem, CostType cost,
+     value_type scaling)
       : splines_ (splines),
 	dimension_ (),
 	problem_ (),
@@ -37,7 +38,8 @@ namespace roboptim
 	tmax_ (),
 	epsilon_ (0.),
 	jerkFactory_ (),
-	constraints_ ()
+	constraints_ (),
+	objScaling_ (scaling)
     {
       int dimension = splines[0]->dimension();
       std::pair<value_type, value_type> timerange = splines[0]->timeRange();
@@ -272,7 +274,7 @@ namespace roboptim
     void ProblemOverSplinesFactory<T, S>::initializeJerkFactory ()
     {
       jerkFactory_ = boost::make_shared<JerkOverSplinesFactory<S, T> >
-        (splines_, S::makeInterval (t0_, tmax_));
+        (splines_, S::makeInterval (t0_, tmax_), objScaling_);
     }
 
     template <typename T, typename S>

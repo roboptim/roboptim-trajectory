@@ -88,9 +88,11 @@ namespace roboptim
       /// \param splines vector of splines considered.
       /// \param problem optimization problem.
       /// \param cost type of cost function.
+      /// \param scaling scaling for the cost function (scaling > 0.).
       ProblemOverSplinesFactory (const splines_t& splines,
                                  const problem_t& problem,
-                                 CostType cost = COST_DEFAULT);
+                                 CostType cost = COST_DEFAULT,
+                                 value_type scaling = -1.);
 
       value_type t0 () const;
       value_type& t0 ();
@@ -221,6 +223,9 @@ namespace roboptim
 
       /// \brief Constraints of the problem
       problemConstraints_t constraints_;
+
+      /// \brief Scaling used for the objective function
+      value_type objScaling_;
     };
   }
 }
