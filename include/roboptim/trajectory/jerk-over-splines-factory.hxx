@@ -96,7 +96,7 @@ namespace roboptim
     {
       value_type length = range_.second - range_.first;
       size_t n = splines_.size ();
-      return 1. / static_cast<value_type> (n * length * 1e7);
+      return 1. / (static_cast<value_type> (n) * length * 1e7);
     }
   }
 }
