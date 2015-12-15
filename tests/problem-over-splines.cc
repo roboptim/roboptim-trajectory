@@ -49,6 +49,8 @@ typedef boost::mpl::list<CubicBSpline, BSpline<3> > splinesType_t;
 typedef Function::value_type value_type;
 
 static value_type tol = 1e-6;
+static value_type step = 0.005;
+
 
 template <typename T>
 std::string splineName();
@@ -75,14 +77,11 @@ std::string getOutputFilename ()
 
 template <typename T, typename S>
 void processResult (const typename Solver<T>::result_t& res,
-    boost::shared_ptr<S>& spline,
-    boost::shared_ptr<S>& spline2,
-    Matplotlib& matplotlib,
-    boost::filesystem::ofstream& pythonPlot)
+		    boost::shared_ptr<S>& spline,
+		    boost::shared_ptr<S>& spline2,
+		    Matplotlib& matplotlib)
 {
   typedef Solver<T> solver_t;
-
-  value_type step = 0.005;
 
   static int n = 1;
 
@@ -100,13 +99,11 @@ void processResult (const typename Solver<T>::result_t& res,
         spline->setParameters (result.x.segment (0, 13));
         spline2->setParameters (result.x.segment (13, 13));
 
-	pythonPlot
-	  << (matplotlib
-	      << plot_spline (*spline, step)
-	      << title ((spline->getName () + title_end).c_str ())
-	      << plot_spline (*spline2, step)
-	      << title ((spline2->getName () + title_end).c_str ())
-	      ) << std::endl;
+	matplotlib
+	  << plot_spline (*spline, step)
+	  << title ((spline->getName () + title_end).c_str ())
+	  << plot_spline (*spline2, step)
+	  << title ((spline2->getName () + title_end).c_str ());
 
         std::cout << result << std::endl;
         break;
@@ -119,13 +116,11 @@ void processResult (const typename Solver<T>::result_t& res,
 
         spline->setParameters (result.x.segment (0, 13));
         spline2->setParameters (result.x.segment (13, 13));
-	pythonPlot
-	  << (matplotlib
-	      << plot_spline (*spline, step)
-	      << title ((spline->getName () + title_end).c_str ())
-	      << plot_spline (*spline2, step)
-	      << title ((spline2->getName () + title_end).c_str ())
-	      ) << std::endl;
+	matplotlib
+	  << plot_spline (*spline, step)
+	  << title ((spline->getName () + title_end).c_str ())
+	  << plot_spline (*spline2, step)
+	  << title ((spline2->getName () + title_end).c_str ());
 
         std::cout << result << std::endl;
         break;
@@ -142,13 +137,11 @@ void processResult (const typename Solver<T>::result_t& res,
         Result result = boost::get<Result> (err.lastState ());
         std::cout << result << std::endl;
 
-        pythonPlot
-          << (matplotlib
-              << plot_spline (*spline, step)
-	      << title ((spline->getName () + " initial state").c_str ())
-              << plot_spline (*spline2, step)
-	      << title ((spline2->getName () + " initial state").c_str ())
-             ) << std::endl;
+	matplotlib
+	  << plot_spline (*spline, step)
+	  << title ((spline->getName () + " initial state").c_str ())
+	  << plot_spline (*spline2, step)
+	  << title ((spline2->getName () + " initial state").c_str ());
 
         BOOST_CHECK (false);
       }
@@ -238,8 +231,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
 
   Matplotlib matplotlib = Matplotlib::make_matplotlib (std::make_pair(3, 2));
 
+  // Plot initial splines
+  matplotlib
+    << plot_spline (*spline, step)
+    << title ((spline->getName () + " (initial)").c_str ())
+    << plot_spline (*spline2, step)
+    << title ((spline2->getName () + " (initial)").c_str ());
+
   typename solver_t::result_t res = solver.minimum();
-  processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
+  processResult<T, spline_t> (res, spline, spline2, matplotlib);
 
   value_type t = 0.32;
   constraint_factory.updateStartingPoint (t);
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   newsolver.parameters()["ipopt.output_file"].value = spline_name + "-test2.log";
 
   res = newsolver.minimum();
-  processResult<T, spline_t> (res, spline, spline2, matplotlib, pythonPlot);
+  processResult<T, spline_t> (res, spline, spline2, matplotlib);
 
   BOOST_CHECK_CLOSE ((*spline) (t)[0], eq_range_q[0], tol);
   BOOST_CHECK_CLOSE ((*spline2) (t)[0], eq_range_q[1], tol);
@@ -287,6 +287,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   BOOST_CHECK_CLOSE (spline2->derivative (t, 1)[0], eq_range_dq[1], tol);
   BOOST_CHECK_CLOSE (spline->derivative (t, 2)[0], eq_range_ddq[0], tol);
   BOOST_CHECK_CLOSE (spline2->derivative (t, 2)[0], eq_range_ddq[1], tol);
+
+  pythonPlot << matplotlib << std::endl;
 
   std::cout << output->str () << std::endl;
 }
