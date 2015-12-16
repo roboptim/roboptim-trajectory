@@ -50,11 +50,11 @@ namespace roboptim
       interval_t range = ComputeInterval (splines, splineIdx, startingPoint);
 
       if (order == 0)
-        name = (boost::format ("f(t) / t ∈ [%.2f,%.2f] (%s)")
+        name = (boost::format ("f(t) / t ∈ [%.4f,%.4f] (%s)")
             % range.first % range.second
             % splines[splineIdx]->getName ()).str ();
       else
-        name = (boost::format ("f^(%i)(t) / t ∈ [%.2f,%.2f] (%s)")
+        name = (boost::format ("f^(%i)(t) / t ∈ [%.4f,%.4f] (%s)")
             % order % range.first % range.second
             % splines[splineIdx]->getName ()).str ();
 
@@ -103,8 +103,8 @@ namespace roboptim
     void ConstraintsOverSplines<T, S>::update (const_argument_ref x) const
     {
       p_.coefs().setZero();
-      for (size_t i = 0; i < dimension_ + 1; ++i)
-        p_ += coefs_[i] * x[static_cast<size_type> (i)];
+      for (size_type i = 0; i < static_cast<size_type> (dimension_) + 1; ++i)
+        p_ += coefs_[i] * x[i];
     }
 
     template <typename T, typename S>

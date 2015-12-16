@@ -28,42 +28,79 @@ namespace roboptim
       typedef boost::shared_ptr<S> spline_t;
       typedef std::vector<boost::shared_ptr<S> > splines_t;
 
+      /// \brief Constructor.
+      ///
+      /// \param splines vector of splines.
+      /// \param splineIdx index of the spline to constrain.
+      /// \param order derivation order of the spline to constain.
+      /// \param startingPoint starting point of the constraint.
+      /// \param inputSize input size of the problem.
       ConstraintsOverSplines (const splines_t& splines, size_t splineIdx,
-           unsigned int order, value_type startingPoint,
-           size_type inputSize);
+                              unsigned int order, value_type startingPoint,
+                              size_type inputSize);
 
     protected:
 
-      static std::string GenerateName (const splines_t& splines, size_t splineIdx,
-           unsigned int order, value_type startingPoint);
+      /// \brief Generate the name of the constraint.
+      ///
+      /// \param splines vector of splines.
+      /// \param splineIdx index of the spline to constrain.
+      /// \param order derivation order of the spline to constain.
+      /// \param startingPoint starting point of the constraint.
+      static std::string GenerateName (const splines_t& splines,
+                                       size_t splineIdx,
+                                       unsigned int order,
+                                       value_type startingPoint);
 
-      static interval_t ComputeInterval (const splines_t& splines, size_t splineIdx,
-           value_type startingPoint);
+      /// \brief TODO
+      ///
+      /// \param splines vector of splines.
+      /// \param splineIdx index of the spline to constrain.
+      /// \param startingPoint starting point of the constraint.
+      static interval_t ComputeInterval (const splines_t& splines,
+                                         size_t splineIdx,
+                                         value_type startingPoint);
 
-      static size_t ComputeIntervalIdx (const splines_t& splines, size_t splineIdx,
-           value_type startingPoint);
+      /// \brief TODO
+      ///
+      /// \param splines vector of splines.
+      /// \param splineIdx index of the spline to constrain.
+      /// \param startingPoint starting point of the constraint.
+      static size_t ComputeIntervalIdx (const splines_t& splines,
+                                        size_t splineIdx,
+                                        value_type startingPoint);
 
-      static size_type ComputeStartIdx (const splines_t& splines, size_t splineIdx);
+      /// \brief TODO
+      ///
+      /// \param splines vector of splines.
+      /// \param splineIdx index of the spline to constrain.
+      static size_type ComputeStartIdx (const splines_t& splines,
+                                        size_t splineIdx);
 
-      void update(const_argument_ref x) const;
+      /// \brief Compute internal data
+      /// \param x parameters.
+      void update (const_argument_ref x) const;
 
-      virtual void impl_compute(result_ref result, const_argument_ref x) const;
+      virtual void impl_compute (result_ref result,
+                                 const_argument_ref x) const;
 
-      virtual void impl_gradient(gradient_ref grad, const_argument_ref x, size_type i) const;
+      virtual void impl_gradient (gradient_ref grad,
+                                  const_argument_ref x,
+                                  size_type i) const;
 
-      /// \brief Dimension of the spline
+      /// \brief Dimension of the spline.
       size_t dimension_;
 
-      /// \brief Time range of the constraint
+      /// \brief Time range of the constraint.
       typename S::interval_t interval_;
 
-      /// \brief Index of the influencing control Points
+      /// \brief Index of the influencing control points.
       size_type startingIndex_;
 
-      /// \brief Polynomial used to compute the minimum and maximum
+      /// \brief Polynomial used to compute the minimum and maximum.
       mutable polynomial_t p_;
 
-      /// \brief Coefficients of the polynomial
+      /// \brief Coefficients of the polynomials.
       polynomials_t coefs_;
     };
   }
