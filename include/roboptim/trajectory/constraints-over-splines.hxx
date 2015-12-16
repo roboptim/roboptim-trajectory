@@ -11,12 +11,14 @@ namespace roboptim
     ConstraintsOverSplines<T, S>::ConstraintsOverSplines
     (const splines_t& splines, size_t splineIdx, unsigned int order,
      value_type startingPoint, size_type inputSize)
-    : GenericDifferentiableFunction<T> (inputSize, 2, GenerateName (splines, splineIdx, order, startingPoint)),
-    dimension_ (static_cast<size_t> (splines[splineIdx]->dimension ())),
-    interval_ (ComputeInterval (splines, splineIdx, startingPoint)),
-    startingIndex_ (ComputeStartIdx (splines, splineIdx)),
-    p_ (),
-    coefs_ ()
+    : GenericDifferentiableFunction<T>
+        (inputSize, 2, GenerateName (splines, splineIdx,
+                                     order, startingPoint)),
+      dimension_ (static_cast<size_t> (splines[splineIdx]->dimension ())),
+      interval_ (ComputeInterval (splines, splineIdx, startingPoint)),
+      startingIndex_ (ComputeStartIdx (splines, splineIdx)),
+      p_ (),
+      coefs_ ()
     {
       size_t interval_idx = ComputeIntervalIdx (splines, splineIdx, startingPoint);
 
@@ -49,21 +51,25 @@ namespace roboptim
 
       if (order == 0)
         name = (boost::format ("f(t) / t ∈ [%.2f,%.2f] (%s)")
-            % range.first % range.second % splines[splineIdx]->getName ()).str ();
+            % range.first % range.second
+            % splines[splineIdx]->getName ()).str ();
       else
         name = (boost::format ("f^(%i)(t) / t ∈ [%.2f,%.2f] (%s)")
-            % order % range.first % range.second % splines[splineIdx]->getName ()).str ();
+            % order % range.first % range.second
+            % splines[splineIdx]->getName ()).str ();
 
       return name;
     }
 
     template <typename T, typename S>
     typename ConstraintsOverSplines<T, S>::size_type
-    ConstraintsOverSplines<T, S>::ComputeStartIdx (const splines_t& splines, size_t splineIdx)
+    ConstraintsOverSplines<T, S>::ComputeStartIdx (const splines_t& splines,
+                                                   size_t splineIdx)
     {
       size_type start_idx = 0;
       for (size_t i = 0; i < splineIdx; ++i)
-        start_idx += static_cast<size_type> (splines[i]->getNumberControlPoints ());
+        start_idx += static_cast<size_type>
+                       (splines[i]->getNumberControlPoints ());
       return start_idx;
     }
 
@@ -72,7 +78,10 @@ namespace roboptim
     (const splines_t& splines, size_t splineIdx, value_type startingPoint)
     {
       size_t dimension = static_cast<size_t> (splines[splineIdx]->dimension ());
-      return static_cast<size_t> (splines[splineIdx]->interval (startingPoint)) - dimension;
+      size_t interval = static_cast<size_t>
+        (splines[splineIdx]->interval (startingPoint));
+
+      return interval - dimension;
     }
 
     template <typename T, typename S>
@@ -81,10 +90,13 @@ namespace roboptim
     (const splines_t& splines, size_t splineIdx, value_type startingPoint)
     {
       size_t dimension = static_cast<size_t> (splines[splineIdx]->dimension ());
-      size_t interval_idx = ComputeIntervalIdx (splines, splineIdx, startingPoint);
+      size_t interval_idx = ComputeIntervalIdx (splines, splineIdx,
+                                                startingPoint);
 
       size_type idx = static_cast<size_type> (interval_idx + dimension + 1);
-      return S::makeInterval (startingPoint, splines[splineIdx]->knotVector ()[idx]);;
+
+      return S::makeInterval (startingPoint,
+                              splines[splineIdx]->knotVector ()[idx]);
     }
 
     template <typename T, typename S>
@@ -98,27 +110,32 @@ namespace roboptim
     template <typename T, typename S>
     void ConstraintsOverSplines<T, S>::impl_compute (result_ref result, const_argument_ref x) const
     {
-      this->update(x.middleRows(static_cast<long>(startingIndex_), static_cast<long>(dimension_ + 1)));
+      this->update (x.middleRows (static_cast<long> (startingIndex_),
+                                  static_cast<long> (dimension_ + 1)));
       result[0] = p_.min(interval_).second;
       result[1] = p_.max(interval_).second;
     }
 
     template <typename T, typename S>
-    void ConstraintsOverSplines<T, S>::impl_gradient (gradient_ref grad, const_argument_ref x, size_type functionId) const
+    void ConstraintsOverSplines<T, S>::impl_gradient
+    (gradient_ref grad, const_argument_ref x, size_type functionId) const
     {
-      update (x.middleRows (startingIndex_, static_cast<size_type> (dimension_ + 1)));
+      update (x.middleRows (startingIndex_,
+                            static_cast<size_type> (dimension_ + 1)));
 
       if (functionId == 0)
       {
         value_type tmin_ = p_.min(interval_).first;
         for (size_t i = 0; i < dimension_ + 1; ++i)
-          grad.coeffRef (startingIndex_ + static_cast<size_type> (i)) = coefs_[i](tmin_);
+          grad.coeffRef (startingIndex_ + static_cast<size_type> (i))
+            = coefs_[i](tmin_);
       }
       else
       {
         value_type tmax_ = p_.max(interval_).first;
         for (size_t i = 0; i < dimension_ + 1; ++i)
-          grad.coeffRef (startingIndex_ + static_cast<size_type> (i)) = coefs_[i](tmax_);
+          grad.coeffRef (startingIndex_ + static_cast<size_type> (i))
+            = coefs_[i](tmax_);
       }
     }
   }
