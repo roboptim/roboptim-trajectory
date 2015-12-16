@@ -88,8 +88,8 @@ namespace roboptim
                                   const_argument_ref x,
                                   size_type i) const;
 
-      /// \brief Dimension of the spline.
-      size_t dimension_;
+      /// \brief Order of the spline (e.g. 3 for cubic).
+      size_t order_;
 
       /// \brief Time range of the constraint.
       typename S::interval_t interval_;

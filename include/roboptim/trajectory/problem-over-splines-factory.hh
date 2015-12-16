@@ -200,8 +200,8 @@ namespace roboptim
       /// \brief Shared pointers to the splines used in the problem
       splines_t splines_;
 
-      /// \brief Dimension of the problem
-      size_type dimension_;
+      /// \brief Order of the splines.
+      size_type order_;
 
       /// \brief Shared pointer to the built problem
       boost::shared_ptr<problem_t> problem_;

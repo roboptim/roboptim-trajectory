@@ -203,8 +203,8 @@ namespace trajectory
     /// dimensions.
     void operator+= (const CubicBSpline& s);
 
-    /// \brief Retrieve the dimension of the BSpline
-    int dimension () const;
+    /// \brief Retrieve the order of the spline.
+    int order () const;
 
   protected:
     using Trajectory<3>::impl_compute;

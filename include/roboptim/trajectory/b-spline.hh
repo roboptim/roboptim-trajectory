@@ -176,8 +176,8 @@ namespace trajectory
 
     using Trajectory<N>::derivative;
 
-    /// \brief Retrieve the dimension of the BSpline
-    int dimension () const;
+    /// \brief Retrieve the order of the spline.
+    int order () const;
 
   protected:
 

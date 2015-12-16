@@ -32,7 +32,7 @@ namespace roboptim
     (const splines_t& splines, const problem_t& problem, CostType cost,
      value_type scaling)
       : splines_ (splines),
-	dimension_ (),
+	order_ (),
 	problem_ (),
 	t0_ (),
 	tmax_ (),
@@ -41,17 +41,17 @@ namespace roboptim
 	constraints_ (),
 	objScaling_ (scaling)
     {
-      int dimension = splines[0]->dimension();
+      int order = splines[0]->order();
       std::pair<value_type, value_type> timerange = splines[0]->timeRange();
 
       for (size_t i = 0; i < splines.size(); ++i)
 	{
-	  if (splines[i]->dimension () != dimension
+	  if (splines[i]->order () != order
               || splines[i]->timeRange () != timerange)
 	    throw std::runtime_error ("splines are not comparable");
 	}
 
-      dimension_ = static_cast<size_type> (dimension);
+      order_ = static_cast<size_type> (order);
 
       t0_ = timerange.first;
       tmax_ = timerange.second;
@@ -119,7 +119,7 @@ namespace roboptim
     template <typename T, typename S>
     void ProblemOverSplinesFactory<T, S>::addSpline (const S& spline)
     {
-      if (static_cast<size_type> (spline.dimension ()) == dimension_
+      if (static_cast<size_type> (spline.order ()) == order_
           && spline.timeRange().first == t0_
           && spline.timeRange().second == tmax_)
 	{
@@ -297,7 +297,7 @@ namespace roboptim
         splineOffset += static_cast<int> (splines_[i]->getNumberControlPoints ());
 
       size_type int_idx = static_cast<size_type> (spline->interval (t));
-      for (int j = 0; j < spline->dimension() + 1; ++j)
+      for (int j = 0; j < spline->order() + 1; ++j)
 	{
 	  int col = splineOffset + static_cast<int> (int_idx) - j;
 	  size_t k = static_cast<size_t> (int_idx - j);

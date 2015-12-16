@@ -549,7 +549,7 @@ namespace trajectory
     return o;
   }
 
-  int CubicBSpline::dimension () const
+  int CubicBSpline::order () const
   {
     return 3;
   }

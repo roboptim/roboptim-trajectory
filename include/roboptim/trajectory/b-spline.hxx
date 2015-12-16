@@ -653,7 +653,7 @@ namespace trajectory
   }
 
   template <int N>
-  int BSpline<N>::dimension () const
+  int BSpline<N>::order () const
   {
     return N;
   }

@@ -18,7 +18,7 @@ namespace roboptim
         scaling_ (scaling > 0 ? scaling : chooseScaling ()),
         f_ ()
     {
-      assert (splines[0]->dimension () == 3);
+      assert (splines[0]->order () == 3);
       ROBOPTIM_DEBUG_ONLY
         (typename spline_t::size_type nbp_ = splines[0]->getNumberControlPoints();
          for (size_t i = 1; i < splines.size (); ++i)
@@ -32,7 +32,7 @@ namespace roboptim
       size_t start = static_cast<size_t> (splines[0]->interval (range_.first));
       size_t end = static_cast<size_t> (splines[0]->interval (range_.second));
 
-      size_t N = static_cast<size_t> (splines[0]->dimension ());
+      size_t N = static_cast<size_t> (splines[0]->order ());
       size_t nbParameters = static_cast<size_t> (splines[0]->getNumberControlPoints());
 
       for (size_t n = 0; n < splines.size (); ++n)
@@ -61,7 +61,7 @@ namespace roboptim
 
       size_t newStart = static_cast<size_t> (splines_[0]->interval (range_.first));
       size_t newEnd = static_cast<size_t> (splines_[0]->interval (range_.second));
-      size_t N = static_cast<size_t> (splines_[0]->dimension ());
+      size_t N = static_cast<size_t> (splines_[0]->order ());
       size_t nbParameters = static_cast<size_t> (splines_[0]->getNumberControlPoints ());
       A_.setZero ();
 
