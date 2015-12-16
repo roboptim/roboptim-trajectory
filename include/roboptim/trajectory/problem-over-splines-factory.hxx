@@ -307,10 +307,10 @@ namespace roboptim
 
       std::string name;
       if (order == 0)
-        name = (boost::format ("f(%.3f) = %.3f (%s)")
+        name = (boost::format ("f(%g) = %g (%s)")
 		% t % value % spline->getName ()).str ();
       else
-        name = (boost::format ("f^(%i) (%.3f) = %.3f (%s)")
+        name = (boost::format ("f^(%i) (%g) = %g (%s)")
 		% order % t % value % spline->getName ()).str ();
 
       return boost::make_shared<numericLinearConstraint_t> (A, B, name);
