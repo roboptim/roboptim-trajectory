@@ -50,11 +50,11 @@ namespace roboptim
       interval_t range = ComputeInterval (splines, splineIdx, startingPoint);
 
       if (order == 0)
-        name = (boost::format ("f(t) / t ∈ [%.4f,%.4f] (%s)")
+        name = (boost::format ("f(t) / t ∈ [%g,%g] (%s)")
             % range.first % range.second
             % splines[splineIdx]->getName ()).str ();
       else
-        name = (boost::format ("f^(%i)(t) / t ∈ [%.4f,%.4f] (%s)")
+        name = (boost::format ("f^(%i)(t) / t ∈ [%g,%g] (%s)")
             % order % range.first % range.second
             % splines[splineIdx]->getName ()).str ();
 

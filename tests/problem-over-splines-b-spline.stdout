@@ -19,22 +19,22 @@ Problem:
   Arguments scaling: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
   Number of constraints: 4
   Constraint 0
-      f(t) / t ∈ [0.02,0.10] (B-spline 1) (differentiable function)
+      f(t) / t ∈ [0.02,0.1] (B-spline 1) (differentiable function)
       Bounds: (0, inf), (-inf, 5)
       Scaling: 1, 1
       Initial value: [2](7.5, 20.5933) (constraint not satisfied)
   Constraint 1
-      f(t) / t ∈ [0.02,0.10] (B-spline 2) (differentiable function)
+      f(t) / t ∈ [0.02,0.1] (B-spline 2) (differentiable function)
       Bounds: (0, inf), (-inf, 5)
       Scaling: 1, 1
       Initial value: [2](9.58333, 10.9897) (constraint not satisfied)
   Constraint 2
-      f^(1)(t) / t ∈ [0.62,0.70] (B-spline 1) (differentiable function)
+      f^(1)(t) / t ∈ [0.62,0.7] (B-spline 1) (differentiable function)
       Bounds: (1, inf), (-inf, 10)
       Scaling: 1, 1
       Initial value: [2](-181.25, -125) (constraint not satisfied)
   Constraint 3
-      f^(1)(t) / t ∈ [0.62,0.70] (B-spline 2) (differentiable function)
+      f^(1)(t) / t ∈ [0.62,0.7] (B-spline 2) (differentiable function)
       Bounds: (3, inf), (-inf, 8)
       Scaling: 1, 1
       Initial value: [2](-22.8571, -13.6) (constraint not satisfied)
