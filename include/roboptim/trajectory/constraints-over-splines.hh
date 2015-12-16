@@ -16,7 +16,8 @@ namespace roboptim
     /// \tparam T Matrix type
     /// \tparam S Spline type
     template <typename T, typename S>
-    class ConstraintsOverSplines : public roboptim::GenericDifferentiableFunction<T>
+    class ConstraintsOverSplines
+    : public roboptim::GenericDifferentiableFunction<T>
     {
     public:
       ROBOPTIM_DIFFERENTIABLE_FUNCTION_FWD_TYPEDEFS_
@@ -25,7 +26,8 @@ namespace roboptim
       typedef typename S::polynomial_t polynomial_t;
       typedef Function::interval_t interval_t;
       typedef std::vector<polynomial_t> polynomials_t;
-      typedef boost::shared_ptr<S> spline_t;
+      typedef S spline_t;
+      typedef boost::shared_ptr<spline_t> splinePtr_t;
       typedef std::vector<boost::shared_ptr<S> > splines_t;
 
       /// \brief Constructor.
@@ -42,7 +44,6 @@ namespace roboptim
     protected:
 
       /// \brief Generate the name of the constraint.
-      ///
       /// \param splines vector of splines.
       /// \param splineIdx index of the spline to constrain.
       /// \param order derivation order of the spline to constain.
@@ -52,8 +53,7 @@ namespace roboptim
                                        unsigned int order,
                                        value_type startingPoint);
 
-      /// \brief TODO
-      ///
+      /// \brief Compute the range of the time interval.
       /// \param splines vector of splines.
       /// \param splineIdx index of the spline to constrain.
       /// \param startingPoint starting point of the constraint.
@@ -61,8 +61,7 @@ namespace roboptim
                                          size_t splineIdx,
                                          value_type startingPoint);
 
-      /// \brief TODO
-      ///
+      /// \brief Determine the interval index of the constraint.
       /// \param splines vector of splines.
       /// \param splineIdx index of the spline to constrain.
       /// \param startingPoint starting point of the constraint.
@@ -70,16 +69,14 @@ namespace roboptim
                                         size_t splineIdx,
                                         value_type startingPoint);
 
-      /// \brief TODO
-      ///
+      /// \brief Determine the first index in the argument vector, assuming all
+      /// joint control points are contiguous.
       /// \param splines vector of splines.
       /// \param splineIdx index of the spline to constrain.
       static size_type ComputeStartIdx (const splines_t& splines,
                                         size_t splineIdx);
 
-      /// \brief Compute internal data
-      /// \param x parameters.
-      void update (const_argument_ref x) const;
+      polynomial_t toPoly (const_argument_ref x) const;
 
       virtual void impl_compute (result_ref result,
                                  const_argument_ref x) const;
@@ -97,11 +94,14 @@ namespace roboptim
       /// \brief Index of the influencing control points.
       size_type startingIndex_;
 
-      /// \brief Polynomial used to compute the minimum and maximum.
-      mutable polynomial_t p_;
+      /// \brief Basis polynomials used for gradient computation.
+      polynomials_t basisPolynomials_;
 
-      /// \brief Coefficients of the polynomials.
-      polynomials_t coefs_;
+      /// \brief Constrained spline.
+      mutable spline_t spline_;
+
+      /// \brief Index of the constrained time interval.
+      size_t intervalIdx_;
     };
   }
 }

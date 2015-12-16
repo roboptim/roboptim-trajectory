@@ -17,11 +17,10 @@ namespace roboptim
       order_ (static_cast<size_t> (splines[splineIdx]->order ())),
       interval_ (ComputeInterval (splines, splineIdx, startingPoint)),
       startingIndex_ (ComputeStartIdx (splines, splineIdx)),
-      p_ (),
-      coefs_ ()
+      basisPolynomials_ (),
+      spline_ (*splines[splineIdx]),
+      intervalIdx_ (ComputeIntervalIdx (splines, splineIdx, startingPoint))
     {
-      size_t interval_idx = ComputeIntervalIdx (splines, splineIdx, startingPoint);
-
       for (size_t j = 0; j < order_ + 1; ++j)
       {
         polynomial_t p;
@@ -30,14 +29,14 @@ namespace roboptim
           case 1:
           {
             p = splines[splineIdx]->basisPolynomials ()
-                [interval_idx + j][order_ - j].template derivative<1>();
+                [intervalIdx_ + j][order_ - j].template derivative<1>();
             break;
           }
 
           case 2:
           {
             p = splines[splineIdx]->basisPolynomials ()
-                [interval_idx + j][order_ - j].template derivative<2>();
+                [intervalIdx_ + j][order_ - j].template derivative<2>();
             break;
           }
 
@@ -45,11 +44,12 @@ namespace roboptim
           case 0:
           {
             p = splines[splineIdx]->basisPolynomials ()
-                [interval_idx + j][order_ - j];
+                [intervalIdx_ + j][order_ - j];
             break;
           }
         }
-        coefs_.push_back(p);
+
+        basisPolynomials_.push_back (p);
       }
     }
 
@@ -112,43 +112,58 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ConstraintsOverSplines<T, S>::update (const_argument_ref x) const
-    {
-      p_.coefs().setZero();
-      for (size_type i = 0; i < static_cast<size_type> (order_) + 1; ++i)
-        p_ += coefs_[i] * x[i];
-    }
-
-    template <typename T, typename S>
     void ConstraintsOverSplines<T, S>::impl_compute
     (result_ref result, const_argument_ref x) const
     {
-      this->update (x.segment (static_cast<size_type> (startingIndex_),
-                               static_cast<size_type> (order_ + 1)));
-      result[0] = p_.min(interval_).second;
-      result[1] = p_.max(interval_).second;
+      polynomial_t p = toPoly (x);
+
+      result[0] = p.min (interval_).second;
+      result[1] = p.max (interval_).second;
+    }
+
+    template <typename T, typename S>
+    typename ConstraintsOverSplines<T, S>::polynomial_t
+    ConstraintsOverSplines<T, S>::toPoly (const_argument_ref x) const
+    {
+      typename spline_t::const_argument_ref
+        param = x.segment (static_cast<size_type> (startingIndex_),
+                           spline_.parameters ().size ());
+      const size_type n = static_cast<size_type> (spline_.outputSize ());
+      const size_type offset = n - 1;
+      const size_type k = static_cast<size_type> (intervalIdx_ + order_);
+
+      polynomial_t p;
+      for (size_type i = 0; i <= static_cast<size_type> (order_); ++i)
+      {
+        p += basisPolynomials_[order_ - i] * param (n * (k - i) + offset);
+      }
+
+      return p;
     }
 
     template <typename T, typename S>
     void ConstraintsOverSplines<T, S>::impl_gradient
     (gradient_ref grad, const_argument_ref x, size_type functionId) const
     {
-      update (x.segment (startingIndex_,
-                         static_cast<size_type> (order_ + 1)));
+      polynomial_t p = toPoly (x);
 
       if (functionId == 0)
       {
-        value_type tmin_ = p_.min(interval_).first;
+        value_type tmin_ = p.min (interval_).first;
         for (size_t i = 0; i < order_ + 1; ++i)
-          grad.coeffRef (startingIndex_ + static_cast<size_type> (i))
-            = coefs_[i](tmin_);
+          grad.coeffRef (startingIndex_
+                         + static_cast<size_type> (intervalIdx_)
+                         + static_cast<size_type> (i))
+            = basisPolynomials_[i](tmin_);
       }
       else
       {
-        value_type tmax_ = p_.max(interval_).first;
+        value_type tmax_ = p.max (interval_).first;
         for (size_t i = 0; i < order_ + 1; ++i)
-          grad.coeffRef (startingIndex_ + static_cast<size_type> (i))
-            = coefs_[i](tmax_);
+          grad.coeffRef (startingIndex_
+                         + static_cast<size_type> (intervalIdx_)
+                         + static_cast<size_type> (i))
+            = basisPolynomials_[i](tmax_);
       }
     }
   }

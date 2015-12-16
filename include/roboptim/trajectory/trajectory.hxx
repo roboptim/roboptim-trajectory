@@ -54,7 +54,7 @@ namespace trajectory
 
   template <unsigned dorder>
   void
-  Trajectory<dorder>::setParameters (const vector_t& p)
+  Trajectory<dorder>::setParameters (const_vector_ref p)
   {
     parameters_ = p;
   }

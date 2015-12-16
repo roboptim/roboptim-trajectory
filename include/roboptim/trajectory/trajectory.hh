@@ -98,7 +98,7 @@ namespace trajectory
     /// \brief Set parameters.
     /// \param vector_t parameters.
     /// \throw std::runtime_error
-    virtual void setParameters (const vector_t&);
+    virtual void setParameters (const_vector_ref);
 
     interval_t timeRange () const;
     value_type length () const;

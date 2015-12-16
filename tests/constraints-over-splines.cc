@@ -58,7 +58,7 @@ std::string splineName<roboptim::trajectory::BSpline<3> > ()
 template <typename T>
 std::string getOutputFilename ()
 {
-  std::string s = "problem-over-splines-";
+  std::string s = "constraints-over-splines-";
   s += splineName<T> ();
   return s;
 }
@@ -87,32 +87,35 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (trajectory_constraints_over_splines,
   splines_t splines;
   splines.push_back (spline);
 
-  constraintsOverSplines_t f (splines, 0, 0, 0.3, n);
+  for (double t = 1e-6; t < 1.; t += 1./7.)
+  {
+    constraintsOverSplines_t f (splines, 0, 0, t, n);
 
-  typedef typename finiteDifferenceGradientPolicies::Simple<EigenMatrixDense>
-    fdRule_t;
-  GenericFiniteDifferenceGradient<EigenMatrixDense, fdRule_t> fd (f);
+    typedef typename finiteDifferenceGradientPolicies::Simple<EigenMatrixDense>
+      fdRule_t;
+    GenericFiniteDifferenceGradient<EigenMatrixDense, fdRule_t> fd (f);
 
-  (*output)
-    << x << "\n"
-    << f << "\n"
-    << f (x) << "\n"
-    << normalize (toDense (f.gradient (x, 0))) << "\n"
-    << normalize (toDense (f.gradient (x, 1))) << "\n"
-    << normalize (toDense (f.jacobian (x))) << std::endl;
+    (*output)
+      << x << "\n"
+      << f << "\n"
+      << f (x) << "\n"
+      << normalize (toDense (f.gradient (x, 0))) << "\n"
+      << normalize (toDense (f.gradient (x, 1))) << "\n"
+      << normalize (toDense (f.jacobian (x))) << std::endl;
 
-  // Numerical errors between spline implementations prevent basic string
-  // comparisons with FD.
-  std::cout
-    << fd << "\n"
-    << fd (x) << "\n"
-    << normalize (toDense (fd.gradient (x, 0)), 1e-6) << "\n"
-    << normalize (toDense (fd.gradient (x, 1)), 1e-6) << "\n"
-    << normalize (toDense (fd.jacobian (x)), 1e-6) << std::endl;
+    // Numerical errors between spline implementations prevent basic string
+    // comparisons with FD.
+    std::cout
+      << fd << "\n"
+      << fd (x) << "\n"
+      << normalize (toDense (fd.gradient (x, 0)), 1e-6) << "\n"
+      << normalize (toDense (fd.gradient (x, 1)), 1e-6) << "\n"
+      << normalize (toDense (fd.jacobian (x)), 1e-6) << std::endl;
 
-  BOOST_CHECK (allclose (toDense (f.jacobian (x)),
-                         toDense (fd.jacobian (x)),
-                         1e-4, 1e-4));
+    BOOST_CHECK (allclose (toDense (f.jacobian (x)),
+          toDense (fd.jacobian (x)),
+          1e-4, 1e-4));
+  }
 
   Matplotlib matplotlib = Matplotlib::make_matplotlib ();
   matplotlib << plot_spline (*splines[0], 0.005);
