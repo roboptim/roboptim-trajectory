@@ -181,7 +181,7 @@ namespace trajectory
   }
 
   void
-  CubicBSpline::setParameters (const vector_t& p)
+  CubicBSpline::setParameters (const_vector_ref p)
   {
     assert (p.size () == parameters_.size ());
     parameters_ = p;
