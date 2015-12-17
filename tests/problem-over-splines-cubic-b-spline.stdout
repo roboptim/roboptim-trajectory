@@ -32,12 +32,12 @@ Problem:
       f^(1)(t) / t ∈ [0.62,0.7] (B-spline 1) (differentiable function)
       Bounds: (1, inf), (-inf, 10)
       Scaling: 1, 1
-      Initial value: [2](-181.25, -125) (constraint not satisfied)
+      Initial value: [2](-75, -15.8) (constraint not satisfied)
   Constraint 3
       f^(1)(t) / t ∈ [0.62,0.7] (B-spline 2) (differentiable function)
       Bounds: (3, inf), (-inf, 8)
       Scaling: 1, 1
-      Initial value: [2](-22.8571, -13.6) (constraint not satisfied)
+      Initial value: [2](-144.605, -75) (constraint not satisfied)
   Starting point: [26](40,25,5,0,8,15,0,10,3,-5,15,22,35,10,12,9,8,25,15,24,20,1,5,12,-12,3)
   Starting value: [1](300.588)
   Infinity value (for all functions): inf
