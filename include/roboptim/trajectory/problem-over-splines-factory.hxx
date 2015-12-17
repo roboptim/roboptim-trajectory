@@ -184,10 +184,13 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addConstraint
+    void ProblemOverSplinesFactory<T, S>::addIntervalConstraint
     (value_type startingPoint, int order, const intervals_t& range,
      const scalingVect_t& scaling)
     {
+      if (startingPoint > tmax_ || startingPoint < t0_)
+        return;
+
       size_type inputSize = problem_->function ().inputSize ();
 
       constraints_.resize (constraints_.size () + 1);
@@ -202,14 +205,14 @@ namespace roboptim
 
 	  constraints_.back ().second.push_back
             (boost::make_tuple (boost::make_shared<splinesConstraint_t>
-                                (splines_, i, order, startingPoint, inputSize),
+                                (splines_, i, order, startingPoint,
+                                 inputSize),
                                 ranges, scaling[i]));
 
-	  if (startingPoint < tmax_ && startingPoint >= t0_)
-	    problem_->addConstraint
-              (boost::get<0> (boost::get<globalConstraint_t>
-                              (constraints_.back ().second.back ())),
-               ranges, scaling[i]);
+	  problem_->addConstraint
+            (boost::get<0> (boost::get<globalConstraint_t>
+                            (constraints_.back ().second.back ())),
+             ranges, scaling[i]);
 	}
     }
 
@@ -222,11 +225,11 @@ namespace roboptim
     }
 
     template <typename T, typename S>
-    void ProblemOverSplinesFactory<T, S>::addConstraint
+    void ProblemOverSplinesFactory<T, S>::addIntervalConstraint
     (value_type startingPoint, int order, const intervals_t& range)
     {
       scalingVect_t scaling (range.size (), scaling_t (2, 1.));
-      addConstraint (startingPoint, order, range, scaling);
+      addIntervalConstraint (startingPoint, order, range, scaling);
     }
 
     template <typename T, typename S>
@@ -258,8 +261,8 @@ namespace roboptim
 		{
 		case 0 :
 		  g = boost::get<globalConstraint_t> (*ci);
-		  problem_->addConstraint (boost::get<0> (g), boost::get<1> (g),
-					   boost::get<2> (g));
+		  problem_->addConstraint
+		    (boost::get<0> (g), boost::get<1> (g), boost::get<2> (g));
 		  break;
 		case 1 :
 		  f = boost::get<freeze_t> (*ci);
