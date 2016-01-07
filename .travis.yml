@@ -24,7 +24,7 @@ before_install:
 - ./.travis/dependencies/eigen-3.2
 - ./.travis/run  before_install
 script:
-  - export LD_LIBRARY_PATH="/tmp/_travis/install/lib/roboptim-core/":$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt";
+  - export LD_LIBRARY_PATH="/tmp/_ci/install/lib/roboptim-core/":$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt";
   - if [ "${COVERITY_SCAN_BRANCH}" != "1" ]; then ./.travis/run build; fi
 after_failure: ./.travis/run after_failure
 after_success: ./.travis/run after_success
