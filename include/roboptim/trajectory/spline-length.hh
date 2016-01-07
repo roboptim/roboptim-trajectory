@@ -53,7 +53,7 @@ namespace trajectory
     /// \param nDiscretizationPoints number of discretization points
     SplineLength (const CubicBSpline& spline,
 		  const size_type nDiscretizationPoints = 100,
-		  boost::optional<interval_t> interval = boost::none_t ());
+		  boost::optional<interval_t> interval = boost::none);
 
     virtual ~SplineLength ();
 
