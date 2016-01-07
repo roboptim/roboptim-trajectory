@@ -539,9 +539,10 @@ namespace trajectory
   {
     using roboptim::operator <<;
 
-    o << "Cubic B-spline:" << incindent
-      << iendl << "Name: " << getName ()
-      << iendl << "Number of parameters per spline function: " << nbp_
+    o << "Cubic B-spline:" << incindent;
+    if (!getName ().empty ())
+      o << iendl << "Name: " << getName ();
+    o << iendl << "Number of parameters per spline function: " << nbp_
       << iendl << "Length: " << length ()
       << iendl << "Parameters: " << parameters ()
       << iendl << "Knot vector: " << knots_

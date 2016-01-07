@@ -373,6 +373,7 @@ void test_fd (const TestData& data)
   splines.push_back (*(data.spline_1d_2_clamped));
 
   value_type threshold = 2. * finiteDifferenceThreshold;
+  value_type dt = 1e-3;
 
   for (std::vector<CubicBSpline>::const_iterator
        spline  = splines.begin();
@@ -380,7 +381,8 @@ void test_fd (const TestData& data)
        ++spline)
   {
     // Check gradients with finite-differences
-    for (value_type t = 0.; t < 5.; t += 1e-3)
+    for (value_type t = spline->timeRange ().first;
+         t < spline->timeRange ().second; t += dt)
     {
       try
       {
