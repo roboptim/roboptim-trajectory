@@ -25,5 +25,5 @@ ADD_LIBRARY(roboptim-trajectory SHARED
   spline-length.cc
   )
 PKG_CONFIG_USE_DEPENDENCY(roboptim-trajectory roboptim-core)
-SET_TARGET_PROPERTIES(roboptim-trajectory PROPERTIES SOVERSION 3.1.0)
+SET_TARGET_PROPERTIES(roboptim-trajectory PROPERTIES SOVERSION 3.2.0)
 INSTALL(TARGETS roboptim-trajectory DESTINATION ${CMAKE_INSTALL_LIBDIR})
