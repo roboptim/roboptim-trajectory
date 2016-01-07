@@ -206,7 +206,7 @@ namespace trajectory
   Polynomial<N>::impl_translate (typename Polynomial<N>::value_type t1) const
   {
     coefs_t coefs = coefs_;
-    for (unsigned order = 0; order <= order_; order++)
+    for (unsigned order = 0; order <= static_cast<unsigned> (order_); order++)
       {
 	value_type remaining_derivs = impl_derivative (t1, order, order + 1);
 	value_type factorial = boost::math::factorial<value_type> (order);
