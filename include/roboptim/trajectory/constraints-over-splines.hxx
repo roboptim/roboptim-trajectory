@@ -135,7 +135,8 @@ namespace roboptim
       polynomial_t p;
       for (size_type i = 0; i <= static_cast<size_type> (order_); ++i)
       {
-        p += basisPolynomials_[order_ - i] * param (n * (k - i) + offset);
+        p += basisPolynomials_[order_ - static_cast<size_t> (i)]
+             * param (n * (k - i) + offset);
       }
 
       return p;
