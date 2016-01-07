@@ -403,7 +403,7 @@ namespace trajectory
   }
 
   template <int N>
-  void BSpline<N>::setParameters (const vector_t& p)
+  void BSpline<N>::setParameters (const_vector_ref p)
   {
     assert (p.size () == this->parameters_.size ());
     this->parameters_ = p;

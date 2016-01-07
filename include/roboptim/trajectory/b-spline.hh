@@ -118,7 +118,7 @@ namespace trajectory
     virtual ~BSpline () {};
 
     /// \brief Modify spline parameters.
-    virtual void setParameters (const vector_t&);
+    virtual void setParameters (const_vector_ref);
 
     virtual jacobian_t variationConfigWrtParam (value_type t) const;
     virtual jacobian_t variationDerivWrtParam (value_type t, size_type order)

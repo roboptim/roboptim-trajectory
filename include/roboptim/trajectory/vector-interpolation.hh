@@ -61,7 +61,7 @@ namespace trajectory
     /// \brief Store parameters and update coefficients.
     /// \param vector_t vector of parameters.
     /// \throw std::runtime_error
-    void setParameters (const vector_t&);
+    void setParameters (const_vector_ref);
 
     size_type numFrames () const;
 

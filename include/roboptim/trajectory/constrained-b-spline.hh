@@ -90,7 +90,7 @@ namespace trajectory
 
     /// Overloaded setParameters method from Trajectory<N>.
     /// Given the free parameters, it calculates the spline parameters.
-    void setParameters (const vector_t&);
+    void setParameters (const_vector_ref);
 
     /// \brief Clone and resize a trajectory.
     /// \param timeRange new time range.

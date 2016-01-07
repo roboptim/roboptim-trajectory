@@ -135,7 +135,7 @@ namespace trajectory
   }
 
   template <int N>
-  void ConstrainedBSpline<N>::setParameters (const vector_t& parameters_in)
+  void ConstrainedBSpline<N>::setParameters (const_vector_ref parameters_in)
   {
     assert (tunables_.rows () == parameters_in.rows ());
     tunables_ = parameters_in;

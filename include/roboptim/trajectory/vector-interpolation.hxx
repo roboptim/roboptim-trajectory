@@ -117,7 +117,7 @@ namespace trajectory
 
   inline
   void
-  VectorInterpolation::setParameters (const vector_t& x)
+  VectorInterpolation::setParameters (const_vector_ref x)
   {
     if (x.size () % this->outputSize () != 0)
       {

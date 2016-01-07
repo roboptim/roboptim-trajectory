@@ -80,7 +80,7 @@ namespace trajectory
     virtual vector_t derivAfterSingularPoint (size_type rank, size_type order)
       const;
 
-    virtual void setParameters (const vector_t&);
+    virtual void setParameters (const_vector_ref);
 
     /// \brief Get time scale factor.
     /// \return time scale factor.
