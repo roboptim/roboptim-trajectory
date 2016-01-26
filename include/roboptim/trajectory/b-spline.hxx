@@ -250,14 +250,8 @@ namespace trajectory
 	// t_{j+n+1}
 	const value_type tn1 = knots_[j + n + 1];
 
-	polynomial_t p_1_rat = 1. / (tn - t0) * monomial_t (t0);
-
-	// http://wolftype.com/ucsb/spatial/bspline.html, uniform b-splines
-	if (std::isinf (p_1_rat.coefs ()[1]))
-	  {
-	    //FIXME: this is probably not how it should work.
-	    p_1_rat = monomial_t (t0);
-	  }
+	polynomial_t p_1_rat;
+	if (tn > t0) p_1_rat = 1. / (tn - t0) * monomial_t (t0);
 
 	ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
                                             label.str() << "p_1_rat        : "
@@ -282,14 +276,8 @@ namespace trajectory
 	    p_1.insert (std::make_pair (itr->first, p_prod));
 	  }
 
-	polynomial_t p_2_rat = 1. / (t1 - tn1) * monomial_t (tn1);
-
-	// http://wolftype.com/ucsb/spatial/bspline.html, uniform b-splines
-	if (std::isinf (p_2_rat.coefs ()[1]))
-	  {
-	    //FIXME: this is probably not how it should work.
-	    p_2_rat = Monomial<N> (tn1);
-	  }
+	polynomial_t p_2_rat;
+	if (tn1 > t1) p_2_rat = 1. / (t1 - tn1) * monomial_t (tn1);
 
 	ROBOPTIM_DEBUG_ONLY (LOG4CXX_DEBUG (this->logger,
                                             label.str() << "p_2_rat        : "
