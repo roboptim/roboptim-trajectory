@@ -23,6 +23,8 @@
 
 # include <Eigen/SVD>
 
+# include <roboptim/core/util.hh>
+
 namespace roboptim
 {
 namespace trajectory
@@ -149,7 +151,15 @@ namespace trajectory
   {
     Eigen::JacobiSVD<matrix_t> svd (constraints_.rows (),
                                     constraints_.cols ());
-    svd.compute (constraints_, Eigen::ComputeFullU | Eigen::ComputeFullV);
+
+    {
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+      // Disable SIGFPE (implementation relies on subnormal numbers)
+      roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+
+      svd.compute (constraints_, Eigen::ComputeFullU | Eigen::ComputeFullV);
+    }
 
     // Get the dimension of the null space
     const typename vector_t::Index null_space_dim = svd.matrixV ().rows ()
