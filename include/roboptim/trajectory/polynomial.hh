@@ -21,6 +21,8 @@
 # define ROBOPTIM_TRAJECTORY_POLYNOMIAL_HH
 
 # include <ostream>
+# include <vector>
+# include <utility>
 
 # include <boost/static_assert.hpp>
 
