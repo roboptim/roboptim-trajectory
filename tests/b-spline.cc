@@ -47,6 +47,7 @@ typedef Function::size_type size_type;
 
 // TODO: track floating-point errors.
 static value_type tol = 1e8 * std::numeric_limits<value_type>::epsilon ();
+static value_type scale = 50.;
 
 template <int N>
 struct SplineDerivWrtParameters : public DifferentiableFunction
@@ -187,7 +188,7 @@ spline_checks<N>::check_fd
   BSpline<N> spline (interval, 1, params, "", clamped);
 
   // TODO: investigate FD errors
-  value_type threshold = 20. * finiteDifferenceThreshold;
+  value_type threshold = 10. * finiteDifferenceThreshold;
   value_type dt = 1e-3;
 
   // Check gradients with finite-differences
@@ -299,7 +300,7 @@ void test_evaluate ()
 	  int min_params = N + 1 + 10;
 	  vector_t params (dimension * min_params);
 	  params.setRandom ();
-	  params *= 10.;
+	  params *= scale;
 
 	  spline_checks<N>::check_evaluate
             (interval, dimension, params, derivative, false);
@@ -319,7 +320,7 @@ void test_derivative ()
       int min_params = N + 1 + 10;
       vector_t params (dimension * min_params);
       params.setRandom ();
-      params *= 10.;
+      params *= scale;
 
       spline_checks<N>::template check_derivative<ORDER> (interval, dimension, params);
     }
@@ -331,7 +332,7 @@ void test_fd ()
   int min_params = N + 1 + 10;
   vector_t params (min_params);
   params.setRandom ();
-  params *= 10.;
+  params *= scale;
 
   typename BSpline<N>::interval_t interval = std::make_pair (0., 5.);
 
@@ -350,7 +351,7 @@ void test_non_uniform ()
 	  int params_c = N + 1 + N;
 	  vector_t params (dimension * params_c);
 	  params.setRandom ();
-	  params *= 10.;
+	  params *= scale;
 
 	  vector_t knots (params_c + N + 1);
 	  knots.head (N).setConstant (interval.first);
