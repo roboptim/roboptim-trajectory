@@ -37,6 +37,7 @@
 #include <roboptim/trajectory/trajectory-cost.hh>
 
 #include "shared-tests/fixture.hh"
+#include "shared-tests/util.hh"
 
 using namespace roboptim;
 using namespace roboptim::trajectory;

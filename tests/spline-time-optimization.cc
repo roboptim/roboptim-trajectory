@@ -16,6 +16,7 @@
 // along with roboptim.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "shared-tests/fixture.hh"
+#include "shared-tests/util.hh"
 
 #include <roboptim/trajectory/sys.hh>
 

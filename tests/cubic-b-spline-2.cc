@@ -23,6 +23,7 @@
 #include <boost/format.hpp>
 
 #include "shared-tests/fixture.hh"
+#include "shared-tests/util.hh"
 
 #include <roboptim/core/decorator/finite-difference-gradient.hh>
 
