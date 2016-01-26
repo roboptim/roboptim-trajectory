@@ -101,6 +101,12 @@ IF (NOT LTDL_H_FOUND)
 ENDIF()
 #FIXME: check that libltdl.so is available.
 
+# Enable SIGFPE signal to detect arithmetic errors
+OPTION(ENABLE_SIGFPE "Enable floating-point exceptions" OFF)
+IF(ENABLE_SIGFPE)
+  ADD_DEFINITIONS(-DENABLE_SIGFPE)
+ENDIF()
+
 ADD_REQUIRED_DEPENDENCY("roboptim-core >= 3.2")
 ADD_REQUIRED_DEPENDENCY("eigen3 >= 3.2.0")
 
