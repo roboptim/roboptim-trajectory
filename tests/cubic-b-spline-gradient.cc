@@ -200,7 +200,9 @@ BOOST_AUTO_TEST_CASE (trajectory_cubic_b_spline_gradient)
   //                       eval_data.cast<float> ());
 
   // Compare data
-  BOOST_CHECK (allclose (eval_data, reference, tol));
+  double max_err = (reference - eval_data).lpNorm<Eigen::Infinity> ();
+  BOOST_CHECK (max_err < std::numeric_limits<float>::epsilon ());
+  BOOST_CHECK (allclose (eval_data, reference, tol, tol));
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
