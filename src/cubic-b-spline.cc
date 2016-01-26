@@ -145,29 +145,69 @@ namespace trajectory
 	// t_{j+4}
 	value_type t4 = knots_[j + 4];
 
-	Polynomial3 B0 =
-	  1./((t3-t0)*(t2-t0)*(t1-t0))
-	  * Monomial3 (t0) * Monomial3 (t0) * Monomial3 (t0);
+        Polynomial3 B0, B1, B2, B3;
 
-	Polynomial3 B1 =
-	  -1./((t3-t0)*(t2-t1)*(t2-t0))
-	  * Monomial3 (t0) * Monomial3 (t0) * Monomial3 (t2)
-	  -1./((t3-t0)*(t3-t1)*(t2-t1))
-	  * Monomial3 (t0) * Monomial3 (t3) * Monomial3 (t1)
-	  -1./((t4-t1)*(t3-t1)*(t2-t1))
-	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t1);
+        const value_type t01 = t1-t0;
+        const value_type t02 = t2-t0;
+        const value_type t03 = t3-t0;
+        const value_type t12 = t2-t1;
+        const value_type t13 = t3-t1;
+        const value_type t14 = t4-t1;
+        const value_type t23 = t3-t2;
+        const value_type t24 = t4-t2;
+        const value_type t34 = t4-t3;
 
-	Polynomial3 B2 =
-	  1./((t3-t0)*(t3-t1)*(t3-t2))
-	  * Monomial3 (t0) * Monomial3 (t3) * Monomial3 (t3)
-	  + 1./((t4-t1)*(t3-t1)*(t3-t2))
-	  * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t3)
-	  + 1./((t4-t1)*(t4-t2)*(t3-t2))
-	  * Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t2);
+        // B0
+        if (t01 > 0. && t02 > 0. && t03 > 0.)
+        {
+          B0 = 1./(t01*t02*t03)
+               * Monomial3 (t0) * Monomial3 (t0) * Monomial3 (t0);
+        }
 
-	Polynomial3 B3 =
-	  -1./((t4-t1)*(t4-t2)*(t4-t3))
-	  * Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t4);
+        // B1
+        if (t02 > 0. && t03 > 0. && t12 > 0.)
+        {
+          B1 += -1./(t02*t03*t12)
+                * Monomial3 (t0) * Monomial3 (t0) * Monomial3 (t2);
+        }
+
+        if (t03 > 0. && t12 > 0. && t13 > 0.)
+        {
+          B1 += -1./(t03*t12*t13)
+                * Monomial3 (t0) * Monomial3 (t3) * Monomial3 (t1);
+        }
+
+        if (t12 > 0. && t13 > 0. && t14 > 0.)
+        {
+          B1 += -1./(t12*t13*t14)
+                * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t1);
+        }
+
+        // B2
+        if (t03 > 0. && t13 > 0. && t23 > 0.)
+        {
+          B2 += 1./(t03*t13*t23)
+               * Monomial3 (t0) * Monomial3 (t3) * Monomial3 (t3);
+        }
+
+        if (t13 > 0. && t14 > 0. && t23 > 0.)
+        {
+          B2 += 1./(t13*t14*t23)
+               * Monomial3 (t4) * Monomial3 (t1) * Monomial3 (t3);
+        }
+
+        if (t14 > 0. && t23 > 0. && t24 > 0.)
+        {
+          B2 += 1./(t14*t23*t24)
+               * Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t2);
+        }
+
+        // B3
+        if (t14 > 0. && t24 > 0. && t34 > 0.)
+        {
+          B3 = -1./(t14*t24*t34)
+               * Monomial3 (t4) * Monomial3 (t4) * Monomial3 (t4);
+        }
 
 	basisPolynomials_.back ().push_back (B0);
 	basisPolynomials_.back ().push_back (B1);
