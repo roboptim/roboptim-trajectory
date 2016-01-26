@@ -17,6 +17,8 @@
 
 #include "shared-tests/common.hh"
 
+#include <roboptim/core/util.hh>
+
 #include <roboptim/trajectory/fwd.hh>
 #include <roboptim/trajectory/polynomial-3.hh>
 
@@ -49,6 +51,12 @@ BOOST_AUTO_TEST_CASE (trajectory_polynomial3)
   std::vector<double> roots;
   p = Polynomial3 (0., 1., 1., 1., 1.);
   roots = p.realRoots ();
+
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+  // FPE may happen in Boost checks, in release
+  roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+
   BOOST_CHECK_EQUAL (roots.size (), 1);
   BOOST_CHECK_CLOSE (roots[0], -1., tol);
 

@@ -18,6 +18,8 @@
 
 #include "shared-tests/fixture.hh"
 
+#include <roboptim/core/util.hh>
+
 #include <roboptim/trajectory/polynomial.hh>
 #include <roboptim/trajectory/polynomial-3.hh>
 
@@ -93,9 +95,15 @@ struct poly_props
 
     // Use Eigen's evaluator: translate polynomial from (t-t₀) to t
     roboptim::trajectory::Polynomial<N> eigen_poly = poly.translate (0.);
-    double res = Eigen::poly_eval (eigen_poly.coefs (), t);
+    double res1 = Eigen::poly_eval (eigen_poly.coefs (), t);
+    double res2 = poly (t);
 
-    BOOST_CHECK_CLOSE (poly (t), res, tol);
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+    // FPE may happen in Boost checks, in release
+    roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+
+    BOOST_CHECK_CLOSE (res1, res2, tol);
   }
 };
 
@@ -202,6 +210,11 @@ void poly_props<3>::check_translate
   temp [3] = a3;
   roboptim::trajectory::Polynomial<3> p_new (t1, temp);
 
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+  // FPE may happen in Boost checks, in release
+  roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+
   BOOST_CHECK_CLOSE (p_new.t0 (),
                      ref_poly.t0 (),
                      tol);
@@ -243,6 +256,11 @@ void poly_props<5>::check_translate
   temp [5] = a5;
   roboptim::trajectory::Polynomial<5> p_new (t1, temp);
 
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+  // FPE may happen in Boost checks, in release
+  roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+
   BOOST_CHECK_CLOSE (p_new.t0 (), ref_poly.t0 (), tol);
 
   for (int idx = 0; idx < 5 + 1; idx++)
@@ -268,13 +286,19 @@ struct test_derivative_loop
   {
     const int order = U::value;
     double derivative = p_.derivative (t_, order);
+    double val = p_.template derivative<order> () (t_);
 
-    BOOST_CHECK_CLOSE (derivative,
-		       p_.template derivative<order> () (t_),
-		       tol);
+    {
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+      // FPE may happen in Boost checks, in release
+      roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
 
-    if (order > N)
-      BOOST_CHECK_SMALL (derivative, tol);
+      BOOST_CHECK_CLOSE (derivative, val, tol);
+
+      if (order > N)
+        BOOST_CHECK_SMALL (derivative, tol);
+    }
 
     poly_props<N>::check_derivative (p_, t_, order, derivative);
   }
@@ -307,7 +331,13 @@ void test_translate ()
   roboptim::trajectory::Polynomial<N> p_1 (t0, params);
   roboptim::trajectory::Polynomial<N> p_2 = p_1.translate (t1);
 
-  BOOST_CHECK_CLOSE (p_1 (0.), p_2 (0.), tol);
+  {
+# if (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+    // FPE may happen in Boost checks, in release
+    roboptim::detail::DisableFPE d;
+# endif //! (defined ROBOPTIM_HAS_FENV_H && defined ENABLE_SIGFPE)
+    BOOST_CHECK_CLOSE (p_1 (0.), p_2 (0.), tol);
+  }
 
   poly_props<N>::check_translate (p_1, t1, p_2);
 
