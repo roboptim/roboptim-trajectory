@@ -18,6 +18,8 @@
 #ifndef ROBOPTIM_TRAJECTORY_JERK_OVER_SPLINES_FACTORY_HXX
 # define ROBOPTIM_TRAJECTORY_JERK_OVER_SPLINES_FACTORY_HXX
 
+# include <boost/make_shared.hpp>
+
 namespace roboptim
 {
   namespace trajectory
