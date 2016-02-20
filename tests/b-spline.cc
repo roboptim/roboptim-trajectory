@@ -386,7 +386,7 @@ void test_plot ()
 
   for (size_type i = 0; i < params_c; ++i)
     {
-      params (i) = std::pow (-1., i) * static_cast<value_type> (i);
+      params (i) = (i % 2 == 1? -1. : 1.) * static_cast<value_type> (i);
     }
 
   std::stringstream name;
