@@ -89,7 +89,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (trajectory_constraints_over_splines,
 
   for (double t = 1e-6; t < 1.; t += 1./7.)
   {
-    constraintsOverSplines_t f (splines, 0, 0, t, n);
+    boost::shared_ptr<constraintsOverSplines_t>
+      f = boost::make_shared<constraintsOverSplines_t> (splines, 0, 0, t, n);
 
     typedef typename finiteDifferenceGradientPolicies::Simple<EigenMatrixDense>
       fdRule_t;
@@ -97,11 +98,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (trajectory_constraints_over_splines,
 
     (*output)
       << x << "\n"
-      << f << "\n"
-      << f (x) << "\n"
-      << normalize (toDense (f.gradient (x, 0))) << "\n"
-      << normalize (toDense (f.gradient (x, 1))) << "\n"
-      << normalize (toDense (f.jacobian (x))) << std::endl;
+      << *f << "\n"
+      << (*f) (x) << "\n"
+      << normalize (toDense (f->gradient (x, 0))) << "\n"
+      << normalize (toDense (f->gradient (x, 1))) << "\n"
+      << normalize (toDense (f->jacobian (x))) << std::endl;
 
     // Numerical errors between spline implementations prevent basic string
     // comparisons with FD.
@@ -112,7 +113,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (trajectory_constraints_over_splines,
       << normalize (toDense (fd.gradient (x, 1)), 1e-6) << "\n"
       << normalize (toDense (fd.jacobian (x)), 1e-6) << std::endl;
 
-    BOOST_CHECK (allclose (toDense (f.jacobian (x)),
+    BOOST_CHECK (allclose (toDense (f->jacobian (x)),
           toDense (fd.jacobian (x)),
           1e-4, 1e-4));
   }
