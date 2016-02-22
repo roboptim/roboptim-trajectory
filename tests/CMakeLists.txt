@@ -14,7 +14,12 @@
 # along with roboptim-core.  If not, see <http://www.gnu.org/licenses/>.
 
 # Which solver should be used?
-SET(TESTSUITE_SOLVER ""
+IF(ROBOPTIM_CORE_PLUGIN_IPOPT_FOUND)
+  SET(DEFAULT_TESTSUITE_SOLVER "ipopt")
+ELSE()
+  SET(DEFAULT_TESTSUITE_SOLVER "")
+ENDIF()
+SET(TESTSUITE_SOLVER "${DEFAULT_TESTSUITE_SOLVER}"
   CACHE STRING "Which solver should be used during tests?")
 ADD_DEFINITIONS(-DTESTSUITE_SOLVER="${TESTSUITE_SOLVER}")
 

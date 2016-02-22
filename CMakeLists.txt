@@ -110,6 +110,9 @@ ENDIF()
 ADD_REQUIRED_DEPENDENCY("roboptim-core >= 3.2")
 ADD_REQUIRED_DEPENDENCY("eigen3 >= 3.2.0")
 
+# For tests
+ADD_OPTIONAL_DEPENDENCY("roboptim-core-plugin-ipopt >= 3.2")
+
 HEADER_INSTALL("${HEADERS}")
 
 ADD_SUBDIRECTORY(src)

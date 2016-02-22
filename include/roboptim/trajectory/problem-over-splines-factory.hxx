@@ -60,6 +60,8 @@ namespace roboptim
       {
         initializeJerkFactory ();
         problem_ = boost::make_shared<problem_t> (jerkFactory_->getJerk ());
+        problem_->argumentBounds () = problem.argumentBounds ();
+        problem_->argumentScaling () = problem.argumentScaling ();
       }
       else
       {

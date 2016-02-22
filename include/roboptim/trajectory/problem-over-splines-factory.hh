@@ -143,7 +143,7 @@ namespace roboptim
       /// These constraints are bounding constraints on the value, derivative
       /// or second derivative (depending on the given order) of the spline, on
       /// the time range between the given startingPoint and the end of the
-      /// interval. It constraints every spline.
+      /// interval. It constrains every spline.
       ///
       /// \param startingPoint Time when the constraint interval starts
       /// \param order Derivation order (0 for no derivation)
