@@ -202,6 +202,14 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
     }
 
   // Generate the archive
+  // FIXME: remove the Boost serialization library version from the dat before
+  // committing. For example:
+  //   Before: 22 serialization::archive 14 0 0 401 2 ...
+  //   After: 22 serialization::archive 0 0 0 401 2 ...
+  // Not doing this leads to exceptions thrown with older versions of Boost
+  // even though they are supposed to be compatible:
+  //   boost::archive::archive_exception: unsupported version
+  // See: https://svn.boost.org/trac/boost/ticket/4660
   //writeMatrix<matrix_t> ("spline-time-optimization.dat", eval_data);
 
   // Compare data
