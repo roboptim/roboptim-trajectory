@@ -1,7 +1,5 @@
+sudo: required
 language: cpp
-compiler:
-  - gcc
-  - clang
 env:
   global:
   - APT_DEPENDENCIES="doxygen libltdl-dev libboost-all-dev liblog4cxx10-dev coinor-libipopt-dev libblas-dev liblapack-dev libmumps-seq-dev gfortran"
@@ -35,9 +33,24 @@ branches:
   - debian
   - travis
   - coverity_scan
+
 matrix:
   allow_failures:
-    - compiler: gcc
+    - compiler: clang
+      dist: trusty
+  include:
+    - os: linux
+      dist: trusty
+      compiler: gcc
+    - os: linux
+      dist: trusty
+      compiler: clang
+    - os: linux
+      dist: precise
+      compiler: gcc
+    - os: linux
+      dist: precise
+      compiler: clang
 
 addons:
   coverity_scan:
