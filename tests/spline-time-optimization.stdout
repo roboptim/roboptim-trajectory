@@ -22,152 +22,182 @@ Solver:
         Scaling: 1
         Initial value: [1](-5.68434e-14) (constraint not satisfied)
     Constraint 2
-        speed limit (0.0322581) (differentiable function)
+        speed limit (0.0322581) (finite differences):
+          Wrapped function: speed limit (0.0322581) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](0.246678)
     Constraint 3
-        speed limit (0.0645161) (differentiable function)
+        speed limit (0.0645161) (finite differences):
+          Wrapped function: speed limit (0.0645161) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](3.94685)
     Constraint 4
-        speed limit (0.0967742) (differentiable function)
+        speed limit (0.0967742) (finite differences):
+          Wrapped function: speed limit (0.0967742) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](19.9809)
     Constraint 5
-        speed limit (0.129032) (differentiable function)
+        speed limit (0.129032) (finite differences):
+          Wrapped function: speed limit (0.129032) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](63.1496)
     Constraint 6
-        speed limit (0.16129) (differentiable function)
+        speed limit (0.16129) (finite differences):
+          Wrapped function: speed limit (0.16129) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](154.174)
     Constraint 7
-        speed limit (0.193548) (differentiable function)
+        speed limit (0.193548) (finite differences):
+          Wrapped function: speed limit (0.193548) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](319.695)
     Constraint 8
-        speed limit (0.225806) (differentiable function)
+        speed limit (0.225806) (finite differences):
+          Wrapped function: speed limit (0.225806) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](592.274)
     Constraint 9
-        speed limit (0.258065) (differentiable function)
+        speed limit (0.258065) (finite differences):
+          Wrapped function: speed limit (0.258065) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](1010.39)
     Constraint 10
-        speed limit (0.290323) (differentiable function)
+        speed limit (0.290323) (finite differences):
+          Wrapped function: speed limit (0.290323) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](1618.46)
     Constraint 11
-        speed limit (0.322581) (differentiable function)
+        speed limit (0.322581) (finite differences):
+          Wrapped function: speed limit (0.322581) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](2466.78)
     Constraint 12
-        speed limit (0.354839) (differentiable function)
+        speed limit (0.354839) (finite differences):
+          Wrapped function: speed limit (0.354839) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](3532.46)
     Constraint 13
-        speed limit (0.387097) (differentiable function)
+        speed limit (0.387097) (finite differences):
+          Wrapped function: speed limit (0.387097) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](4540.22) (constraint not satisfied)
     Constraint 14
-        speed limit (0.419355) (differentiable function)
+        speed limit (0.419355) (finite differences):
+          Wrapped function: speed limit (0.419355) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](5378.93) (constraint not satisfied)
     Constraint 15
-        speed limit (0.451613) (differentiable function)
+        speed limit (0.451613) (finite differences):
+          Wrapped function: speed limit (0.451613) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](5977.53) (constraint not satisfied)
     Constraint 16
-        speed limit (0.483871) (differentiable function)
+        speed limit (0.483871) (finite differences):
+          Wrapped function: speed limit (0.483871) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](6288.68) (constraint not satisfied)
     Constraint 17
-        speed limit (0.516129) (differentiable function)
+        speed limit (0.516129) (finite differences):
+          Wrapped function: speed limit (0.516129) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](6288.68) (constraint not satisfied)
     Constraint 18
-        speed limit (0.548387) (differentiable function)
+        speed limit (0.548387) (finite differences):
+          Wrapped function: speed limit (0.548387) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](5977.53) (constraint not satisfied)
     Constraint 19
-        speed limit (0.580645) (differentiable function)
+        speed limit (0.580645) (finite differences):
+          Wrapped function: speed limit (0.580645) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](5378.93) (constraint not satisfied)
     Constraint 20
-        speed limit (0.612903) (differentiable function)
+        speed limit (0.612903) (finite differences):
+          Wrapped function: speed limit (0.612903) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](4540.22) (constraint not satisfied)
     Constraint 21
-        speed limit (0.645161) (differentiable function)
+        speed limit (0.645161) (finite differences):
+          Wrapped function: speed limit (0.645161) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](3532.46)
     Constraint 22
-        speed limit (0.677419) (differentiable function)
+        speed limit (0.677419) (finite differences):
+          Wrapped function: speed limit (0.677419) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](2466.78)
     Constraint 23
-        speed limit (0.709677) (differentiable function)
+        speed limit (0.709677) (finite differences):
+          Wrapped function: speed limit (0.709677) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](1618.46)
     Constraint 24
-        speed limit (0.741935) (differentiable function)
+        speed limit (0.741935) (finite differences):
+          Wrapped function: speed limit (0.741935) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](1010.39)
     Constraint 25
-        speed limit (0.774194) (differentiable function)
+        speed limit (0.774194) (finite differences):
+          Wrapped function: speed limit (0.774194) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](592.274)
     Constraint 26
-        speed limit (0.806452) (differentiable function)
+        speed limit (0.806452) (finite differences):
+          Wrapped function: speed limit (0.806452) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](319.695)
     Constraint 27
-        speed limit (0.83871) (differentiable function)
+        speed limit (0.83871) (finite differences):
+          Wrapped function: speed limit (0.83871) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](154.174)
     Constraint 28
-        speed limit (0.870968) (differentiable function)
+        speed limit (0.870968) (finite differences):
+          Wrapped function: speed limit (0.870968) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](63.1496)
     Constraint 29
-        speed limit (0.903226) (differentiable function)
+        speed limit (0.903226) (finite differences):
+          Wrapped function: speed limit (0.903226) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](19.9809)
     Constraint 30
-        speed limit (0.935484) (differentiable function)
+        speed limit (0.935484) (finite differences):
+          Wrapped function: speed limit (0.935484) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](3.94685)
     Constraint 31
-        speed limit (0.967742) (differentiable function)
+        speed limit (0.967742) (finite differences):
+          Wrapped function: speed limit (0.967742) (differentiable function)
         Bounds: (-inf, 3612.5)
         Scaling: 1
         Initial value: [1](0.246678)

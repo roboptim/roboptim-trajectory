@@ -57,14 +57,18 @@ namespace trajectory
     if (nConstraints == 0)
       return;
 
+    typedef GenericFiniteDifferenceGradient<EigenMatrixDense> fdFunction_t;
+
     const value_type delta = 1. / nConstraints;
 
     for (double i = delta; i < 1. - delta; i += delta)
       {
 	shared_ptr<LimitOmega> speed
 	  (new LimitOmega (i * tMax, trajectory));
+	// FIXME: remove once analytical gradient computation is implemented
+	shared_ptr<fdFunction_t> fd_speed (new fdFunction_t (speed));
 	problem.addConstraint
-	  (static_pointer_cast<DerivableFunction> (speed),
+	  (static_pointer_cast<DerivableFunction> (fd_speed),
 	   vRange);
       }
   }
@@ -98,8 +102,11 @@ namespace trajectory
     set_is_malloc_allowed (true);
 #endif //! ROBOPTIM_DO_NOT_CHECK_ALLOCATION
 
-    GenericFiniteDifferenceGradient<EigenMatrixDense> fd (*this);
-    fd.gradient (grad, p, i);
+    // FIXME: compute gradient analytically.
+    typedef GenericFiniteDifferenceGradient<EigenMatrixDense> fdFunction_t;
+    boost::shared_ptr<fdFunction_t>
+      fdfunction (new fdFunction_t (this->shared_from_this ()));
+    fdfunction->gradient (grad, p, i);
 
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     set_is_malloc_allowed (cur_malloc_allowed);

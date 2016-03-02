@@ -100,9 +100,11 @@ namespace trajectory
     assert (i == 0);
     grad.setZero ();
 
-    //FIXME: compute gradient analytically.
-    GenericFiniteDifferenceGradient<EigenMatrixDense> fdfunction (*this);
-    fdfunction.gradient (grad, p, 0);
+    // FIXME: compute gradient analytically.
+    typedef GenericFiniteDifferenceGradient<EigenMatrixDense> fdFunction_t;
+    boost::shared_ptr<fdFunction_t>
+      fdfunction (new fdFunction_t (this->shared_from_this ()));
+    fdfunction->gradient (grad, p, 0);
 
 #ifndef ROBOPTIM_DO_NOT_CHECK_ALLOCATION
     set_is_malloc_allowed (cur_malloc_allowed);
@@ -119,13 +121,17 @@ namespace trajectory
   {
     using namespace boost;
 
+    typedef GenericFiniteDifferenceGradient<EigenMatrixDense> fdFunction_t;
+
     for (unsigned i = 0; i < nConstraints; ++i)
       {
 	const value_type t = (i + 1.) / (nConstraints + 1.);
 	assert (t > 0. && t < 1.);
 	shared_ptr<LimitSpeed> speed (new LimitSpeed (t * tMax, trajectory));
+	// FIXME: remove once analytical gradient computation is implemented
+	shared_ptr<fdFunction_t> fd_speed (new fdFunction_t (speed));
 	problem.addConstraint
-	  (static_pointer_cast<DerivableFunction> (speed),
+	  (static_pointer_cast<DerivableFunction> (fd_speed),
 	   vRange);
       }
   }

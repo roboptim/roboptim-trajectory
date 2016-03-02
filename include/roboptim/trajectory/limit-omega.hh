@@ -20,6 +20,7 @@
 # include <roboptim/trajectory/sys.hh>
 
 # include <boost/shared_ptr.hpp>
+# include <boost/enable_shared_from_this.hpp>
 
 # include <roboptim/core/derivable-function.hh>
 # include <roboptim/trajectory/fwd.hh>
@@ -29,8 +30,12 @@ namespace roboptim
 {
 namespace trajectory
 {
+  // FIXME: remove need for shared_from_this (used for internal
+  // finite-difference computation which could be replaced by analytical
+  // computation).
   template <typename T>
-  class LimitOmega : public DerivableFunction
+  class LimitOmega : public DerivableFunction,
+                     public boost::enable_shared_from_this<LimitOmega<T> >
   {
   public:
     LimitOmega (StableTimePoint timePoint,
