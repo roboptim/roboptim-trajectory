@@ -1,8 +1,8 @@
 var modules =
 [
-    [ "Mathematical abstract functions", "a00102.html", "a00102" ],
-    [ "Mathematical functions", "a00103.html", "a00103" ],
-    [ "Optimization problems", "a00104.html", null ],
-    [ "Optimization solvers", "a00105.html", null ],
-    [ "Visualization", "a00106.html", null ]
+    [ "Mathematical abstract functions", "a00101.html", null ],
+    [ "Mathematical functions", "a00102.html", null ],
+    [ "Optimization problems", "a00103.html", null ],
+    [ "Optimization solvers", "a00104.html", null ],
+    [ "Visualization", "a00105.html", null ]
 ];

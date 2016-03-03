@@ -1,9 +1,6 @@
 var a00016 =
 [
-    [ "LimitSpeed", "a00016.html#aedb08aa1ffbf619fbfa681b1ce67763c", null ],
-    [ "~LimitSpeed", "a00016.html#a53d164748c05534f6f26986189d922c6", null ],
-    [ "addToProblem", "a00016.html#aab655d7421ad10e50ac593a2d86d81dc", null ],
-    [ "impl_compute", "a00016.html#a343e0da3b9ab1c88454a6f421084b660", null ],
-    [ "impl_gradient", "a00016.html#a7469f6847c4bb3b54e65d9921d62ce72", null ],
-    [ "trajectory", "a00016.html#a62f4a951500d9207d8ee81b7338dcc60", null ]
+    [ "parent_t", "a00016.html#a95e83a55dda43870b1d07680df9b9c6b", null ],
+    [ "value_type", "a00016.html#aa4ed162e608e4ea6b351efff1ed99b20", null ],
+    [ "Monomial", "a00016.html#abaec044d8b4a042e59268c87b91e9592", null ]
 ];

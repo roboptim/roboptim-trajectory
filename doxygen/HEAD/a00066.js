@@ -1,5 +1,5 @@
 var a00066 =
 [
-    [ "Monomial3", "a00066.html#a92b69eda689973f6ba5d42a629e2534c", null ],
-    [ "Polynomial3", "a00066.html#a5df3682d57663d1955268a316711fe77", null ]
+    [ "operator*", "a00090.html#a5bb9473b5bf453700b2c89289e202bfa", null ],
+    [ "operator<<", "a00090.html#a7dac240725757d9d6bbc48b91d621567", null ]
 ];

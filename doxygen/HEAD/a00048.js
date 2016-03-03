@@ -1,5 +1,5 @@
 var a00048 =
 [
-    [ "addScaleToParameters", "a00048.html#ae8c64d8ebb9a31cd0079ba92580e7f61", null ],
-    [ "removeScaleFromParameters", "a00048.html#ad59988dffba7f870def74109cb47b147", null ]
+    [ "unscaleInterval", "a00092.html#ad64e1ac40369aeb6e52b696c1cf347dc", null ],
+    [ "unscaleTime", "a00092.html#a79732307f303786d8c149e5295828128", null ]
 ];

@@ -7,10 +7,7 @@ var a00021 =
     [ "polynomialFunction_t", "a00021.html#aec9463e4e8d7191b870cc385b05982eb", null ],
     [ "roots_t", "a00021.html#a5b9e95849100440b167fac9049e7ab04", null ],
     [ "values_t", "a00021.html#aef6fe506c14f53d601b3ab750b3fad3e", null ],
-    [ "special_polynomials", "a00021.html#a0184bffd60b7f3cbddaa8b78596577a5", [
-      [ "all_zero_coefficients", "a00021.html#a0184bffd60b7f3cbddaa8b78596577a5a79a4a1cc3ef6d72f3b7b3bfc97bf506f", null ],
-      [ "monomial_coefficients", "a00021.html#a0184bffd60b7f3cbddaa8b78596577a5a935e46b0cb7d4b29c8815936f19e27f0", null ]
-    ] ],
+    [ "special_polynomials", "a00021.html#a0184bffd60b7f3cbddaa8b78596577a5", null ],
     [ "Polynomial", "a00021.html#a65303805be2d2beeee986b6a8223c3a9", null ],
     [ "Polynomial", "a00021.html#a078c9a518949383547ff78ea864b5837", null ],
     [ "Polynomial", "a00021.html#a5ea3718ae7fd8dd42e05d67ac3aac5b1", null ],

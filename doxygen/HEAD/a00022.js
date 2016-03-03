@@ -23,10 +23,7 @@ var a00022 =
     [ "supportedConstraint_t", "a00022.html#ab440d9d9e7af2f2d4abd90e8ee25b193", null ],
     [ "value_type", "a00022.html#a474ec6c81fa88f9ac652a8198a61d183", null ],
     [ "vector_t", "a00022.html#a0239700673ae48db26de8b746abcdd08", null ],
-    [ "CostType", "a00022.html#a5934ba3f33410cdab81c0e24171e07f2", [
-      [ "COST_DEFAULT", "a00022.html#a5934ba3f33410cdab81c0e24171e07f2a55d7c1f79295db775dd486c6389b35be", null ],
-      [ "COST_JERK", "a00022.html#a5934ba3f33410cdab81c0e24171e07f2a0142866b3cbee7196141e7205a4102b3", null ]
-    ] ],
+    [ "CostType", "a00022.html#a5934ba3f33410cdab81c0e24171e07f2", null ],
     [ "ProblemOverSplinesFactory", "a00022.html#a354d615156494b789290aa00bda4d524", null ],
     [ "addConstraint", "a00022.html#a059e94dbed54ef226d74ccb7da4e63db", null ],
     [ "addConstraint", "a00022.html#aa58b13fb1cfdcbfeb43d9cd5811a226c", null ],

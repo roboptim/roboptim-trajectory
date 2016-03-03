@@ -1,5 +1,0 @@
-var searchData=
-[
-  ['normalizeangles',['normalizeAngles',['../a00011.html#acb95a513e8cb895d5acbd0c7e129f899',1,'roboptim::trajectory::FreeTimeTrajectory::normalizeAngles()'],['../a00029.html#ae67495ab4dc93c9bed299f6211a836ce',1,'roboptim::trajectory::Trajectory::normalizeAngles(size_type index)'],['../a00029.html#a187275aa43b642ee6600ec405f84e78e',1,'roboptim::trajectory::Trajectory::normalizeAngles(size_type index, size_type offset)']]],
-  ['numframes',['numFrames',['../a00032.html#a163051d141cecf4ba97f6b265bb95011',1,'roboptim::trajectory::VectorInterpolation']]]
-];
