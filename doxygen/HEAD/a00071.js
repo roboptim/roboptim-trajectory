@@ -1,6 +1,4 @@
 var a00071 =
 [
-    [ "grad_", "a00071.html#a7620f70f27088ac60f9aeec7ef731be4", null ],
-    [ "res_", "a00071.html#aeb11d374dedce38c0fb8a53aa4c15fca", null ],
-    [ "traj_", "a00071.html#a3cd919251d80ac5f4e1ffe45dd5f9445", null ]
+    [ "plot_speeds", "a00071.html#a2e5e1532e6ff138bdb1fcc63abd6f1a7", null ]
 ];
