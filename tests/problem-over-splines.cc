@@ -26,6 +26,7 @@
 #include "shared-tests/fixture.hh"
 
 #include <roboptim/core/function/constant.hh>
+#include <roboptim/core/decorator/finite-difference-gradient.hh>
 
 #include <roboptim/trajectory/cubic-b-spline.hh>
 #include <roboptim/trajectory/b-spline.hh>
@@ -148,6 +149,44 @@ void processResult (const typename Solver<T>::result_t& res,
     }
 }
 
+template <typename T>
+void checkGradients (const typename Solver<T>::problem_t& pb)
+{
+  typedef GenericDifferentiableFunction<T> differentiableFunction_t;
+
+  // Check gradient of cost function
+  try {
+    checkJacobianAndThrow<T>
+      (*pb.function ().template castInto<const differentiableFunction_t> (),
+       *pb.startingPoint (),
+       1e-3, 1e-8);
+  }
+  catch (const BadJacobian<T>& e)
+  {
+    std::cerr << e << std::endl;
+    BOOST_CHECK (false && "invalid cost gradient");
+  }
+
+  // Check gradients of constraints
+  for (typename Solver<T>::problem_t::constraints_t::const_iterator
+       c  = pb.constraints ().begin ();
+       c != pb.constraints ().end (); ++c)
+  {
+    try
+    {
+      checkJacobianAndThrow<T>
+        (*(*c)->template castInto<const differentiableFunction_t> (),
+         *pb.startingPoint (),
+         1e-3, 1e-8);
+    }
+    catch (const BadJacobian<T>& e)
+    {
+      std::cerr << e << std::endl;
+      BOOST_CHECK (false && "invalid constraint gradient");
+    }
+  }
+}
+
 BOOST_FIXTURE_TEST_SUITE (trajectory, TestSuiteConfiguration)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
@@ -211,6 +250,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   param_t startingPoint (2*n);
   startingPoint << params, params2;
   problem.startingPoint () = startingPoint;
+
+  // Check gradients
+  checkGradients<T> (problem);
 
   // Initialize solver
   SolverFactory<solver_t> factory (TESTSUITE_SOLVER "-sparse", problem);
@@ -282,6 +324,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE (problem_over_splines, spline_t, splinesType_t)
   BOOST_CHECK_EQUAL (problem2.constraints ().size (), 8);
   startingPoint << spline->parameters(), spline2->parameters();
   problem2.startingPoint() = startingPoint;
+
+  // Check gradients
+  checkGradients<T> (problem2);
 
   SolverFactory<solver_t> factory2 (TESTSUITE_SOLVER "-sparse", problem2);
   solver_t& solver2 = factory2 ();
