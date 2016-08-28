@@ -132,7 +132,14 @@ void test_plot (void)
   int params_c = N + 1 + N;
   BOOST_CHECK (params_c >= min_params);
   argument_t params (params_c);
-  params.setRandom ();
+
+  // Note: Eigen::Random() relies on std::rand() which does not yield
+  // consistent results on different platforms for the same seed. Since we
+  // compare the results here with saved text files, we provide the arguments
+  // ourselves.
+  params << -0.52344009164880967, 0.94126826335735081, 0.8044161469696165,
+            0.7018395735425127, -0.46666850124796322, 0.079520681444332331,
+            -0.54958604725524136, 0.52049747273349078, 0.02507072828014878;
 
   ConstrainedBSpline<N> spline (interval, 1, params);
 
@@ -186,7 +193,7 @@ void test_plot (void)
 
 BOOST_AUTO_TEST_CASE (trajectory_constrained_bspline)
 {
-  srand (0);
+  std::srand (0);
 
   test_evaluate<4> ();
   test_plot<4> ();
