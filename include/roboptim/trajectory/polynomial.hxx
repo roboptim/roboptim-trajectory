@@ -23,6 +23,7 @@
 # include <algorithm> // transform
 # include <limits> // numeric_limits
 # include <cstdarg> // va_list, va_start, va_arg, va_end
+# include <stdexcept> // runtime_error
 
 # include <boost/bind.hpp> // bind
 # include <boost/math/special_functions/factorials.hpp>
