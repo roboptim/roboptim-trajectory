@@ -2,8 +2,9 @@ sudo: required
 language: cpp
 env:
   global:
-  - APT_DEPENDENCIES="doxygen libltdl-dev libboost-all-dev liblog4cxx10-dev"
+  - APT_DEPENDENCIES="cmake cmake-data doxygen libltdl-dev libboost-all-dev liblog4cxx10-dev"
   - GIT_DEPENDENCIES="roboptim/roboptim-core roboptim/roboptim-core-plugin-ipopt"
+  - HOMEBREW_DEPENDENCIES="doxygen log4cxx"
   - DEBSIGN_KEYID=5AE5CD75
   - PPA_URI="roboptim/ppa"
   - LCOV_IGNORE_RULES="*tests*"
@@ -26,18 +27,27 @@ branches:
   - travis
   - coverity_scan
 script:
-  - export LD_LIBRARY_PATH="/tmp/_ci/install/lib/roboptim-core/":$LD_LIBRARY_PATH; export CMAKE_ADDITIONAL_OPTIONS="-DTESTSUITE_SOLVER=ipopt";
+  - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then export LD_LIBRARY_PATH=`pkg-config --variable=plugindir roboptim-core`:$LD_LIBRARY_PATH; fi
+  - if [ "${TRAVIS_OS_NAME}" == "osx" ]; then export DYLD_LIBRARY_PATH=`pkg-config --variable=plugindir roboptim-core`:$DYLD_LIBRARY_PATH; fi
+  - if [ "${ENABLE_CXX11}" == "1" ]; then export CMAKE_ADDITIONAL_OPTIONS="-DUSE_CXX11:BOOL=ON -DROBOPTIM_PRECOMPILE_DENSE_SPARSE:BOOL=ON ${CMAKE_ADDITIONAL_OPTIONS}"; fi
   - if [ "${COVERITY_SCAN_BRANCH}" != "1" ]; then ./.travis/run build; fi
-after_success: ./.travis/run after_success
+after_success:
+  - ./.travis/run after_success
+  - codecov --gcov-root=/tmp/_ci/build
 after_failure: ./.travis/run after_failure
 before_install:
+  - pip install --user codecov
   - ./.travis/dependencies/eigen-3.2
-  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then CC=gcc CXX=g++ ./.travis/dependencies/ipopt; fi
   - ./.travis/run before_install
+  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then CC=gcc CXX=g++ ./.travis/dependencies/ipopt; fi
 
 matrix:
   allow_failures:
-    - compiler: clang
+    - os: linux
+      compiler: clang
+    - os: osx
+      compiler: gcc
+    - env: COVERITY_SCAN_BRANCH=1
   include:
     - os: linux
       dist: trusty
@@ -45,12 +55,19 @@ matrix:
     - os: linux
       dist: trusty
       compiler: clang
+      env: ENABLE_CXX11=1
     - os: linux
       dist: precise
       compiler: gcc
+      env: MASTER_PPA="george-edison55/precise-backports"
     - os: linux
       dist: precise
       compiler: clang
+      env: MASTER_PPA="george-edison55/precise-backports"
+    - os: osx
+      compiler: clang
+    - os: osx
+      compiler: gcc
 
 addons:
   coverity_scan:
