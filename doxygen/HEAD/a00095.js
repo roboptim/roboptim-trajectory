@@ -1,5 +1,4 @@
 var a00095 =
 [
-    [ "PlotLimitSpeed", "a00019.html", null ],
-    [ "PlotTrajectory", "a00020.html", null ]
+    [ "detail", "a00096.html", "a00096" ]
 ];

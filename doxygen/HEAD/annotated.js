@@ -1,32 +1,4 @@
 var annotated =
 [
-    [ "roboptim::trajectory::AnthropomorphicCostFunction< T >", "a00003.html", "a00003" ],
-    [ "roboptim::trajectory::BSpline< N >", "a00004.html", "a00004" ],
-    [ "roboptim::trajectory::detail::ComputeIntegral< T >", "a00005.html", "a00005" ],
-    [ "roboptim::trajectory::ConstrainedBSpline< N >", "a00006.html", "a00006" ],
-    [ "roboptim::trajectory::ConstraintsOverSplines< T, S >", "a00007.html", "a00007" ],
-    [ "roboptim::trajectory::CubicBSpline", "a00008.html", "a00008" ],
-    [ "DerivableFunction", "a00009.html", null ],
-    [ "roboptim::trajectory::FreeTimeTrajectory< T >", "a00010.html", "a00010" ],
-    [ "roboptim::trajectory::Freeze< P >", "a00011.html", "a00011" ],
-    [ "roboptim::trajectory::FrontalSpeed", "a00012.html", "a00012" ],
-    [ "roboptim::trajectory::JerkOverSplinesFactory< S, T >", "a00013.html", "a00013" ],
-    [ "roboptim::trajectory::LimitOmega< T >", "a00014.html", "a00014" ],
-    [ "roboptim::trajectory::LimitSpeed< T >", "a00015.html", "a00015" ],
-    [ "roboptim::trajectory::Monomial< N >", "a00016.html", "a00016" ],
-    [ "NTimesDerivableFunction", "a00017.html", null ],
-    [ "roboptim::trajectory::OrthogonalSpeed", "a00018.html", "a00018" ],
-    [ "roboptim::trajectory::visualization::gnuplot::detail::PlotLimitSpeed< T >", "a00019.html", "a00019" ],
-    [ "roboptim::trajectory::visualization::gnuplot::detail::PlotTrajectory< T >", "a00020.html", "a00020" ],
-    [ "roboptim::trajectory::Polynomial< N >", "a00021.html", "a00021" ],
-    [ "roboptim::trajectory::ProblemOverSplinesFactory< T, S >", "a00022.html", "a00022" ],
-    [ "roboptim::trajectory::SplineLength", "a00023.html", "a00023" ],
-    [ "roboptim::trajectory::StablePointStateFunction< T >", "a00024.html", "a00024" ],
-    [ "roboptim::trajectory::StableTimePoint", "a00025.html", "a00025" ],
-    [ "roboptim::trajectory::StateFunction< T >", "a00026.html", "a00026" ],
-    [ "roboptim::trajectory::TMax", "a00027.html", null ],
-    [ "roboptim::trajectory::Trajectory< DerivabilityOrder >", "a00028.html", "a00028" ],
-    [ "roboptim::trajectory::TrajectoryCost< T >", "a00029.html", "a00029" ],
-    [ "roboptim::trajectory::TrajectorySumCost< T >", "a00030.html", "a00030" ],
-    [ "roboptim::trajectory::VectorInterpolation", "a00031.html", "a00031" ]
+    [ "roboptim", "a00090.html", "a00090" ]
 ];
