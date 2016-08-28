@@ -81,6 +81,7 @@ SET(HEADERS
   ${CSD}/include/roboptim/trajectory.hh
 )
 
+SET(PKG_CONFIG_ADDITIONAL_VARIABLES plugindir ${PKG_CONFIG_ADDITIONAL_VARIABLES})
 SETUP_PROJECT()
 
 # Add main library to pkg-config file.

@@ -13,6 +13,17 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with roboptim-core.  If not, see <http://www.gnu.org/licenses/>.
 
+SET(PLUGINDIR "")
+IF(ROBOPTIM_CORE_FOUND)
+  SET(PLUGINDIR ${ROBOPTIM_CORE_PLUGINDIR})
+ELSEIF()
+  SET(PLUGINDIR ${ROBOPTIM_CORE_DEBUG_PLUGINDIR})
+ENDIF()
+
+IF("${PLUGINDIR}" STREQUAL "")
+  MESSAGE(FATAL_ERROR "Plugin directory not found")
+ENDIF()
+
 # Which solver should be used?
 IF(ROBOPTIM_CORE_PLUGIN_IPOPT_FOUND)
   SET(DEFAULT_TESTSUITE_SOLVER "ipopt")
@@ -56,6 +67,26 @@ SET(COMMON_HEADERS
   shared-tests/fixture.hh
   )
 
+# SET_TEST_ENV(NAME)
+# ------------------
+#
+# Add the plugin directory to the proper environment variables.
+#
+MACRO(SET_TEST_ENV NAME)
+  # TODO: adapt for WIN32
+  IF(UNIX)
+    IF(APPLE)
+      SET_PROPERTY(
+        TEST ${NAME} APPEND PROPERTY ENVIRONMENT
+        "DYLD_LIBRARY_PATH=${PLUGINDIR}:$ENV{DYLD_LIBRARY_PATH}")
+    ELSE()
+      SET_PROPERTY(
+        TEST ${NAME} APPEND PROPERTY ENVIRONMENT
+        "LD_LIBRARY_PATH=${PLUGINDIR}:$ENV{LD_LIBRARY_PATH}")
+    ENDIF()
+  ENDIF()
+ENDMACRO()
+
 # ROBOPTIM_TRAJECTORY_TEST(NAME)
 # ------------------------
 #
@@ -75,29 +106,7 @@ MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
   TARGET_LINK_LIBRARIES(${NAME} roboptim-trajectory)
   PKG_CONFIG_USE_DEPENDENCY(${NAME} roboptim-core)
 
-  # Link against Boost.
-  TARGET_LINK_LIBRARIES(${NAME} ${Boost_LIBRARIES})
-ENDMACRO(ROBOPTIM_TRAJECTORY_TEST)
-
-# ROBOPTIM_TRAJECTORY_ANTHROPOMORPHIC_TEST(NAME)
-# ----------------------------------------------
-#
-# Define a test named `NAME' and link it wit the
-# anthropomorphic cost function.
-#
-# This macro will create a binary from `NAME.cc', link it against
-# Boost and add it to the test suite.
-#
-MACRO(ROBOPTIM_TRAJECTORY_TEST NAME)
-  ADD_EXECUTABLE(${NAME} ${NAME}.cc ${COMMON_HEADERS})
-  SET_TARGET_PROPERTIES(${NAME}
-    PROPERTIES COMPILE_FLAGS
-    "-DSOLVER_NAME='\"${SOLVER_NAME}\"' -DPLUGIN_PATH='\"${PLUGIN_PATH}\"' -DFUNCTION_TYPE=${FUNCTION_TYPE} -DCOST_FUNCTION_TYPE=${COST_FUNCTION_TYPE} ${CONSTRAINT_TYPE_1_STR} ${CONSTRAINT_TYPE_2_STR} -DTESTS_DATA_DIR='\"${CMAKE_CURRENT_SOURCE_DIR}\"' -DLOG_FILENAME='\"${NAME}.log\"' ")
-
-  ADD_TEST(${NAME} ${RUNTIME_OUTPUT_DIRECTORY}/${NAME})
-
-  TARGET_LINK_LIBRARIES(${NAME} roboptim-trajectory)
-  PKG_CONFIG_USE_DEPENDENCY(${NAME} roboptim-core)
+  SET_TEST_ENV(${NAME})
 
   # Link against Boost.
   TARGET_LINK_LIBRARIES(${NAME} ${Boost_LIBRARIES})
