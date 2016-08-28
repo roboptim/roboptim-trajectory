@@ -1,7 +1,5 @@
 var a00018 =
 [
-    [ "OrthogonalSpeed", "a00018.html#a3b24b63f251c5f06b8b04512ccd08638", null ],
-    [ "~OrthogonalSpeed", "a00018.html#a1b41f6aabfaf95a9e13f34e03827ebf1", null ],
-    [ "impl_compute", "a00018.html#a31f8d3a304fa384dea21bf76299be540", null ],
-    [ "impl_gradient", "a00018.html#aa99b1b949d038a1a8ebf7ef0d7a7fd74", null ]
+    [ "PlotTrajectory", "a00018.html#a63af9304ab122b602a1746ac3accc9ec", null ],
+    [ "operator()", "a00018.html#a52d5c699faf2c1908bd6056d90798c51", null ]
 ];

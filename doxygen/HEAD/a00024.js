@@ -1,10 +1,11 @@
 var a00024 =
 [
-    [ "trajectory_t", "a00024.html#afd34543c0e231493467c9122218f16de", null ],
-    [ "StablePointStateFunction", "a00024.html#a09e4adba80585080d3b693c79af9496e", null ],
-    [ "~StablePointStateFunction", "a00024.html#af90f5e9766ec0de7b1b635976ae94f61", null ],
-    [ "addToProblem", "a00024.html#a7ba2e1634cecf9c6b2adfc82cc7a543e", null ],
-    [ "impl_compute", "a00024.html#aeb902f180ad093486f7e1019b327b984", null ],
-    [ "impl_gradient", "a00024.html#a2ab7ac704ebc0276b468fcade45d978f", null ],
-    [ "order", "a00024.html#a75b6df5cb75c2a7f14701941cf4052b1", null ]
+    [ "trajectory_t", "a00024.html#acccf42b5feb8155daf34349b9e256303", null ],
+    [ "StateFunction", "a00024.html#a4af2352100ea243e34d27803f91deca5", null ],
+    [ "~StateFunction", "a00024.html#a441978cb5600775e3995ecfebfcce43c", null ],
+    [ "addToProblem", "a00024.html#a800c8a12c6e04d205229703638a72b2a", null ],
+    [ "addToProblem", "a00024.html#a0beb5769e5d0bbb02916aada1f00616d", null ],
+    [ "impl_compute", "a00024.html#a2ae06c96a56e82f51cdb5f1f94e266f4", null ],
+    [ "impl_gradient", "a00024.html#a08d2b43e33a1dadcd60b9e2a02754e7e", null ],
+    [ "order", "a00024.html#afb15f4cf548efdce6eefcbae31e77b77", null ]
 ];

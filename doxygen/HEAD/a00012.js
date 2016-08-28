@@ -1,10 +1,16 @@
 var a00012 =
 [
-    [ "frozenArgument_t", "a00012.html#a7e1c098bf62a205c54d658a3397f953d", null ],
-    [ "frozenArguments_t", "a00012.html#a2e895fc24a5b3caffbecc2d70ba188b7", null ],
-    [ "problem_t", "a00012.html#a2837a6ce797b957a702ae6c551da5eca", null ],
-    [ "Freeze", "a00012.html#a76d1b33a9050607b38d68529f3173510", null ],
-    [ "~Freeze", "a00012.html#a01c7d6069dae78708e53988a86f65ba4", null ],
-    [ "operator()", "a00012.html#a27fc9212556042b2256ec25d6b4f039c", null ],
-    [ "operator()", "a00012.html#a8938f44a65bace7873ad5d9aeeb8e99b", null ]
+    [ "interval_t", "a00012.html#ac31536fd8c3380b764efb252c1760bc6", null ],
+    [ "matrix_t", "a00012.html#a6f86ce84c5da0782dea9333d60f18d01", null ],
+    [ "numericQuadraticFunction_t", "a00012.html#a6266172dd07ad59b72ec9dba93e69b55", null ],
+    [ "numericQuadraticFunctionPtr_t", "a00012.html#a27a62671a7fd1a7014d81ff4923bcf96", null ],
+    [ "size_type", "a00012.html#a4095d303f4a3dc774fb1decc158aed33", null ],
+    [ "spline_t", "a00012.html#abcc9df543b1d25cca2065f70847c879e", null ],
+    [ "splinePtr_t", "a00012.html#a500fac2da5f6efc9410fddba725ee088", null ],
+    [ "value_type", "a00012.html#aac370cdbfe5f1fcaf98380250fbd3af9", null ],
+    [ "vector_t", "a00012.html#a9cfa2d8933d307aacfa2ae8aaf8e4d5c", null ],
+    [ "JerkOverSplinesFactory", "a00012.html#a9017e89efe32794cdc33197898373d83", null ],
+    [ "chooseScaling", "a00012.html#af7eecf27765f43e3334a6779c6c681c8", null ],
+    [ "getJerk", "a00012.html#a16e08e725ea3595261ed402993e1b806", null ],
+    [ "updateRange", "a00012.html#aab46664867de99284b17fc823e0a6d26", null ]
 ];

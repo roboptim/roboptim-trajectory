@@ -1,7 +1,7 @@
 var a00023 =
 [
-    [ "SplineLength", "a00103.html#ga44e8263a5d110576c503d879bbc66ede", null ],
-    [ "~SplineLength", "a00103.html#gaaeb5489d6b6677ab9f565d19878aeb38", null ],
-    [ "impl_compute", "a00103.html#ga6fea727b7494fcd2bc4cf79f2e98e58b", null ],
-    [ "impl_gradient", "a00103.html#ga7bfddf19877bf8915c233698e67b7eec", null ]
+    [ "value_type", "a00023.html#a6f8dcd21fb48d9ab1c08571a44e6ca4f", null ],
+    [ "StableTimePoint", "a00023.html#a23c93477d0b8fd06e9dc4d7a79e19e64", null ],
+    [ "getAlpha", "a00023.html#acd225112661a26ad47628368dbcfe4fb", null ],
+    [ "getTime", "a00023.html#a3723a5dd33cd2dea7af9598d50f141cc", null ]
 ];

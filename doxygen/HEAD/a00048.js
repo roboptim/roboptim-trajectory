@@ -1,5 +1,5 @@
 var a00048 =
 [
-    [ "addScaleToParameters", "a00048.html#ae8c64d8ebb9a31cd0079ba92580e7f61", null ],
-    [ "removeScaleFromParameters", "a00048.html#ad59988dffba7f870def74109cb47b147", null ]
+    [ "Freeze", "a00010.html", "a00010" ],
+    [ "makeFreeze", "a00048.html#a52924ae13b9f11673ab2c6e176cff794", null ]
 ];

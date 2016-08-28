@@ -1,4 +1,4 @@
 var a00093 =
 [
-    [ "ComputeIntegral", "a00007.html", "a00007" ]
+    [ "detail", "a00094.html", "a00094" ]
 ];
