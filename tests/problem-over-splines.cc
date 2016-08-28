@@ -92,6 +92,8 @@ void processResult (const typename Solver<T>::result_t& res,
 
   switch (res.which ())
     {
+    // TODO: use visitor
+    case solver_t::SOLVER_VALUE_WARNINGS:
     case solver_t::SOLVER_VALUE:
       {
         // Get the result.
@@ -100,23 +102,6 @@ void processResult (const typename Solver<T>::result_t& res,
         spline->setParameters (result.x.segment (0, n));
         spline2->setParameters (result.x.segment (n, n));
 
-	matplotlib
-	  << plot_spline (*spline, step)
-	  << title ((spline->getName () + title_end).c_str ())
-	  << plot_spline (*spline2, step)
-	  << title ((spline2->getName () + title_end).c_str ());
-
-        std::cout << result << std::endl;
-        break;
-      }
-
-    case solver_t::SOLVER_VALUE_WARNINGS:
-      {
-        // Get the result.
-        ResultWithWarnings result = boost::get<ResultWithWarnings> (res);
-
-        spline->setParameters (result.x.segment (0, n));
-        spline2->setParameters (result.x.segment (n, n));
 	matplotlib
 	  << plot_spline (*spline, step)
 	  << title ((spline->getName () + title_end).c_str ())

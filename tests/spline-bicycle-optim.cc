@@ -204,6 +204,8 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_bibycle_optim)
 
   switch (res.which ())
     {
+    // TODO: use visitor
+    case GenericSolver::SOLVER_VALUE_WARNINGS:
     case GenericSolver::SOLVER_VALUE:
       {
 	Result& result = boost::get<Result> (res);
@@ -217,15 +219,6 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_bibycle_optim)
       {
 	std::cerr << "No solution" << std::endl;
 	BOOST_CHECK(false);
-      }
-    case GenericSolver::SOLVER_VALUE_WARNINGS:
-      {
-	ResultWithWarnings& result = boost::get<ResultWithWarnings> (res);
-	CubicBSpline optimizedSpline (timeRange, 2, result.x, "after");
-	params = result.x;
-	std::cerr << result << std::endl;
-	gnuplot << plot_xy (optimizedSpline);
-	break;
       }
 
     case GenericSolver::SOLVER_ERROR:

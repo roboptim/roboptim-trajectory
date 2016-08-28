@@ -167,17 +167,11 @@ inline int optimize (double initialX,
 
   switch (solver.minimumType ())
     {
+    // TODO: use visitor
+    case GenericSolver::SOLVER_VALUE_WARNINGS:
     case GenericSolver::SOLVER_VALUE:
       {
 	const Result& result = solver.getMinimum<Result> ();
-	optimizedTrajectory.setParameters (result.x);
-	break;
-      }
-
-    case GenericSolver::SOLVER_VALUE_WARNINGS:
-      {
-	const ResultWithWarnings& result =
-	  solver.getMinimum<ResultWithWarnings> ();
 	optimizedTrajectory.setParameters (result.x);
 	break;
       }

@@ -157,17 +157,11 @@ BOOST_AUTO_TEST_CASE (trajectory_spline_time_optimization)
 
   switch (solver.minimumType ())
     {
+    // TODO: use visitor
+    case GenericSolver::SOLVER_VALUE_WARNINGS:
     case GenericSolver::SOLVER_VALUE:
       {
 	const Result& result = solver.getMinimum<Result> ();
-	optimizedTrajectory.setParameters (result.x);
-	break;
-      }
-
-    case GenericSolver::SOLVER_VALUE_WARNINGS:
-      {
-	const ResultWithWarnings& result =
-	  solver.getMinimum<ResultWithWarnings> ();
 	optimizedTrajectory.setParameters (result.x);
 	break;
       }
