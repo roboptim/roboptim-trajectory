@@ -158,7 +158,7 @@ Available Packages
 
  * Fedora (Release 0.5):
    https://apps.fedoraproject.org/packages/roboptim-trajectory
- * RobotPkg (Release 1.0):
+ * RobotPkg (Release 3.1):
    http://robotpkg.openrobots.org/robotpkg/optimization/roboptim-trajectory/
 
 [badge-license]: https://img.shields.io/badge/license-LGPL_3-green.svg
