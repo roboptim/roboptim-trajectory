@@ -381,10 +381,6 @@ namespace trajectory
 
 	for (cox_map_itr_t itr = map.begin(); itr != map.end(); itr++)
 	  {
-	    LOG4CXX_DEBUG (this->logger,
-			   "B_" << j << "_"
-			   << itr->first << "  : " << itr->second);
-
 	    basisPolynomials_.back ().push_back (itr->second);
 	  }
       }
