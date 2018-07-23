@@ -227,8 +227,7 @@ namespace trajectory
 	typename polynomial_t::coefs_t temp_params;
 	temp_params.setZero();
 	temp_params[0] = 1.;
-	ROBOPTIM_DEBUG_ONLY (std::pair<cox_map_itr_t BOOST_PP_COMMA() bool> ptr =)
-	  map.insert (std::make_pair (j, polynomial_t (0., temp_params)));
+        map.insert (std::make_pair (j, polynomial_t (0., temp_params)));
 
 	return map;
       }
