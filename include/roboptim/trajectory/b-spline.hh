@@ -258,18 +258,7 @@ namespace trajectory
     /// \brief Whether the B-spline is uniform.
     /// Note: used for faster interval lookup.
     bool uniform_;
-
-  protected:
-    /// \brief Pointer to B-spline logger (see log4cxx documentation).
-    static log4cxx::LoggerPtr logger;
   };
-
-  /// \brief LOG4CXX logger for B-splines.
-  /// \tparam N order of the B-Spline.
-  /// \return logger.
-  template <int N>
-  log4cxx::LoggerPtr BSpline<N>::logger
-  (log4cxx::Logger::getLogger ("roboptim.trajectory"));
 
   /// @}
 
