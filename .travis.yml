@@ -3,13 +3,14 @@ language: cpp
 env:
   global:
   - APT_DEPENDENCIES="cmake cmake-data doxygen libltdl-dev libboost-all-dev liblog4cxx10-dev"
-  - HOMEBREW_DEPENDENCIES="doxygen log4cxx ipopt openblas mumps"
+  - HOMEBREW_DEPENDENCIES="doxygen log4cxx brewsci/science/ipopt openblas mumps"
   - GIT_DEPENDENCIES="roboptim/roboptim-core roboptim/roboptim-core-plugin-ipopt"
   - DEBSIGN_KEYID=5AE5CD75
   - PPA_URI="roboptim/ppa"
   - LCOV_IGNORE_RULES="*tests*"
   - GH_USERNAME=thomas-moulard
   - GH_REPO=roboptim/roboptim-trajectory
+  - EIGEN_MAJOR=3.2
   - secure: dn2Iai0VINXoHlHTL0s0/+37pIbTTaKI0698dAPYpMBUkE9RIuumcKEjDP1uKqaA9anSPm1dLrtSsSm+kFGaEBk+cviGxsc242KSxqxCBqNP3Bbm4dFCbKnnG4c7I8OTuYUuJJg90xVm2QGAnUNn9vvBnydvTpeCEN850lT+dBM=
   - secure: qFCzChpnDkG00gsaRzNmjbWyBzEaHutoM6BUsm9jxH2BlvDRLQUN/WxVmmIKKB9t8y3d2jPp4zRJiTqTUTJo3DaUuc/5s5XZKEqmL1YgIP+UbIWJpDNaun9EpA2YJxoFatYzun6X1FKm2D7WMSVXatKyRDh1bEVaoW8tqI6Vwq0=
   - secure: GwtCk4WjcY6iyQxmVD4YQ2NkEP7H/zdBv2144UNtLe6jaLxwFsDt0n9mNIela/bCyEq2GQsjI3QofbFol5EAMhv1Dm93mLYsyWCGNcZrRN/OwfjluMcBlq5WMETbYXl/009kw3lxXWddNBHTR6QCEAlnZ9fUmj+3diy/UVvW74c=
@@ -33,11 +34,11 @@ script:
   - if [ "${COVERITY_SCAN_BRANCH}" != "1" ]; then ./.travis/run build; fi
 after_success:
   - ./.travis/run after_success
-  - codecov --gcov-root=/tmp/_ci/build
+  - if [ "${TRAVIS_OS_NAME}" == "linux" ]; then codecov --gcov-root=/tmp/_ci/build; fi
 after_failure: ./.travis/run after_failure
 before_install:
-  - pip install --user codecov
-  - ./.travis/dependencies/eigen-3.2
+  - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then pip install --user codecov; fi
+  - ./.travis/dependencies/eigen-${EIGEN_MAJOR}
   - if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then CC=gcc CXX=g++ ./.travis/dependencies/ipopt; fi
   - ./.travis/run before_install
 
@@ -47,6 +48,8 @@ matrix:
       compiler: clang
     - os: osx
       compiler: gcc
+    - os: osx
+      compiler: clang
     - env: COVERITY_SCAN_BRANCH=1
   include:
     - os: linux
